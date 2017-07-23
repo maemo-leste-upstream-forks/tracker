@@ -23,6 +23,7 @@ libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
  tracker_resource_add_int@Base 1.9.1
  tracker_resource_add_relation@Base 1.9.1
  tracker_resource_add_string@Base 1.9.1
+ tracker_resource_add_take_relation@Base 1.99.1
  tracker_resource_add_uri@Base 1.9.1
  tracker_resource_compare@Base 1.9.1
  tracker_resource_get_first_boolean@Base 1.9.1
@@ -47,6 +48,7 @@ libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
  tracker_resource_set_int@Base 1.9.1
  tracker_resource_set_relation@Base 1.9.1
  tracker_resource_set_string@Base 1.9.1
+ tracker_resource_set_take_relation@Base 1.99.1
  tracker_resource_set_uri@Base 1.9.1
  tracker_sparql_builder_append@Base 0.10.0
  tracker_sparql_builder_construct@Base 0.10.0
@@ -87,20 +89,24 @@ libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
  tracker_sparql_builder_where_close@Base 0.10.0
  tracker_sparql_builder_where_open@Base 0.10.0
  tracker_sparql_connection_construct@Base 0.10.0
+ tracker_sparql_connection_flags_get_type@Base 1.99.1
  tracker_sparql_connection_get@Base 0.10.0
  tracker_sparql_connection_get_async@Base 0.10.0
- tracker_sparql_connection_get_direct@Base 0.10.0
- tracker_sparql_connection_get_direct_async@Base 0.10.0
- tracker_sparql_connection_get_direct_finish@Base 0.10.0
+ tracker_sparql_connection_get_domain@Base 1.99.1
  tracker_sparql_connection_get_finish@Base 0.10.0
+ tracker_sparql_connection_get_namespace_manager@Base 1.99.1
  tracker_sparql_connection_get_type@Base 0.10.0
  tracker_sparql_connection_load@Base 0.10.0
  tracker_sparql_connection_load_async@Base 0.10.0
  tracker_sparql_connection_load_finish@Base 0.10.0
+ tracker_sparql_connection_local_new@Base 1.99.1
+ tracker_sparql_connection_local_new_async@Base 1.99.1
+ tracker_sparql_connection_local_new_finish@Base 1.99.1
  tracker_sparql_connection_query@Base 0.10.0
  tracker_sparql_connection_query_async@Base 0.10.0
  tracker_sparql_connection_query_finish@Base 0.10.0
  tracker_sparql_connection_remote_new@Base 1.12.0
+ tracker_sparql_connection_set_domain@Base 1.99.1
  tracker_sparql_connection_statistics@Base 0.10.0
  tracker_sparql_connection_statistics_async@Base 0.10.0
  tracker_sparql_connection_statistics_finish@Base 0.10.0
