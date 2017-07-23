@@ -29,6 +29,7 @@
 #include "tracker-store/tracker-events.h"
 #include "libtracker-common/tracker-common.h"
 #include "libtracker-data/tracker-data-backup.h"
+#include "libtracker-data/tracker-data-manager.h"
 #include "libtracker-data/tracker-data-query.h"
 #include "libtracker-data/tracker-data-update.h"
 
@@ -125,18 +126,23 @@ struct _TrackerBackupSaveData {
 	gchar* _tmp17_;
 	GError* _tmp18_;
 	GError* _tmp19_;
-	GFile* _tmp20_;
-	GError* _tmp21_;
-	GError* _tmp22_;
-	GError* _tmp23_;
-	TrackerDBusRequest* _tmp24_;
-	GError* e;
-	TrackerDBusRequest* _tmp25_;
+	TrackerDataManager* data_manager;
+	TrackerDataManager* _tmp20_;
+	TrackerDataManager* _tmp21_;
+	TrackerDataManager* _tmp22_;
+	GFile* _tmp23_;
+	GError* _tmp24_;
+	GError* _tmp25_;
 	GError* _tmp26_;
-	GError* _tmp27_;
-	GError* _tmp28_;
-	TrackerResources* _tmp29_;
-	TrackerResources* _tmp30_;
+	TrackerDBusRequest* _tmp27_;
+	GError* e;
+	TrackerDBusRequest* _tmp28_;
+	GError* _tmp29_;
+	GError* _tmp30_;
+	GError* _tmp31_;
+	TrackerResources* _tmp32_;
+	TrackerDataManager* _tmp33_;
+	TrackerResources* _tmp34_;
 	GError * _inner_error_;
 };
 
@@ -180,17 +186,22 @@ struct _TrackerBackupRestoreData {
 	TrackerBusyCallback _tmp24_;
 	void* busy_callback_target;
 	GDestroyNotify busy_callback_target_destroy_notify;
-	GFile* _tmp25_;
-	TrackerBusyCallback _tmp26_;
-	void* _tmp26__target;
-	TrackerDBusRequest* _tmp27_;
+	TrackerDataManager* data_manager;
+	TrackerDataManager* _tmp25_;
+	TrackerDataManager* _tmp26_;
+	TrackerDataManager* _tmp27_;
+	GFile* _tmp28_;
+	TrackerBusyCallback _tmp29_;
+	void* _tmp29__target;
+	TrackerDBusRequest* _tmp30_;
 	GError* e;
-	TrackerDBusRequest* _tmp28_;
-	GError* _tmp29_;
-	GError* _tmp30_;
-	GError* _tmp31_;
-	TrackerResources* _tmp32_;
-	TrackerResources* _tmp33_;
+	TrackerDBusRequest* _tmp31_;
+	GError* _tmp32_;
+	GError* _tmp33_;
+	GError* _tmp34_;
+	TrackerResources* _tmp35_;
+	TrackerDataManager* _tmp36_;
+	TrackerResources* _tmp37_;
 	GError * _inner_error_;
 };
 
@@ -218,8 +229,9 @@ static void block2_data_unref (void * _userdata_);
 void tracker_store_pause (GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_store_pause_finish (GAsyncResult* _res_);
 static void tracker_backup_save_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
-static void ___lambda10_ (Block2Data* _data2_, GError* _error_);
-static void ____lambda10__tracker_data_backup_finished (GError* _error_, gpointer self);
+TrackerDataManager* tracker_main_get_data_manager (void);
+static void ___lambda12_ (Block2Data* _data2_, GError* _error_);
+static void ____lambda12__tracker_data_backup_finished (GError* _error_, gpointer self);
 void tracker_resources_enable_signals (TrackerResources* self);
 void tracker_store_resume (void);
 static void tracker_backup_restore_data_free (gpointer _data);
@@ -266,14 +278,14 @@ static void tracker_backup_save_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	g_slice_free (TrackerBackupSaveData, _data_);
-#line 270 "tracker-backup.c"
+#line 282 "tracker-backup.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	return self ? g_object_ref (self) : NULL;
-#line 277 "tracker-backup.c"
+#line 289 "tracker-backup.c"
 }
 
 
@@ -312,7 +324,7 @@ void tracker_backup_save (TrackerBackup* self, const char* sender, const gchar* 
 	_data_->destination_uri = _tmp4_;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_save_co (_data_);
-#line 316 "tracker-backup.c"
+#line 328 "tracker-backup.c"
 }
 
 
@@ -324,7 +336,7 @@ void tracker_backup_save_finish (TrackerBackup* self, GAsyncResult* _res_, GErro
 	if (NULL == _data_) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		return;
-#line 328 "tracker-backup.c"
+#line 340 "tracker-backup.c"
 	}
 }
 
@@ -334,7 +346,7 @@ static Block1Data* block1_data_ref (Block1Data* _data1_) {
 	g_atomic_int_inc (&_data1_->_ref_count_);
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	return _data1_;
-#line 338 "tracker-backup.c"
+#line 350 "tracker-backup.c"
 }
 
 
@@ -343,7 +355,7 @@ static void block1_data_unref (void * _userdata_) {
 	_data1_ = (Block1Data*) _userdata_;
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-#line 347 "tracker-backup.c"
+#line 359 "tracker-backup.c"
 		TrackerBackup* self;
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		self = _data1_->self;
@@ -351,7 +363,7 @@ static void block1_data_unref (void * _userdata_) {
 		_g_object_unref0 (self);
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		g_slice_free (Block1Data, _data1_);
-#line 355 "tracker-backup.c"
+#line 367 "tracker-backup.c"
 	}
 }
 
@@ -361,7 +373,7 @@ static Block2Data* block2_data_ref (Block2Data* _data2_) {
 	g_atomic_int_inc (&_data2_->_ref_count_);
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	return _data2_;
-#line 365 "tracker-backup.c"
+#line 377 "tracker-backup.c"
 }
 
 
@@ -370,7 +382,7 @@ static void block2_data_unref (void * _userdata_) {
 	_data2_ = (Block2Data*) _userdata_;
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	if (g_atomic_int_dec_and_test (&_data2_->_ref_count_)) {
-#line 374 "tracker-backup.c"
+#line 386 "tracker-backup.c"
 		TrackerBackup* self;
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		self = _data2_->_data1_->self;
@@ -382,7 +394,7 @@ static void block2_data_unref (void * _userdata_) {
 		_data2_->_data1_ = NULL;
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		g_slice_free (Block2Data, _data2_);
-#line 386 "tracker-backup.c"
+#line 398 "tracker-backup.c"
 	}
 }
 
@@ -397,44 +409,44 @@ static void tracker_backup_save_ready (GObject* source_object, GAsyncResult* _re
 	_data_->_res_ = _res_;
 #line 40 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_save_co (_data_);
-#line 401 "tracker-backup.c"
+#line 413 "tracker-backup.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 45 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	return self ? g_error_copy (self) : NULL;
-#line 408 "tracker-backup.c"
+#line 420 "tracker-backup.c"
 }
 
 
-static void ___lambda10_ (Block2Data* _data2_, GError* _error_) {
+static void ___lambda12_ (Block2Data* _data2_, GError* _error_) {
 	Block1Data* _data1_;
 	TrackerBackup* self;
 	GError* _tmp0_;
 	GError* _tmp1_;
-#line 43 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data1_ = _data2_->_data1_;
-#line 43 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	self = _data1_->self;
-#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-	_tmp0_ = _error_;
-#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-	_tmp1_ = _g_error_copy0 (_tmp0_);
-#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-	_g_error_free0 (_data2_->backup_error);
-#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-	_data2_->backup_error = _tmp1_;
 #line 45 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+	_tmp0_ = _error_;
+#line 45 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+	_tmp1_ = _g_error_copy0 (_tmp0_);
+#line 45 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+	_g_error_free0 (_data2_->backup_error);
+#line 45 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+	_data2_->backup_error = _tmp1_;
+#line 46 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_save_co (_data1_->_async_data_);
-#line 431 "tracker-backup.c"
+#line 443 "tracker-backup.c"
 }
 
 
-static void ____lambda10__tracker_data_backup_finished (GError* _error_, gpointer self) {
-#line 43 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-	___lambda10_ (self, _error_);
-#line 438 "tracker-backup.c"
+static void ____lambda12__tracker_data_backup_finished (GError* _error_, gpointer self) {
+#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+	___lambda12_ (self, _error_);
+#line 450 "tracker-backup.c"
 }
 
 
@@ -443,20 +455,20 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 	switch (_data_->_state_) {
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		case 0:
-#line 447 "tracker-backup.c"
+#line 459 "tracker-backup.c"
 		goto _state_0;
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		case 1:
-#line 451 "tracker-backup.c"
+#line 463 "tracker-backup.c"
 		goto _state_1;
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		case 2:
-#line 455 "tracker-backup.c"
+#line 467 "tracker-backup.c"
 		goto _state_2;
 		default:
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		g_assert_not_reached ();
-#line 460 "tracker-backup.c"
+#line 472 "tracker-backup.c"
 	}
 	_state_0:
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
@@ -481,7 +493,7 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 		tracker_resources_disable_signals (_data_->_tmp2_);
 #line 29 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_events_shutdown ();
-#line 485 "tracker-backup.c"
+#line 497 "tracker-backup.c"
 	}
 #line 32 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp3_ = _data_->sender;
@@ -491,7 +503,7 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 	_data_->_tmp5_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp3_, "D-Bus request to save backup into '%s'", _data_->_tmp4_, NULL);
 #line 32 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->request = _data_->_tmp5_;
-#line 495 "tracker-backup.c"
+#line 507 "tracker-backup.c"
 	{
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data2_ = g_slice_new0 (Block2Data);
@@ -511,7 +523,7 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 		if (_data_->_tmp9_ == NULL) {
 #line 36 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp8_ = TRUE;
-#line 515 "tracker-backup.c"
+#line 527 "tracker-backup.c"
 		} else {
 #line 36 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp10_ = _data_->destination;
@@ -523,7 +535,7 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 			_data_->_tmp8_ = _data_->_tmp12_ == NULL;
 #line 36 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_g_free0 (_data_->_tmp12_);
-#line 527 "tracker-backup.c"
+#line 539 "tracker-backup.c"
 		}
 #line 36 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp8_) {
@@ -553,7 +565,7 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 			block2_data_unref (_data_->_data2_);
 #line 37 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_data2_ = NULL;
-#line 557 "tracker-backup.c"
+#line 569 "tracker-backup.c"
 			goto __catch0_g_error;
 		}
 #line 40 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
@@ -562,53 +574,65 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 		tracker_store_pause (tracker_backup_save_ready, _data_);
 #line 40 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
-#line 566 "tracker-backup.c"
+#line 578 "tracker-backup.c"
 		_state_1:
 #line 40 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_pause_finish (_data_->_res_);
 #line 42 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data2_->backup_error = NULL;
 #line 43 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp20_ = _data_->destination;
+		_data_->_tmp20_ = tracker_main_get_data_manager ();
 #line 43 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		tracker_data_backup_save (_data_->_tmp20_, ____lambda10__tracker_data_backup_finished, block2_data_ref (_data_->_data2_), block2_data_unref);
-#line 47 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp21_ = _g_object_ref0 (_data_->_tmp20_);
+#line 43 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->data_manager = _data_->_tmp21_;
+#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp22_ = _data_->data_manager;
+#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp23_ = _data_->destination;
+#line 44 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		tracker_data_backup_save (_data_->_tmp22_, _data_->_tmp23_, NULL, ____lambda12__tracker_data_backup_finished, block2_data_ref (_data_->_data2_), block2_data_unref);
+#line 48 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_state_ = 2;
-#line 47 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 48 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
-#line 580 "tracker-backup.c"
+#line 600 "tracker-backup.c"
 		_state_2:
 		;
-#line 49 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp21_ = _data_->_data2_->backup_error;
-#line 49 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		if (_data_->_tmp21_ != NULL) {
 #line 50 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp22_ = _data_->_data2_->backup_error;
+		_data_->_tmp24_ = _data_->_data2_->backup_error;
 #line 50 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp23_ = _g_error_copy0 (_data_->_tmp22_);
-#line 50 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_inner_error_ = _data_->_tmp23_;
-#line 50 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		if (_data_->_tmp24_ != NULL) {
+#line 51 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp25_ = _data_->_data2_->backup_error;
+#line 51 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp26_ = _g_error_copy0 (_data_->_tmp25_);
+#line 51 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_inner_error_ = _data_->_tmp26_;
+#line 51 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_g_object_unref0 (_data_->data_manager);
+#line 51 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_g_object_unref0 (_data_->destination);
-#line 50 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 51 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			block2_data_unref (_data_->_data2_);
-#line 50 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 51 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_data2_ = NULL;
-#line 599 "tracker-backup.c"
+#line 621 "tracker-backup.c"
 			goto __catch0_g_error;
 		}
-#line 53 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp24_ = _data_->request;
-#line 53 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		tracker_dbus_request_end (_data_->_tmp24_, NULL);
+#line 54 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp27_ = _data_->request;
+#line 54 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		tracker_dbus_request_end (_data_->_tmp27_, NULL);
+#line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_g_object_unref0 (_data_->data_manager);
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->destination);
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		block2_data_unref (_data_->_data2_);
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data2_ = NULL;
-#line 612 "tracker-backup.c"
+#line 636 "tracker-backup.c"
 	}
 	goto __finally0;
 	__catch0_g_error:
@@ -617,40 +641,42 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 		_data_->e = _data_->_inner_error_;
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_inner_error_ = NULL;
-#line 55 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp25_ = _data_->request;
-#line 55 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp26_ = _data_->e;
-#line 55 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		tracker_dbus_request_end (_data_->_tmp25_, _data_->_tmp26_);
 #line 56 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp27_ = _data_->e;
+		_data_->_tmp28_ = _data_->request;
 #line 56 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp28_ = _g_error_copy0 (_data_->_tmp27_);
+		_data_->_tmp29_ = _data_->e;
 #line 56 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_inner_error_ = _data_->_tmp28_;
-#line 56 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		tracker_dbus_request_end (_data_->_tmp28_, _data_->_tmp29_);
+#line 57 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp30_ = _data_->e;
+#line 57 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp31_ = _g_error_copy0 (_data_->_tmp30_);
+#line 57 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_inner_error_ = _data_->_tmp31_;
+#line 57 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_g_error_free0 (_data_->e);
-#line 635 "tracker-backup.c"
+#line 659 "tracker-backup.c"
 		goto __finally0;
 	}
 	__finally0:
 	{
-#line 58 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp29_ = _data_->resources;
-#line 58 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		if (_data_->_tmp29_ != NULL) {
 #line 59 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			tracker_events_init ();
+		_data_->_tmp32_ = _data_->resources;
+#line 59 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		if (_data_->_tmp32_ != NULL) {
 #line 60 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp30_ = _data_->resources;
+			_data_->_tmp33_ = tracker_main_get_data_manager ();
 #line 60 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			tracker_resources_enable_signals (_data_->_tmp30_);
-#line 650 "tracker-backup.c"
+			tracker_events_init (_data_->_tmp33_);
+#line 61 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp34_ = _data_->resources;
+#line 61 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			tracker_resources_enable_signals (_data_->_tmp34_);
+#line 676 "tracker-backup.c"
 		}
-#line 63 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 64 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_resume ();
-#line 654 "tracker-backup.c"
+#line 680 "tracker-backup.c"
 	}
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
@@ -666,7 +692,7 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 		g_object_unref (_data_->_async_result);
 #line 33 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
-#line 670 "tracker-backup.c"
+#line 696 "tracker-backup.c"
 	}
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_g_object_unref0 (_data_->resources);
@@ -682,14 +708,14 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 686 "tracker-backup.c"
+#line 712 "tracker-backup.c"
 		}
 	}
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	g_object_unref (_data_->_async_result);
 #line 25 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	return FALSE;
-#line 693 "tracker-backup.c"
+#line 719 "tracker-backup.c"
 }
 
 
@@ -704,7 +730,7 @@ static void tracker_backup_restore_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	g_slice_free (TrackerBackupRestoreData, _data_);
-#line 708 "tracker-backup.c"
+#line 734 "tracker-backup.c"
 }
 
 
@@ -743,7 +769,7 @@ void tracker_backup_restore (TrackerBackup* self, const char* sender, const gcha
 	_data_->journal_uri = _tmp4_;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_restore_co (_data_);
-#line 747 "tracker-backup.c"
+#line 773 "tracker-backup.c"
 }
 
 
@@ -755,260 +781,274 @@ void tracker_backup_restore_finish (TrackerBackup* self, GAsyncResult* _res_, GE
 	if (NULL == _data_) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		return;
-#line 759 "tracker-backup.c"
+#line 785 "tracker-backup.c"
 	}
 }
 
 
 static void tracker_backup_restore_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerBackupRestoreData* _data_;
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_ = _user_data_;
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_source_object_ = source_object;
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_res_ = _res_;
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_restore_co (_data_);
-#line 774 "tracker-backup.c"
+#line 800 "tracker-backup.c"
 }
 
 
 static gboolean tracker_backup_restore_co (TrackerBackupRestoreData* _data_) {
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	switch (_data_->_state_) {
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		case 0:
-#line 783 "tracker-backup.c"
+#line 809 "tracker-backup.c"
 		goto _state_0;
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		case 1:
-#line 787 "tracker-backup.c"
+#line 813 "tracker-backup.c"
 		goto _state_1;
 		default:
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		g_assert_not_reached ();
-#line 792 "tracker-backup.c"
+#line 818 "tracker-backup.c"
 	}
 	_state_0:
-#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 69 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp0_ = tracker_dbus_get_object (TRACKER_TYPE_RESOURCES);
-#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 69 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->resources = G_TYPE_CHECK_INSTANCE_CAST (_data_->_tmp0_, TRACKER_TYPE_RESOURCES, TrackerResources);
-#line 69 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp1_ = _data_->resources;
-#line 69 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	if (_data_->_tmp1_ != NULL) {
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp2_ = _data_->resources;
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		tracker_resources_disable_signals (_data_->_tmp2_);
 #line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp2_ = _data_->resources;
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		tracker_resources_disable_signals (_data_->_tmp2_);
+#line 72 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_events_shutdown ();
-#line 809 "tracker-backup.c"
+#line 835 "tracker-backup.c"
 	}
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp3_ = _data_->sender;
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp4_ = _data_->journal_uri;
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp5_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp3_, "D-Bus request to restore backup from '%s'", _data_->_tmp4_, NULL);
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->request = _data_->_tmp5_;
-#line 819 "tracker-backup.c"
+#line 845 "tracker-backup.c"
 	{
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_state_ = 1;
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_pause (tracker_backup_restore_ready, _data_);
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
-#line 827 "tracker-backup.c"
+#line 853 "tracker-backup.c"
 		_state_1:
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_pause_finish (_data_->_res_);
-#line 78 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp6_ = _data_->journal_uri;
-#line 78 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp7_ = g_file_new_for_uri (_data_->_tmp6_);
-#line 78 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->journal = _data_->_tmp7_;
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp9_ = _data_->journal;
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp9_ == NULL) {
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp8_ = TRUE;
-#line 843 "tracker-backup.c"
+#line 869 "tracker-backup.c"
 		} else {
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp10_ = _data_->journal;
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp11_ = g_file_get_path (_data_->_tmp10_);
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp12_ = _data_->_tmp11_;
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp8_ = _data_->_tmp12_ == NULL;
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_g_free0 (_data_->_tmp12_);
-#line 855 "tracker-backup.c"
-		}
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		if (_data_->_tmp8_) {
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp13_ = _data_->journal_uri;
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp14_ = g_strconcat ("'", _data_->_tmp13_, NULL);
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp15_ = _data_->_tmp14_;
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp16_ = g_strconcat (_data_->_tmp15_, "' is not a valid uri", NULL);
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp17_ = _data_->_tmp16_;
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp18_ = g_error_new_literal (TRACKER_DATA_BACKUP_ERROR, TRACKER_DATA_BACKUP_ERROR_INVALID_URI, _data_->_tmp17_);
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp19_ = _data_->_tmp18_;
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_g_free0 (_data_->_tmp17_);
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_g_free0 (_data_->_tmp15_);
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_inner_error_ = _data_->_tmp19_;
-#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_g_object_unref0 (_data_->journal);
 #line 881 "tracker-backup.c"
+		}
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		if (_data_->_tmp8_) {
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp13_ = _data_->journal_uri;
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp14_ = g_strconcat ("'", _data_->_tmp13_, NULL);
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp15_ = _data_->_tmp14_;
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp16_ = g_strconcat (_data_->_tmp15_, "' is not a valid uri", NULL);
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp17_ = _data_->_tmp16_;
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp18_ = g_error_new_literal (TRACKER_DATA_BACKUP_ERROR, TRACKER_DATA_BACKUP_ERROR_INVALID_URI, _data_->_tmp17_);
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp19_ = _data_->_tmp18_;
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_g_free0 (_data_->_tmp17_);
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_g_free0 (_data_->_tmp15_);
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_inner_error_ = _data_->_tmp19_;
+#line 82 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_g_object_unref0 (_data_->journal);
+#line 907 "tracker-backup.c"
 			goto __catch1_g_error;
 		}
-#line 84 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp20_ = tracker_dbus_get_object (TRACKER_TYPE_STATUS);
-#line 84 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->notifier = G_TYPE_CHECK_INSTANCE_CAST (_data_->_tmp20_, TRACKER_TYPE_STATUS, TrackerStatus);
-#line 85 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp21_ = _data_->notifier;
-#line 85 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp24_ = tracker_status_get_callback (_data_->_tmp21_, &_data_->_tmp22_, &_data_->_tmp23_);
-#line 85 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback = _data_->_tmp24_;
-#line 85 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback_target = _data_->_tmp22_;
-#line 85 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback_target_destroy_notify = _data_->_tmp23_;
 #line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp25_ = _data_->journal;
+		_data_->_tmp25_ = tracker_main_get_data_manager ();
 #line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp26_ = _data_->busy_callback;
+		_data_->_tmp26_ = _g_object_ref0 (_data_->_tmp25_);
 #line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp26__target = _data_->busy_callback_target;
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		tracker_data_backup_restore (_data_->_tmp25_, NULL, _data_->_tmp26_, _data_->_tmp26__target, &_data_->_inner_error_);
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->data_manager = _data_->_tmp26_;
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp27_ = _data_->data_manager;
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp28_ = _data_->journal;
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp29_ = _data_->busy_callback;
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp29__target = _data_->busy_callback_target;
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		tracker_data_backup_restore (_data_->_tmp27_, _data_->_tmp28_, NULL, NULL, NULL, _data_->_tmp29_, _data_->_tmp29__target, &_data_->_inner_error_);
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_g_object_unref0 (_data_->data_manager);
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			(_data_->busy_callback_target_destroy_notify == NULL) ? NULL : (_data_->busy_callback_target_destroy_notify (_data_->busy_callback_target), NULL);
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->busy_callback = NULL;
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->busy_callback_target = NULL;
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->busy_callback_target_destroy_notify = NULL;
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_g_object_unref0 (_data_->notifier);
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			_g_object_unref0 (_data_->journal);
-#line 920 "tracker-backup.c"
+#line 956 "tracker-backup.c"
 			goto __catch1_g_error;
 		}
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp27_ = _data_->request;
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		tracker_dbus_request_end (_data_->_tmp27_, NULL);
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp30_ = _data_->request;
+#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		tracker_dbus_request_end (_data_->_tmp30_, NULL);
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_g_object_unref0 (_data_->data_manager);
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		(_data_->busy_callback_target_destroy_notify == NULL) ? NULL : (_data_->busy_callback_target_destroy_notify (_data_->busy_callback_target), NULL);
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback = NULL;
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback_target = NULL;
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback_target_destroy_notify = NULL;
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->notifier);
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->journal);
-#line 939 "tracker-backup.c"
+#line 977 "tracker-backup.c"
 	}
 	goto __finally1;
 	__catch1_g_error:
 	{
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->e = _data_->_inner_error_;
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_inner_error_ = NULL;
-#line 91 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp28_ = _data_->request;
-#line 91 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp29_ = _data_->e;
-#line 91 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		tracker_dbus_request_end (_data_->_tmp28_, _data_->_tmp29_);
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp30_ = _data_->e;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp31_ = _g_error_copy0 (_data_->_tmp30_);
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_inner_error_ = _data_->_tmp31_;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp31_ = _data_->request;
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp32_ = _data_->e;
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		tracker_dbus_request_end (_data_->_tmp31_, _data_->_tmp32_);
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp33_ = _data_->e;
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp34_ = _g_error_copy0 (_data_->_tmp33_);
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_inner_error_ = _data_->_tmp34_;
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_g_error_free0 (_data_->e);
-#line 962 "tracker-backup.c"
+#line 1000 "tracker-backup.c"
 		goto __finally1;
 	}
 	__finally1:
 	{
-#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		_data_->_tmp32_ = _data_->resources;
-#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-		if (_data_->_tmp32_ != NULL) {
-#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			tracker_events_init ();
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			_data_->_tmp33_ = _data_->resources;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
-			tracker_resources_enable_signals (_data_->_tmp33_);
-#line 977 "tracker-backup.c"
-		}
+#line 97 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		_data_->_tmp35_ = _data_->resources;
+#line 97 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+		if (_data_->_tmp35_ != NULL) {
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp36_ = tracker_main_get_data_manager ();
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			tracker_events_init (_data_->_tmp36_);
 #line 99 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			_data_->_tmp37_ = _data_->resources;
+#line 99 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+			tracker_resources_enable_signals (_data_->_tmp37_);
+#line 1017 "tracker-backup.c"
+		}
+#line 102 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_resume ();
-#line 981 "tracker-backup.c"
+#line 1021 "tracker-backup.c"
 	}
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->resources);
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		g_object_unref (_data_->_async_result);
-#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
-#line 993 "tracker-backup.c"
+#line 1033 "tracker-backup.c"
 	}
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	_g_object_unref0 (_data_->resources);
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	if (_data_->_state_ != 0) {
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1005 "tracker-backup.c"
+#line 1045 "tracker-backup.c"
 		}
 	}
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	g_object_unref (_data_->_async_result);
-#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	return FALSE;
-#line 1012 "tracker-backup.c"
+#line 1052 "tracker-backup.c"
 }
 
 
@@ -1018,21 +1058,21 @@ TrackerBackup* tracker_backup_construct (GType object_type) {
 	self = (TrackerBackup*) g_object_new (object_type, NULL);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	return self;
-#line 1022 "tracker-backup.c"
+#line 1062 "tracker-backup.c"
 }
 
 
 TrackerBackup* tracker_backup_new (void) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	return tracker_backup_construct (TRACKER_TYPE_BACKUP);
-#line 1029 "tracker-backup.c"
+#line 1069 "tracker-backup.c"
 }
 
 
 static void tracker_backup_class_init (TrackerBackupClass * klass) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_parent_class = g_type_class_peek_parent (klass);
-#line 1036 "tracker-backup.c"
+#line 1076 "tracker-backup.c"
 }
 
 

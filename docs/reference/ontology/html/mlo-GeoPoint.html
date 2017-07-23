@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="mlo-GeoPoint.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <span class="emphasis"><em><a class="link" href="mlo-GeoPoint.html" title="mlo:GeoPoint">mlo:GeoPoint</a></em></span> 
             ╰── <a class="link" href="mlo-GeoSphere.html" title="mlo:GeoSphere">mlo:GeoSphere</a> 
 </pre>
@@ -45,35 +45,35 @@
 <a name="mlo-GeoPoint.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="mlo-GeoPoint.mlo-address"></a><h3>The <code class="literal">“mlo:address”</code> property</h3>
-<pre class="programlisting">“mlo:address”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“mlo:address”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is deprecated.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mlo-GeoPoint.mlo-state"></a><h3>The <code class="literal">“mlo:state”</code> property</h3>
-<pre class="programlisting">“mlo:state”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“mlo:state”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is deprecated.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mlo-GeoPoint.mlo-country"></a><h3>The <code class="literal">“mlo:country”</code> property</h3>
-<pre class="programlisting">“mlo:country”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“mlo:country”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is deprecated.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mlo-GeoPoint.mlo-city"></a><h3>The <code class="literal">“mlo:city”</code> property</h3>
-<pre class="programlisting">“mlo:city”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“mlo:city”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is deprecated.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mlo-GeoPoint.mlo-timestamp"></a><h3>The <code class="literal">“mlo:timestamp”</code> property</h3>
-<pre class="programlisting">“mlo:timestamp”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“mlo:timestamp”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Timestamp when the geopoint is referenced. Create subproperties for certain use cases</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is deprecated.</p></div>
@@ -81,7 +81,7 @@
 <hr>
 <div class="refsect2">
 <a name="mlo-GeoPoint.mlo-altitude"></a><h3>The <code class="literal">“mlo:altitude”</code> property</h3>
-<pre class="programlisting">“mlo:altitude”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“mlo:altitude”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Altitude following WGS 84 reference</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is deprecated.</p></div>
@@ -89,7 +89,7 @@
 <hr>
 <div class="refsect2">
 <a name="mlo-GeoPoint.mlo-longitude"></a><h3>The <code class="literal">“mlo:longitude”</code> property</h3>
-<pre class="programlisting">“mlo:longitude”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“mlo:longitude”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Positive to the East of the Greenwich meridian, negative to the West (following WGS-84)</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is deprecated.</p></div>
@@ -97,15 +97,11 @@
 <hr>
 <div class="refsect2">
 <a name="mlo-GeoPoint.mlo-latitude"></a><h3>The <code class="literal">“mlo:latitude”</code> property</h3>
-<pre class="programlisting">“mlo:latitude”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“mlo:latitude”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Positive values for the north hemisphere, negative for the south</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is deprecated.</p></div>
 </div>
-</div>
-<div class="refsect1">
-<a name="mlo-GeoPoint.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/mlo#" target="_top">MLO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

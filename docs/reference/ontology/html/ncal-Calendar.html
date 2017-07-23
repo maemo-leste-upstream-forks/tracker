@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="ncal-Calendar.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <span class="emphasis"><em><a class="link" href="ncal-Calendar.html" title="ncal:Calendar">ncal:Calendar</a></em></span> 
 </pre>
 </div>
@@ -43,14 +43,14 @@
 <a name="ncal-Calendar.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="ncal-Calendar.ncal-version"></a><h3>The <code class="literal">“ncal:version”</code> property</h3>
-<pre class="programlisting">“ncal:version”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:version”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>This property specifies the identifier corresponding to the highest version number or the minimum and maximum range of the iCalendar specification that is required in order to interpret the iCalendar object. Defined in RFC 2445 sec. 4.7.4</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-Calendar.ncal-prodid"></a><h3>The <code class="literal">“ncal:prodid”</code> property</h3>
-<pre class="programlisting">“ncal:prodid”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:prodid”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>This property specifies the identifier for the product that created the iCalendar object. Defined in RFC 2445 sec. 4.7.2</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -68,7 +68,7 @@
 <hr>
 <div class="refsect2">
 <a name="ncal-Calendar.ncal-method"></a><h3>The <code class="literal">“ncal:method”</code> property</h3>
-<pre class="programlisting">“ncal:method”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:method”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>This property defines the iCalendar object method associated with the calendar object. Defined in RFC 2445 sec. 4.7.2</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -83,10 +83,6 @@
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="nie-InformationElement.html#nie-InformationElement.nie-hasPart" title="The “nie:hasPart” property"><code class="literal">“nie:hasPart”</code> from the <code class="literal">nie:InformationElement</code> class</a></p></li></ul></div>
 </div>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-Calendar.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

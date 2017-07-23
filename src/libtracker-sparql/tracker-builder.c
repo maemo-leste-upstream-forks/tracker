@@ -26,6 +26,11 @@
  * @stability: Stable
  * @include: tracker-sparql.h
  *
+ * <note>
+ * This object is deprecated since 2.0, use #TrackerResource to build
+ * SPARQL updates.
+ * </note>
+ *
  * <para>
  * #TrackerSparqlBuilder is an object what will gather a set of
  * subject/predicate/object triples, together with an optional WHERE clause,
@@ -153,48 +158,48 @@ TrackerSparqlBuilder* tracker_sparql_builder_construct_embedded_insert (GType ob
 static void _vala_array_add2 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
 static void _vala_array_add3 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
 static void _vala_array_add4 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar* graph);
+void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar* graph) G_GNUC_DEPRECATED;
 TrackerSparqlBuilderState tracker_sparql_builder_get_state (TrackerSparqlBuilder* self);
 static void _vala_array_add5 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph);
+void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph) G_GNUC_DEPRECATED;
 static void _vala_array_add6 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar* graph);
+void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar* graph) G_GNUC_DEPRECATED;
 static void _vala_array_add7 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_graph_open (TrackerSparqlBuilder* self, const gchar* graph);
+void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_graph_open (TrackerSparqlBuilder* self, const gchar* graph) G_GNUC_DEPRECATED;
 static void _vala_array_add8 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self);
+void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
 static void _vala_array_add9 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_subject_variable (TrackerSparqlBuilder* self, const gchar* var_name);
-void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s);
-void tracker_sparql_builder_object_variable (TrackerSparqlBuilder* self, const gchar* var_name);
-void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s);
-void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar* iri);
+void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_subject_variable (TrackerSparqlBuilder* self, const gchar* var_name) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_variable (TrackerSparqlBuilder* self, const gchar* var_name) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar* iri) G_GNUC_DEPRECATED;
 static void _vala_array_add10 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gchar* iri);
-void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* s);
+void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gchar* iri) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* s) G_GNUC_DEPRECATED;
 static void _vala_array_add11 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar* iri);
+void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar* iri) G_GNUC_DEPRECATED;
 static void _vala_array_add12 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
 gint tracker_sparql_builder_get_length (TrackerSparqlBuilder* self);
 static void tracker_sparql_builder_set_length (TrackerSparqlBuilder* self, gint value);
-void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gchar* literal);
+void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gchar* literal) G_GNUC_DEPRECATED;
 gchar* tracker_sparql_escape_string (const gchar* literal);
 static void _vala_array_add13 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, const gchar* value);
-void tracker_sparql_builder_object_boolean (TrackerSparqlBuilder* self, gboolean literal);
-void tracker_sparql_builder_object_int64 (TrackerSparqlBuilder* self, gint64 literal);
-void tracker_sparql_builder_object_date (TrackerSparqlBuilder* self, time_t* literal);
-void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble literal);
-void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self);
+void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, const gchar* value) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_boolean (TrackerSparqlBuilder* self, gboolean literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_int64 (TrackerSparqlBuilder* self, gint64 literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_date (TrackerSparqlBuilder* self, time_t* literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
 static void _vala_array_add14 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self);
+void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
 static void _vala_array_add15 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* raw);
-void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw);
+void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* raw) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw) G_GNUC_DEPRECATED;
 TrackerSparqlBuilder* tracker_sparql_builder_new (void);
 TrackerSparqlBuilder* tracker_sparql_builder_construct (GType object_type);
 const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self);
@@ -240,17 +245,17 @@ GType tracker_sparql_builder_state_get_type (void) {
  * Since: 0.10
  */
 static void _vala_array_add1 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 250 "tracker-builder.c"
+#line 255 "tracker-builder.c"
 	}
-#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 254 "tracker-builder.c"
+#line 259 "tracker-builder.c"
 }
 
 
@@ -258,24 +263,24 @@ TrackerSparqlBuilder* tracker_sparql_builder_construct_update (GType object_type
 	TrackerSparqlBuilder * self = NULL;
 	TrackerSparqlBuilderState* _tmp0_;
 	gint _tmp0__length1;
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self = (TrackerSparqlBuilder*) g_object_new (object_type, NULL);
-#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->states;
-#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0__length1 = self->priv->states_length1;
-#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add1 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return self;
-#line 272 "tracker-builder.c"
+#line 277 "tracker-builder.c"
 }
 
 
 TrackerSparqlBuilder* tracker_sparql_builder_new_update (void) {
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return tracker_sparql_builder_construct_update (TRACKER_SPARQL_TYPE_BUILDER);
-#line 279 "tracker-builder.c"
+#line 284 "tracker-builder.c"
 }
 
 
@@ -291,47 +296,47 @@ TrackerSparqlBuilder* tracker_sparql_builder_new_update (void) {
  * Since: 0.10
  */
 static void _vala_array_add2 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 188 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 188 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 188 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 301 "tracker-builder.c"
+#line 306 "tracker-builder.c"
 	}
-#line 188 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 305 "tracker-builder.c"
+#line 310 "tracker-builder.c"
 }
 
 
 static void _vala_array_add3 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 316 "tracker-builder.c"
+#line 321 "tracker-builder.c"
 	}
-#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 320 "tracker-builder.c"
+#line 325 "tracker-builder.c"
 }
 
 
 static void _vala_array_add4 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 331 "tracker-builder.c"
+#line 336 "tracker-builder.c"
 	}
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 335 "tracker-builder.c"
+#line 340 "tracker-builder.c"
 }
 
 
@@ -343,36 +348,36 @@ TrackerSparqlBuilder* tracker_sparql_builder_construct_embedded_insert (GType ob
 	gint _tmp1__length1;
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
-#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self = (TrackerSparqlBuilder*) g_object_new (object_type, NULL);
-#line 188 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->states;
-#line 188 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0__length1 = self->priv->states_length1;
-#line 188 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add2 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT);
-#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = self->priv->states;
-#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1__length1 = self->priv->states_length1;
-#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add3 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_INSERT);
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add4 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_SUBJECT);
-#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return self;
-#line 369 "tracker-builder.c"
+#line 374 "tracker-builder.c"
 }
 
 
 TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void) {
-#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return tracker_sparql_builder_construct_embedded_insert (TRACKER_SPARQL_TYPE_BUILDER);
-#line 376 "tracker-builder.c"
+#line 381 "tracker-builder.c"
 }
 
 
@@ -384,19 +389,20 @@ TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void) {
  * Opens an insertion statement.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add5 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 396 "tracker-builder.c"
+#line 402 "tracker-builder.c"
 	}
-#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 400 "tracker-builder.c"
+#line 406 "tracker-builder.c"
 }
 
 
@@ -406,49 +412,49 @@ void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
 	const gchar* _tmp3_;
-#line 202 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 202 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 202 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 202 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE, "state == State.UPDATE");
-#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add5 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_INSERT);
-#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 213 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = graph;
-#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 213 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp3_ != NULL) {
-#line 428 "tracker-builder.c"
+#line 434 "tracker-builder.c"
 		GString* _tmp4_;
 		const gchar* _tmp5_;
 		gchar* _tmp6_;
 		gchar* _tmp7_;
-#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = self->priv->str;
-#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp5_ = graph;
-#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = g_strdup_printf ("INSERT INTO <%s> {\n", _tmp5_);
-#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = _tmp6_;
-#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp4_, _tmp7_);
-#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_g_free0 (_tmp7_);
-#line 445 "tracker-builder.c"
+#line 451 "tracker-builder.c"
 	} else {
 		GString* _tmp8_;
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 216 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp8_ = self->priv->str;
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 216 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp8_, "INSERT {\n");
-#line 452 "tracker-builder.c"
+#line 458 "tracker-builder.c"
 	}
 }
 
@@ -461,19 +467,20 @@ void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar
  * Opens a silent insertion statement.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add6 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 233 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 233 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 233 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 473 "tracker-builder.c"
+#line 480 "tracker-builder.c"
 	}
-#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 233 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 477 "tracker-builder.c"
+#line 484 "tracker-builder.c"
 }
 
 
@@ -483,49 +490,49 @@ void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, cons
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
 	const gchar* _tmp3_;
-#line 221 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 230 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 221 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 230 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 221 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 230 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 221 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 230 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE, "state == State.UPDATE");
-#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 233 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 233 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 233 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add6 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_INSERT);
-#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 234 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = graph;
-#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 234 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp3_ != NULL) {
-#line 505 "tracker-builder.c"
+#line 512 "tracker-builder.c"
 		GString* _tmp4_;
 		const gchar* _tmp5_;
 		gchar* _tmp6_;
 		gchar* _tmp7_;
-#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = self->priv->str;
-#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp5_ = graph;
-#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = g_strdup_printf ("INSERT SILENT INTO <%s> {\n", _tmp5_);
-#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = _tmp6_;
-#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp4_, _tmp7_);
-#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_g_free0 (_tmp7_);
-#line 522 "tracker-builder.c"
+#line 529 "tracker-builder.c"
 	} else {
 		GString* _tmp8_;
-#line 228 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 237 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp8_ = self->priv->str;
-#line 228 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 237 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp8_, "INSERT SILENT {\n");
-#line 529 "tracker-builder.c"
+#line 536 "tracker-builder.c"
 	}
 }
 
@@ -537,6 +544,7 @@ void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, cons
  * Closes an insertion statement opened with tracker_sparql_builder_insert_open().
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp0_;
@@ -548,54 +556,54 @@ void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) {
 	gint _tmp8_;
 	TrackerSparqlBuilderState _tmp9_;
 	TrackerSparqlBuilderState _tmp10_;
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_INSERT) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT), "state == State.INSERT || state == State.OBJECT");
-#line 242 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 253 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 242 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 253 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 242 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 253 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 570 "tracker-builder.c"
+#line 578 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 243 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 254 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 243 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 254 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " .\n");
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 581 "tracker-builder.c"
+#line 589 "tracker-builder.c"
 	}
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->states_length1;
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = _tmp8_ - 1;
-#line 248 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = tracker_sparql_builder_get_state (self);
-#line 248 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = _tmp9_;
-#line 248 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp10_ != TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT) {
-#line 593 "tracker-builder.c"
+#line 601 "tracker-builder.c"
 		GString* _tmp11_;
-#line 249 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp11_ = self->priv->str;
-#line 249 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp11_, "}\n");
-#line 599 "tracker-builder.c"
+#line 607 "tracker-builder.c"
 	}
 }
 
@@ -609,19 +617,20 @@ void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) {
  * a query to delete them.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add7 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 621 "tracker-builder.c"
+#line 630 "tracker-builder.c"
 	}
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 625 "tracker-builder.c"
+#line 634 "tracker-builder.c"
 }
 
 
@@ -631,49 +640,49 @@ void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
 	const gchar* _tmp3_;
-#line 263 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 276 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 263 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 276 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 263 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 276 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 263 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 276 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE, "state == State.UPDATE");
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add7 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_DELETE);
-#line 267 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = graph;
-#line 267 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp3_ != NULL) {
-#line 653 "tracker-builder.c"
+#line 662 "tracker-builder.c"
 		GString* _tmp4_;
 		const gchar* _tmp5_;
 		gchar* _tmp6_;
 		gchar* _tmp7_;
-#line 268 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = self->priv->str;
-#line 268 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp5_ = graph;
-#line 268 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = g_strdup_printf ("DELETE FROM <%s> {\n", _tmp5_);
-#line 268 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = _tmp6_;
-#line 268 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp4_, _tmp7_);
-#line 268 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_g_free0 (_tmp7_);
-#line 670 "tracker-builder.c"
+#line 679 "tracker-builder.c"
 	} else {
 		GString* _tmp8_;
-#line 270 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 283 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp8_ = self->priv->str;
-#line 270 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 283 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp8_, "DELETE {\n");
-#line 677 "tracker-builder.c"
+#line 686 "tracker-builder.c"
 	}
 }
 
@@ -685,6 +694,7 @@ void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar
  * Closes a DELETE clause opened through tracker_sparql_builder_delete_open().
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp0_;
@@ -695,46 +705,46 @@ void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp5_;
 	gint _tmp8_;
 	GString* _tmp9_;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_DELETE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT), "state == State.DELETE || state == State.OBJECT");
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 299 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 299 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 299 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 717 "tracker-builder.c"
+#line 727 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 285 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 300 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 285 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 300 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " .\n");
-#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 301 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 301 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 728 "tracker-builder.c"
-	}
-#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp8_ = self->priv->states_length1;
-#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	self->priv->states_length1 = _tmp8_ - 1;
-#line 290 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp9_ = self->priv->str;
-#line 290 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	g_string_append (_tmp9_, "}\n");
 #line 738 "tracker-builder.c"
+	}
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_tmp8_ = self->priv->states_length1;
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	self->priv->states_length1 = _tmp8_ - 1;
+#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_tmp9_ = self->priv->str;
+#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	g_string_append (_tmp9_, "}\n");
+#line 748 "tracker-builder.c"
 }
 
 
@@ -746,19 +756,20 @@ void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self) {
  * Opens a GRAPH clause within INSERT, DELETE, or WHERE.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add8 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 758 "tracker-builder.c"
+#line 769 "tracker-builder.c"
 	}
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 762 "tracker-builder.c"
+#line 773 "tracker-builder.c"
 }
 
 
@@ -777,45 +788,45 @@ void tracker_sparql_builder_graph_open (TrackerSparqlBuilder* self, const gchar*
 	gint _tmp10__length1;
 	GString* _tmp11_;
 	const gchar* _tmp12_;
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (graph != NULL);
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_;
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = _tmp8_;
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail (((((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_INSERT) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_DELETE)) || (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT)) || (_tmp7_ == TRACKER_SPARQL_BUILDER_STATE_WHERE)) || (_tmp9_ == TRACKER_SPARQL_BUILDER_STATE_GRAPH), "state == State.INSERT || state == State.DELETE || state == State.OBJECT || state == State.WHERE || state == State.GRAPH");
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = self->priv->states;
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10__length1 = self->priv->states_length1;
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add8 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_GRAPH);
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = self->priv->str;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = graph;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append_printf (_tmp11_, "GRAPH <%s> {\n", _tmp12_);
-#line 819 "tracker-builder.c"
+#line 830 "tracker-builder.c"
 }
 
 
@@ -826,6 +837,7 @@ void tracker_sparql_builder_graph_open (TrackerSparqlBuilder* self, const gchar*
  * Closes a GRAPH clause opened through tracker_sparql_builder_graph_open().
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp0_;
@@ -836,46 +848,46 @@ void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp5_;
 	gint _tmp8_;
 	GString* _tmp9_;
-#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_GRAPH) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT), "state == State.GRAPH || state == State.OBJECT");
-#line 320 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 320 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 320 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 858 "tracker-builder.c"
+#line 870 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 340 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 340 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " .\n");
-#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 869 "tracker-builder.c"
+#line 881 "tracker-builder.c"
 	}
-#line 324 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 343 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->states_length1;
-#line 324 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 343 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = _tmp8_ - 1;
-#line 326 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 345 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->str;
-#line 326 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 345 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp9_, "}\n");
-#line 879 "tracker-builder.c"
+#line 891 "tracker-builder.c"
 }
 
 
@@ -887,19 +899,20 @@ void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self) {
  * to which the update query applies.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add9 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 899 "tracker-builder.c"
+#line 912 "tracker-builder.c"
 	}
-#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 903 "tracker-builder.c"
+#line 916 "tracker-builder.c"
 }
 
 
@@ -909,25 +922,25 @@ void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
 	GString* _tmp3_;
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE, "state == State.UPDATE");
-#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add9 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_WHERE);
-#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 363 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = self->priv->str;
-#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 363 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp3_, "WHERE {\n");
-#line 931 "tracker-builder.c"
+#line 944 "tracker-builder.c"
 }
 
 
@@ -938,6 +951,7 @@ void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self) {
  * Closes a WHERE clause opened through tracker_sparql_builder_where_open().
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp0_;
@@ -948,46 +962,46 @@ void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp5_;
 	gint _tmp8_;
 	GString* _tmp9_;
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 376 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 376 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 376 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 376 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 376 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 376 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_WHERE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT), "state == State.WHERE || state == State.OBJECT");
-#line 356 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 379 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 356 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 379 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 356 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 379 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 970 "tracker-builder.c"
+#line 984 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 357 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 380 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 357 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 380 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " .\n");
-#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 381 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 381 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 981 "tracker-builder.c"
+#line 995 "tracker-builder.c"
 	}
-#line 360 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 383 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->states_length1;
-#line 360 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 383 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = _tmp8_ - 1;
-#line 361 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 384 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->str;
-#line 361 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 384 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp9_, "}\n");
-#line 991 "tracker-builder.c"
+#line 1005 "tracker-builder.c"
 }
 
 
@@ -999,26 +1013,27 @@ void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self) {
  * Appends a subject as a SPARQL variable, such as "?urn".
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_subject_variable (TrackerSparqlBuilder* self, const gchar* var_name) {
 	const gchar* _tmp0_;
 	gchar* _tmp1_;
 	gchar* _tmp2_;
-#line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 373 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (var_name != NULL);
-#line 374 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 399 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = var_name;
-#line 374 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 399 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("?%s", _tmp0_);
-#line 374 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 399 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 374 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 399 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_subject (self, _tmp2_);
-#line 374 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 399 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
-#line 1022 "tracker-builder.c"
+#line 1037 "tracker-builder.c"
 }
 
 
@@ -1030,26 +1045,27 @@ void tracker_sparql_builder_subject_variable (TrackerSparqlBuilder* self, const 
  * Appends an object as a SparQL variable, such as "?urn".
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_object_variable (TrackerSparqlBuilder* self, const gchar* var_name) {
 	const gchar* _tmp0_;
 	gchar* _tmp1_;
 	gchar* _tmp2_;
-#line 386 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 386 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (var_name != NULL);
-#line 387 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = var_name;
-#line 387 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("?%s", _tmp0_);
-#line 387 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 387 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
-#line 387 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
-#line 1053 "tracker-builder.c"
+#line 1069 "tracker-builder.c"
 }
 
 
@@ -1062,26 +1078,27 @@ void tracker_sparql_builder_object_variable (TrackerSparqlBuilder* self, const g
  * univocally identify a resource in tracker-store.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar* iri) {
 	const gchar* _tmp0_;
 	gchar* _tmp1_;
 	gchar* _tmp2_;
-#line 400 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 429 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 400 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 429 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (iri != NULL);
-#line 401 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 430 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = iri;
-#line 401 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 430 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("<%s>", _tmp0_);
-#line 401 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 430 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 401 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 430 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_subject (self, _tmp2_);
-#line 401 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 430 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
-#line 1085 "tracker-builder.c"
+#line 1102 "tracker-builder.c"
 }
 
 
@@ -1093,19 +1110,20 @@ void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar
  * Appends a subject.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add10 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 421 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 452 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 421 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 452 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 421 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 452 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 1105 "tracker-builder.c"
+#line 1123 "tracker-builder.c"
 	}
-#line 421 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 452 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 1109 "tracker-builder.c"
+#line 1127 "tracker-builder.c"
 }
 
 
@@ -1128,68 +1146,68 @@ void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s)
 	const gchar* _tmp17_;
 	TrackerSparqlBuilderState* _tmp18_;
 	gint _tmp18__length1;
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (s != NULL);
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_;
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = _tmp8_;
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = _tmp10_;
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 444 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((((((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_INSERT) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT)) || (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT)) || (_tmp7_ == TRACKER_SPARQL_BUILDER_STATE_DELETE)) || (_tmp9_ == TRACKER_SPARQL_BUILDER_STATE_WHERE)) || (_tmp11_ == TRACKER_SPARQL_BUILDER_STATE_GRAPH), "state == State.INSERT || state == State.OBJECT || state == State.EMBEDDED_INSERT || state == State.DELETE || state == State.WHERE || state == State.GRAPH");
-#line 416 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 447 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = tracker_sparql_builder_get_state (self);
-#line 416 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 447 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13_ = _tmp12_;
-#line 416 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 447 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp13_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 1168 "tracker-builder.c"
+#line 1186 "tracker-builder.c"
 		GString* _tmp14_;
 		gint _tmp15_;
-#line 417 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 448 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp14_ = self->priv->str;
-#line 417 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 448 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp14_, " .\n");
-#line 418 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 449 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 418 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 449 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp15_ = self->priv->states_length1;
-#line 1179 "tracker-builder.c"
+#line 1197 "tracker-builder.c"
 	}
-#line 420 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 451 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp16_ = self->priv->str;
-#line 420 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 451 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp17_ = s;
-#line 420 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 451 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp16_, _tmp17_);
-#line 421 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 452 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp18_ = self->priv->states;
-#line 421 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 452 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp18__length1 = self->priv->states_length1;
-#line 421 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 452 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add10 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_SUBJECT);
-#line 1193 "tracker-builder.c"
+#line 1211 "tracker-builder.c"
 }
 
 
@@ -1201,26 +1219,27 @@ void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s)
  * Appends a predicate as an IRI.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gchar* iri) {
 	const gchar* _tmp0_;
 	gchar* _tmp1_;
 	gchar* _tmp2_;
-#line 433 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 466 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 433 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 466 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (iri != NULL);
-#line 434 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 467 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = iri;
-#line 434 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 467 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("<%s>", _tmp0_);
-#line 434 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 467 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 434 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 467 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_predicate (self, _tmp2_);
-#line 434 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 467 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
-#line 1224 "tracker-builder.c"
+#line 1243 "tracker-builder.c"
 }
 
 
@@ -1232,19 +1251,20 @@ void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gch
  * Appends a predicate for the previously appended subject.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add11 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 455 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 490 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 455 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 490 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 455 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 490 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 1244 "tracker-builder.c"
+#line 1264 "tracker-builder.c"
 	}
-#line 455 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 490 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 1248 "tracker-builder.c"
+#line 1268 "tracker-builder.c"
 }
 
 
@@ -1262,60 +1282,60 @@ void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* 
 	const gchar* _tmp12_;
 	TrackerSparqlBuilderState* _tmp13_;
 	gint _tmp13__length1;
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (s != NULL);
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 446 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 481 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail (((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_SUBJECT) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT)) || (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_BLANK), "state == State.SUBJECT || state == State.OBJECT || state == State.BLANK");
-#line 449 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 484 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = tracker_sparql_builder_get_state (self);
-#line 449 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 484 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_;
-#line 449 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 484 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp7_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 1290 "tracker-builder.c"
+#line 1310 "tracker-builder.c"
 		GString* _tmp8_;
 		gint _tmp9_;
-#line 450 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 485 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp8_ = self->priv->str;
-#line 450 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 485 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp8_, " ;\n\t");
-#line 451 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 486 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 2;
-#line 451 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 486 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp9_ = self->priv->states_length1;
-#line 1301 "tracker-builder.c"
+#line 1321 "tracker-builder.c"
 	}
-#line 453 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 488 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = self->priv->str;
-#line 453 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 488 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp10_, " ");
-#line 454 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = self->priv->str;
-#line 454 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = s;
-#line 454 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp11_, _tmp12_);
-#line 455 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 490 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13_ = self->priv->states;
-#line 455 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 490 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13__length1 = self->priv->states_length1;
-#line 455 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 490 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add11 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_PREDICATE);
-#line 1319 "tracker-builder.c"
+#line 1339 "tracker-builder.c"
 }
 
 
@@ -1327,26 +1347,27 @@ void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* 
  * Appends an object as an IRI.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar* iri) {
 	const gchar* _tmp0_;
 	gchar* _tmp1_;
 	gchar* _tmp2_;
-#line 467 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 467 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (iri != NULL);
-#line 468 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 505 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = iri;
-#line 468 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 505 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("<%s>", _tmp0_);
-#line 468 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 505 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 468 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 505 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
-#line 468 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 505 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
-#line 1350 "tracker-builder.c"
+#line 1371 "tracker-builder.c"
 }
 
 
@@ -1358,19 +1379,20 @@ void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar*
  * Appends a free-form object for the previously appended subject and predicate.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add12 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 528 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 528 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 528 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 1370 "tracker-builder.c"
+#line 1392 "tracker-builder.c"
 	}
-#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 528 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 1374 "tracker-builder.c"
+#line 1396 "tracker-builder.c"
 }
 
 
@@ -1387,60 +1409,60 @@ void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s) 
 	TrackerSparqlBuilderState* _tmp11_;
 	gint _tmp11__length1;
 	gint _tmp12_;
-#line 480 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 480 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (s != NULL);
-#line 480 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 480 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 480 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 480 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 480 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_PREDICATE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT), "state == State.PREDICATE || state == State.OBJECT");
-#line 483 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 522 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 483 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 522 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 483 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 522 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 1411 "tracker-builder.c"
+#line 1433 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 484 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 523 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 484 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 523 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " ,");
-#line 485 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 524 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 485 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 524 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = _tmp7_ - 1;
-#line 1422 "tracker-builder.c"
-	}
-#line 487 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp8_ = self->priv->str;
-#line 487 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	g_string_append (_tmp8_, " ");
-#line 488 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp9_ = self->priv->str;
-#line 488 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp10_ = s;
-#line 488 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	g_string_append (_tmp9_, _tmp10_);
-#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp11_ = self->priv->states;
-#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp11__length1 = self->priv->states_length1;
-#line 489 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_vala_array_add12 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
-#line 491 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	_tmp12_ = self->priv->_length;
-#line 491 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
-	tracker_sparql_builder_set_length (self, _tmp12_ + 1);
 #line 1444 "tracker-builder.c"
+	}
+#line 526 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_tmp8_ = self->priv->str;
+#line 526 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	g_string_append (_tmp8_, " ");
+#line 527 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_tmp9_ = self->priv->str;
+#line 527 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_tmp10_ = s;
+#line 527 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	g_string_append (_tmp9_, _tmp10_);
+#line 528 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_tmp11_ = self->priv->states;
+#line 528 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_tmp11__length1 = self->priv->states_length1;
+#line 528 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_vala_array_add12 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
+#line 530 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	_tmp12_ = self->priv->_length;
+#line 530 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+	tracker_sparql_builder_set_length (self, _tmp12_ + 1);
+#line 1466 "tracker-builder.c"
 }
 
 
@@ -1453,19 +1475,20 @@ void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s) 
  * by double quotes.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add13 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 513 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 554 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 513 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 554 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 513 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 554 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 1465 "tracker-builder.c"
+#line 1488 "tracker-builder.c"
 	}
-#line 513 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 554 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 1469 "tracker-builder.c"
+#line 1492 "tracker-builder.c"
 }
 
 
@@ -1483,62 +1506,62 @@ void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gch
 	TrackerSparqlBuilderState* _tmp12_;
 	gint _tmp12__length1;
 	gint _tmp13_;
-#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (literal != NULL);
-#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 504 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_PREDICATE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT), "state == State.PREDICATE || state == State.OBJECT");
-#line 507 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 548 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 507 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 548 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 507 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 548 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 1507 "tracker-builder.c"
+#line 1530 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 508 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 549 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 508 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 549 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " ,");
-#line 509 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 550 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 509 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 550 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = _tmp7_ - 1;
-#line 1518 "tracker-builder.c"
+#line 1541 "tracker-builder.c"
 	}
-#line 512 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->str;
-#line 512 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = literal;
-#line 512 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = tracker_sparql_escape_string (_tmp9_);
-#line 512 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = _tmp10_;
-#line 512 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append_printf (_tmp8_, " \"%s\"", _tmp11_);
-#line 512 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp11_);
-#line 513 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 554 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = self->priv->states;
-#line 513 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 554 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12__length1 = self->priv->states_length1;
-#line 513 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 554 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add13 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
-#line 515 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 556 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13_ = self->priv->_length;
-#line 515 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 556 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp13_ + 1);
-#line 1542 "tracker-builder.c"
+#line 1565 "tracker-builder.c"
 }
 
 
@@ -1550,6 +1573,7 @@ void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gch
  * Appends a string not validated as UTF-8 as an object.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static glong string_strnlen (gchar* str, glong maxlen) {
 	glong result = 0L;
@@ -1570,7 +1594,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 	_tmp3_ = end;
 #line 1323 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	if (_tmp3_ == NULL) {
-#line 1574 "tracker-builder.c"
+#line 1598 "tracker-builder.c"
 		glong _tmp4_;
 #line 1324 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		_tmp4_ = maxlen;
@@ -1578,7 +1602,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 		result = _tmp4_;
 #line 1324 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		return result;
-#line 1582 "tracker-builder.c"
+#line 1606 "tracker-builder.c"
 	} else {
 		gchar* _tmp5_;
 		gchar* _tmp6_;
@@ -1590,7 +1614,7 @@ static glong string_strnlen (gchar* str, glong maxlen) {
 		result = (glong) (_tmp5_ - _tmp6_);
 #line 1326 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		return result;
-#line 1594 "tracker-builder.c"
+#line 1618 "tracker-builder.c"
 	}
 }
 
@@ -1614,21 +1638,21 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 	_tmp1_ = offset;
 #line 1335 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	if (_tmp1_ >= ((glong) 0)) {
-#line 1618 "tracker-builder.c"
+#line 1642 "tracker-builder.c"
 		glong _tmp2_;
 #line 1335 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		_tmp2_ = len;
 #line 1335 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		_tmp0_ = _tmp2_ >= ((glong) 0);
-#line 1624 "tracker-builder.c"
+#line 1648 "tracker-builder.c"
 	} else {
 #line 1335 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		_tmp0_ = FALSE;
-#line 1628 "tracker-builder.c"
+#line 1652 "tracker-builder.c"
 	}
 #line 1335 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	if (_tmp0_) {
-#line 1632 "tracker-builder.c"
+#line 1656 "tracker-builder.c"
 		glong _tmp3_;
 		glong _tmp4_;
 		glong _tmp5_;
@@ -1640,7 +1664,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp5_ = string_strnlen ((gchar*) self, _tmp3_ + _tmp4_);
 #line 1337 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		string_length = _tmp5_;
-#line 1644 "tracker-builder.c"
+#line 1668 "tracker-builder.c"
 	} else {
 		gint _tmp6_;
 		gint _tmp7_;
@@ -1650,13 +1674,13 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp7_ = _tmp6_;
 #line 1339 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		string_length = (glong) _tmp7_;
-#line 1654 "tracker-builder.c"
+#line 1678 "tracker-builder.c"
 	}
 #line 1342 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	_tmp8_ = offset;
 #line 1342 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	if (_tmp8_ < ((glong) 0)) {
-#line 1660 "tracker-builder.c"
+#line 1684 "tracker-builder.c"
 		glong _tmp9_;
 		glong _tmp10_;
 		glong _tmp11_;
@@ -1670,7 +1694,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp11_ = offset;
 #line 1344 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (_tmp11_ >= ((glong) 0), NULL);
-#line 1674 "tracker-builder.c"
+#line 1698 "tracker-builder.c"
 	} else {
 		glong _tmp12_;
 		glong _tmp13_;
@@ -1680,13 +1704,13 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp13_ = string_length;
 #line 1346 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		g_return_val_if_fail (_tmp12_ <= _tmp13_, NULL);
-#line 1684 "tracker-builder.c"
+#line 1708 "tracker-builder.c"
 	}
 #line 1348 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	_tmp14_ = len;
 #line 1348 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	if (_tmp14_ < ((glong) 0)) {
-#line 1690 "tracker-builder.c"
+#line 1714 "tracker-builder.c"
 		glong _tmp15_;
 		glong _tmp16_;
 #line 1349 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
@@ -1695,7 +1719,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 		_tmp16_ = offset;
 #line 1349 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 		len = _tmp15_ - _tmp16_;
-#line 1699 "tracker-builder.c"
+#line 1723 "tracker-builder.c"
 	}
 #line 1351 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	_tmp17_ = offset;
@@ -1715,7 +1739,7 @@ static gchar* string_substring (const gchar* self, glong offset, glong len) {
 	result = _tmp22_;
 #line 1352 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	return result;
-#line 1719 "tracker-builder.c"
+#line 1743 "tracker-builder.c"
 }
 
 
@@ -1725,62 +1749,62 @@ void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, cons
 	gchar* _tmp1_ = NULL;
 	gboolean _tmp2_;
 	const gchar* _tmp10_;
-#line 527 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 570 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 527 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 570 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (value != NULL);
-#line 530 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 573 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = value;
-#line 530 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 573 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = g_utf8_validate (_tmp0_, (gssize) -1, &_tmp1_);
-#line 530 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 573 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	end = _tmp1_;
-#line 530 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 573 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (!_tmp2_) {
-#line 1741 "tracker-builder.c"
+#line 1765 "tracker-builder.c"
 		const gchar* _tmp3_;
 		gchar* _tmp4_;
-#line 531 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 574 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3_ = value;
-#line 531 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 574 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = end;
-#line 531 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 574 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		if (_tmp3_ != _tmp4_) {
-#line 1750 "tracker-builder.c"
+#line 1774 "tracker-builder.c"
 			const gchar* _tmp5_;
 			gchar* _tmp6_;
 			const gchar* _tmp7_;
 			gchar* _tmp8_;
 			gchar* _tmp9_;
-#line 532 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 575 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp5_ = value;
-#line 532 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 575 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp6_ = end;
-#line 532 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 575 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp7_ = value;
-#line 532 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 575 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp8_ = string_substring (_tmp5_, (glong) 0, (glong) (_tmp6_ - ((gchar*) _tmp7_)));
-#line 532 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 575 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp9_ = _tmp8_;
-#line 532 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 575 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			tracker_sparql_builder_object_string (self, _tmp9_);
-#line 532 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 575 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_g_free0 (_tmp9_);
-#line 1770 "tracker-builder.c"
+#line 1794 "tracker-builder.c"
 		} else {
-#line 534 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 577 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			tracker_sparql_builder_object_string (self, "(invalid data)");
-#line 1774 "tracker-builder.c"
+#line 1798 "tracker-builder.c"
 		}
-#line 537 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 580 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		return;
-#line 1778 "tracker-builder.c"
+#line 1802 "tracker-builder.c"
 	}
-#line 540 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 583 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = value;
-#line 540 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 583 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object_string (self, _tmp10_);
-#line 1784 "tracker-builder.c"
+#line 1808 "tracker-builder.c"
 }
 
 
@@ -1792,27 +1816,28 @@ void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, cons
  * Appends a #gboolean value as an object.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_object_boolean (TrackerSparqlBuilder* self, gboolean literal) {
 	const gchar* _tmp0_ = NULL;
 	gboolean _tmp1_;
-#line 552 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 597 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 598 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = literal;
-#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 598 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp1_) {
-#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 598 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = "true";
-#line 1808 "tracker-builder.c"
+#line 1833 "tracker-builder.c"
 	} else {
-#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 598 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = "false";
-#line 1812 "tracker-builder.c"
+#line 1837 "tracker-builder.c"
 	}
-#line 553 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 598 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp0_);
-#line 1816 "tracker-builder.c"
+#line 1841 "tracker-builder.c"
 }
 
 
@@ -1824,24 +1849,25 @@ void tracker_sparql_builder_object_boolean (TrackerSparqlBuilder* self, gboolean
  * Appends a #gint64 value as an object.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_object_int64 (TrackerSparqlBuilder* self, gint64 literal) {
 	gint64 _tmp0_;
 	gchar* _tmp1_;
 	gchar* _tmp2_;
-#line 565 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 566 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 613 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = literal;
-#line 566 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 613 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("%" G_GINT64_FORMAT, _tmp0_);
-#line 566 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 613 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 566 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 613 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
-#line 566 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 613 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
-#line 1845 "tracker-builder.c"
+#line 1871 "tracker-builder.c"
 }
 
 
@@ -1854,6 +1880,7 @@ void tracker_sparql_builder_object_int64 (TrackerSparqlBuilder* self, gint64 lit
  * to a string in the date format used by tracker-store.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void g_time_gm (time_t time, struct tm* result) {
 	struct tm _result_ = {0};
@@ -1866,7 +1893,7 @@ static void g_time_gm (time_t time, struct tm* result) {
 	*result = _result_;
 #line 2841 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	return;
-#line 1870 "tracker-builder.c"
+#line 1897 "tracker-builder.c"
 }
 
 
@@ -1888,47 +1915,47 @@ void tracker_sparql_builder_object_date (TrackerSparqlBuilder* self, time_t* lit
 	gint _tmp13_;
 	gchar* _tmp14_;
 	gchar* _tmp15_;
-#line 579 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 628 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 580 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 629 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = *literal;
-#line 580 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 629 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_time_gm (_tmp0_, &_tmp1_);
-#line 580 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 629 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tm = _tmp1_;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tm;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_.tm_year;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tm;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_.tm_mon;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = tm;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_.tm_mday;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = tm;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = _tmp8_.tm_hour;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = tm;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = _tmp10_.tm_min;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = tm;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13_ = _tmp12_.tm_sec;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp14_ = g_strdup_printf ("%04d-%02d-%02dT%02d:%02d:%02dZ", _tmp3_ + 1900, _tmp5_ + 1, _tmp7_, _tmp9_, _tmp11_, _tmp13_);
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp15_ = _tmp14_;
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object_string (self, _tmp15_);
-#line 582 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp15_);
-#line 1932 "tracker-builder.c"
+#line 1959 "tracker-builder.c"
 }
 
 
@@ -1940,6 +1967,7 @@ void tracker_sparql_builder_object_date (TrackerSparqlBuilder* self, time_t* lit
  * Appends a #gdouble value as an object.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static gchar* double_to_string (gdouble self) {
 	gchar* result = NULL;
@@ -1967,7 +1995,7 @@ static gchar* double_to_string (gdouble self) {
 	result = _tmp4_;
 #line 871 "/usr/share/vala-0.36/vapi/glib-2.0.vapi"
 	return result;
-#line 1971 "tracker-builder.c"
+#line 1999 "tracker-builder.c"
 }
 
 
@@ -1975,19 +2003,19 @@ void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble l
 	gdouble _tmp0_;
 	gchar* _tmp1_;
 	gchar* _tmp2_;
-#line 594 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 645 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 595 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = literal;
-#line 595 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = double_to_string (_tmp0_);
-#line 595 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 595 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
-#line 595 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
-#line 1991 "tracker-builder.c"
+#line 2019 "tracker-builder.c"
 }
 
 
@@ -2000,19 +2028,20 @@ void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble l
  * separate insertion.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add14 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 616 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 616 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 616 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 2012 "tracker-builder.c"
+#line 2041 "tracker-builder.c"
 	}
-#line 616 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 2016 "tracker-builder.c"
+#line 2045 "tracker-builder.c"
 }
 
 
@@ -2026,48 +2055,48 @@ void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self) {
 	GString* _tmp8_;
 	TrackerSparqlBuilderState* _tmp9_;
 	gint _tmp9__length1;
-#line 608 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 661 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 608 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 661 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 608 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 661 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 608 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 661 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 608 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 661 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 608 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 661 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_PREDICATE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT), "state == State.PREDICATE || state == State.OBJECT");
-#line 611 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 664 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 611 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 664 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 611 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 664 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 2048 "tracker-builder.c"
+#line 2077 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 612 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 665 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 612 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 665 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " ,");
-#line 613 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 666 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 613 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 666 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = _tmp7_ - 1;
-#line 2059 "tracker-builder.c"
+#line 2088 "tracker-builder.c"
 	}
-#line 615 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 668 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->str;
-#line 615 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 668 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp8_, " [");
-#line 616 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->states;
-#line 616 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9__length1 = self->priv->states_length1;
-#line 616 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add14 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_BLANK);
-#line 2071 "tracker-builder.c"
+#line 2100 "tracker-builder.c"
 }
 
 
@@ -2078,19 +2107,20 @@ void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self) {
  * Closes an anomymous blank node opened with tracker_sparql_builder_object_blank_open()
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 static void _vala_array_add15 (TrackerSparqlBuilderState* * array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 632 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 687 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 632 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 687 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 632 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 687 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-#line 2090 "tracker-builder.c"
+#line 2120 "tracker-builder.c"
 	}
-#line 632 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 687 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
-#line 2094 "tracker-builder.c"
+#line 2124 "tracker-builder.c"
 }
 
 
@@ -2107,43 +2137,43 @@ void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState* _tmp7_;
 	gint _tmp7__length1;
 	gint _tmp8_;
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = self->priv->states;
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3__length1 = self->priv->states_length1;
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = _tmp2_[_tmp3__length1 - 3];
-#line 627 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 682 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) && (_tmp4_ == TRACKER_SPARQL_BUILDER_STATE_BLANK), "state == State.OBJECT && states[states.length - 3] == State.BLANK");
-#line 630 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 685 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = self->priv->str;
-#line 630 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 685 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp5_, "]");
-#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 686 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 631 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 686 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = self->priv->states_length1;
-#line 632 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 687 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = self->priv->states;
-#line 632 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 687 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7__length1 = self->priv->states_length1;
-#line 632 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 687 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add15 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
-#line 634 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 689 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->_length;
-#line 634 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 689 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp8_ + 1);
-#line 2147 "tracker-builder.c"
+#line 2177 "tracker-builder.c"
 }
 
 
@@ -2155,6 +2185,7 @@ void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self) {
  * Prepends raw, unvalidated content to @self.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* raw) {
 	GString* _tmp0_;
@@ -2162,27 +2193,27 @@ void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* ra
 	gchar* _tmp2_;
 	gchar* _tmp3_;
 	gint _tmp4_;
-#line 646 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 703 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 646 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 703 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (raw != NULL);
-#line 648 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 705 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->str;
-#line 648 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 705 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = raw;
-#line 648 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 705 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = g_strdup_printf ("%s\n", _tmp1_);
-#line 648 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 705 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 648 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 705 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_prepend (_tmp0_, _tmp3_);
-#line 648 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 705 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp3_);
-#line 650 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 707 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = self->priv->_length;
-#line 650 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 707 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp4_ + 1);
-#line 2186 "tracker-builder.c"
+#line 2217 "tracker-builder.c"
 }
 
 
@@ -2194,6 +2225,7 @@ void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* ra
  * Appends raw, unvalidated content to @self.
  *
  * Since: 0.10
+ * Deprecated: 2.0
  */
 void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw) {
 	TrackerSparqlBuilderState _tmp0_;
@@ -2201,57 +2233,57 @@ void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw
 	GString* _tmp4_;
 	const gchar* _tmp5_;
 	gint _tmp6_;
-#line 662 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 721 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 662 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 721 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (raw != NULL);
-#line 664 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 723 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 664 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 723 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 664 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 723 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
-#line 2215 "tracker-builder.c"
+#line 2247 "tracker-builder.c"
 		GString* _tmp2_;
 		gint _tmp3_;
-#line 665 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 724 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp2_ = self->priv->str;
-#line 665 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 724 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp2_, " .\n");
-#line 666 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 725 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 666 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 725 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3_ = self->priv->states_length1;
-#line 2226 "tracker-builder.c"
+#line 2258 "tracker-builder.c"
 	}
-#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 728 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = self->priv->str;
-#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 728 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = raw;
-#line 669 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 728 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp4_, _tmp5_);
-#line 671 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 730 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = self->priv->_length;
-#line 671 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 730 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp6_ + 1);
-#line 2238 "tracker-builder.c"
+#line 2270 "tracker-builder.c"
 }
 
 
 TrackerSparqlBuilder* tracker_sparql_builder_construct (GType object_type) {
 	TrackerSparqlBuilder * self = NULL;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self = (TrackerSparqlBuilder*) g_object_new (object_type, NULL);
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return self;
-#line 2248 "tracker-builder.c"
+#line 2280 "tracker-builder.c"
 }
 
 
 TrackerSparqlBuilder* tracker_sparql_builder_new (void) {
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return tracker_sparql_builder_construct (TRACKER_SPARQL_TYPE_BUILDER);
-#line 2255 "tracker-builder.c"
+#line 2287 "tracker-builder.c"
 }
 
 
@@ -2262,92 +2294,92 @@ const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 	gint _tmp1__length1;
 	GString* _tmp6_;
 	const gchar* _tmp7_;
-#line 107 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 112 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = self->priv->states;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1__length1 = self->priv->states_length1;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp1__length1 == 1) {
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = TRUE;
-#line 2276 "tracker-builder.c"
+#line 2308 "tracker-builder.c"
 	} else {
 		gboolean _tmp2_ = FALSE;
 		TrackerSparqlBuilderState* _tmp3_;
 		gint _tmp3__length1;
 		TrackerSparqlBuilderState _tmp4_;
-#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3_ = self->priv->states;
-#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3__length1 = self->priv->states_length1;
-#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = _tmp3_[0];
-#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		if (_tmp4_ == TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT) {
-#line 2290 "tracker-builder.c"
+#line 2322 "tracker-builder.c"
 			TrackerSparqlBuilderState* _tmp5_;
 			gint _tmp5__length1;
-#line 110 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp5_ = self->priv->states;
-#line 110 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp5__length1 = self->priv->states_length1;
-#line 110 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp2_ = _tmp5__length1 == 3;
-#line 2299 "tracker-builder.c"
+#line 2331 "tracker-builder.c"
 		} else {
-#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp2_ = FALSE;
-#line 2303 "tracker-builder.c"
+#line 2335 "tracker-builder.c"
 		}
-#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = _tmp2_;
-#line 2307 "tracker-builder.c"
+#line 2339 "tracker-builder.c"
 	}
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_warn_if_fail (_tmp0_);
-#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = self->priv->str;
-#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_->str;
-#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	result = _tmp7_;
-#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
-#line 2319 "tracker-builder.c"
+#line 2351 "tracker-builder.c"
 }
 
 
 gint tracker_sparql_builder_get_length (TrackerSparqlBuilder* self) {
 	gint result;
 	gint _tmp0_;
-#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->_length;
-#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	result = _tmp0_;
-#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
-#line 2334 "tracker-builder.c"
+#line 2366 "tracker-builder.c"
 }
 
 
 static void tracker_sparql_builder_set_length (TrackerSparqlBuilder* self, gint value) {
-#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (tracker_sparql_builder_get_length (self) != value) {
-#line 2343 "tracker-builder.c"
+#line 2375 "tracker-builder.c"
 		gint _tmp0_;
-#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = value;
-#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->_length = _tmp0_;
-#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_object_notify ((GObject *) self, "length");
-#line 2351 "tracker-builder.c"
+#line 2383 "tracker-builder.c"
 	}
 }
 
@@ -2359,38 +2391,38 @@ TrackerSparqlBuilderState tracker_sparql_builder_get_state (TrackerSparqlBuilder
 	TrackerSparqlBuilderState* _tmp1_;
 	gint _tmp1__length1;
 	TrackerSparqlBuilderState _tmp2_;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->states;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0__length1 = self->priv->states_length1;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = self->priv->states;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1__length1 = self->priv->states_length1;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp0_[_tmp1__length1 - 1];
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	result = _tmp2_;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
-#line 2379 "tracker-builder.c"
+#line 2411 "tracker-builder.c"
 }
 
 
 static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass) {
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_parent_class = g_type_class_peek_parent (klass);
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_type_class_add_private (klass, sizeof (TrackerSparqlBuilderPrivate));
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (klass)->get_property = _vala_tracker_sparql_builder_get_property;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (klass)->set_property = _vala_tracker_sparql_builder_set_property;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_sparql_builder_finalize;
-#line 2394 "tracker-builder.c"
+#line 2426 "tracker-builder.c"
 	/**
 	 * TrackerSparqlBuilder:result:
 	 *
@@ -2398,9 +2430,9 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 *
 	 * Since: 0.10
 	 */
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_RESULT, g_param_spec_string ("result", "result", "result", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 2404 "tracker-builder.c"
+#line 2436 "tracker-builder.c"
 	/**
 	 * TrackerSparqlBuilder:length:
 	 *
@@ -2408,9 +2440,9 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 *
 	 * Since: 0.10
 	 */
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_LENGTH, g_param_spec_int ("length", "length", "length", G_MININT, G_MAXINT, 0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 2414 "tracker-builder.c"
+#line 2446 "tracker-builder.c"
 	/**
 	 * TrackerSparqlBuilder:state:
 	 *
@@ -2418,35 +2450,35 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 *
 	 * Since: 0.10
 	 */
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_STATE, g_param_spec_enum ("state", "state", "state", TRACKER_SPARQL_BUILDER_TYPE_STATE, 0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
-#line 2424 "tracker-builder.c"
+#line 2456 "tracker-builder.c"
 }
 
 
 static void tracker_sparql_builder_instance_init (TrackerSparqlBuilder * self) {
 	GString* _tmp0_;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv = TRACKER_SPARQL_BUILDER_GET_PRIVATE (self);
-#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = g_string_new ("");
-#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->str = _tmp0_;
-#line 2436 "tracker-builder.c"
+#line 2468 "tracker-builder.c"
 }
 
 
 static void tracker_sparql_builder_finalize (GObject * obj) {
 	TrackerSparqlBuilder * self;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_SPARQL_TYPE_BUILDER, TrackerSparqlBuilder);
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 165 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states = (g_free (self->priv->states), NULL);
-#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_string_free0 (self->priv->str);
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (tracker_sparql_builder_parent_class)->finalize (obj);
-#line 2450 "tracker-builder.c"
+#line 2482 "tracker-builder.c"
 }
 
 
@@ -2474,33 +2506,33 @@ GType tracker_sparql_builder_get_type (void) {
 static void _vala_tracker_sparql_builder_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
 	TrackerSparqlBuilder * self;
 	self = G_TYPE_CHECK_INSTANCE_CAST (object, TRACKER_SPARQL_TYPE_BUILDER, TrackerSparqlBuilder);
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	switch (property_id) {
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		case TRACKER_SPARQL_BUILDER_RESULT:
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_value_set_string (value, tracker_sparql_builder_get_result (self));
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		case TRACKER_SPARQL_BUILDER_LENGTH:
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_value_set_int (value, tracker_sparql_builder_get_length (self));
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		case TRACKER_SPARQL_BUILDER_STATE:
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_value_set_enum (value, tracker_sparql_builder_get_state (self));
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 2498 "tracker-builder.c"
+#line 2530 "tracker-builder.c"
 		default:
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 2504 "tracker-builder.c"
+#line 2536 "tracker-builder.c"
 	}
 }
 
@@ -2508,21 +2540,21 @@ static void _vala_tracker_sparql_builder_get_property (GObject * object, guint p
 static void _vala_tracker_sparql_builder_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
 	TrackerSparqlBuilder * self;
 	self = G_TYPE_CHECK_INSTANCE_CAST (object, TRACKER_SPARQL_TYPE_BUILDER, TrackerSparqlBuilder);
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 	switch (property_id) {
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		case TRACKER_SPARQL_BUILDER_LENGTH:
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		tracker_sparql_builder_set_length (self, g_value_get_int (value));
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 2520 "tracker-builder.c"
+#line 2552 "tracker-builder.c"
 		default:
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 2526 "tracker-builder.c"
+#line 2558 "tracker-builder.c"
 	}
 }
 

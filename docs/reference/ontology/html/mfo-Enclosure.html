@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="mfo-Enclosure.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <a class="link" href="mfo-FeedElement.html" title="mfo:FeedElement">mfo:FeedElement</a> 
             ╰── <span class="emphasis"><em><a class="link" href="mfo-Enclosure.html" title="mfo:Enclosure">mfo:Enclosure</a></em></span> 
 </pre>
@@ -45,7 +45,7 @@
 <a name="mfo-Enclosure.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="mfo-Enclosure.mfo-optional"></a><h3>The <code class="literal">“mfo:optional”</code> property</h3>
-<pre class="programlisting">“mfo:optional”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“mfo:optional”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>The enclosure is mandatory to download or only optional</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -59,7 +59,7 @@
 <hr>
 <div class="refsect2">
 <a name="mfo-Enclosure.mfo-groupDefault"></a><h3>The <code class="literal">“mfo:groupDefault”</code> property</h3>
-<pre class="programlisting">“mfo:groupDefault”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“mfo:groupDefault”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>Different enclosures can represent the same resource in different formats/resolutions. This representations are grouped using the nie:identifier property and this property identify the default between them.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -70,10 +70,6 @@
 <p>Used to store remote URL of enclosure</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="mfo-Enclosure.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/mfo#" target="_top">MFO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

@@ -6,11 +6,15 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include "libtracker-data/tracker-data-manager.h"
 #include <stdlib.h>
 #include <string.h>
 #include "libtracker-data/tracker-db-interface.h"
 #include "libtracker-sparql/tracker-sparql.h"
 #include "libtracker-common/tracker-date-time.h"
+#include <gio/gio.h>
+#include "libtracker-data/tracker-data-query.h"
+#include "libtracker-data/tracker-data-update.h"
 
 G_BEGIN_DECLS
 
@@ -110,6 +114,7 @@ struct _TrackerSparqlQuery {
 	TrackerSparqlPattern* pattern;
 	GList* bindings;
 	TrackerSparqlContext* context;
+	TrackerDataManager* manager;
 	gint last_var_index;
 };
 
@@ -283,10 +288,10 @@ void tracker_sparql_value_set_context (GValue* value, gpointer v_object);
 void tracker_sparql_value_take_context (GValue* value, gpointer v_object);
 gpointer tracker_sparql_value_get_context (const GValue* value);
 GType tracker_sparql_context_get_type (void) G_GNUC_CONST;
-TrackerSparqlQuery* tracker_sparql_query_new (const gchar* query);
-TrackerSparqlQuery* tracker_sparql_query_construct (GType object_type, const gchar* query);
-TrackerSparqlQuery* tracker_sparql_query_new_update (const gchar* query);
-TrackerSparqlQuery* tracker_sparql_query_construct_update (GType object_type, const gchar* query);
+TrackerSparqlQuery* tracker_sparql_query_new (TrackerDataManager* manager, const gchar* query);
+TrackerSparqlQuery* tracker_sparql_query_construct (GType object_type, TrackerDataManager* manager, const gchar* query);
+TrackerSparqlQuery* tracker_sparql_query_new_update (TrackerDataManager* manager, const gchar* query);
+TrackerSparqlQuery* tracker_sparql_query_construct_update (GType object_type, TrackerDataManager* manager, const gchar* query);
 TrackerDBCursor* tracker_sparql_query_execute_cursor (TrackerSparqlQuery* self, GError** error);
 GVariant* tracker_sparql_query_execute_update (TrackerSparqlQuery* self, gboolean blank, GError** error);
 void uuid_generate (guchar* uuid);
@@ -304,10 +309,10 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 void tracker_source_location_init (TrackerSourceLocation *self, gchar* pos, gint line, gint column);
 const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self);
 GType tracker_turtle_reader_get_type (void) G_GNUC_CONST;
-TrackerTurtleReader* tracker_turtle_reader_new (const gchar* path, GError** error);
-TrackerTurtleReader* tracker_turtle_reader_construct (GType object_type, const gchar* path, GError** error);
+TrackerTurtleReader* tracker_turtle_reader_new (GFile* file, GError** error);
+TrackerTurtleReader* tracker_turtle_reader_construct (GType object_type, GFile* file, GError** error);
 gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error);
-void tracker_turtle_reader_load (const gchar* path, GError** error);
+void tracker_turtle_reader_load (GFile* file, TrackerData* data, GError** error);
 const gchar* tracker_turtle_reader_get_graph (TrackerTurtleReader* self);
 const gchar* tracker_turtle_reader_get_subject (TrackerTurtleReader* self);
 const gchar* tracker_turtle_reader_get_predicate (TrackerTurtleReader* self);

@@ -146,7 +146,8 @@ am__DEPENDENCIES_1 =
 libtracker_data_la_DEPENDENCIES = $(top_builddir)/src/gvdb/libgvdb.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(am__append_1)
-am_libtracker_data_la_OBJECTS = tracker-vala-namespace.lo \
+am_libtracker_data_la_OBJECTS = tracker-gresources.lo \
+	tracker-data-enum-types.lo tracker-vala-namespace.lo \
 	tracker-sparql-expression.lo tracker-sparql-pattern.lo \
 	tracker-sparql-query.lo tracker-sparql-scanner.lo \
 	tracker-turtle-reader.lo tracker-class.lo tracker-collation.lo \
@@ -277,6 +278,7 @@ DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
+DTAGS_LDFLAGS = @DTAGS_LDFLAGS@
 DUMPBIN = @DUMPBIN@
 DVI_CFLAGS = @DVI_CFLAGS@
 DVI_LIBS = @DVI_LIBS@
@@ -290,12 +292,12 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-FIREFOX = @FIREFOX@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
 GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_PREFIX = @GLIB_PREFIX@
@@ -363,8 +365,6 @@ LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
-LIBMEDIAART_CFLAGS = @LIBMEDIAART_CFLAGS@
-LIBMEDIAART_LIBS = @LIBMEDIAART_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
 LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
@@ -392,7 +392,6 @@ LIBTRACKER_FTS_CFLAGS = @LIBTRACKER_FTS_CFLAGS@
 LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
 LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
 LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
-LIBTRACKER_MINER_PC_REQUIRES = @LIBTRACKER_MINER_PC_REQUIRES@
 LIBTRACKER_REMOTE_CFLAGS = @LIBTRACKER_REMOTE_CFLAGS@
 LIBTRACKER_REMOTE_LIBS = @LIBTRACKER_REMOTE_LIBS@
 LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
@@ -412,8 +411,6 @@ LT_REVISION = @LT_REVISION@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
-MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
-MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
 MP3_CFLAGS = @MP3_CFLAGS@
 MP3_LIBS = @MP3_LIBS@
@@ -455,7 +452,6 @@ TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
 TAGLIB_LIBS = @TAGLIB_LIBS@
 TEXT_CFLAGS = @TEXT_CFLAGS@
 TEXT_LIBS = @TEXT_LIBS@
-THUNDERBIRD = @THUNDERBIRD@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
@@ -475,25 +471,11 @@ TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
 TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
-TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
-TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
-TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
-TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
-TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
-TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
-TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
-TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
-TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
-TRACKER_NAUTILUS_EXTENSION_LIBS = @TRACKER_NAUTILUS_EXTENSION_LIBS@
-TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
-TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
-TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
-TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
 TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -589,6 +571,10 @@ AM_CPPFLAGS = \
 libtracker_datadir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_data_LTLIBRARIES = libtracker-data.la
 libtracker_data_la_SOURCES = \
+	$(top_builddir)/src/ontologies/tracker-gresources.c \
+	$(top_builddir)/src/ontologies/tracker-gresources.h \
+	tracker-data-enum-types.c                      \
+	tracker-data-enum-types.h                      \
 	tracker-vala-namespace.vala                    \
 	tracker-sparql-expression.vala                 \
 	tracker-sparql-pattern.vala                    \
@@ -645,6 +631,8 @@ gsettings_SCHEMAS = org.freedesktop.Tracker.DB.gschema.xml
 
 # Dist / Clean rules for all data
 BUILT_SOURCES = \
+	tracker-data-enum-types.c                     \
+	tracker-data-enum-types.h                     \
 	libtracker_data_la_vala.stamp
 
 CLEANFILES = \
@@ -653,9 +641,12 @@ CLEANFILES = \
 	$(man_MANS)
 
 EXTRA_DIST = \
+	tracker-data-enum-types.c.template \
+	tracker-data-enum-types.h.template \
 	libtracker-data.vapi \
 	$(gsettings_SCHEMAS:.xml=.xml.in) \
-	$(man_MANS)
+	$(man_MANS) \
+	meson.build
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -740,6 +731,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-collation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crc32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-backup.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-enum-types.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-query.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-update.Plo@am__quote@
@@ -749,6 +741,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-interface.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-journal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-manager.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-gresources.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-namespace.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ontologies.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ontology.Plo@am__quote@
@@ -780,6 +773,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
+
+tracker-gresources.lo: $(top_builddir)/src/ontologies/tracker-gresources.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT tracker-gresources.lo -MD -MP -MF $(DEPDIR)/tracker-gresources.Tpo -c -o tracker-gresources.lo `test -f '$(top_builddir)/src/ontologies/tracker-gresources.c' || echo '$(srcdir)/'`$(top_builddir)/src/ontologies/tracker-gresources.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker-gresources.Tpo $(DEPDIR)/tracker-gresources.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(top_builddir)/src/ontologies/tracker-gresources.c' object='tracker-gresources.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o tracker-gresources.lo `test -f '$(top_builddir)/src/ontologies/tracker-gresources.c' || echo '$(srcdir)/'`$(top_builddir)/src/ontologies/tracker-gresources.c
 $(srcdir)/tracker-vala-namespace.c: $(srcdir)/libtracker_data_la_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/libtracker_data_la_vala.stamp; fi
 	@if test -f $@; then :; else \
@@ -1047,6 +1047,12 @@ uninstall-am: uninstall-libtracker_dataLTLIBRARIES
 
 .PRECIOUS: Makefile
 
+
+tracker-data-enum-types.h: tracker-data-enum-types.h.template
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-data-enum-types.h.template tracker-db-interface-sqlite.h) > $@
+
+tracker-data-enum-types.c: tracker-data-enum-types.c.template
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-data-enum-types.c.template tracker-db-interface-sqlite.h) > $@
 
 @INTLTOOL_XML_NOMERGE_RULE@
 

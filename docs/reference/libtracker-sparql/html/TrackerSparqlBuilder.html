@@ -354,8 +354,8 @@ justifications.
 </colgroup>
 <tbody>
 <tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct" title="TrackerSparqlBuilder">TrackerSparqlBuilder</a></td>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct" title="struct TrackerSparqlBuilder">TrackerSparqlBuilder</a></td>
 </tr>
 <tr>
 <td class="datatype_keyword">enum</td>
@@ -379,6 +379,10 @@ justifications.
 </div>
 <div class="refsect1">
 <a name="TrackerSparqlBuilder.description"></a><h2>Description</h2>
+<div class="note">
+This object is deprecated since 2.0, use <a class="link" href="TrackerResource.html" title="TrackerResource"><span class="type">TrackerResource</span></a> to build
+SPARQL updates.
+</div>
 <p>
 <a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> is an object what will gather a set of
 subject/predicate/object triples, together with an optional WHERE clause,
@@ -520,6 +524,7 @@ tracker_sparql_builder_get_length (<em class="parameter"><code><a class="link" h
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_append (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                <em class="parameter"><code>const <span class="type">gchar</span> *raw</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_append</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends raw, unvalidated content to <em class="parameter"><code>self</code></em>
 .</p>
 <div class="refsect3">
@@ -552,6 +557,7 @@ tracker_sparql_builder_append (<em class="parameter"><code><a class="link" href=
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_prepend (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                 <em class="parameter"><code>const <span class="type">gchar</span> *raw</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_prepend</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Prepends raw, unvalidated content to <em class="parameter"><code>self</code></em>
 .</p>
 <div class="refsect3">
@@ -584,6 +590,7 @@ tracker_sparql_builder_prepend (<em class="parameter"><code><a class="link" href
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_insert_open (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                     <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_insert_open</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Opens an insertion statement.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-insert-open.parameters"></a><h4>Parameters</h4>
@@ -616,6 +623,7 @@ tracker_sparql_builder_insert_open (<em class="parameter"><code><a class="link" 
 tracker_sparql_builder_insert_silent_open
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                 <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_insert_silent_open</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Opens a silent insertion statement.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-insert-silent-open.parameters"></a><h4>Parameters</h4>
@@ -646,6 +654,7 @@ tracker_sparql_builder_insert_silent_open
 <a name="tracker-sparql-builder-insert-close"></a><h3>tracker_sparql_builder_insert_close ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_insert_close (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_insert_close</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Closes an insertion statement opened with <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" title="tracker_sparql_builder_insert_open ()"><code class="function">tracker_sparql_builder_insert_open()</code></a>.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-insert-close.parameters"></a><h4>Parameters</h4>
@@ -669,6 +678,7 @@ tracker_sparql_builder_insert_close (<em class="parameter"><code><a class="link"
 <a name="tracker-sparql-builder-where-open"></a><h3>tracker_sparql_builder_where_open ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_where_open (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_where_open</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Opens a WHERE clause. Data triples may be appended then to narrow the scope
 to which the update query applies.</p>
 <div class="refsect3">
@@ -693,6 +703,7 @@ to which the update query applies.</p>
 <a name="tracker-sparql-builder-where-close"></a><h3>tracker_sparql_builder_where_close ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_where_close (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_where_close</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Closes a WHERE clause opened through <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-where-open" title="tracker_sparql_builder_where_open ()"><code class="function">tracker_sparql_builder_where_open()</code></a>.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-where-close.parameters"></a><h4>Parameters</h4>
@@ -717,6 +728,7 @@ tracker_sparql_builder_where_close (<em class="parameter"><code><a class="link" 
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_delete_open (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                     <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_delete_open</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Opens a DELETE clause. Data triples may be appended in order to prepare
 a query to delete them.</p>
 <div class="refsect3">
@@ -748,6 +760,7 @@ a query to delete them.</p>
 <a name="tracker-sparql-builder-delete-close"></a><h3>tracker_sparql_builder_delete_close ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_delete_close (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_delete_close</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Closes a DELETE clause opened through <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open" title="tracker_sparql_builder_delete_open ()"><code class="function">tracker_sparql_builder_delete_open()</code></a>.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-delete-close.parameters"></a><h4>Parameters</h4>
@@ -772,6 +785,7 @@ tracker_sparql_builder_delete_close (<em class="parameter"><code><a class="link"
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_graph_open (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                    <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_graph_open</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Opens a GRAPH clause within INSERT, DELETE, or WHERE.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-graph-open.parameters"></a><h4>Parameters</h4>
@@ -802,6 +816,7 @@ tracker_sparql_builder_graph_open (<em class="parameter"><code><a class="link" h
 <a name="tracker-sparql-builder-graph-close"></a><h3>tracker_sparql_builder_graph_close ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_graph_close (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_graph_close</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Closes a GRAPH clause opened through <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-open" title="tracker_sparql_builder_graph_open ()"><code class="function">tracker_sparql_builder_graph_open()</code></a>.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-graph-close.parameters"></a><h4>Parameters</h4>
@@ -827,6 +842,7 @@ tracker_sparql_builder_graph_close (<em class="parameter"><code><a class="link" 
 tracker_sparql_builder_subject_variable
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                 <em class="parameter"><code>const <span class="type">gchar</span> *var_name</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_subject_variable</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a subject as a SPARQL variable, such as "?urn".</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-subject-variable.parameters"></a><h4>Parameters</h4>
@@ -858,6 +874,7 @@ tracker_sparql_builder_subject_variable
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_subject_iri (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                     <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_subject_iri</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a subject as an IRI, such as "&lt;urn:file:1234-5678&gt;". IRIs
 univocally identify a resource in tracker-store.</p>
 <div class="refsect3">
@@ -890,6 +907,7 @@ univocally identify a resource in tracker-store.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_subject (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                 <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_subject</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a subject.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-subject.parameters"></a><h4>Parameters</h4>
@@ -921,6 +939,7 @@ tracker_sparql_builder_subject (<em class="parameter"><code><a class="link" href
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_predicate_iri (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                       <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_predicate_iri</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a predicate as an IRI.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-predicate-iri.parameters"></a><h4>Parameters</h4>
@@ -952,6 +971,7 @@ tracker_sparql_builder_predicate_iri (<em class="parameter"><code><a class="link
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_predicate (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                   <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_predicate</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a predicate for the previously appended subject.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-predicate.parameters"></a><h4>Parameters</h4>
@@ -983,6 +1003,7 @@ tracker_sparql_builder_predicate (<em class="parameter"><code><a class="link" hr
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_iri (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                    <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_iri</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends an object as an IRI.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-object-iri.parameters"></a><h4>Parameters</h4>
@@ -1014,6 +1035,7 @@ tracker_sparql_builder_object_iri (<em class="parameter"><code><a class="link" h
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a free-form object for the previously appended subject and predicate.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-object.parameters"></a><h4>Parameters</h4>
@@ -1045,6 +1067,7 @@ tracker_sparql_builder_object (<em class="parameter"><code><a class="link" href=
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_string (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                       <em class="parameter"><code>const <span class="type">gchar</span> *literal</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_string</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends an object formatted as an string. <em class="parameter"><code>literal</code></em>
  will be escaped and surrounded
 by double quotes.</p>
@@ -1078,6 +1101,7 @@ by double quotes.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_boolean (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                        <em class="parameter"><code><span class="type">gboolean</span> literal</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_boolean</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a <span class="type">gboolean</span> value as an object.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-object-boolean.parameters"></a><h4>Parameters</h4>
@@ -1109,6 +1133,7 @@ tracker_sparql_builder_object_boolean (<em class="parameter"><code><a class="lin
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_int64 (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                      <em class="parameter"><code><span class="type">gint64</span> literal</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_int64</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a <span class="type">gint64</span> value as an object.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-object-int64.parameters"></a><h4>Parameters</h4>
@@ -1140,6 +1165,7 @@ tracker_sparql_builder_object_int64 (<em class="parameter"><code><a class="link"
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_date (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                     <em class="parameter"><code><span class="type">time_t</span> *literal</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_date</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a <span class="type">time_t</span> value as an object. <em class="parameter"><code>literal</code></em>
  will be converted
 to a string in the date format used by tracker-store.</p>
@@ -1173,6 +1199,7 @@ to a string in the date format used by tracker-store.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_double (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                       <em class="parameter"><code><span class="type">gdouble</span> literal</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_double</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a <span class="type">gdouble</span> value as an object.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-object-double.parameters"></a><h4>Parameters</h4>
@@ -1205,6 +1232,7 @@ tracker_sparql_builder_object_double (<em class="parameter"><code><a class="link
 tracker_sparql_builder_object_variable
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                 <em class="parameter"><code>const <span class="type">gchar</span> *var_name</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_variable</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends an object as a SparQL variable, such as "?urn".</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-object-variable.parameters"></a><h4>Parameters</h4>
@@ -1236,6 +1264,7 @@ tracker_sparql_builder_object_variable
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_blank_open
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_blank_open</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Opens an anonymous blank node. In insertions this can be used to create
 anonymous nodes for not previously known data without the need of a
 separate insertion.</p>
@@ -1262,6 +1291,7 @@ separate insertion.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_builder_object_blank_close
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_blank_close</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Closes an anomymous blank node opened with <a class="link" href="TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open" title="tracker_sparql_builder_object_blank_open ()"><code class="function">tracker_sparql_builder_object_blank_open()</code></a></p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-object-blank-close.parameters"></a><h4>Parameters</h4>
@@ -1287,6 +1317,7 @@ tracker_sparql_builder_object_blank_close
 tracker_sparql_builder_object_unvalidated
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                 <em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>);</pre>
+<div class="warning"><p><code class="literal">tracker_sparql_builder_object_unvalidated</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p></div>
 <p>Appends a string not validated as UTF-8 as an object.</p>
 <div class="refsect3">
 <a name="tracker-sparql-builder-object-unvalidated.parameters"></a><h4>Parameters</h4>
@@ -1316,8 +1347,8 @@ tracker_sparql_builder_object_unvalidated
 <div class="refsect1">
 <a name="TrackerSparqlBuilder.other_details"></a><h2>Types and Values</h2>
 <div class="refsect2">
-<a name="TrackerSparqlBuilder-struct"></a><h3>TrackerSparqlBuilder</h3>
-<pre class="programlisting">typedef struct _TrackerSparqlBuilder TrackerSparqlBuilder;</pre>
+<a name="TrackerSparqlBuilder-struct"></a><h3>struct TrackerSparqlBuilder</h3>
+<pre class="programlisting">struct TrackerSparqlBuilder;</pre>
 <p>The <span class="structname">TrackerSparqlBuilder</span> object represents an
 insertion/update SPARQL query.</p>
 </div>

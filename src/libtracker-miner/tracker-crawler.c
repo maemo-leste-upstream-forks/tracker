@@ -39,17 +39,19 @@
  */
 #define FILES_GROUP_SIZE             100
 
+#define MAX_SIMULTANEOUS_ITEMS       64
+
 typedef struct DirectoryChildData DirectoryChildData;
 typedef struct DirectoryProcessingData DirectoryProcessingData;
 typedef struct DirectoryRootInfo DirectoryRootInfo;
 
 typedef struct {
 	TrackerCrawler *crawler;
-	TrackerEnumerator *enumerator;
+	GFileEnumerator *enumerator;
 	DirectoryRootInfo  *root_info;
 	DirectoryProcessingData *dir_info;
 	GFile *dir_file;
-	GSList *files;
+	GList *files;
 } DataProviderData;
 
 struct DirectoryChildData {
@@ -587,15 +589,13 @@ directory_root_info_free (DirectoryRootInfo *info)
 }
 
 static gboolean
-process_func (gpointer data)
+process_next (TrackerCrawler *crawler)
 {
-	TrackerCrawler          *crawler;
 	TrackerCrawlerPrivate   *priv;
 	DirectoryRootInfo       *info;
 	DirectoryProcessingData *dir_data = NULL;
 	gboolean                 stop_idle = FALSE;
 
-	crawler = TRACKER_CRAWLER (data);
 	priv = crawler->priv;
 
 	if (priv->is_paused) {
@@ -703,6 +703,22 @@ process_func (gpointer data)
 }
 
 static gboolean
+process_func (gpointer data)
+{
+	TrackerCrawler *crawler = data;
+	gboolean retval = FALSE;
+	gint i;
+
+	for (i = 0; i < MAX_SIMULTANEOUS_ITEMS; i++) {
+		retval = process_next (crawler);
+		if (retval == FALSE)
+			break;
+	}
+
+	return retval;
+}
+
+static gboolean
 process_func_start (TrackerCrawler *crawler)
 {
 	if (crawler->priv->is_paused) {
@@ -780,7 +796,7 @@ data_provider_data_add (DataProviderData *dpd)
 {
 	TrackerCrawler *crawler;
 	GFile *parent;
-	GSList *l;
+	GList *l;
 
 	crawler = dpd->crawler;
 	parent = dpd->dir_file;
@@ -811,7 +827,7 @@ data_provider_data_add (DataProviderData *dpd)
 		g_object_unref (info);
 	}
 
-	g_slist_free (dpd->files);
+	g_list_free (dpd->files);
 	dpd->files = NULL;
 }
 
@@ -822,7 +838,7 @@ data_provider_data_free (DataProviderData *dpd)
 	g_object_unref (dpd->crawler);
 
 	if (dpd->files) {
-		g_slist_free_full (dpd->files, g_object_unref);
+		g_list_free_full (dpd->files, g_object_unref);
 	}
 
 	if (dpd->enumerator) {
@@ -840,7 +856,7 @@ data_provider_end_cb (GObject      *object,
 	DataProviderData *dpd;
 	GError *error = NULL;
 
-	tracker_data_provider_end_finish (TRACKER_DATA_PROVIDER (object), result, &error);
+	g_file_enumerator_close_finish (G_FILE_ENUMERATOR (object), result, &error);
 	dpd = user_data;
 
 	if (error) {
@@ -878,11 +894,10 @@ data_provider_end (TrackerCrawler    *crawler,
 	info->dpd = NULL;
 
 	if (dpd->enumerator) {
-		tracker_data_provider_end_async (crawler->priv->data_provider,
-		                                 dpd->enumerator,
-		                                 G_PRIORITY_LOW, NULL,
-		                                 data_provider_end_cb,
-		                                 dpd);
+		g_file_enumerator_close_async (dpd->enumerator,
+		                               G_PRIORITY_LOW, NULL,
+		                               data_provider_end_cb,
+		                               dpd);
 	} else {
 		data_provider_data_free (dpd);
 	}
@@ -894,10 +909,10 @@ enumerate_next_cb (GObject      *object,
                    gpointer      user_data)
 {
 	DataProviderData *dpd;
-	GFileInfo *info;
+	GList *info;
 	GError *error = NULL;
 
-	info = tracker_enumerator_next_finish (TRACKER_ENUMERATOR (object), result, &error);
+	info = g_file_enumerator_next_files_finish (G_FILE_ENUMERATOR (object), result, &error);
 	dpd = user_data;
 
 	if (!info) {
@@ -926,12 +941,13 @@ enumerate_next_cb (GObject      *object,
 		process_func_start (dpd->crawler);
 	} else {
 		/* More work to do, we keep reference given to us */
-		dpd->files = g_slist_prepend (dpd->files, info);
-		tracker_enumerator_next_async (TRACKER_ENUMERATOR (object),
-		                               G_PRIORITY_LOW,
-		                               dpd->crawler->priv->cancellable,
-		                               enumerate_next_cb,
-		                               dpd);
+		dpd->files = g_list_concat (dpd->files, info);
+		g_file_enumerator_next_files_async (G_FILE_ENUMERATOR (object),
+		                                    MAX_SIMULTANEOUS_ITEMS,
+		                                    G_PRIORITY_LOW,
+		                                    dpd->crawler->priv->cancellable,
+		                                    enumerate_next_cb,
+		                                    dpd);
 	}
 }
 
@@ -940,7 +956,7 @@ data_provider_begin_cb (GObject      *object,
                         GAsyncResult *result,
                         gpointer      user_data)
 {
-	TrackerEnumerator *enumerator;
+	GFileEnumerator *enumerator;
 	DirectoryRootInfo *info;
 	DataProviderData *dpd;
 	GError *error = NULL;
@@ -948,29 +964,30 @@ data_provider_begin_cb (GObject      *object,
 	enumerator = tracker_data_provider_begin_finish (TRACKER_DATA_PROVIDER (object), result, &error);
 
 	info = user_data;
-	dpd = info->dpd;
-	dpd->enumerator = enumerator;
 
-	if (!dpd->enumerator) {
-		if (error) {
-			if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED)) {
-				gchar *uri = g_file_get_uri (dpd->dir_file);
-				g_warning ("Could not enumerate container / directory '%s', %s",
-				           uri, error ? error->message : "no error given");
-				g_free (uri);
-			}
-			g_clear_error (&error);
+	if (error) {
+		if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED)) {
+			gchar *uri;
+
+			dpd = info->dpd;
+			uri = g_file_get_uri (dpd->dir_file);
+			g_warning ("Could not enumerate container / directory '%s', %s",
+			           uri, error ? error->message : "no error given");
+			g_free (uri);
+			process_func_start (dpd->crawler);
 		}
-
-		process_func_start (dpd->crawler);
+		g_clear_error (&error);
 		return;
 	}
 
-	tracker_enumerator_next_async (dpd->enumerator,
-	                               G_PRIORITY_LOW,
-	                               dpd->crawler->priv->cancellable,
-	                               enumerate_next_cb,
-	                               dpd);
+	dpd = info->dpd;
+	dpd->enumerator = enumerator;
+	g_file_enumerator_next_files_async (enumerator,
+	                                    MAX_SIMULTANEOUS_ITEMS,
+	                                    G_PRIORITY_LOW,
+	                                    dpd->crawler->priv->cancellable,
+	                                    enumerate_next_cb,
+	                                    dpd);
 }
 
 static void
@@ -986,6 +1003,7 @@ data_provider_begin (TrackerCrawler          *crawler,
 	 * failure, this is normally the case when we return to the
 	 * process_func() and finish a directory.
 	 */
+	dir_data->was_inspected = TRUE;
 	dpd = data_provider_data_new (crawler, info, dir_data);
 	info->dpd = dpd;
 
@@ -1015,6 +1033,7 @@ tracker_crawler_start (TrackerCrawler        *crawler,
                        gint                   max_depth)
 {
 	TrackerCrawlerPrivate *priv;
+	DirectoryProcessingData *dir_data;
 	DirectoryRootInfo *info;
 	gboolean enable_stat;
 
@@ -1073,7 +1092,11 @@ tracker_crawler_start (TrackerCrawler        *crawler,
 	}
 
 	g_queue_push_tail (priv->directories, info);
-	process_func_start (crawler);
+
+	dir_data = g_queue_peek_head (info->directory_processing_queue);
+
+	if (dir_data)
+		data_provider_begin (crawler, info, dir_data);
 
 	return TRUE;
 }

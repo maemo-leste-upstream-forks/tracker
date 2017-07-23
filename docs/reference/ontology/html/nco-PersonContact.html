@@ -35,11 +35,12 @@
 </div>
 <div class="refsect1">
 <a name="nco-PersonContact.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ├── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> ──┐
-    ╰── <a class="link" href="nco-Role.html" title="nco:Role">nco:Role</a> ────────────────┤
-                                 └── <a class="link" href="nco-Contact.html" title="nco:Contact">nco:Contact</a> 
-                <span class="emphasis"><em><a class="link" href="nco-PersonContact.html" title="nco:PersonContact">nco:PersonContact</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a>     ──┐
+                                     │
+                <a class="link" href="nco-Role.html" title="nco:Role">nco:Role</a> ────────────┤
+                                     └── <a class="link" href="nco-Contact.html" title="nco:Contact">nco:Contact</a> 
+                    <span class="emphasis"><em><a class="link" href="nco-PersonContact.html" title="nco:PersonContact">nco:PersonContact</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
@@ -95,28 +96,28 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PersonContact.nco-hobby"></a><h3>The <code class="literal">“nco:hobby”</code> property</h3>
-<pre class="programlisting">“nco:hobby”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:hobby”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A hobby associated with a PersonContact. This property can be used to express hobbies and interests.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nco-PersonContact.nco-nameHonorificPrefix"></a><h3>The <code class="literal">“nco:nameHonorificPrefix”</code> property</h3>
-<pre class="programlisting">“nco:nameHonorificPrefix”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:nameHonorificPrefix”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A prefix for the name of the object represented by this Contact. See documentation for the 'nameFamily' property for details.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nco-PersonContact.nco-nameHonorificSuffix"></a><h3>The <code class="literal">“nco:nameHonorificSuffix”</code> property</h3>
-<pre class="programlisting">“nco:nameHonorificSuffix”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:nameHonorificSuffix”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A suffix for the name of the Object represented by the given object. See documentation for the 'nameFamily' for details.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nco-PersonContact.nco-nameAdditional"></a><h3>The <code class="literal">“nco:nameAdditional”</code> property</h3>
-<pre class="programlisting">“nco:nameAdditional”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:nameAdditional”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Additional given name of an object represented by this contact. See documentation for 'nameFamily' property for details.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -124,7 +125,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PersonContact.nco-nameGiven"></a><h3>The <code class="literal">“nco:nameGiven”</code> property</h3>
-<pre class="programlisting">“nco:nameGiven”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:nameGiven”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>The given name for the object represented by this Contact. See documentation for 'nameFamily' property for details.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -132,15 +133,11 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PersonContact.nco-nameFamily"></a><h3>The <code class="literal">“nco:nameFamily”</code> property</h3>
-<pre class="programlisting">“nco:nameFamily”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:nameFamily”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>The family name of an Object represented by this Contact. These applies to people that have more than one given name. The 'first' one is considered 'the' given name (see nameGiven) property. All additional ones are considered 'additional' names. The name inherited from parents is the 'family name'. e.g. For Dr. John Phil Paul Stevenson Jr. M.D. A.C.P. we have contact with: honorificPrefix: 'Dr.', nameGiven: 'John', nameAdditional: 'Phil', nameAdditional: 'Paul', nameFamily: 'Stevenson', honorificSuffix: 'Jr.', honorificSuffix: 'M.D.', honorificSuffix: 'A.C.P.'. These properties form an equivalent of the compound 'N' property as defined in RFC 2426 Sec. 3.1.2</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 </div>
-</div>
-<div class="refsect1">
-<a name="nco-PersonContact.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#" target="_top">NCO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

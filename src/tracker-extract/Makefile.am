@@ -3,7 +3,7 @@
 #
 rulesdir = $(TRACKER_EXTRACT_RULES_DIR)
 
-module_flags = -module -avoid-version -no-undefined
+module_flags = $(DTAGS_LDFLAGS) -module -avoid-version -no-undefined
 
 AM_CPPFLAGS = \
 	$(BUILD_CFLAGS) \
@@ -633,4 +633,5 @@ EXTRA_DIST += \
 	$(config_DATA) \
 	$(service_DATA:.service=.service.in.in) \
 	$(systemd_user_DATA:.service=.service.in) \
-	$(gsettings_SCHEMAS:.xml=.xml.in)
+	$(gsettings_SCHEMAS:.xml=.xml.in) \
+	meson.build

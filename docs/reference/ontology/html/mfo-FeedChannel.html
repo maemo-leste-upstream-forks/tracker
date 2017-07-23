@@ -35,11 +35,12 @@
 </div>
 <div class="refsect1">
 <a name="mfo-FeedChannel.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
-        ├── <a class="link" href="nmo-CommunicationChannel.html" title="nmo:CommunicationChannel">nmo:CommunicationChannel</a> ──┐
-        ╰── <a class="link" href="mfo-FeedElement.html" title="mfo:FeedElement">mfo:FeedElement</a> ───────────┤
-                                       └── <span class="emphasis"><em><a class="link" href="mfo-FeedChannel.html" title="mfo:FeedChannel">mfo:FeedChannel</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+        ├── <a class="link" href="nmo-CommunicationChannel.html" title="nmo:CommunicationChannel">nmo:CommunicationChannel</a> ├── ──┐
+        │       │                          │
+        ╰── ╰── <a class="link" href="mfo-FeedElement.html" title="mfo:FeedElement">mfo:FeedElement</a> ───────────┤
+                                           └── <span class="emphasis"><em><a class="link" href="mfo-FeedChannel.html" title="mfo:FeedChannel">mfo:FeedChannel</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
@@ -60,28 +61,24 @@
 <hr>
 <div class="refsect2">
 <a name="mfo-FeedChannel.mfo-totalCount"></a><h3>The <code class="literal">“mfo:totalCount”</code> property</h3>
-<pre class="programlisting">“mfo:totalCount”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“mfo:totalCount”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Total messages count within a channel</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mfo-FeedChannel.mfo-unreadCount"></a><h3>The <code class="literal">“mfo:unreadCount”</code> property</h3>
-<pre class="programlisting">“mfo:unreadCount”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“mfo:unreadCount”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Unread messages count within a channel</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mfo-FeedChannel.mfo-updatedTime"></a><h3>The <code class="literal">“mfo:updatedTime”</code> property</h3>
-<pre class="programlisting">“mfo:updatedTime”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“mfo:updatedTime”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Captures the updated date and time when the channel is updated</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="mfo-FeedChannel.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/mfo#" target="_top">MFO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

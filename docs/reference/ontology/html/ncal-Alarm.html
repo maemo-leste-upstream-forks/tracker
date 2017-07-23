@@ -34,17 +34,18 @@
 </div>
 <div class="refsect1">
 <a name="ncal-Alarm.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ├── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> ──┐
-    ╰── <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a> ───┤
-                                 └── <span class="emphasis"><em><a class="link" href="ncal-Alarm.html" title="ncal:Alarm">ncal:Alarm</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a>     ─────┐
+                                        │
+                <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a> ──┤
+                                        └── <span class="emphasis"><em><a class="link" href="ncal-Alarm.html" title="ncal:Alarm">ncal:Alarm</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
 <a name="ncal-Alarm.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="ncal-Alarm.ncal-repeat"></a><h3>The <code class="literal">“ncal:repeat”</code> property</h3>
-<pre class="programlisting">“ncal:repeat”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“ncal:repeat”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>This property defines the number of time the alarm should be repeated, after the initial trigger. Inspired by RFC 2445 sec. 4.8.6.2</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -55,10 +56,6 @@
 <p>This property defines the action to be invoked when an alarm is triggered. Inspired by RFC 2445 sec 4.8.6.1. Originally this property had a limited set of values. They are expressed as instances of the AlarmAction class.</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-Alarm.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

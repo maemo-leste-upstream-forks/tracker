@@ -28,11 +28,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "libtracker-common/tracker-common.h"
+#include "libtracker-data/tracker-data-manager.h"
 #include "libtracker-data/tracker-db-interface.h"
 #include "libtracker-sparql/tracker-sparql.h"
 #include "libtracker-data/tracker-data-query.h"
 #include "libtracker-data/tracker-data-update.h"
-#include "libtracker-data/tracker-data-backup.h"
 #include "libtracker-data/tracker-class.h"
 #include "tracker-store/tracker-events.h"
 #include "tracker-store/tracker-writeback.h"
@@ -101,19 +101,22 @@ struct _TrackerResourcesLoadData {
 	GFile* file;
 	const gchar* _tmp3_;
 	GFile* _tmp4_;
-	const char* _tmp5_;
+	TrackerDataManager* data_manager;
+	TrackerDataManager* _tmp5_;
+	TrackerDataManager* _tmp6_;
+	const char* _tmp7_;
 	GError* ie;
-	GError* _tmp6_;
-	const gchar* _tmp7_;
 	GError* _tmp8_;
-	GError* e;
-	GError* _tmp9_;
+	const gchar* _tmp9_;
 	GError* _tmp10_;
+	GError* e;
 	GError* _tmp11_;
 	GError* _tmp12_;
 	GError* _tmp13_;
-	const gchar* _tmp14_;
+	GError* _tmp14_;
 	GError* _tmp15_;
+	const gchar* _tmp16_;
+	GError* _tmp17_;
 	GError * _inner_error_;
 };
 
@@ -147,24 +150,28 @@ struct _TrackerResourcesSparqlQueryData {
 	const gchar* _tmp3_;
 	Block3Data* _data3_;
 	GVariantBuilder* _tmp4_;
-	const gchar* _tmp5_;
-	const char* _tmp6_;
+	TrackerDataManager* data_manager;
+	TrackerDataManager* _tmp5_;
+	TrackerDataManager* _tmp6_;
+	TrackerDataManager* _tmp7_;
+	const gchar* _tmp8_;
+	const char* _tmp9_;
 	GVariant* _result_;
-	GVariantBuilder* _tmp7_;
-	GVariant* _tmp8_;
-	GVariant* _tmp9_;
-	gsize _tmp10_;
-	GError* _tmp11_;
-	TrackerDBusRequest* _tmp12_;
-	GError* e;
-	TrackerDBusRequest* _tmp13_;
+	GVariantBuilder* _tmp10_;
+	GVariant* _tmp11_;
+	GVariant* _tmp12_;
+	gsize _tmp13_;
 	GError* _tmp14_;
-	GError* _tmp15_;
-	GError* _tmp16_;
+	TrackerDBusRequest* _tmp15_;
+	GError* e;
+	TrackerDBusRequest* _tmp16_;
 	GError* _tmp17_;
 	GError* _tmp18_;
-	const gchar* _tmp19_;
+	GError* _tmp19_;
 	GError* _tmp20_;
+	GError* _tmp21_;
+	const gchar* _tmp22_;
+	GError* _tmp23_;
 	GError * _inner_error_;
 };
 
@@ -180,20 +187,23 @@ struct _TrackerResourcesSparqlUpdateData {
 	const char* _tmp0_;
 	TrackerDBusRequest* _tmp1_;
 	const gchar* _tmp2_;
-	const gchar* _tmp3_;
-	const char* _tmp4_;
+	TrackerDataManager* data_manager;
+	TrackerDataManager* _tmp3_;
+	TrackerDataManager* _tmp4_;
+	const gchar* _tmp5_;
+	const char* _tmp6_;
 	GError* ie;
-	GError* _tmp5_;
-	const gchar* _tmp6_;
 	GError* _tmp7_;
-	GError* e;
-	GError* _tmp8_;
+	const gchar* _tmp8_;
 	GError* _tmp9_;
+	GError* e;
 	GError* _tmp10_;
 	GError* _tmp11_;
 	GError* _tmp12_;
-	const gchar* _tmp13_;
+	GError* _tmp13_;
 	GError* _tmp14_;
+	const gchar* _tmp15_;
+	GError* _tmp16_;
 	GError * _inner_error_;
 };
 
@@ -211,24 +221,28 @@ struct _TrackerResourcesSparqlUpdateBlankData {
 	TrackerDBusRequest* _tmp1_;
 	TrackerDBusRequest* _tmp2_;
 	const gchar* _tmp3_;
+	TrackerDataManager* data_manager;
+	TrackerDataManager* _tmp4_;
+	TrackerDataManager* _tmp5_;
 	GVariant* variant;
-	const gchar* _tmp4_;
-	const char* _tmp5_;
-	GVariant* _tmp6_;
-	TrackerDBusRequest* _tmp7_;
+	TrackerDataManager* _tmp6_;
+	const gchar* _tmp7_;
+	const char* _tmp8_;
+	GVariant* _tmp9_;
+	TrackerDBusRequest* _tmp10_;
 	GError* ie;
-	GError* _tmp8_;
-	const gchar* _tmp9_;
-	GError* _tmp10_;
-	GError* e;
-	TrackerDBusRequest* _tmp11_;
-	GError* _tmp12_;
+	GError* _tmp11_;
+	const gchar* _tmp12_;
 	GError* _tmp13_;
-	GError* _tmp14_;
+	GError* e;
+	TrackerDBusRequest* _tmp14_;
 	GError* _tmp15_;
 	GError* _tmp16_;
-	const gchar* _tmp17_;
+	GError* _tmp17_;
 	GError* _tmp18_;
+	GError* _tmp19_;
+	const gchar* _tmp20_;
+	GError* _tmp21_;
 	GError * _inner_error_;
 };
 
@@ -244,20 +258,23 @@ struct _TrackerResourcesBatchSparqlUpdateData {
 	const char* _tmp0_;
 	TrackerDBusRequest* _tmp1_;
 	const gchar* _tmp2_;
-	const gchar* _tmp3_;
-	const char* _tmp4_;
+	TrackerDataManager* data_manager;
+	TrackerDataManager* _tmp3_;
+	TrackerDataManager* _tmp4_;
+	const gchar* _tmp5_;
+	const char* _tmp6_;
 	GError* ie;
-	GError* _tmp5_;
-	const gchar* _tmp6_;
 	GError* _tmp7_;
-	GError* e;
-	GError* _tmp8_;
+	const gchar* _tmp8_;
 	GError* _tmp9_;
+	GError* e;
 	GError* _tmp10_;
 	GError* _tmp11_;
 	GError* _tmp12_;
-	const gchar* _tmp13_;
+	GError* _tmp13_;
 	GError* _tmp14_;
+	const gchar* _tmp15_;
+	GError* _tmp16_;
 	GError * _inner_error_;
 };
 
@@ -286,7 +303,8 @@ static void tracker_resources_load_data_free (gpointer _data);
 void tracker_resources_load (TrackerResources* self, const char* sender, const gchar* uri, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_resources_load_finish (TrackerResources* self, GAsyncResult* _res_, GError** error);
 static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_);
-void tracker_store_queue_turtle_import (GFile* file, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
+TrackerDataManager* tracker_main_get_data_manager (void);
+void tracker_store_queue_turtle_import (TrackerDataManager* manager, GFile* file, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_store_queue_turtle_import_finish (GAsyncResult* _res_, GError** error);
 static void tracker_resources_load_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
 static void tracker_resources_sparql_query_data_free (gpointer _data);
@@ -296,27 +314,27 @@ static gboolean tracker_resources_sparql_query_co (TrackerResourcesSparqlQueryDa
 static Block3Data* block3_data_ref (Block3Data* _data3_);
 static void block3_data_unref (void * _userdata_);
 GType tracker_store_priority_get_type (void) G_GNUC_CONST;
-void tracker_store_sparql_query (const gchar* sparql, TrackerStorePriority priority, TrackerStoreSparqlQueryInThread in_thread, void* in_thread_target, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
+void tracker_store_sparql_query (TrackerDataManager* manager, const gchar* sparql, TrackerStorePriority priority, TrackerStoreSparqlQueryInThread in_thread, void* in_thread_target, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_store_sparql_query_finish (GAsyncResult* _res_, GError** error);
-static void ___lambda6_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** error);
-static void ____lambda6__tracker_store_sparql_query_in_thread (TrackerDBCursor* cursor, gpointer self, GError** error);
+static void ___lambda8_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** error);
+static void ____lambda8__tracker_store_sparql_query_in_thread (TrackerDBCursor* cursor, gpointer self, GError** error);
 static void tracker_resources_sparql_query_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
 static void tracker_resources_sparql_update_data_free (gpointer _data);
 void tracker_resources_sparql_update (TrackerResources* self, const char* sender, const gchar* update, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_resources_sparql_update_finish (TrackerResources* self, GAsyncResult* _res_, GError** error);
 static gboolean tracker_resources_sparql_update_co (TrackerResourcesSparqlUpdateData* _data_);
-void tracker_store_sparql_update (const gchar* sparql, TrackerStorePriority priority, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
+void tracker_store_sparql_update (TrackerDataManager* manager, const gchar* sparql, TrackerStorePriority priority, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_store_sparql_update_finish (GAsyncResult* _res_, GError** error);
 static void tracker_resources_sparql_update_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
 static void tracker_resources_sparql_update_blank_data_free (gpointer _data);
 void tracker_resources_sparql_update_blank (TrackerResources* self, const char* sender, const gchar* update, GAsyncReadyCallback _callback_, gpointer _user_data_);
 GVariant* tracker_resources_sparql_update_blank_finish (TrackerResources* self, GAsyncResult* _res_, GError** error);
 static gboolean tracker_resources_sparql_update_blank_co (TrackerResourcesSparqlUpdateBlankData* _data_);
-void tracker_store_sparql_update_blank (const gchar* sparql, TrackerStorePriority priority, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
+void tracker_store_sparql_update_blank (TrackerDataManager* manager, const gchar* sparql, TrackerStorePriority priority, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
 GVariant* tracker_store_sparql_update_blank_finish (GAsyncResult* _res_, GError** error);
 static void tracker_resources_sparql_update_blank_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
 void tracker_resources_sync (TrackerResources* self, const char* sender);
-void tracker_store_wal_checkpoint (void);
+void tracker_store_wal_checkpoint (TrackerDBInterface* iface, gboolean blocking);
 static void tracker_resources_batch_sparql_update_data_free (gpointer _data);
 void tracker_resources_batch_sparql_update (TrackerResources* self, const char* sender, const gchar* update, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_resources_batch_sparql_update_finish (TrackerResources* self, GAsyncResult* _res_, GError** error);
@@ -326,10 +344,10 @@ void tracker_resources_batch_commit (TrackerResources* self);
 static gboolean tracker_resources_emit_graph_updated (TrackerResources* self, TrackerClass* cl);
 static Block4Data* block4_data_ref (Block4Data* _data4_);
 static void block4_data_unref (void * _userdata_);
-static void ___lambda7_ (Block4Data* _data4_, gint graph_id, gint subject_id, gint pred_id, gint object_id);
-static void ____lambda7__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self);
-static void ___lambda8_ (Block4Data* _data4_, gint graph_id, gint subject_id, gint pred_id, gint object_id);
-static void ____lambda8__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self);
+static void ___lambda9_ (Block4Data* _data4_, gint graph_id, gint subject_id, gint pred_id, gint object_id);
+static void ____lambda9__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self);
+static void ___lambda10_ (Block4Data* _data4_, gint graph_id, gint subject_id, gint pred_id, gint object_id);
+static void ____lambda10__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self);
 static gboolean tracker_resources_on_emit_signals (TrackerResources* self);
 static void tracker_resources_on_statements_committed (TrackerResources* self, TrackerDataCommitType commit_type);
 static gboolean _tracker_resources_on_emit_signals_gsource_func (gpointer self);
@@ -410,7 +428,7 @@ static const GDBusInterfaceVTable _tracker_resources_dbus_interface_vtable = {tr
 static gpointer _g_object_ref0 (gpointer self) {
 #line 61 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return self ? g_object_ref (self) : NULL;
-#line 414 "tracker-resources.c"
+#line 432 "tracker-resources.c"
 }
 
 
@@ -444,14 +462,14 @@ TrackerResources* tracker_resources_construct (GType object_type, GDBusConnectio
 	self->priv->config = _tmp3_;
 #line 60 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return self;
-#line 448 "tracker-resources.c"
+#line 466 "tracker-resources.c"
 }
 
 
 TrackerResources* tracker_resources_new (GDBusConnection* connection, TrackerConfig* config_p) {
 #line 60 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return tracker_resources_construct (TRACKER_TYPE_RESOURCES, connection, config_p);
-#line 455 "tracker-resources.c"
+#line 473 "tracker-resources.c"
 }
 
 
@@ -466,7 +484,7 @@ static void tracker_resources_load_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesLoadData, _data_);
-#line 470 "tracker-resources.c"
+#line 488 "tracker-resources.c"
 }
 
 
@@ -505,7 +523,7 @@ void tracker_resources_load (TrackerResources* self, const char* sender, const g
 	_data_->uri = _tmp4_;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_load_co (_data_);
-#line 509 "tracker-resources.c"
+#line 527 "tracker-resources.c"
 }
 
 
@@ -517,29 +535,29 @@ void tracker_resources_load_finish (TrackerResources* self, GAsyncResult* _res_,
 	if (NULL == _data_) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return;
-#line 521 "tracker-resources.c"
+#line 539 "tracker-resources.c"
 	}
 }
 
 
 static void tracker_resources_load_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesLoadData* _data_;
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_load_co (_data_);
-#line 536 "tracker-resources.c"
+#line 554 "tracker-resources.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 78 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return self ? g_error_copy (self) : NULL;
-#line 543 "tracker-resources.c"
+#line 561 "tracker-resources.c"
 }
 
 
@@ -548,16 +566,16 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_) {
 	switch (_data_->_state_) {
 #line 65 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
-#line 552 "tracker-resources.c"
+#line 570 "tracker-resources.c"
 		goto _state_0;
 #line 65 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
-#line 556 "tracker-resources.c"
+#line 574 "tracker-resources.c"
 		goto _state_1;
 		default:
 #line 65 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
-#line 561 "tracker-resources.c"
+#line 579 "tracker-resources.c"
 	}
 	_state_0:
 #line 66 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
@@ -568,7 +586,7 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_) {
 	_data_->_tmp2_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.Load (uri: '%s')", _data_->_tmp1_, NULL);
 #line 66 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp2_;
-#line 572 "tracker-resources.c"
+#line 590 "tracker-resources.c"
 	{
 #line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp3_ = _data_->uri;
@@ -576,99 +594,109 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_) {
 		_data_->_tmp4_ = g_file_new_for_uri (_data_->_tmp3_);
 #line 68 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->file = _data_->_tmp4_;
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp5_ = _data_->sender;
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 69 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp5_ = tracker_main_get_data_manager ();
+#line 69 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp6_ = _g_object_ref0 (_data_->_tmp5_);
+#line 69 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->data_manager = _data_->_tmp6_;
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp7_ = _data_->sender;
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_store_queue_turtle_import (_data_->file, (const gchar*) _data_->_tmp5_, tracker_resources_load_ready, _data_);
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_store_queue_turtle_import (_data_->data_manager, _data_->file, (const gchar*) _data_->_tmp7_, tracker_resources_load_ready, _data_);
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 588 "tracker-resources.c"
+#line 612 "tracker-resources.c"
 		_state_1:
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_queue_turtle_import_finish (_data_->_res_, &_data_->_inner_error_);
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_object_unref0 (_data_->data_manager);
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_g_object_unref0 (_data_->file);
-#line 70 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 71 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-#line 598 "tracker-resources.c"
-				goto __catch8_tracker_db_no_space;
+#line 624 "tracker-resources.c"
+				goto __catch9_tracker_db_no_space;
 			}
-			goto __catch8_g_error;
+			goto __catch9_g_error;
 		}
-#line 72 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 73 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->request, NULL);
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_object_unref0 (_data_->data_manager);
+#line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_object_unref0 (_data_->file);
-#line 607 "tracker-resources.c"
+#line 635 "tracker-resources.c"
 	}
-	goto __finally8;
-	__catch8_tracker_db_no_space:
+	goto __finally9;
+	__catch9_tracker_db_no_space:
 	{
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->ie = _data_->_inner_error_;
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp6_ = _data_->ie;
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp7_ = _data_->_tmp6_->message;
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp8_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp7_);
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_inner_error_ = _data_->_tmp8_;
-#line 74 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp8_ = _data_->ie;
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp9_ = _data_->_tmp8_->message;
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp10_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp9_);
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_inner_error_ = _data_->_tmp10_;
+#line 75 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->ie);
-#line 626 "tracker-resources.c"
-		goto __finally8;
+#line 654 "tracker-resources.c"
+		goto __finally9;
 	}
-	goto __finally8;
-	__catch8_g_error:
+	goto __finally9;
+	__catch9_g_error:
 	{
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp9_ = _data_->e;
-#line 76 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_dbus_request_end (_data_->request, _data_->_tmp9_);
 #line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp10_ = _data_->e;
+		_data_->_tmp11_ = _data_->e;
 #line 77 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		if (_data_->_tmp10_->domain == TRACKER_SPARQL_ERROR) {
+		tracker_dbus_request_end (_data_->request, _data_->_tmp11_);
 #line 78 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp11_ = _data_->e;
+		_data_->_tmp12_ = _data_->e;
 #line 78 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp12_ = _g_error_copy0 (_data_->_tmp11_);
-#line 78 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp12_;
-#line 78 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_g_error_free0 (_data_->e);
-#line 652 "tracker-resources.c"
-			goto __finally8;
-		} else {
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		if (_data_->_tmp12_->domain == TRACKER_SPARQL_ERROR) {
+#line 79 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp13_ = _data_->e;
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp14_ = _data_->_tmp13_->message;
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp15_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp14_);
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp15_;
-#line 80 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp14_ = _g_error_copy0 (_data_->_tmp13_);
+#line 79 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp14_;
+#line 79 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
-#line 665 "tracker-resources.c"
-			goto __finally8;
+#line 680 "tracker-resources.c"
+			goto __finally9;
+		} else {
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp15_ = _data_->e;
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp16_ = _data_->_tmp15_->message;
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp17_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp16_);
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp17_;
+#line 81 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_error_free0 (_data_->e);
+#line 693 "tracker-resources.c"
+			goto __finally9;
 		}
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
-#line 670 "tracker-resources.c"
+#line 698 "tracker-resources.c"
 	}
-	__finally8:
+	__finally9:
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
@@ -677,7 +705,7 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_) {
 		g_object_unref (_data_->_async_result);
 #line 67 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 681 "tracker-resources.c"
+#line 709 "tracker-resources.c"
 	}
 #line 65 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
@@ -687,14 +715,14 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* _data_) {
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
 #line 65 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 691 "tracker-resources.c"
+#line 719 "tracker-resources.c"
 		}
 	}
 #line 65 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
 #line 65 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
-#line 698 "tracker-resources.c"
+#line 726 "tracker-resources.c"
 }
 
 
@@ -711,7 +739,7 @@ static void tracker_resources_sparql_query_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesSparqlQueryData, _data_);
-#line 715 "tracker-resources.c"
+#line 743 "tracker-resources.c"
 }
 
 
@@ -750,7 +778,7 @@ void tracker_resources_sparql_query (TrackerResources* self, const char* sender,
 	_data_->query = _tmp4_;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_query_co (_data_);
-#line 754 "tracker-resources.c"
+#line 782 "tracker-resources.c"
 }
 
 
@@ -763,7 +791,7 @@ GVariant* tracker_resources_sparql_query_finish (TrackerResources* self, GAsyncR
 	if (NULL == _data_) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return NULL;
-#line 767 "tracker-resources.c"
+#line 795 "tracker-resources.c"
 	}
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	result = _data_->result;
@@ -771,91 +799,91 @@ GVariant* tracker_resources_sparql_query_finish (TrackerResources* self, GAsyncR
 	_data_->result = NULL;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
-#line 775 "tracker-resources.c"
+#line 803 "tracker-resources.c"
 }
 
 
 static Block3Data* block3_data_ref (Block3Data* _data3_) {
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_atomic_int_inc (&_data3_->_ref_count_);
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return _data3_;
-#line 784 "tracker-resources.c"
+#line 812 "tracker-resources.c"
 }
 
 
 static void block3_data_unref (void * _userdata_) {
 	Block3Data* _data3_;
 	_data3_ = (Block3Data*) _userdata_;
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_atomic_int_dec_and_test (&_data3_->_ref_count_)) {
-#line 793 "tracker-resources.c"
+#line 821 "tracker-resources.c"
 		TrackerResources* self;
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		self = _data3_->self;
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_builder_unref0 (_data3_->builder);
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_object_unref0 (self);
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_slice_free (Block3Data, _data3_);
-#line 803 "tracker-resources.c"
+#line 831 "tracker-resources.c"
 	}
 }
 
 
-static void ___lambda6_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** error) {
+static void ___lambda8_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** error) {
 	TrackerResources* self;
 	GError * _inner_error_ = NULL;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	self = _data3_->self;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (cursor != NULL);
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	while (TRUE) {
-#line 817 "tracker-resources.c"
+#line 845 "tracker-resources.c"
 		gboolean _tmp0_ = FALSE;
 		TrackerDBCursor* _tmp1_;
 		gboolean _tmp2_;
 		GVariantBuilder* _tmp3_;
 		GVariantBuilder* _tmp16_;
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp1_ = cursor;
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp2_ = tracker_sparql_cursor_next ((TrackerSparqlCursor*) _tmp1_, NULL, &_inner_error_);
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp0_ = _tmp2_;
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			g_propagate_error (error, _inner_error_);
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			return;
-#line 835 "tracker-resources.c"
+#line 863 "tracker-resources.c"
 		}
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (!_tmp0_) {
-#line 93 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 95 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			break;
-#line 841 "tracker-resources.c"
+#line 869 "tracker-resources.c"
 		}
-#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp3_ = _data3_->builder;
-#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_builder_open (_tmp3_, (const GVariantType*) "as");
-#line 847 "tracker-resources.c"
+#line 875 "tracker-resources.c"
 		{
 			gint i = 0;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			i = 0;
-#line 852 "tracker-resources.c"
+#line 880 "tracker-resources.c"
 			{
 				gboolean _tmp4_ = FALSE;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				_tmp4_ = TRUE;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				while (TRUE) {
-#line 859 "tracker-resources.c"
+#line 887 "tracker-resources.c"
 					gint _tmp6_;
 					TrackerDBCursor* _tmp7_;
 					gint _tmp8_;
@@ -867,259 +895,273 @@ static void ___lambda6_ (Block3Data* _data3_, TrackerDBCursor* cursor, GError** 
 					const gchar* _tmp13_;
 					GVariantBuilder* _tmp14_;
 					const gchar* _tmp15_;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					if (!_tmp4_) {
-#line 873 "tracker-resources.c"
+#line 901 "tracker-resources.c"
 						gint _tmp5_;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp5_ = i;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						i = _tmp5_ + 1;
-#line 879 "tracker-resources.c"
+#line 907 "tracker-resources.c"
 					}
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp4_ = FALSE;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp6_ = i;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp7_ = cursor;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp8_ = tracker_sparql_cursor_get_n_columns ((TrackerSparqlCursor*) _tmp7_);
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp9_ = _tmp8_;
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					if (!(_tmp6_ < _tmp9_)) {
-#line 96 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						break;
-#line 895 "tracker-resources.c"
+#line 923 "tracker-resources.c"
 					}
-#line 97 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp10_ = cursor;
-#line 97 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp11_ = i;
-#line 97 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp12_ = tracker_sparql_cursor_get_string ((TrackerSparqlCursor*) _tmp10_, _tmp11_, NULL);
-#line 97 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					str = _tmp12_;
-#line 99 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 101 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp13_ = str;
-#line 99 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 101 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					if (_tmp13_ == NULL) {
-#line 100 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 102 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						str = "";
-#line 911 "tracker-resources.c"
+#line 939 "tracker-resources.c"
 					}
-#line 103 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 105 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp14_ = _data3_->builder;
-#line 103 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 105 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp15_ = str;
-#line 103 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 105 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					g_variant_builder_add (_tmp14_, "s", _tmp15_, NULL);
-#line 919 "tracker-resources.c"
+#line 947 "tracker-resources.c"
 				}
 			}
 		}
-#line 106 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 108 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp16_ = _data3_->builder;
-#line 106 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 108 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_builder_close (_tmp16_);
-#line 927 "tracker-resources.c"
+#line 955 "tracker-resources.c"
 	}
 }
 
 
-static void ____lambda6__tracker_store_sparql_query_in_thread (TrackerDBCursor* cursor, gpointer self, GError** error) {
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	___lambda6_ (self, cursor, error);
-#line 935 "tracker-resources.c"
+static void ____lambda8__tracker_store_sparql_query_in_thread (TrackerDBCursor* cursor, gpointer self, GError** error) {
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	___lambda8_ (self, cursor, error);
+#line 963 "tracker-resources.c"
 }
 
 
 static void tracker_resources_sparql_query_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesSparqlQueryData* _data_;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_query_co (_data_);
-#line 949 "tracker-resources.c"
+#line 977 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_sparql_query_co (TrackerResourcesSparqlQueryData* _data_) {
-#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
-#line 958 "tracker-resources.c"
+#line 986 "tracker-resources.c"
 		goto _state_0;
-#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
-#line 962 "tracker-resources.c"
+#line 990 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 86 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
-#line 967 "tracker-resources.c"
+#line 995 "tracker-resources.c"
 	}
 	_state_0:
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.SparqlQuery", NULL);
-#line 87 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp1_;
-#line 88 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = _data_->request;
-#line 88 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp3_ = _data_->query;
-#line 88 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_debug (_data_->_tmp2_, "query: %s", _data_->_tmp3_, NULL);
-#line 982 "tracker-resources.c"
+#line 1010 "tracker-resources.c"
 	{
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_ = g_slice_new0 (Block3Data);
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_->_ref_count_ = 1;
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_->self = g_object_ref (_data_->self);
-#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_tmp4_ = g_variant_builder_new ((const GVariantType*) "aas");
-#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 91 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_->builder = _data_->_tmp4_;
 #line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp5_ = _data_->query;
+		_data_->_tmp5_ = tracker_main_get_data_manager ();
 #line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp6_ = _data_->sender;
+		_data_->_tmp6_ = _g_object_ref0 (_data_->_tmp5_);
 #line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->data_manager = _data_->_tmp6_;
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp7_ = _data_->data_manager;
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp8_ = _data_->query;
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp9_ = _data_->sender;
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_store_sparql_query (_data_->_tmp5_, TRACKER_STORE_PRIORITY_HIGH, ____lambda6__tracker_store_sparql_query_in_thread, _data_->_data3_, (const gchar*) _data_->_tmp6_, tracker_resources_sparql_query_ready, _data_);
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_store_sparql_query (_data_->_tmp7_, _data_->_tmp8_, TRACKER_STORE_PRIORITY_HIGH, ____lambda8__tracker_store_sparql_query_in_thread, _data_->_data3_, (const gchar*) _data_->_tmp9_, tracker_resources_sparql_query_ready, _data_);
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 1004 "tracker-resources.c"
+#line 1040 "tracker-resources.c"
 		_state_1:
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_query_finish (_data_->_res_, &_data_->_inner_error_);
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_object_unref0 (_data_->data_manager);
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			block3_data_unref (_data_->_data3_);
-#line 92 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_data3_ = NULL;
-#line 1014 "tracker-resources.c"
-			goto __catch9_g_error;
+#line 1052 "tracker-resources.c"
+			goto __catch10_g_error;
 		}
-#line 110 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp7_ = _data_->_data3_->builder;
-#line 110 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp8_ = g_variant_builder_end (_data_->_tmp7_);
-#line 110 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		g_variant_ref_sink (_data_->_tmp8_);
-#line 110 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_result_ = _data_->_tmp8_;
-#line 111 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp9_ = _data_->_result_;
-#line 111 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp10_ = g_variant_get_size (_data_->_tmp9_);
-#line 111 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		if (_data_->_tmp10_ > ((gsize) TRACKER_RESOURCES_DBUS_ARBITRARY_MAX_MSG_SIZE)) {
 #line 112 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp11_ = g_error_new_literal (G_DBUS_ERROR, G_DBUS_ERROR_FAILED, "result set of the query is too large");
+		_data_->_tmp10_ = _data_->_data3_->builder;
 #line 112 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp11_;
+		_data_->_tmp11_ = g_variant_builder_end (_data_->_tmp10_);
 #line 112 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		g_variant_ref_sink (_data_->_tmp11_);
+#line 112 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_result_ = _data_->_tmp11_;
+#line 113 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp12_ = _data_->_result_;
+#line 113 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp13_ = g_variant_get_size (_data_->_tmp12_);
+#line 113 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		if (_data_->_tmp13_ > ((gsize) TRACKER_RESOURCES_DBUS_ARBITRARY_MAX_MSG_SIZE)) {
+#line 114 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp14_ = g_error_new_literal (G_DBUS_ERROR, G_DBUS_ERROR_FAILED, "result set of the query is too large");
+#line 114 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp14_;
+#line 114 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_g_variant_unref0 (_data_->_result_);
-#line 112 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_object_unref0 (_data_->data_manager);
+#line 114 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			block3_data_unref (_data_->_data3_);
-#line 112 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_data3_ = NULL;
-#line 1041 "tracker-resources.c"
-			goto __catch9_g_error;
+#line 1081 "tracker-resources.c"
+			goto __catch10_g_error;
 		}
-#line 115 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp12_ = _data_->request;
-#line 115 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_dbus_request_end (_data_->_tmp12_, NULL);
 #line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp15_ = _data_->request;
+#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_dbus_request_end (_data_->_tmp15_, NULL);
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->result = _data_->_result_;
-#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_object_unref0 (_data_->data_manager);
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		block3_data_unref (_data_->_data3_);
-#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_data3_ = NULL;
-#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_state_ != 0) {
-#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1062 "tracker-resources.c"
+#line 1104 "tracker-resources.c"
 			}
 		}
-#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_object_unref (_data_->_async_result);
-#line 117 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 1069 "tracker-resources.c"
+#line 1111 "tracker-resources.c"
 	}
-	goto __finally9;
-	__catch9_g_error:
+	goto __finally10;
+	__catch10_g_error:
 	{
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp13_ = _data_->request;
-#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp14_ = _data_->e;
-#line 119 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_dbus_request_end (_data_->_tmp13_, _data_->_tmp14_);
-#line 120 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp15_ = _data_->e;
-#line 120 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		if (_data_->_tmp15_->domain == TRACKER_SPARQL_ERROR) {
 #line 121 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp16_ = _data_->e;
+		_data_->_tmp16_ = _data_->request;
 #line 121 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp17_ = _g_error_copy0 (_data_->_tmp16_);
+		_data_->_tmp17_ = _data_->e;
 #line 121 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp17_;
-#line 121 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_g_error_free0 (_data_->e);
-#line 1096 "tracker-resources.c"
-			goto __finally9;
-		} else {
+		tracker_dbus_request_end (_data_->_tmp16_, _data_->_tmp17_);
+#line 122 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp18_ = _data_->e;
+#line 122 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		if (_data_->_tmp18_->domain == TRACKER_SPARQL_ERROR) {
 #line 123 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp18_ = _data_->e;
+			_data_->_tmp19_ = _data_->e;
 #line 123 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp19_ = _data_->_tmp18_->message;
-#line 123 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp20_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp19_);
+			_data_->_tmp20_ = _g_error_copy0 (_data_->_tmp19_);
 #line 123 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp20_;
 #line 123 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
-#line 1109 "tracker-resources.c"
-			goto __finally9;
+#line 1138 "tracker-resources.c"
+			goto __finally10;
+		} else {
+#line 125 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp21_ = _data_->e;
+#line 125 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp22_ = _data_->_tmp21_->message;
+#line 125 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp23_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp22_);
+#line 125 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp23_;
+#line 125 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_error_free0 (_data_->e);
+#line 1151 "tracker-resources.c"
+			goto __finally10;
 		}
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
-#line 1114 "tracker-resources.c"
+#line 1156 "tracker-resources.c"
 	}
-	__finally9:
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	__finally10:
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 89 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 90 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
-#line 1123 "tracker-resources.c"
+#line 1165 "tracker-resources.c"
 }
 
 
@@ -1134,7 +1176,7 @@ static void tracker_resources_sparql_update_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesSparqlUpdateData, _data_);
-#line 1138 "tracker-resources.c"
+#line 1180 "tracker-resources.c"
 }
 
 
@@ -1173,7 +1215,7 @@ void tracker_resources_sparql_update (TrackerResources* self, const char* sender
 	_data_->update = _tmp4_;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_update_co (_data_);
-#line 1177 "tracker-resources.c"
+#line 1219 "tracker-resources.c"
 }
 
 
@@ -1185,171 +1227,181 @@ void tracker_resources_sparql_update_finish (TrackerResources* self, GAsyncResul
 	if (NULL == _data_) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return;
-#line 1189 "tracker-resources.c"
+#line 1231 "tracker-resources.c"
 	}
 }
 
 
 static void tracker_resources_sparql_update_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesSparqlUpdateData* _data_;
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_update_co (_data_);
-#line 1204 "tracker-resources.c"
+#line 1246 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_sparql_update_co (TrackerResourcesSparqlUpdateData* _data_) {
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
-#line 1213 "tracker-resources.c"
+#line 1255 "tracker-resources.c"
 		goto _state_0;
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
-#line 1217 "tracker-resources.c"
+#line 1259 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
-#line 1222 "tracker-resources.c"
+#line 1264 "tracker-resources.c"
 	}
 	_state_0:
-#line 129 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 129 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.SparqlUpdate", NULL);
-#line 129 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp1_;
-#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = _data_->update;
-#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_debug (_data_->request, "query: %s", _data_->_tmp2_, NULL);
-#line 1235 "tracker-resources.c"
+#line 1277 "tracker-resources.c"
 	{
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp3_ = _data_->update;
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp4_ = _data_->sender;
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_state_ = 1;
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_store_sparql_update (_data_->_tmp3_, TRACKER_STORE_PRIORITY_HIGH, (const gchar*) _data_->_tmp4_, tracker_resources_sparql_update_ready, _data_);
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		return FALSE;
-#line 1247 "tracker-resources.c"
-		_state_1:
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_store_sparql_update_finish (_data_->_res_, &_data_->_inner_error_);
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 132 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-#line 1255 "tracker-resources.c"
-				goto __catch10_tracker_db_no_space;
-			}
-			goto __catch10_g_error;
-		}
 #line 134 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_dbus_request_end (_data_->request, NULL);
-#line 1262 "tracker-resources.c"
-	}
-	goto __finally10;
-	__catch10_tracker_db_no_space:
-	{
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->ie = _data_->_inner_error_;
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_inner_error_ = NULL;
-#line 136 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp5_ = _data_->ie;
-#line 136 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp6_ = _data_->_tmp5_->message;
-#line 136 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp7_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp6_);
-#line 136 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_inner_error_ = _data_->_tmp7_;
-#line 136 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_g_error_free0 (_data_->ie);
-#line 1281 "tracker-resources.c"
-		goto __finally10;
-	}
-	goto __finally10;
-	__catch10_g_error:
-	{
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->e = _data_->_inner_error_;
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_inner_error_ = NULL;
-#line 138 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp8_ = _data_->e;
-#line 138 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_dbus_request_end (_data_->request, _data_->_tmp8_);
-#line 139 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp9_ = _data_->e;
-#line 139 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		if (_data_->_tmp9_->domain == TRACKER_SPARQL_ERROR) {
-#line 140 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp10_ = _data_->e;
-#line 140 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp11_ = _g_error_copy0 (_data_->_tmp10_);
-#line 140 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp11_;
-#line 140 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_g_error_free0 (_data_->e);
-#line 1307 "tracker-resources.c"
-			goto __finally10;
-		} else {
-#line 142 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp12_ = _data_->e;
-#line 142 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp13_ = _data_->_tmp12_->message;
-#line 142 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp14_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp13_);
-#line 142 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp14_;
-#line 142 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_g_error_free0 (_data_->e);
-#line 1320 "tracker-resources.c"
-			goto __finally10;
-		}
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_g_error_free0 (_data_->e);
-#line 1325 "tracker-resources.c"
-	}
-	__finally10:
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		g_object_unref (_data_->_async_result);
-#line 131 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp3_ = tracker_main_get_data_manager ();
+#line 134 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp4_ = _g_object_ref0 (_data_->_tmp3_);
+#line 134 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->data_manager = _data_->_tmp4_;
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp5_ = _data_->update;
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp6_ = _data_->sender;
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_state_ = 1;
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_store_sparql_update (_data_->data_manager, _data_->_tmp5_, TRACKER_STORE_PRIORITY_HIGH, (const gchar*) _data_->_tmp6_, tracker_resources_sparql_update_ready, _data_);
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 1336 "tracker-resources.c"
+#line 1295 "tracker-resources.c"
+		_state_1:
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_store_sparql_update_finish (_data_->_res_, &_data_->_inner_error_);
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_object_unref0 (_data_->data_manager);
+#line 135 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
+#line 1305 "tracker-resources.c"
+				goto __catch11_tracker_db_no_space;
+			}
+			goto __catch11_g_error;
+		}
+#line 137 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_dbus_request_end (_data_->request, NULL);
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_object_unref0 (_data_->data_manager);
+#line 1314 "tracker-resources.c"
 	}
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	goto __finally11;
+	__catch11_tracker_db_no_space:
+	{
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->ie = _data_->_inner_error_;
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_inner_error_ = NULL;
+#line 139 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp7_ = _data_->ie;
+#line 139 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp8_ = _data_->_tmp7_->message;
+#line 139 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp9_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp8_);
+#line 139 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_inner_error_ = _data_->_tmp9_;
+#line 139 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_error_free0 (_data_->ie);
+#line 1333 "tracker-resources.c"
+		goto __finally11;
+	}
+	goto __finally11;
+	__catch11_g_error:
+	{
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->e = _data_->_inner_error_;
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_inner_error_ = NULL;
+#line 141 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp10_ = _data_->e;
+#line 141 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_dbus_request_end (_data_->request, _data_->_tmp10_);
+#line 142 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp11_ = _data_->e;
+#line 142 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		if (_data_->_tmp11_->domain == TRACKER_SPARQL_ERROR) {
+#line 143 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp12_ = _data_->e;
+#line 143 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp13_ = _g_error_copy0 (_data_->_tmp12_);
+#line 143 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp13_;
+#line 143 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_error_free0 (_data_->e);
+#line 1359 "tracker-resources.c"
+			goto __finally11;
+		} else {
+#line 145 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp14_ = _data_->e;
+#line 145 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp15_ = _data_->_tmp14_->message;
+#line 145 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp16_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp15_);
+#line 145 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp16_;
+#line 145 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_error_free0 (_data_->e);
+#line 1372 "tracker-resources.c"
+			goto __finally11;
+		}
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_error_free0 (_data_->e);
+#line 1377 "tracker-resources.c"
+	}
+	__finally11:
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		g_object_unref (_data_->_async_result);
+#line 133 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		return FALSE;
+#line 1388 "tracker-resources.c"
+	}
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ != 0) {
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1346 "tracker-resources.c"
+#line 1398 "tracker-resources.c"
 		}
 	}
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 128 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 130 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
-#line 1353 "tracker-resources.c"
+#line 1405 "tracker-resources.c"
 }
 
 
@@ -1366,7 +1418,7 @@ static void tracker_resources_sparql_update_blank_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesSparqlUpdateBlankData, _data_);
-#line 1370 "tracker-resources.c"
+#line 1422 "tracker-resources.c"
 }
 
 
@@ -1405,7 +1457,7 @@ void tracker_resources_sparql_update_blank (TrackerResources* self, const char* 
 	_data_->update = _tmp4_;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_update_blank_co (_data_);
-#line 1409 "tracker-resources.c"
+#line 1461 "tracker-resources.c"
 }
 
 
@@ -1418,7 +1470,7 @@ GVariant* tracker_resources_sparql_update_blank_finish (TrackerResources* self, 
 	if (NULL == _data_) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return NULL;
-#line 1422 "tracker-resources.c"
+#line 1474 "tracker-resources.c"
 	}
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	result = _data_->result;
@@ -1426,176 +1478,188 @@ GVariant* tracker_resources_sparql_update_blank_finish (TrackerResources* self, 
 	_data_->result = NULL;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
-#line 1430 "tracker-resources.c"
+#line 1482 "tracker-resources.c"
 }
 
 
 static void tracker_resources_sparql_update_blank_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesSparqlUpdateBlankData* _data_;
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_sparql_update_blank_co (_data_);
-#line 1444 "tracker-resources.c"
+#line 1496 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_sparql_update_blank_co (TrackerResourcesSparqlUpdateBlankData* _data_) {
-#line 148 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 148 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
-#line 1453 "tracker-resources.c"
+#line 1505 "tracker-resources.c"
 		goto _state_0;
-#line 148 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
-#line 1457 "tracker-resources.c"
+#line 1509 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 148 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
-#line 1462 "tracker-resources.c"
+#line 1514 "tracker-resources.c"
 	}
 	_state_0:
-#line 149 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 149 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.SparqlUpdateBlank", NULL);
-#line 149 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp1_;
-#line 150 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = _data_->request;
-#line 150 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp3_ = _data_->update;
-#line 150 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_debug (_data_->_tmp2_, "query: %s", _data_->_tmp3_, NULL);
-#line 1477 "tracker-resources.c"
+#line 1529 "tracker-resources.c"
 	{
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp4_ = _data_->update;
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp5_ = _data_->sender;
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 155 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp4_ = tracker_main_get_data_manager ();
+#line 155 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp5_ = _g_object_ref0 (_data_->_tmp4_);
+#line 155 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->data_manager = _data_->_tmp5_;
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp6_ = _data_->data_manager;
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp7_ = _data_->update;
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp8_ = _data_->sender;
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_store_sparql_update_blank (_data_->_tmp4_, TRACKER_STORE_PRIORITY_HIGH, (const gchar*) _data_->_tmp5_, tracker_resources_sparql_update_blank_ready, _data_);
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_store_sparql_update_blank (_data_->_tmp6_, _data_->_tmp7_, TRACKER_STORE_PRIORITY_HIGH, (const gchar*) _data_->_tmp8_, tracker_resources_sparql_update_blank_ready, _data_);
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 1489 "tracker-resources.c"
+#line 1549 "tracker-resources.c"
 		_state_1:
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp6_ = tracker_store_sparql_update_blank_finish (_data_->_res_, &_data_->_inner_error_);
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->variant = _data_->_tmp6_;
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp9_ = tracker_store_sparql_update_blank_finish (_data_->_res_, &_data_->_inner_error_);
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->variant = _data_->_tmp9_;
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 152 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_object_unref0 (_data_->data_manager);
+#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-#line 1499 "tracker-resources.c"
-				goto __catch11_tracker_db_no_space;
+#line 1561 "tracker-resources.c"
+				goto __catch12_tracker_db_no_space;
 			}
-			goto __catch11_g_error;
+			goto __catch12_g_error;
 		}
-#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp7_ = _data_->request;
-#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_dbus_request_end (_data_->_tmp7_, NULL);
-#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 158 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp10_ = _data_->request;
+#line 158 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_dbus_request_end (_data_->_tmp10_, NULL);
+#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->result = _data_->variant;
-#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_object_unref0 (_data_->data_manager);
+#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (_data_->_state_ != 0) {
-#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1518 "tracker-resources.c"
+#line 1582 "tracker-resources.c"
 			}
 		}
-#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_object_unref (_data_->_async_result);
-#line 156 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 1525 "tracker-resources.c"
+#line 1589 "tracker-resources.c"
 	}
-	goto __finally11;
-	__catch11_tracker_db_no_space:
+	goto __finally12;
+	__catch12_tracker_db_no_space:
 	{
-#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->ie = _data_->_inner_error_;
-#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 158 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp8_ = _data_->ie;
-#line 158 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp9_ = _data_->_tmp8_->message;
-#line 158 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp10_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp9_);
-#line 158 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_inner_error_ = _data_->_tmp10_;
-#line 158 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp11_ = _data_->ie;
+#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp12_ = _data_->_tmp11_->message;
+#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp13_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp12_);
+#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_inner_error_ = _data_->_tmp13_;
+#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->ie);
-#line 1544 "tracker-resources.c"
-		goto __finally11;
+#line 1608 "tracker-resources.c"
+		goto __finally12;
 	}
-	goto __finally11;
-	__catch11_g_error:
+	goto __finally12;
+	__catch12_g_error:
 	{
-#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
-#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp11_ = _data_->request;
-#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp12_ = _data_->e;
-#line 160 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_dbus_request_end (_data_->_tmp11_, _data_->_tmp12_);
-#line 161 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp13_ = _data_->e;
-#line 161 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		if (_data_->_tmp13_->domain == TRACKER_SPARQL_ERROR) {
-#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp14_ = _data_->e;
-#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp15_ = _g_error_copy0 (_data_->_tmp14_);
-#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp15_;
-#line 162 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_g_error_free0 (_data_->e);
-#line 1572 "tracker-resources.c"
-			goto __finally11;
-		} else {
 #line 164 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp16_ = _data_->e;
+		_data_->_tmp14_ = _data_->request;
 #line 164 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp17_ = _data_->_tmp16_->message;
+		_data_->_tmp15_ = _data_->e;
 #line 164 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp18_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp17_);
-#line 164 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_dbus_request_end (_data_->_tmp14_, _data_->_tmp15_);
+#line 165 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp16_ = _data_->e;
+#line 165 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		if (_data_->_tmp16_->domain == TRACKER_SPARQL_ERROR) {
+#line 166 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp17_ = _data_->e;
+#line 166 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp18_ = _g_error_copy0 (_data_->_tmp17_);
+#line 166 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_inner_error_ = _data_->_tmp18_;
-#line 164 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 166 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
-#line 1585 "tracker-resources.c"
-			goto __finally11;
+#line 1636 "tracker-resources.c"
+			goto __finally12;
+		} else {
+#line 168 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp19_ = _data_->e;
+#line 168 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp20_ = _data_->_tmp19_->message;
+#line 168 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp21_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp20_);
+#line 168 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp21_;
+#line 168 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_error_free0 (_data_->e);
+#line 1649 "tracker-resources.c"
+			goto __finally12;
 		}
-#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
-#line 1590 "tracker-resources.c"
+#line 1654 "tracker-resources.c"
 	}
-	__finally11:
-#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	__finally12:
+#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 151 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 154 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
-#line 1599 "tracker-resources.c"
+#line 1663 "tracker-resources.c"
 }
 
 
@@ -1603,23 +1667,56 @@ void tracker_resources_sync (TrackerResources* self, const char* sender) {
 	TrackerDBusRequest* request = NULL;
 	const char* _tmp0_;
 	TrackerDBusRequest* _tmp1_;
-#line 169 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	g_return_if_fail (self != NULL);
-#line 169 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	g_return_if_fail (sender != NULL);
-#line 170 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	_tmp0_ = sender;
-#line 170 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	_tmp1_ = tracker_dbus_request_begin ((const gchar*) _tmp0_, "Resources.Sync", NULL);
-#line 170 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	request = _tmp1_;
+	TrackerDataManager* data_manager = NULL;
+	TrackerDataManager* _tmp2_;
+	TrackerDataManager* _tmp3_;
+	TrackerData* data = NULL;
+	TrackerData* _tmp4_;
+	TrackerData* _tmp5_;
+	TrackerDBInterface* iface = NULL;
+	TrackerDBInterface* _tmp6_;
+	TrackerDBInterface* _tmp7_;
 #line 173 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_store_wal_checkpoint ();
+	g_return_if_fail (self != NULL);
+#line 173 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	g_return_if_fail (sender != NULL);
+#line 174 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp0_ = sender;
+#line 174 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp1_ = tracker_dbus_request_begin ((const gchar*) _tmp0_, "Resources.Sync", NULL);
+#line 174 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	request = _tmp1_;
 #line 175 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_sync ();
+	_tmp2_ = tracker_main_get_data_manager ();
+#line 175 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp3_ = _g_object_ref0 (_tmp2_);
+#line 175 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	data_manager = _tmp3_;
+#line 176 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp4_ = tracker_data_manager_get_data (data_manager);
+#line 176 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp5_ = _g_object_ref0 (_tmp4_);
+#line 176 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	data = _tmp5_;
 #line 177 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp6_ = tracker_data_manager_get_writable_db_interface (data_manager);
+#line 177 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp7_ = _g_object_ref0 (_tmp6_);
+#line 177 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	iface = _tmp7_;
+#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_store_wal_checkpoint (iface, TRUE);
+#line 182 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_sync (data);
+#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_end (request, NULL);
-#line 1623 "tracker-resources.c"
+#line 173 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_g_object_unref0 (iface);
+#line 173 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_g_object_unref0 (data);
+#line 173 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_g_object_unref0 (data_manager);
+#line 1720 "tracker-resources.c"
 }
 
 
@@ -1634,7 +1731,7 @@ static void tracker_resources_batch_sparql_update_data_free (gpointer _data) {
 	_g_object_unref0 (_data_->self);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_slice_free (TrackerResourcesBatchSparqlUpdateData, _data_);
-#line 1638 "tracker-resources.c"
+#line 1735 "tracker-resources.c"
 }
 
 
@@ -1673,7 +1770,7 @@ void tracker_resources_batch_sparql_update (TrackerResources* self, const char* 
 	_data_->update = _tmp4_;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_batch_sparql_update_co (_data_);
-#line 1677 "tracker-resources.c"
+#line 1774 "tracker-resources.c"
 }
 
 
@@ -1685,271 +1782,281 @@ void tracker_resources_batch_sparql_update_finish (TrackerResources* self, GAsyn
 	if (NULL == _data_) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return;
-#line 1689 "tracker-resources.c"
+#line 1786 "tracker-resources.c"
 	}
 }
 
 
 static void tracker_resources_batch_sparql_update_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerResourcesBatchSparqlUpdateData* _data_;
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_ = _user_data_;
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_source_object_ = source_object;
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_res_ = _res_;
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_batch_sparql_update_co (_data_);
-#line 1704 "tracker-resources.c"
+#line 1801 "tracker-resources.c"
 }
 
 
 static gboolean tracker_resources_batch_sparql_update_co (TrackerResourcesBatchSparqlUpdateData* _data_) {
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	switch (_data_->_state_) {
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 0:
-#line 1713 "tracker-resources.c"
+#line 1810 "tracker-resources.c"
 		goto _state_0;
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		case 1:
-#line 1717 "tracker-resources.c"
+#line 1814 "tracker-resources.c"
 		goto _state_1;
 		default:
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_assert_not_reached ();
-#line 1722 "tracker-resources.c"
+#line 1819 "tracker-resources.c"
 	}
 	_state_0:
-#line 181 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 188 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp0_ = _data_->sender;
-#line 181 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 188 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp1_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp0_, "Resources.BatchSparqlUpdate", NULL);
-#line 181 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 188 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->request = _data_->_tmp1_;
-#line 182 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 189 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_data_->_tmp2_ = _data_->update;
-#line 182 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 189 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_dbus_request_debug (_data_->request, "query: %s", _data_->_tmp2_, NULL);
-#line 1735 "tracker-resources.c"
+#line 1832 "tracker-resources.c"
 	{
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp3_ = _data_->update;
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp4_ = _data_->sender;
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 191 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp3_ = tracker_main_get_data_manager ();
+#line 191 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp4_ = _g_object_ref0 (_data_->_tmp3_);
+#line 191 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->data_manager = _data_->_tmp4_;
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp5_ = _data_->update;
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp6_ = _data_->sender;
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_state_ = 1;
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_store_sparql_update (_data_->_tmp3_, TRACKER_STORE_PRIORITY_LOW, (const gchar*) _data_->_tmp4_, tracker_resources_batch_sparql_update_ready, _data_);
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_store_sparql_update (_data_->data_manager, _data_->_tmp5_, TRACKER_STORE_PRIORITY_LOW, (const gchar*) _data_->_tmp6_, tracker_resources_batch_sparql_update_ready, _data_);
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 1747 "tracker-resources.c"
+#line 1850 "tracker-resources.c"
 		_state_1:
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_store_sparql_update_finish (_data_->_res_, &_data_->_inner_error_);
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 184 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_object_unref0 (_data_->data_manager);
+#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			if (g_error_matches (_data_->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-#line 1755 "tracker-resources.c"
-				goto __catch12_tracker_db_no_space;
+#line 1860 "tracker-resources.c"
+				goto __catch13_tracker_db_no_space;
 			}
-			goto __catch12_g_error;
+			goto __catch13_g_error;
 		}
-#line 186 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 194 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_dbus_request_end (_data_->request, NULL);
-#line 1762 "tracker-resources.c"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_object_unref0 (_data_->data_manager);
+#line 1869 "tracker-resources.c"
 	}
-	goto __finally12;
-	__catch12_tracker_db_no_space:
+	goto __finally13;
+	__catch13_tracker_db_no_space:
 	{
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->ie = _data_->_inner_error_;
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 188 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp5_ = _data_->ie;
-#line 188 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp6_ = _data_->_tmp5_->message;
-#line 188 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp7_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp6_);
-#line 188 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_inner_error_ = _data_->_tmp7_;
-#line 188 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 196 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp7_ = _data_->ie;
+#line 196 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp8_ = _data_->_tmp7_->message;
+#line 196 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp9_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, _data_->_tmp8_);
+#line 196 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_inner_error_ = _data_->_tmp9_;
+#line 196 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->ie);
-#line 1781 "tracker-resources.c"
-		goto __finally12;
+#line 1888 "tracker-resources.c"
+		goto __finally13;
 	}
-	goto __finally12;
-	__catch12_g_error:
+	goto __finally13;
+	__catch13_g_error:
 	{
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->e = _data_->_inner_error_;
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data_->_inner_error_ = NULL;
-#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp8_ = _data_->e;
-#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_dbus_request_end (_data_->request, _data_->_tmp8_);
-#line 191 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_data_->_tmp9_ = _data_->e;
-#line 191 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		if (_data_->_tmp9_->domain == TRACKER_SPARQL_ERROR) {
-#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp10_ = _data_->e;
-#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp11_ = _g_error_copy0 (_data_->_tmp10_);
-#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp11_;
-#line 192 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_g_error_free0 (_data_->e);
-#line 1807 "tracker-resources.c"
-			goto __finally12;
-		} else {
-#line 194 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 198 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp10_ = _data_->e;
+#line 198 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_dbus_request_end (_data_->request, _data_->_tmp10_);
+#line 199 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_data_->_tmp11_ = _data_->e;
+#line 199 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		if (_data_->_tmp11_->domain == TRACKER_SPARQL_ERROR) {
+#line 200 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_data_->_tmp12_ = _data_->e;
-#line 194 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp13_ = _data_->_tmp12_->message;
-#line 194 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_tmp14_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp13_);
-#line 194 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_data_->_inner_error_ = _data_->_tmp14_;
-#line 194 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 200 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp13_ = _g_error_copy0 (_data_->_tmp12_);
+#line 200 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp13_;
+#line 200 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_g_error_free0 (_data_->e);
-#line 1820 "tracker-resources.c"
-			goto __finally12;
+#line 1914 "tracker-resources.c"
+			goto __finally13;
+		} else {
+#line 202 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp14_ = _data_->e;
+#line 202 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp15_ = _data_->_tmp14_->message;
+#line 202 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_tmp16_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp15_);
+#line 202 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_data_->_inner_error_ = _data_->_tmp16_;
+#line 202 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_g_error_free0 (_data_->e);
+#line 1927 "tracker-resources.c"
+			goto __finally13;
 		}
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_error_free0 (_data_->e);
-#line 1825 "tracker-resources.c"
+#line 1932 "tracker-resources.c"
 	}
-	__finally12:
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	__finally13:
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_object_unref (_data_->_async_result);
-#line 183 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 190 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return FALSE;
-#line 1836 "tracker-resources.c"
+#line 1943 "tracker-resources.c"
 	}
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (_data_->_state_ != 0) {
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1846 "tracker-resources.c"
+#line 1953 "tracker-resources.c"
 		}
 	}
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_object_unref (_data_->_async_result);
-#line 180 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 187 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return FALSE;
-#line 1853 "tracker-resources.c"
+#line 1960 "tracker-resources.c"
 }
 
 
 void tracker_resources_batch_commit (TrackerResources* self) {
-#line 199 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 207 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 1860 "tracker-resources.c"
+#line 1967 "tracker-resources.c"
 }
 
 
 static Block4Data* block4_data_ref (Block4Data* _data4_) {
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_atomic_int_inc (&_data4_->_ref_count_);
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return _data4_;
-#line 1869 "tracker-resources.c"
+#line 1976 "tracker-resources.c"
 }
 
 
 static void block4_data_unref (void * _userdata_) {
 	Block4Data* _data4_;
 	_data4_ = (Block4Data*) _userdata_;
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (g_atomic_int_dec_and_test (&_data4_->_ref_count_)) {
-#line 1878 "tracker-resources.c"
+#line 1985 "tracker-resources.c"
 		TrackerResources* self;
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		self = _data4_->self;
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_builder_unref0 (_data4_->builder);
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_object_unref0 (self);
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_slice_free (Block4Data, _data4_);
-#line 1888 "tracker-resources.c"
+#line 1995 "tracker-resources.c"
 	}
 }
 
 
-static void ___lambda7_ (Block4Data* _data4_, gint graph_id, gint subject_id, gint pred_id, gint object_id) {
+static void ___lambda9_ (Block4Data* _data4_, gint graph_id, gint subject_id, gint pred_id, gint object_id) {
 	TrackerResources* self;
 	GVariantBuilder* _tmp0_;
 	gint _tmp1_;
 	gint _tmp2_;
 	gint _tmp3_;
 	gint _tmp4_;
-#line 206 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	self = _data4_->self;
-#line 207 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _data4_->builder;
-#line 207 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = graph_id;
-#line 207 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = subject_id;
-#line 207 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = pred_id;
-#line 207 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = object_id;
-#line 207 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_variant_builder_add (_tmp0_, "(iiii)", _tmp1_, _tmp2_, _tmp3_, _tmp4_, NULL);
-#line 1914 "tracker-resources.c"
+#line 2021 "tracker-resources.c"
 }
 
 
-static void ____lambda7__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self) {
-#line 206 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	___lambda7_ (self, graph_id, subject_id, pred_id, object_id);
-#line 1921 "tracker-resources.c"
+static void ____lambda9__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self) {
+#line 214 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	___lambda9_ (self, graph_id, subject_id, pred_id, object_id);
+#line 2028 "tracker-resources.c"
 }
 
 
-static void ___lambda8_ (Block4Data* _data4_, gint graph_id, gint subject_id, gint pred_id, gint object_id) {
+static void ___lambda10_ (Block4Data* _data4_, gint graph_id, gint subject_id, gint pred_id, gint object_id) {
 	TrackerResources* self;
 	GVariantBuilder* _tmp0_;
 	gint _tmp1_;
 	gint _tmp2_;
 	gint _tmp3_;
 	gint _tmp4_;
-#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	self = _data4_->self;
-#line 213 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = _data4_->builder;
-#line 213 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = graph_id;
-#line 213 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = subject_id;
-#line 213 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = pred_id;
-#line 213 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = object_id;
-#line 213 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_variant_builder_add (_tmp0_, "(iiii)", _tmp1_, _tmp2_, _tmp3_, _tmp4_, NULL);
-#line 1946 "tracker-resources.c"
+#line 2053 "tracker-resources.c"
 }
 
 
-static void ____lambda8__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self) {
-#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	___lambda8_ (self, graph_id, subject_id, pred_id, object_id);
-#line 1953 "tracker-resources.c"
+static void ____lambda10__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self) {
+#line 220 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	___lambda10_ (self, graph_id, subject_id, pred_id, object_id);
+#line 2060 "tracker-resources.c"
 }
 
 
@@ -1958,33 +2065,33 @@ static gboolean tracker_resources_emit_graph_updated (TrackerResources* self, Tr
 	gboolean _tmp0_ = FALSE;
 	TrackerClass* _tmp1_;
 	gboolean _tmp2_;
-#line 203 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 211 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 203 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 211 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_val_if_fail (cl != NULL, FALSE);
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = cl;
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = tracker_class_has_insert_events (_tmp1_);
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp2_) {
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp0_ = TRUE;
-#line 1974 "tracker-resources.c"
+#line 2081 "tracker-resources.c"
 	} else {
 		TrackerClass* _tmp3_;
 		gboolean _tmp4_;
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp3_ = cl;
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp4_ = tracker_class_has_delete_events (_tmp3_);
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp0_ = _tmp4_;
-#line 1984 "tracker-resources.c"
+#line 2091 "tracker-resources.c"
 	}
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp0_) {
-#line 1988 "tracker-resources.c"
+#line 2095 "tracker-resources.c"
 		Block4Data* _data4_;
 		GVariantBuilder* _tmp5_;
 		TrackerClass* _tmp6_;
@@ -2002,88 +2109,88 @@ static gboolean tracker_resources_emit_graph_updated (TrackerResources* self, Tr
 		GVariant* _tmp16_;
 		GVariant* _tmp17_;
 		TrackerClass* _tmp18_;
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_ = g_slice_new0 (Block4Data);
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_->_ref_count_ = 1;
-#line 204 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_->self = g_object_ref (self);
-#line 205 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 213 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp5_ = g_variant_builder_new ((const GVariantType*) "a(iiii)");
-#line 205 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 213 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_->builder = _tmp5_;
-#line 206 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp6_ = cl;
-#line 206 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_class_foreach_delete_event (_tmp6_, ____lambda7__tracker_events_foreach, _data4_);
-#line 209 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_class_foreach_delete_event (_tmp6_, ____lambda9__tracker_events_foreach, _data4_);
+#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp7_ = _data4_->builder;
-#line 209 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp8_ = g_variant_builder_end (_tmp7_);
-#line 209 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_ref_sink (_tmp8_);
-#line 209 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		deletes = _tmp8_;
-#line 211 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 219 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp9_ = g_variant_builder_new ((const GVariantType*) "a(iiii)");
-#line 211 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 219 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_builder_unref0 (_data4_->builder);
-#line 211 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 219 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_->builder = _tmp9_;
-#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp10_ = cl;
-#line 212 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		tracker_class_foreach_insert_event (_tmp10_, ____lambda8__tracker_events_foreach, _data4_);
-#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 220 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		tracker_class_foreach_insert_event (_tmp10_, ____lambda10__tracker_events_foreach, _data4_);
+#line 223 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp11_ = _data4_->builder;
-#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp12_ = g_variant_builder_end (_tmp11_);
-#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_variant_ref_sink (_tmp12_);
-#line 215 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		inserts = _tmp12_;
-#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp13_ = cl;
-#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp14_ = tracker_class_get_uri (_tmp13_);
-#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp15_ = _tmp14_;
-#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp16_ = deletes;
-#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp17_ = inserts;
-#line 217 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_signal_emit (self, tracker_resources_signals[TRACKER_RESOURCES_GRAPH_UPDATED_SIGNAL], 0, _tmp15_, _tmp16_, _tmp17_);
-#line 219 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp18_ = cl;
-#line 219 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_class_reset_ready_events (_tmp18_);
-#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		result = TRUE;
-#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_unref0 (inserts);
-#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_g_variant_unref0 (deletes);
-#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		block4_data_unref (_data4_);
-#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_data4_ = NULL;
-#line 221 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		return result;
-#line 2074 "tracker-resources.c"
+#line 2181 "tracker-resources.c"
 	}
-#line 223 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	result = FALSE;
-#line 223 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
-#line 2080 "tracker-resources.c"
+#line 2187 "tracker-resources.c"
 }
 
 
 static gpointer _g_hash_table_ref0 (gpointer self) {
-#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return self ? g_hash_table_ref (self) : NULL;
-#line 2087 "tracker-resources.c"
+#line 2194 "tracker-resources.c"
 }
 
 
@@ -2095,55 +2202,55 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 	GHashTable* _tmp4_;
 	GHashTable* _tmp5_;
 	GHashTable* _tmp6_;
-#line 226 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 234 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = tracker_events_get_classes (&_tmp0_);
-#line 2103 "tracker-resources.c"
+#line 2210 "tracker-resources.c"
 	{
 		TrackerClass** cl_collection = NULL;
 		gint cl_collection_length1 = 0;
 		gint _cl_collection_size_ = 0;
 		gint cl_it = 0;
-#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		cl_collection = _tmp1_;
-#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		cl_collection_length1 = _tmp0_;
-#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		for (cl_it = 0; cl_it < _tmp0_; cl_it = cl_it + 1) {
-#line 2115 "tracker-resources.c"
+#line 2222 "tracker-resources.c"
 			TrackerClass* _tmp2_;
 			TrackerClass* cl = NULL;
-#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp2_ = _g_object_ref0 (cl_collection[cl_it]);
-#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			cl = _tmp2_;
-#line 2122 "tracker-resources.c"
+#line 2229 "tracker-resources.c"
 			{
 				TrackerClass* _tmp3_;
-#line 228 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 236 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				_tmp3_ = cl;
-#line 228 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 236 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				tracker_resources_emit_graph_updated (self, _tmp3_);
-#line 227 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				_g_object_unref0 (cl);
-#line 2131 "tracker-resources.c"
+#line 2238 "tracker-resources.c"
 			}
 		}
 	}
-#line 232 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 240 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_events_get_total (TRUE);
-#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = tracker_writeback_get_ready ();
-#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp5_ = _g_hash_table_ref0 (_tmp4_);
-#line 235 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	writebacks = _tmp5_;
-#line 237 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 245 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp6_ = writebacks;
-#line 237 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 245 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp6_ != NULL) {
-#line 2147 "tracker-resources.c"
+#line 2254 "tracker-resources.c"
 		GVariantBuilder* builder = NULL;
 		GVariantBuilder* _tmp7_;
 		GHashTableIter wb_iter = {0};
@@ -2153,17 +2260,17 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 		GVariantBuilder* _tmp27_;
 		GVariant* _tmp28_;
 		GVariant* _tmp29_;
-#line 238 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 246 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp7_ = g_variant_builder_new ((const GVariantType*) "a{iai}");
-#line 238 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 246 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		builder = _tmp7_;
-#line 240 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 248 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp8_ = writebacks;
-#line 240 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 248 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		g_hash_table_iter_init (&wb_iter, _tmp8_);
-#line 244 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		while (TRUE) {
-#line 2167 "tracker-resources.c"
+#line 2274 "tracker-resources.c"
 			gconstpointer _tmp9_ = NULL;
 			gconstpointer _tmp10_ = NULL;
 			gboolean _tmp11_;
@@ -2173,45 +2280,45 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 			GVariantBuilder* _tmp15_;
 			GVariantBuilder* _tmp25_;
 			GVariantBuilder* _tmp26_;
-#line 244 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp11_ = g_hash_table_iter_next (&wb_iter, (gpointer*) (&_tmp9_), (gpointer*) (&_tmp10_));
-#line 244 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			subject_id = _tmp9_;
-#line 244 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			types = _tmp10_;
-#line 244 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			if (!_tmp11_) {
-#line 244 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				break;
-#line 2187 "tracker-resources.c"
+#line 2294 "tracker-resources.c"
 			}
-#line 245 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 253 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp12_ = builder;
-#line 245 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 253 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			g_variant_builder_open (_tmp12_, (const GVariantType*) "{iai}");
-#line 247 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 255 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp13_ = builder;
-#line 247 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 255 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp14_ = subject_id;
-#line 247 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 255 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			g_variant_builder_add (_tmp13_, "i", _tmp14_, NULL);
-#line 249 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp15_ = builder;
-#line 249 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			g_variant_builder_open (_tmp15_, (const GVariantType*) "ai");
-#line 2203 "tracker-resources.c"
+#line 2310 "tracker-resources.c"
 			{
 				gint i = 0;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				i = 0;
-#line 2208 "tracker-resources.c"
+#line 2315 "tracker-resources.c"
 				{
 					gboolean _tmp16_ = FALSE;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					_tmp16_ = TRUE;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 					while (TRUE) {
-#line 2215 "tracker-resources.c"
+#line 2322 "tracker-resources.c"
 						gint _tmp18_;
 						GArray* _tmp19_;
 						guint _tmp20_;
@@ -2219,92 +2326,92 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 						GArray* _tmp22_;
 						gint _tmp23_;
 						gint _tmp24_;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						if (!_tmp16_) {
-#line 2225 "tracker-resources.c"
+#line 2332 "tracker-resources.c"
 							gint _tmp17_;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 							_tmp17_ = i;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 							i = _tmp17_ + 1;
-#line 2231 "tracker-resources.c"
+#line 2338 "tracker-resources.c"
 						}
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp16_ = FALSE;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp18_ = i;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp19_ = types;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp20_ = _tmp19_->len;
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						if (!(((guint) _tmp18_) < _tmp20_)) {
-#line 250 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 							break;
-#line 2245 "tracker-resources.c"
+#line 2352 "tracker-resources.c"
 						}
-#line 251 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp21_ = builder;
-#line 251 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp22_ = types;
-#line 251 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp23_ = i;
-#line 251 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						_tmp24_ = g_array_index (_tmp22_, gint, (guint) _tmp23_);
-#line 251 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 						g_variant_builder_add (_tmp21_, "i", _tmp24_, NULL);
-#line 2257 "tracker-resources.c"
+#line 2364 "tracker-resources.c"
 					}
 				}
 			}
-#line 253 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_tmp25_ = builder;
-#line 253 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			g_variant_builder_close (_tmp25_);
-#line 255 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_tmp26_ = builder;
-#line 255 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			g_variant_builder_close (_tmp26_);
-#line 2269 "tracker-resources.c"
-		}
-#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_tmp27_ = builder;
-#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_tmp28_ = g_variant_builder_end (_tmp27_);
-#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		g_variant_ref_sink (_tmp28_);
-#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_tmp29_ = _tmp28_;
-#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		g_signal_emit (self, tracker_resources_signals[TRACKER_RESOURCES_WRITEBACK_SIGNAL], 0, _tmp29_);
-#line 258 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_g_variant_unref0 (_tmp29_);
-#line 237 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_g_variant_builder_unref0 (builder);
-#line 2285 "tracker-resources.c"
-	}
 #line 261 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_writeback_reset_ready ();
+			_tmp25_ = builder;
+#line 261 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			g_variant_builder_close (_tmp25_);
 #line 263 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_tmp26_ = builder;
+#line 263 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			g_variant_builder_close (_tmp26_);
+#line 2376 "tracker-resources.c"
+		}
+#line 266 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_tmp27_ = builder;
+#line 266 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_tmp28_ = g_variant_builder_end (_tmp27_);
+#line 266 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		g_variant_ref_sink (_tmp28_);
+#line 266 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_tmp29_ = _tmp28_;
+#line 266 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		g_signal_emit (self, tracker_resources_signals[TRACKER_RESOURCES_WRITEBACK_SIGNAL], 0, _tmp29_);
+#line 266 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_variant_unref0 (_tmp29_);
+#line 245 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_g_variant_builder_unref0 (builder);
+#line 2392 "tracker-resources.c"
+	}
+#line 269 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_writeback_reset_ready ();
+#line 271 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	self->priv->regular_commit_pending = FALSE;
-#line 264 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 272 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	self->priv->signal_timeout = (guint) 0;
-#line 265 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 273 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	result = FALSE;
-#line 265 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 273 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_g_hash_table_unref0 (writebacks);
-#line 265 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 273 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
-#line 2299 "tracker-resources.c"
+#line 2406 "tracker-resources.c"
 }
 
 
 static gboolean _tracker_resources_on_emit_signals_gsource_func (gpointer self) {
 	gboolean result;
 	result = tracker_resources_on_emit_signals ((TrackerResources*) self);
-#line 297 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 305 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	return result;
-#line 2308 "tracker-resources.c"
+#line 2415 "tracker-resources.c"
 }
 
 
@@ -2315,156 +2422,156 @@ static void tracker_resources_on_statements_committed (TrackerResources* self, T
 	TrackerDataCommitType _tmp7_;
 	gboolean _tmp8_ = FALSE;
 	gboolean _tmp9_;
-#line 268 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 276 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 271 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = tracker_events_get_classes (&_tmp0_);
-#line 2323 "tracker-resources.c"
+#line 2430 "tracker-resources.c"
 	{
 		TrackerClass** cl_collection = NULL;
 		gint cl_collection_length1 = 0;
 		gint _cl_collection_size_ = 0;
 		gint cl_it = 0;
-#line 271 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		cl_collection = _tmp1_;
-#line 271 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		cl_collection_length1 = _tmp0_;
-#line 271 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		for (cl_it = 0; cl_it < _tmp0_; cl_it = cl_it + 1) {
-#line 2335 "tracker-resources.c"
+#line 2442 "tracker-resources.c"
 			TrackerClass* _tmp2_;
 			TrackerClass* cl = NULL;
-#line 271 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp2_ = _g_object_ref0 (cl_collection[cl_it]);
-#line 271 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			cl = _tmp2_;
-#line 2342 "tracker-resources.c"
+#line 2449 "tracker-resources.c"
 			{
 				TrackerClass* _tmp3_;
-#line 272 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				_tmp3_ = cl;
-#line 272 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				tracker_class_transact_events (_tmp3_);
-#line 271 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 				_g_object_unref0 (cl);
-#line 2351 "tracker-resources.c"
+#line 2458 "tracker-resources.c"
 			}
 		}
 	}
-#line 275 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 283 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = self->priv->regular_commit_pending;
-#line 275 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 283 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (!_tmp4_) {
-#line 2359 "tracker-resources.c"
+#line 2466 "tracker-resources.c"
 		guint _tmp5_;
-#line 284 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp5_ = self->priv->signal_timeout;
-#line 284 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (_tmp5_ != ((guint) 0)) {
-#line 2365 "tracker-resources.c"
+#line 2472 "tracker-resources.c"
 			guint _tmp6_;
-#line 285 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp6_ = self->priv->signal_timeout;
-#line 285 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 293 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			g_source_remove (_tmp6_);
-#line 286 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 294 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			self->priv->signal_timeout = (guint) 0;
-#line 2373 "tracker-resources.c"
+#line 2480 "tracker-resources.c"
 		}
 	}
-#line 290 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 298 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp7_ = commit_type;
-#line 290 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 298 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp7_ == TRACKER_DATA_COMMIT_REGULAR) {
-#line 291 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 299 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		self->priv->regular_commit_pending = TRUE;
-#line 2382 "tracker-resources.c"
+#line 2489 "tracker-resources.c"
 	}
-#line 294 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 302 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp9_ = self->priv->regular_commit_pending;
-#line 294 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 302 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp9_) {
-#line 294 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 302 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp8_ = TRUE;
-#line 2390 "tracker-resources.c"
+#line 2497 "tracker-resources.c"
 	} else {
 		TrackerDataCommitType _tmp10_;
-#line 294 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 302 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp10_ = commit_type;
-#line 294 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 302 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp8_ = _tmp10_ == TRACKER_DATA_COMMIT_BATCH_LAST;
-#line 2397 "tracker-resources.c"
+#line 2504 "tracker-resources.c"
 	}
-#line 294 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 302 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	if (_tmp8_) {
-#line 2401 "tracker-resources.c"
+#line 2508 "tracker-resources.c"
 		guint _tmp11_;
-#line 296 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 304 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		_tmp11_ = self->priv->signal_timeout;
-#line 296 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 304 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		if (_tmp11_ == ((guint) 0)) {
-#line 2407 "tracker-resources.c"
+#line 2514 "tracker-resources.c"
 			TrackerConfig* _tmp12_;
 			gint _tmp13_;
 			gint _tmp14_;
 			guint _tmp15_;
-#line 297 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 305 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp12_ = self->priv->config;
-#line 297 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 305 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp13_ = tracker_config_get_graphupdated_delay (_tmp12_);
-#line 297 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 305 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp14_ = _tmp13_;
-#line 297 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 305 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			_tmp15_ = g_timeout_add_full (G_PRIORITY_DEFAULT, (guint) _tmp14_, _tracker_resources_on_emit_signals_gsource_func, g_object_ref (self), g_object_unref);
-#line 297 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 305 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			self->priv->signal_timeout = _tmp15_;
-#line 2422 "tracker-resources.c"
+#line 2529 "tracker-resources.c"
 		}
 	}
-#line 302 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 310 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_transact ();
-#line 2427 "tracker-resources.c"
+#line 2534 "tracker-resources.c"
 }
 
 
 static void tracker_resources_on_statements_rolled_back (TrackerResources* self, TrackerDataCommitType commit_type) {
-#line 305 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 313 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 306 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 314 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_events_reset_pending ();
-#line 307 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_reset_pending ();
-#line 2438 "tracker-resources.c"
+#line 2545 "tracker-resources.c"
 }
 
 
 static void tracker_resources_check_graph_updated_signal (TrackerResources* self) {
 	guint _tmp0_;
-#line 310 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	g_return_if_fail (self != NULL);
-#line 312 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	_tmp0_ = tracker_events_get_total (FALSE);
-#line 312 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	if (_tmp0_ > ((guint) TRACKER_RESOURCES_GRAPH_UPDATED_IMMEDIATE_EMIT_AT)) {
-#line 2450 "tracker-resources.c"
-		guint _tmp1_;
-#line 316 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_tmp1_ = self->priv->signal_timeout;
-#line 316 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		if (_tmp1_ != ((guint) 0)) {
-#line 2456 "tracker-resources.c"
-			guint _tmp2_;
-#line 317 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			_tmp2_ = self->priv->signal_timeout;
-#line 317 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-			g_source_remove (_tmp2_);
 #line 318 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	g_return_if_fail (self != NULL);
+#line 320 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp0_ = tracker_events_get_total (FALSE);
+#line 320 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	if (_tmp0_ > ((guint) TRACKER_RESOURCES_GRAPH_UPDATED_IMMEDIATE_EMIT_AT)) {
+#line 2557 "tracker-resources.c"
+		guint _tmp1_;
+#line 324 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_tmp1_ = self->priv->signal_timeout;
+#line 324 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		if (_tmp1_ != ((guint) 0)) {
+#line 2563 "tracker-resources.c"
+			guint _tmp2_;
+#line 325 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			_tmp2_ = self->priv->signal_timeout;
+#line 325 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+			g_source_remove (_tmp2_);
+#line 326 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 			self->priv->signal_timeout = (guint) 0;
-#line 2464 "tracker-resources.c"
+#line 2571 "tracker-resources.c"
 		}
-#line 322 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 330 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		tracker_resources_on_emit_signals (self);
-#line 2468 "tracker-resources.c"
+#line 2575 "tracker-resources.c"
 	}
 }
 
@@ -2485,49 +2592,49 @@ static void tracker_resources_on_statement_inserted (TrackerResources* self, gin
 	gint _tmp12_;
 	const gchar* _tmp13_;
 	GPtrArray* _tmp14_;
-#line 326 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 326 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (subject != NULL);
-#line 326 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (rdf_types != NULL);
-#line 327 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = graph_id;
-#line 327 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = subject_id;
-#line 327 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = subject;
-#line 327 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = pred_id;
-#line 327 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = object_id;
-#line 327 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp5_ = object;
-#line 327 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp6_ = rdf_types;
-#line 327 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_events_add_insert (_tmp0_, _tmp1_, _tmp2_, _tmp3_, _tmp4_, _tmp5_, _tmp6_);
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp7_ = graph_id;
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp8_ = graph;
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp9_ = subject_id;
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp10_ = subject;
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp11_ = pred_id;
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp12_ = object_id;
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp13_ = object;
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp14_ = rdf_types;
-#line 328 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 336 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_check (_tmp7_, _tmp8_, _tmp9_, _tmp10_, _tmp11_, _tmp12_, _tmp13_, _tmp14_);
-#line 329 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 337 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_check_graph_updated_signal (self);
-#line 2531 "tracker-resources.c"
+#line 2638 "tracker-resources.c"
 }
 
 
@@ -2547,135 +2654,195 @@ static void tracker_resources_on_statement_deleted (TrackerResources* self, gint
 	gint _tmp12_;
 	const gchar* _tmp13_;
 	GPtrArray* _tmp14_;
-#line 332 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 340 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 332 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 340 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (subject != NULL);
-#line 332 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 340 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (rdf_types != NULL);
-#line 333 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = graph_id;
-#line 333 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp1_ = subject_id;
-#line 333 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp2_ = subject;
-#line 333 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp3_ = pred_id;
-#line 333 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp4_ = object_id;
-#line 333 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp5_ = object;
-#line 333 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp6_ = rdf_types;
-#line 333 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_events_add_delete (_tmp0_, _tmp1_, _tmp2_, _tmp3_, _tmp4_, _tmp5_, _tmp6_);
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp7_ = graph_id;
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp8_ = graph;
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp9_ = subject_id;
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp10_ = subject;
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp11_ = pred_id;
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp12_ = object_id;
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp13_ = object;
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp14_ = rdf_types;
-#line 334 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_writeback_check (_tmp7_, _tmp8_, _tmp9_, _tmp10_, _tmp11_, _tmp12_, _tmp13_, _tmp14_);
-#line 335 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 343 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_check_graph_updated_signal (self);
-#line 2593 "tracker-resources.c"
+#line 2700 "tracker-resources.c"
 }
 
 
 static void _tracker_resources_on_statement_inserted_tracker_statement_callback (gint graph_id, const gchar* graph, gint subject_id, const gchar* subject, gint predicate_id, gint object_id, const gchar* object, GPtrArray* rdf_types, gpointer self) {
-#line 340 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 350 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_on_statement_inserted ((TrackerResources*) self, graph_id, graph, subject_id, subject, predicate_id, object_id, object, rdf_types);
-#line 2600 "tracker-resources.c"
+#line 2707 "tracker-resources.c"
 }
 
 
 static void _tracker_resources_on_statement_deleted_tracker_statement_callback (gint graph_id, const gchar* graph, gint subject_id, const gchar* subject, gint predicate_id, gint object_id, const gchar* object, GPtrArray* rdf_types, gpointer self) {
-#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 351 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_on_statement_deleted ((TrackerResources*) self, graph_id, graph, subject_id, subject, predicate_id, object_id, object, rdf_types);
-#line 2607 "tracker-resources.c"
+#line 2714 "tracker-resources.c"
 }
 
 
 static void _tracker_resources_on_statements_committed_tracker_commit_callback (TrackerDataCommitType commit_type, gpointer self) {
-#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 352 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_on_statements_committed ((TrackerResources*) self, commit_type);
-#line 2614 "tracker-resources.c"
+#line 2721 "tracker-resources.c"
 }
 
 
 static void _tracker_resources_on_statements_rolled_back_tracker_commit_callback (TrackerDataCommitType commit_type, gpointer self) {
-#line 343 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 353 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_on_statements_rolled_back ((TrackerResources*) self, commit_type);
-#line 2621 "tracker-resources.c"
+#line 2728 "tracker-resources.c"
 }
 
 
 void tracker_resources_enable_signals (TrackerResources* self) {
-#line 339 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	TrackerDataManager* data_manager = NULL;
+	TrackerDataManager* _tmp0_;
+	TrackerDataManager* _tmp1_;
+	TrackerData* data = NULL;
+	TrackerData* _tmp2_;
+	TrackerData* _tmp3_;
+#line 347 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 340 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_add_insert_statement_callback (_tracker_resources_on_statement_inserted_tracker_statement_callback, self);
-#line 341 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_add_delete_statement_callback (_tracker_resources_on_statement_deleted_tracker_statement_callback, self);
-#line 342 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_add_commit_statement_callback (_tracker_resources_on_statements_committed_tracker_commit_callback, self);
-#line 343 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_add_rollback_statement_callback (_tracker_resources_on_statements_rolled_back_tracker_commit_callback, self);
-#line 2636 "tracker-resources.c"
+#line 348 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp0_ = tracker_main_get_data_manager ();
+#line 348 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+#line 348 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	data_manager = _tmp1_;
+#line 349 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp2_ = tracker_data_manager_get_data (data_manager);
+#line 349 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp3_ = _g_object_ref0 (_tmp2_);
+#line 349 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	data = _tmp3_;
+#line 350 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_add_insert_statement_callback (data, _tracker_resources_on_statement_inserted_tracker_statement_callback, self);
+#line 351 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_add_delete_statement_callback (data, _tracker_resources_on_statement_deleted_tracker_statement_callback, self);
+#line 352 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_add_commit_statement_callback (data, _tracker_resources_on_statements_committed_tracker_commit_callback, self);
+#line 353 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_add_rollback_statement_callback (data, _tracker_resources_on_statements_rolled_back_tracker_commit_callback, self);
+#line 347 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_g_object_unref0 (data);
+#line 347 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_g_object_unref0 (data_manager);
+#line 2765 "tracker-resources.c"
 }
 
 
 void tracker_resources_disable_signals (TrackerResources* self) {
-	guint _tmp0_;
-#line 347 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	TrackerDataManager* data_manager = NULL;
+	TrackerDataManager* _tmp0_;
+	TrackerDataManager* _tmp1_;
+	TrackerData* data = NULL;
+	TrackerDataManager* _tmp2_;
+	TrackerData* _tmp3_;
+	TrackerData* _tmp4_;
+	TrackerData* _tmp5_;
+	TrackerData* _tmp6_;
+	TrackerData* _tmp7_;
+	TrackerData* _tmp8_;
+	guint _tmp9_;
+#line 357 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 348 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_remove_insert_statement_callback (_tracker_resources_on_statement_inserted_tracker_statement_callback, self);
-#line 349 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_remove_delete_statement_callback (_tracker_resources_on_statement_deleted_tracker_statement_callback, self);
-#line 350 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_remove_commit_statement_callback (_tracker_resources_on_statements_committed_tracker_commit_callback, self);
-#line 351 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	tracker_data_remove_rollback_statement_callback (_tracker_resources_on_statements_rolled_back_tracker_commit_callback, self);
-#line 353 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	_tmp0_ = self->priv->signal_timeout;
-#line 353 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-	if (_tmp0_ != ((guint) 0)) {
-#line 2656 "tracker-resources.c"
-		guint _tmp1_;
-#line 354 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		_tmp1_ = self->priv->signal_timeout;
-#line 354 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
-		g_source_remove (_tmp1_);
-#line 355 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 358 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp0_ = tracker_main_get_data_manager ();
+#line 358 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+#line 358 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	data_manager = _tmp1_;
+#line 359 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp2_ = data_manager;
+#line 359 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp3_ = tracker_data_manager_get_data (_tmp2_);
+#line 359 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp4_ = _g_object_ref0 (_tmp3_);
+#line 359 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	data = _tmp4_;
+#line 360 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp5_ = data;
+#line 360 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_remove_insert_statement_callback (_tmp5_, _tracker_resources_on_statement_inserted_tracker_statement_callback, self);
+#line 361 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp6_ = data;
+#line 361 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_remove_delete_statement_callback (_tmp6_, _tracker_resources_on_statement_deleted_tracker_statement_callback, self);
+#line 362 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp7_ = data;
+#line 362 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_remove_commit_statement_callback (_tmp7_, _tracker_resources_on_statements_committed_tracker_commit_callback, self);
+#line 363 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp8_ = data;
+#line 363 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	tracker_data_remove_rollback_statement_callback (_tmp8_, _tracker_resources_on_statements_rolled_back_tracker_commit_callback, self);
+#line 365 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_tmp9_ = self->priv->signal_timeout;
+#line 365 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	if (_tmp9_ != ((guint) 0)) {
+#line 2818 "tracker-resources.c"
+		guint _tmp10_;
+#line 366 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		_tmp10_ = self->priv->signal_timeout;
+#line 366 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+		g_source_remove (_tmp10_);
+#line 367 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		self->priv->signal_timeout = (guint) 0;
-#line 2664 "tracker-resources.c"
+#line 2826 "tracker-resources.c"
 	}
+#line 357 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_g_object_unref0 (data);
+#line 357 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+	_g_object_unref0 (data_manager);
+#line 2832 "tracker-resources.c"
 }
 
 
 void tracker_resources_unreg_batches (TrackerResources* self, const gchar* old_owner) {
 	const gchar* _tmp0_;
-#line 364 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 376 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (self != NULL);
-#line 364 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 376 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	g_return_if_fail (old_owner != NULL);
-#line 365 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 377 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_tmp0_ = old_owner;
-#line 365 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 377 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_store_unreg_batches (_tmp0_);
-#line 2679 "tracker-resources.c"
+#line 2846 "tracker-resources.c"
 }
 
 
@@ -2694,19 +2861,19 @@ static void g_cclosure_user_marshal_VOID__STRING_VARIANT_VARIANT (GClosure * clo
 		data1 = closure->data;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		data2 = param_values->data[0].v_pointer;
-#line 2698 "tracker-resources.c"
+#line 2865 "tracker-resources.c"
 	} else {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		data1 = param_values->data[0].v_pointer;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 		data2 = closure->data;
-#line 2704 "tracker-resources.c"
+#line 2871 "tracker-resources.c"
 	}
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	callback = (GMarshalFunc_VOID__STRING_VARIANT_VARIANT) (marshal_data ? marshal_data : cc->callback);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	callback (data1, g_value_get_string (param_values + 1), g_value_get_variant (param_values + 2), g_value_get_variant (param_values + 3), data2);
-#line 2710 "tracker-resources.c"
+#line 2877 "tracker-resources.c"
 }
 
 
@@ -2721,14 +2888,14 @@ static void tracker_resources_class_init (TrackerResourcesClass * klass) {
 	tracker_resources_signals[TRACKER_RESOURCES_WRITEBACK_SIGNAL] = g_signal_new ("writeback", TRACKER_TYPE_RESOURCES, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_VOID__VARIANT, G_TYPE_NONE, 1, G_TYPE_VARIANT);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_signals[TRACKER_RESOURCES_GRAPH_UPDATED_SIGNAL] = g_signal_new ("graph_updated", TRACKER_TYPE_RESOURCES, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__STRING_VARIANT_VARIANT, G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_VARIANT, G_TYPE_VARIANT);
-#line 2725 "tracker-resources.c"
+#line 2892 "tracker-resources.c"
 }
 
 
 static void tracker_resources_instance_init (TrackerResources * self) {
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	self->priv = TRACKER_RESOURCES_GET_PRIVATE (self);
-#line 2732 "tracker-resources.c"
+#line 2899 "tracker-resources.c"
 }
 
 
@@ -2736,7 +2903,7 @@ static void tracker_resources_finalize (GObject * obj) {
 	TrackerResources * self;
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_TYPE_RESOURCES, TrackerResources);
-#line 360 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
+#line 372 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	tracker_resources_disable_signals (self);
 #line 52 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	_g_object_unref0 (self->priv->connection);
@@ -2744,7 +2911,7 @@ static void tracker_resources_finalize (GObject * obj) {
 	_g_object_unref0 (self->priv->config);
 #line 22 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-resources.vala"
 	G_OBJECT_CLASS (tracker_resources_parent_class)->finalize (obj);
-#line 2748 "tracker-resources.c"
+#line 2915 "tracker-resources.c"
 }
 
 

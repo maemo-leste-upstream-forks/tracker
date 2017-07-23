@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="nco-Affiliation.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nco-Role.html" title="nco:Role">nco:Role</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nco-Role.html" title="nco:Role">nco:Role</a> 
         ╰── <span class="emphasis"><em><a class="link" href="nco-Affiliation.html" title="nco:Affiliation">nco:Affiliation</a></em></span> 
 </pre>
 </div>
@@ -52,14 +52,14 @@
 <a name="nco-Affiliation.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nco-Affiliation.nco-role"></a><h3>The <code class="literal">“nco:role”</code> property</h3>
-<pre class="programlisting">“nco:role”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:role”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nco-Affiliation.nco-title"></a><h3>The <code class="literal">“nco:title”</code> property</h3>
-<pre class="programlisting">“nco:title”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:title”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 </div>
@@ -73,15 +73,11 @@
 <hr>
 <div class="refsect2">
 <a name="nco-Affiliation.nco-department"></a><h3>The <code class="literal">“nco:department”</code> property</h3>
-<pre class="programlisting">“nco:department”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:department”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Department. The organizational unit within the organization.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 </div>
-</div>
-<div class="refsect1">
-<a name="nco-Affiliation.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#" target="_top">NCO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

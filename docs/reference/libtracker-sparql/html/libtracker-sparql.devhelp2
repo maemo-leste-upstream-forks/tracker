@@ -16,6 +16,55 @@
       <sub name="Utilities" link="libtracker-sparql-Utilities.html"/>
       <sub name="Version Information" link="libtracker-sparql-Version-Information.html"/>
     </sub>
+    <sub name="Base ontology" link="base-ontology.html">
+      <sub name="Dublin Core metadata (DC): Common superproperties for documents" link="dc-ontology.html">
+        <sub name="DC Ontology Classes" link="dc-ontology.html#dc-classes"/>
+      </sub>
+      <sub name="XML schema (XSD): Basic types definitions (int, double,...)" link="xsd-ontology.html">
+        <sub name="XSD Ontology Classes" link="xsd-ontology.html#xsd-classes">
+          <sub name="xsd:integer" link="xsd-integer.html"/>
+          <sub name="xsd:boolean" link="xsd-boolean.html"/>
+          <sub name="xsd:string" link="xsd-string.html"/>
+          <sub name="xsd:double" link="xsd-double.html"/>
+          <sub name="xsd:date" link="xsd-date.html"/>
+          <sub name="xsd:dateTime" link="xsd-dateTime.html"/>
+        </sub>
+      </sub>
+      <sub name="Resource Description Framework (RDF): Core RDF classes to keep the internal consistency of the ontology" link="rdf-ontology.html">
+        <sub name="RDF Ontology Classes" link="rdf-ontology.html#rdf-classes">
+          <sub name="rdfs:Class" link="rdfs-Class.html"/>
+          <sub name="rdfs:Literal" link="rdfs-Literal.html"/>
+          <sub name="rdfs:Resource" link="rdfs-Resource.html"/>
+          <sub name="tracker:Namespace" link="tracker-Namespace.html"/>
+          <sub name="tracker:Ontology" link="tracker-Ontology.html"/>
+          <sub name="rdf:Property" link="rdf-Property.html"/>
+        </sub>
+      </sub>
+      <sub name="Nepomuk Resource Language (NRL): Properties describing the ontologies." link="nrl-ontology.html">
+        <sub name="NRL Ontology Classes" link="nrl-ontology.html#nrl-classes">
+          <sub name="nrl:InverseFunctionalProperty" link="nrl-InverseFunctionalProperty.html"/>
+        </sub>
+      </sub>
+      <sub name="Nepomuk Annotation Ontology (NAO): Tags, ratings and other common annotations to all classes" link="nao-ontology.html">
+        <sub name="NAO Ontology Classes" link="nao-ontology.html#nao-classes">
+          <sub name="nao:Tag" link="nao-Tag.html"/>
+        </sub>
+      </sub>
+    </sub>
+    <sub name="Defining ontologies" link="tracker-ontologies.html">
+      <sub name="Creating an ontology" link="creating-ontology.html">
+        <sub name="Defining a namespace" link="creating-ontology.html#defining-namespaces"/>
+        <sub name="Defining classes" link="defining-classes.html"/>
+        <sub name="Defining properties" link="defining-properties.html"/>
+        <sub name="Defining cardinality of properties" link="defining-cardinality.html"/>
+        <sub name="Defining uniqueness" link="defining-uniqueness.html"/>
+        <sub name="Defining indexes" link="defining-indexes.html"/>
+        <sub name="Defining full-text search properties" link="defining-fts-indexes.html"/>
+        <sub name="Predefined elements" link="predefined-elements.html"/>
+      </sub>
+      <sub name="Accompanying metadata" link="accompanying-metadata.html"/>
+      <sub name="Updating an ontology" link="updating-ontology.html"/>
+    </sub>
     <sub name="Examples" link="tracker-examples.html">
       <sub name="SPARQL query builder" link="tracker-examples-builder.html"/>
       <sub name="Querying the Store" link="tracker-examples-readonly.html"/>
@@ -33,14 +82,16 @@
     <keyword type="function" name="tracker_resource_set_int ()" link="TrackerResource.html#tracker-resource-set-int" since="1.10"/>
     <keyword type="function" name="tracker_resource_set_int64 ()" link="TrackerResource.html#tracker-resource-set-int64" since="1.10"/>
     <keyword type="function" name="tracker_resource_set_relation ()" link="TrackerResource.html#tracker-resource-set-relation" since="1.10"/>
+    <keyword type="function" name="tracker_resource_set_take_relation ()" link="TrackerResource.html#tracker-resource-set-take-relation" since="2.0"/>
     <keyword type="function" name="tracker_resource_set_string ()" link="TrackerResource.html#tracker-resource-set-string" since="1.10"/>
     <keyword type="function" name="tracker_resource_set_uri ()" link="TrackerResource.html#tracker-resource-set-uri" since="1.10"/>
     <keyword type="function" name="tracker_resource_add_boolean ()" link="TrackerResource.html#tracker-resource-add-boolean" since="1.10"/>
     <keyword type="function" name="tracker_resource_add_double ()" link="TrackerResource.html#tracker-resource-add-double" since="1.10"/>
     <keyword type="function" name="tracker_resource_add_gvalue ()" link="TrackerResource.html#tracker-resource-add-gvalue" since="1.10"/>
     <keyword type="function" name="tracker_resource_add_int ()" link="TrackerResource.html#tracker-resource-add-int" since="1.10"/>
-    <keyword type="function" name="tracker_resource_add_int64 ()" link="TrackerResource.html#tracker-resource-add-int64"/>
+    <keyword type="function" name="tracker_resource_add_int64 ()" link="TrackerResource.html#tracker-resource-add-int64" since="1.10"/>
     <keyword type="function" name="tracker_resource_add_relation ()" link="TrackerResource.html#tracker-resource-add-relation" since="1.10"/>
+    <keyword type="function" name="tracker_resource_add_take_relation ()" link="TrackerResource.html#tracker-resource-add-take-relation" since="2.0"/>
     <keyword type="function" name="tracker_resource_add_string ()" link="TrackerResource.html#tracker-resource-add-string" since="1.10"/>
     <keyword type="function" name="tracker_resource_add_uri ()" link="TrackerResource.html#tracker-resource-add-uri" since="1.10"/>
     <keyword type="function" name="tracker_resource_get_first_boolean ()" link="TrackerResource.html#tracker-resource-get-first-boolean" since="1.10"/>
@@ -70,34 +121,34 @@
     <keyword type="function" name="tracker_sparql_builder_get_state ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-get-state" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_get_result ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-get-result" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_get_length ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-get-length" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_append ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-append" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_prepend ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-prepend" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_insert_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_insert_silent_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-silent-open" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_insert_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_where_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-where-open" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_where_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-where-close" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_delete_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_delete_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_graph_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-open" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_graph_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-close" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_subject_variable ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_subject_iri ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_subject ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_predicate_iri ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-predicate-iri" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_predicate ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_iri ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-iri" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_string ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-string" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_boolean ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-boolean" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_int64 ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-int64" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_date ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-date" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_double ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-double" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_variable ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-variable" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_blank_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_blank_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-close" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_object_unvalidated ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-unvalidated" since="0.10"/>
-    <keyword type="struct" name="TrackerSparqlBuilder" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"/>
+    <keyword type="function" name="tracker_sparql_builder_append ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-append" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_prepend ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-prepend" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_insert_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_insert_silent_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-silent-open" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_insert_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_where_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-where-open" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_where_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-where-close" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_delete_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_delete_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_graph_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-open" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_graph_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-close" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_subject_variable ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_subject_iri ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_subject ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_predicate_iri ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-predicate-iri" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_predicate ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_iri ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-iri" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_string ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-string" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_boolean ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-boolean" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_int64 ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-int64" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_date ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-date" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_double ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-double" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_variable ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-variable" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_blank_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_blank_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-close" deprecated="2.0" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_builder_object_unvalidated ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-object-unvalidated" deprecated="2.0" since="0.10"/>
+    <keyword type="struct" name="struct TrackerSparqlBuilder" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"/>
     <keyword type="enum" name="enum TrackerSparqlBuilderState" link="TrackerSparqlBuilder.html#TrackerSparqlBuilderState"/>
     <keyword type="property" name="The “length” property" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder--length"/>
     <keyword type="property" name="The “result” property" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder--result"/>
@@ -105,9 +156,6 @@
     <keyword type="function" name="tracker_sparql_connection_get ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_get_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-async"/>
     <keyword type="function" name="tracker_sparql_connection_get_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_connection_get_direct ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" deprecated="0.12: Use tracker_sparql_connection_get instead." since="0.10"/>
-    <keyword type="function" name="tracker_sparql_connection_get_direct_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-async" deprecated=""/>
-    <keyword type="function" name="tracker_sparql_connection_get_direct_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-finish" deprecated="0.12: Use tracker_sparql_connection_get_finish instead." since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_query ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_query_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query-async"/>
     <keyword type="function" name="tracker_sparql_connection_query_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query-finish" since="0.10"/>
@@ -125,6 +173,7 @@
     <keyword type="function" name="tracker_sparql_connection_statistics ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_statistics_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-async" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_statistics_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-finish" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_connection_get_namespace_manager ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-namespace-manager" since="2.0"/>
     <keyword type="enum" name="enum TrackerSparqlError" link="TrackerSparqlConnection.html#TrackerSparqlError"/>
     <keyword type="struct" name="struct TrackerSparqlConnection" link="TrackerSparqlConnection.html#TrackerSparqlConnection-struct"/>
     <keyword type="function" name="tracker_sparql_cursor_get_connection ()" link="TrackerSparqlCursor.html#tracker-sparql-cursor-get-connection" since="0.10"/>
@@ -170,6 +219,52 @@
     <keyword type="variable" name="tracker_micro_version" link="libtracker-sparql-Version-Information.html#tracker-micro-version"/>
     <keyword type="variable" name="tracker_binary_age" link="libtracker-sparql-Version-Information.html#tracker-binary-age"/>
     <keyword type="variable" name="tracker_interface_age" link="libtracker-sparql-Version-Information.html#tracker-interface-age"/>
+    <keyword type="property" name="The “tracker:notify” property" link="rdfs-Class.html#rdfs-Class.tracker-notify"/>
+    <keyword type="property" name="The “tracker:domainIndex” property" link="rdfs-Class.html#rdfs-Class.tracker-domainIndex"/>
+    <keyword type="property" name="The “rdfs:subClassOf” property" link="rdfs-Class.html#rdfs-Class.rdfs-subClassOf"/>
+    <keyword type="property" name="The “nao:isRelated” property" link="rdfs-Resource.html#rdfs-Resource.nao-isRelated"/>
+    <keyword type="property" name="The “nao:lastModified” property" link="rdfs-Resource.html#rdfs-Resource.nao-lastModified"/>
+    <keyword type="property" name="The “nao:deprecated” property" link="rdfs-Resource.html#rdfs-Resource.nao-deprecated"/>
+    <keyword type="property" name="The “nao:numericRating” property" link="rdfs-Resource.html#rdfs-Resource.nao-numericRating"/>
+    <keyword type="property" name="The “nao:identifier” property" link="rdfs-Resource.html#rdfs-Resource.nao-identifier"/>
+    <keyword type="property" name="The “nao:hasTag” property" link="rdfs-Resource.html#rdfs-Resource.nao-hasTag"/>
+    <keyword type="property" name="The “dc:rights” property" link="rdfs-Resource.html#rdfs-Resource.dc-rights"/>
+    <keyword type="property" name="The “dc:coverage” property" link="rdfs-Resource.html#rdfs-Resource.dc-coverage"/>
+    <keyword type="property" name="The “dc:relation” property" link="rdfs-Resource.html#rdfs-Resource.dc-relation"/>
+    <keyword type="property" name="The “dc:language” property" link="rdfs-Resource.html#rdfs-Resource.dc-language"/>
+    <keyword type="property" name="The “dc:source” property" link="rdfs-Resource.html#rdfs-Resource.dc-source"/>
+    <keyword type="property" name="The “dc:identifier” property" link="rdfs-Resource.html#rdfs-Resource.dc-identifier"/>
+    <keyword type="property" name="The “dc:format” property" link="rdfs-Resource.html#rdfs-Resource.dc-format"/>
+    <keyword type="property" name="The “dc:type” property" link="rdfs-Resource.html#rdfs-Resource.dc-type"/>
+    <keyword type="property" name="The “dc:date” property" link="rdfs-Resource.html#rdfs-Resource.dc-date"/>
+    <keyword type="property" name="The “dc:contributor” property" link="rdfs-Resource.html#rdfs-Resource.dc-contributor"/>
+    <keyword type="property" name="The “dc:publisher” property" link="rdfs-Resource.html#rdfs-Resource.dc-publisher"/>
+    <keyword type="property" name="The “dc:description” property" link="rdfs-Resource.html#rdfs-Resource.dc-description"/>
+    <keyword type="property" name="The “dc:subject” property" link="rdfs-Resource.html#rdfs-Resource.dc-subject"/>
+    <keyword type="property" name="The “dc:creator” property" link="rdfs-Resource.html#rdfs-Resource.dc-creator"/>
+    <keyword type="property" name="The “dc:title” property" link="rdfs-Resource.html#rdfs-Resource.dc-title"/>
+    <keyword type="property" name="The “tracker:damaged” property" link="rdfs-Resource.html#rdfs-Resource.tracker-damaged"/>
+    <keyword type="property" name="The “tracker:modified” property" link="rdfs-Resource.html#rdfs-Resource.tracker-modified"/>
+    <keyword type="property" name="The “tracker:added” property" link="rdfs-Resource.html#rdfs-Resource.tracker-added"/>
+    <keyword type="property" name="The “rdfs:label” property" link="rdfs-Resource.html#rdfs-Resource.rdfs-label"/>
+    <keyword type="property" name="The “rdfs:comment” property" link="rdfs-Resource.html#rdfs-Resource.rdfs-comment"/>
+    <keyword type="property" name="The “rdf:type” property" link="rdfs-Resource.html#rdfs-Resource.rdf-type"/>
+    <keyword type="property" name="The “tracker:prefix” property" link="tracker-Namespace.html#tracker-Namespace.tracker-prefix"/>
+    <keyword type="property" name="The “nrl:maxCardinality” property" link="rdf-Property.html#rdf-Property.nrl-maxCardinality"/>
+    <keyword type="property" name="The “tracker:forceJournal” property" link="rdf-Property.html#rdf-Property.tracker-forceJournal"/>
+    <keyword type="property" name="The “tracker:writeback” property" link="rdf-Property.html#rdf-Property.tracker-writeback"/>
+    <keyword type="property" name="The “tracker:defaultValue” property" link="rdf-Property.html#rdf-Property.tracker-defaultValue"/>
+    <keyword type="property" name="The “tracker:weight” property" link="rdf-Property.html#rdf-Property.tracker-weight"/>
+    <keyword type="property" name="The “tracker:transient” property" link="rdf-Property.html#rdf-Property.tracker-transient"/>
+    <keyword type="property" name="The “tracker:fulltextNoLimit” property" link="rdf-Property.html#rdf-Property.tracker-fulltextNoLimit"/>
+    <keyword type="property" name="The “tracker:fulltextIndexed” property" link="rdf-Property.html#rdf-Property.tracker-fulltextIndexed"/>
+    <keyword type="property" name="The “tracker:secondaryIndex” property" link="rdf-Property.html#rdf-Property.tracker-secondaryIndex"/>
+    <keyword type="property" name="The “tracker:indexed” property" link="rdf-Property.html#rdf-Property.tracker-indexed"/>
+    <keyword type="property" name="The “rdfs:range” property" link="rdf-Property.html#rdf-Property.rdfs-range"/>
+    <keyword type="property" name="The “rdfs:domain” property" link="rdf-Property.html#rdf-Property.rdfs-domain"/>
+    <keyword type="property" name="The “rdfs:subPropertyOf” property" link="rdf-Property.html#rdf-Property.rdfs-subPropertyOf"/>
+    <keyword type="property" name="The “nao:description” property" link="nao-Tag.html#nao-Tag.nao-description"/>
+    <keyword type="property" name="The “nao:prefLabel” property" link="nao-Tag.html#nao-Tag.nao-prefLabel"/>
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_UPDATE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-UPDATE:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_INSERT" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-INSERT:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_DELETE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-DELETE:CAPS"/>

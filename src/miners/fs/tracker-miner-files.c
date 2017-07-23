@@ -45,9 +45,15 @@
 #include "tracker-config.h"
 #include "tracker-storage.h"
 #include "tracker-extract-watchdog.h"
+#include "tracker-thumbnailer.h"
 
 #define DISK_SPACE_CHECK_FREQUENCY 10
 #define SECONDS_PER_DAY 86400
+
+/* Stamp files to know crawling/indexing state */
+#define FIRST_INDEX_FILENAME          "first-index.txt"
+#define LAST_CRAWL_FILENAME           "last-crawl.txt"
+#define NEED_MTIME_CHECK_FILENAME     "no-need-mtime-check.txt"
 
 #define TRACKER_MINER_FILES_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_MINER_FILES, TrackerMinerFilesPrivate))
 
@@ -61,6 +67,7 @@ struct ProcessFileData {
 	GCancellable *cancellable;
 	GFile *file;
 	gchar *mime_type;
+	GTask *task;
 };
 
 struct TrackerMinerFilesPrivate {
@@ -74,9 +81,9 @@ struct TrackerMinerFilesPrivate {
 	GSList *index_single_directories;
 
 	guint disk_space_check_id;
-	guint disk_space_pause_cookie;
+	gboolean disk_space_pause;
 
-	guint low_battery_pause_cookie;
+	gboolean low_battery_pause;
 
 #if defined(HAVE_UPOWER) || defined(HAVE_HAL)
 	TrackerPower *power;
@@ -89,6 +96,7 @@ struct TrackerMinerFilesPrivate {
 
 	guint force_recheck_id;
 
+	gboolean mtime_check;
 	gboolean index_removable_devices;
 	gboolean index_optical_discs;
 	guint volumes_changed_id;
@@ -98,7 +106,17 @@ struct TrackerMinerFilesPrivate {
 	guint stale_volumes_check_id;
 
 	GList *extraction_queue;
+
+	TrackerThumbnailer *thumbnailer;
+
+	GHashTable *writeback_tasks;
+	gboolean paused_for_writeback;
 };
+
+typedef struct {
+	GMainLoop *main_loop;
+	TrackerMiner *miner;
+} ThumbnailMoveData;
 
 enum {
 	VOLUME_MOUNTED_IN_STORE = 1 << 0,
@@ -109,6 +127,13 @@ enum {
 	PROP_0,
 	PROP_CONFIG
 };
+
+enum {
+	WRITEBACK,
+	N_SIGNALS
+};
+
+static guint signals[N_SIGNALS] = { 0 };
 
 static void        miner_files_set_property             (GObject              *object,
                                                          guint                 param_id,
@@ -169,16 +194,18 @@ static void        index_volumes_changed_cb             (GObject              *g
                                                          gpointer              user_data);
 static gboolean    miner_files_process_file             (TrackerMinerFS       *fs,
                                                          GFile                *file,
-                                                         TrackerSparqlBuilder *sparql,
-                                                         GCancellable         *cancellable);
+                                                         GTask                *task);
 static gboolean    miner_files_process_file_attributes  (TrackerMinerFS       *fs,
                                                          GFile                *file,
-                                                         TrackerSparqlBuilder *sparql,
-                                                         GCancellable         *cancellable);
-static gboolean    miner_files_ignore_next_update_file  (TrackerMinerFS       *fs,
+                                                         GTask                *task);
+static gchar *     miner_files_remove_children          (TrackerMinerFS       *fs,
+                                                         GFile                *file);
+static gchar *     miner_files_remove_file              (TrackerMinerFS       *fs,
+                                                         GFile                *file);
+static gchar *     miner_files_move_file                (TrackerMinerFS       *fs,
                                                          GFile                *file,
-                                                         TrackerSparqlBuilder *sparql,
-                                                         GCancellable         *cancellable);
+                                                         GFile                *source_file,
+                                                         gboolean              recursive);
 static void        miner_files_finished                 (TrackerMinerFS       *fs,
                                                          gdouble               elapsed,
                                                          gint                  directories_found,
@@ -212,6 +239,89 @@ G_DEFINE_TYPE_WITH_CODE (TrackerMinerFiles, tracker_miner_files, TRACKER_TYPE_MI
                                                 miner_files_initable_iface_init));
 
 static void
+sync_writeback_pause_state (TrackerMinerFiles *mf)
+{
+	guint n_writeback_tasks = g_hash_table_size (mf->private->writeback_tasks);
+
+	if (n_writeback_tasks > 0 && !mf->private->paused_for_writeback) {
+		tracker_miner_pause (TRACKER_MINER (mf));
+		mf->private->paused_for_writeback = TRUE;
+	} else if (n_writeback_tasks == 0 && mf->private->paused_for_writeback) {
+		mf->private->paused_for_writeback = FALSE;
+		tracker_miner_resume (TRACKER_MINER (mf));
+	}
+}
+
+static void
+writeback_remove_recursively (TrackerMinerFiles *mf,
+			      GFile             *file)
+{
+	GHashTableIter iter;
+	GFile *writeback_file;
+
+	if (g_hash_table_size (mf->private->writeback_tasks) == 0)
+		return;
+
+	/* Remove and cancel writeback tasks in this directory */
+	g_hash_table_iter_init (&iter, mf->private->writeback_tasks);
+	while (g_hash_table_iter_next (&iter, (gpointer*) &writeback_file, NULL)) {
+		if (g_file_equal (writeback_file, file) ||
+		    g_file_has_prefix (writeback_file, file)) {
+			g_hash_table_iter_remove (&iter);
+		}
+	}
+
+	sync_writeback_pause_state (mf);
+}
+
+static gboolean
+miner_files_filter_event (TrackerMinerFS          *fs,
+                          TrackerMinerFSEventType  type,
+                          GFile                   *file,
+                          GFile                   *source_file)
+{
+	TrackerMinerFiles *mf = TRACKER_MINER_FILES (fs);
+	GCancellable *cancellable;
+
+	switch (type) {
+	case TRACKER_MINER_FS_EVENT_CREATED:
+		break;
+	case TRACKER_MINER_FS_EVENT_UPDATED:
+		/* If the file is in the writeback task pool, this is the
+		 * file update applying it, so the event should be filtered
+		 * out.
+		 */
+		if (g_hash_table_lookup_extended (mf->private->writeback_tasks, file,
+		                                  NULL, (gpointer*) &cancellable)) {
+			if (!cancellable) {
+				/* The task was already notified, we can remove
+				 * it now, so later updates will be processed.
+				 */
+				g_hash_table_remove (mf->private->writeback_tasks, file);
+				sync_writeback_pause_state (mf);
+			}
+
+			/* There is a writeback task, pending or satisfied.
+			 * Either way, this update should be ignored.
+			 */
+			return TRUE;
+		}
+		break;
+	case TRACKER_MINER_FS_EVENT_DELETED:
+		writeback_remove_recursively (mf, file);
+		break;
+	case TRACKER_MINER_FS_EVENT_MOVED:
+		/* If the origin file is also being written back,
+		 * cancel it as this is an external operation.
+		 */
+		writeback_remove_recursively (mf, source_file);
+		break;
+	}
+
+	return FALSE;
+}
+
+static void
 tracker_miner_files_class_init (TrackerMinerFilesClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -223,8 +333,38 @@ tracker_miner_files_class_init (TrackerMinerFilesClass *klass)
 
 	miner_fs_class->process_file = miner_files_process_file;
 	miner_fs_class->process_file_attributes = miner_files_process_file_attributes;
-	miner_fs_class->ignore_next_update_file = miner_files_ignore_next_update_file;
 	miner_fs_class->finished = miner_files_finished;
+	miner_fs_class->remove_file = miner_files_remove_file;
+	miner_fs_class->remove_children = miner_files_remove_children;
+	miner_fs_class->move_file = miner_files_move_file;
+	miner_fs_class->filter_event = miner_files_filter_event;
+
+	/**
+	 * TrackerMinerFiles::writeback-file:
+	 * @miner: the #TrackerMinerFiles
+	 * @file: a #GFile
+	 * @rdf_types: the set of RDF types
+	 * @results: (element-type GStrv): a set of results prepared by the preparation query
+	 * @cancellable: a #GCancellable
+	 *
+	 * The ::writeback-file signal is emitted whenever a file must be written
+	 * back
+	 *
+	 * Returns: %TRUE on success, %FALSE otherwise
+	 **/
+	signals[WRITEBACK] =
+		g_signal_new ("writeback",
+		              G_OBJECT_CLASS_TYPE (object_class),
+		              G_SIGNAL_RUN_LAST,
+		              0, NULL,
+		              NULL,
+		              NULL,
+		              G_TYPE_NONE,
+		              4,
+		              G_TYPE_FILE,
+		              G_TYPE_STRV,
+		              G_TYPE_PTR_ARRAY,
+		              G_TYPE_CANCELLABLE);
 
 	g_object_class_install_property (object_class,
 	                                 PROP_CONFIG,
@@ -237,6 +377,17 @@ tracker_miner_files_class_init (TrackerMinerFilesClass *klass)
 	g_type_class_add_private (klass, sizeof (TrackerMinerFilesPrivate));
 
 	miner_files_error_quark = g_quark_from_static_string ("TrackerMinerFiles");
+}
+
+static void
+cancel_and_unref (gpointer data)
+{
+	GCancellable *cancellable = data;
+
+	if (cancellable) {
+		g_cancellable_cancel (cancellable);
+		g_object_unref (cancellable);
+	}
 }
 
 static void
@@ -276,7 +427,12 @@ tracker_miner_files_init (TrackerMinerFiles *mf)
 	                  G_CALLBACK (mount_pre_unmount_cb),
 	                  mf);
 
+	priv->mtime_check = TRUE;
 	priv->quark_mount_point_uuid = g_quark_from_static_string ("tracker-mount-point-uuid");
+
+	priv->writeback_tasks = g_hash_table_new_full (g_file_hash,
+	                                               (GEqualFunc) g_file_equal,
+	                                               NULL, cancel_and_unref);
 }
 
 static void
@@ -310,6 +466,8 @@ miner_files_initable_init (GInitable     *initable,
 	fs = TRACKER_MINER_FS (initable);
 	indexing_tree = tracker_miner_fs_get_indexing_tree (fs);
 	tracker_indexing_tree_set_filter_hidden (indexing_tree, TRUE);
+	g_signal_connect_swapped (indexing_tree, "directory-removed",
+				  G_CALLBACK (writeback_remove_recursively), mf);
 
 	miner_files_update_filters (mf);
 
@@ -419,7 +577,7 @@ miner_files_initable_init (GInitable     *initable,
 			flags |= TRACKER_DIRECTORY_FLAG_MONITOR;
 		}
 
-		if (tracker_miner_fs_get_mtime_checking (TRACKER_MINER_FS (mf))) {
+		if (mf->private->mtime_check) {
 			flags |= TRACKER_DIRECTORY_FLAG_CHECK_MTIME;
 		}
 
@@ -474,7 +632,7 @@ miner_files_initable_init (GInitable     *initable,
 			flags |= TRACKER_DIRECTORY_FLAG_MONITOR;
 		}
 
-		if (tracker_miner_fs_get_mtime_checking (TRACKER_MINER_FS (mf))) {
+		if (mf->private->mtime_check) {
 			flags |= TRACKER_DIRECTORY_FLAG_CHECK_MTIME;
 		}
 
@@ -555,6 +713,7 @@ miner_files_initable_init (GInitable     *initable,
 	disk_space_check_start (mf);
 
 	mf->private->extract_watchdog = tracker_extract_watchdog_new ();
+	mf->private->thumbnailer = tracker_thumbnailer_new ();
 
 	return TRUE;
 }
@@ -656,7 +815,12 @@ miner_files_finalize (GObject *object)
 		priv->stale_volumes_check_id = 0;
 	}
 
+	if (priv->thumbnailer) {
+		g_object_unref (priv->thumbnailer);
+	}
+
 	g_list_free (priv->extraction_queue);
+	g_hash_table_destroy (priv->writeback_tasks);
 
 	G_OBJECT_CLASS (tracker_miner_files_parent_class)->finalize (object);
 }
@@ -1342,7 +1506,7 @@ check_battery_status (TrackerMinerFiles *mf)
 			if (!tracker_config_get_index_on_battery_first_time (mf->private->config)) {
 				g_message ("Running on battery, but not enabled, pausing");
 				should_pause = TRUE;
-			} else if (tracker_db_manager_get_first_index_done ()) {
+			} else if (tracker_miner_files_get_first_index_done ()) {
 				g_message ("Running on battery and first-time index "
 				           "already done, pausing");
 				should_pause = TRUE;
@@ -1357,19 +1521,15 @@ check_battery_status (TrackerMinerFiles *mf)
 
 	if (should_pause) {
 		/* Don't try to pause again */
-		if (mf->private->low_battery_pause_cookie == 0) {
-			mf->private->low_battery_pause_cookie =
-				tracker_miner_pause (TRACKER_MINER (mf),
-				                     _("Low battery"),
-				                     NULL);
+		if (!mf->private->low_battery_pause) {
+			mf->private->low_battery_pause = TRUE;
+			tracker_miner_pause (TRACKER_MINER (mf));
 		}
 	} else {
 		/* Don't try to resume again */
-		if (mf->private->low_battery_pause_cookie != 0) {
-			tracker_miner_resume (TRACKER_MINER (mf),
-			                      mf->private->low_battery_pause_cookie,
-			                      NULL);
-			mf->private->low_battery_pause_cookie = 0;
+		if (mf->private->low_battery_pause) {
+			tracker_miner_resume (TRACKER_MINER (mf));
+			mf->private->low_battery_pause = FALSE;
 		}
 	}
 
@@ -1413,8 +1573,8 @@ miner_finished_cb (TrackerMinerFS *fs,
 	TrackerMinerFiles *mf = TRACKER_MINER_FILES (fs);
 
 	/* Create stamp file if not already there */
-	if (!tracker_db_manager_get_first_index_done ()) {
-		tracker_db_manager_set_first_index_done (TRUE);
+	if (!tracker_miner_files_get_first_index_done ()) {
+		tracker_miner_files_set_first_index_done (TRUE);
 	}
 
 	/* And remove the signal handler so that it's not
@@ -1484,19 +1644,15 @@ disk_space_check_cb (gpointer user_data)
 
 	if (disk_space_check (mf)) {
 		/* Don't try to pause again */
-		if (mf->private->disk_space_pause_cookie == 0) {
-			mf->private->disk_space_pause_cookie =
-				tracker_miner_pause (TRACKER_MINER (mf),
-				                     _("Low disk space"),
-				                     NULL);
+		if (!mf->private->disk_space_pause) {
+			mf->private->disk_space_pause = TRUE;
+			tracker_miner_pause (TRACKER_MINER (mf));
 		}
 	} else {
 		/* Don't try to resume again */
-		if (mf->private->disk_space_pause_cookie != 0) {
-			tracker_miner_resume (TRACKER_MINER (mf),
-			                      mf->private->disk_space_pause_cookie,
-			                      NULL);
-			mf->private->disk_space_pause_cookie = 0;
+		if (mf->private->disk_space_pause) {
+			tracker_miner_resume (TRACKER_MINER (mf));
+			mf->private->disk_space_pause = FALSE;
 		}
 	}
 
@@ -1653,7 +1809,7 @@ update_directories_from_new_config (TrackerMinerFS *mf,
 		flags |= TRACKER_DIRECTORY_FLAG_MONITOR;
 	}
 
-	if (tracker_miner_fs_get_mtime_checking (TRACKER_MINER_FS (mf))) {
+	if (priv->mtime_check) {
 		flags |= TRACKER_DIRECTORY_FLAG_CHECK_MTIME;
 	}
 
@@ -2014,6 +2170,7 @@ process_file_data_free (ProcessFileData *data)
 	g_object_unref (data->sparql);
 	g_object_unref (data->cancellable);
 	g_object_unref (data->file);
+	g_object_unref (data->task);
 	g_free (data->mime_type);
 	g_slice_free (ProcessFileData, data);
 }
@@ -2114,7 +2271,7 @@ process_file_cb (GObject      *object,
 	const gchar *mime_type, *urn, *parent_urn;
 	GFileInfo *file_info;
 	guint64 time_;
-	GFile *file;
+	GFile *file, *parent;
 	gchar *uri;
 	GError *error = NULL;
 	gboolean is_iri;
@@ -2128,11 +2285,9 @@ process_file_cb (GObject      *object,
 
 	if (error) {
 		/* Something bad happened, notify about the error */
-		tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), file, error);
+		tracker_miner_fs_notify_finish (TRACKER_MINER_FS (data->miner), data->task, NULL, error);
 		priv->extraction_queue = g_list_remove (priv->extraction_queue, data);
 		process_file_data_free (data);
-		g_error_free (error);
-
 		return;
 	}
 
@@ -2196,7 +2351,9 @@ process_file_cb (GObject      *object,
 		tracker_sparql_builder_object (sparql, "nfo:Folder");
 	}
 
-	parent_urn = tracker_miner_fs_get_parent_urn (TRACKER_MINER_FS (data->miner), file);
+	parent = g_file_get_parent (file);
+	parent_urn = tracker_miner_fs_query_urn (TRACKER_MINER_FS (data->miner), parent);
+	g_object_unref (parent);
 
 	if (parent_urn) {
 		tracker_sparql_builder_predicate (sparql, "nfo:belongsToContainer");
@@ -2237,7 +2394,9 @@ process_file_cb (GObject      *object,
         miner_files_add_rdf_types (sparql, file, mime_type);
 
 	sparql_builder_finish (data, NULL, NULL, NULL, NULL);
-	tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), data->file, NULL);
+	tracker_miner_fs_notify_finish (TRACKER_MINER_FS (data->miner), data->task,
+					tracker_sparql_builder_get_result (sparql),
+					NULL);
 
 	priv->extraction_queue = g_list_remove (priv->extraction_queue, data);
 	process_file_data_free (data);
@@ -2247,10 +2406,9 @@ process_file_cb (GObject      *object,
 }
 
 static gboolean
-miner_files_process_file (TrackerMinerFS       *fs,
-                          GFile                *file,
-                          TrackerSparqlBuilder *sparql,
-                          GCancellable         *cancellable)
+miner_files_process_file (TrackerMinerFS *fs,
+                          GFile          *file,
+                          GTask          *task)
 {
 	TrackerMinerFilesPrivate *priv;
 	ProcessFileData *data;
@@ -2258,9 +2416,10 @@ miner_files_process_file (TrackerMinerFS       *fs,
 
 	data = g_slice_new0 (ProcessFileData);
 	data->miner = g_object_ref (fs);
-	data->cancellable = g_object_ref (cancellable);
-	data->sparql = g_object_ref (sparql);
+	data->cancellable = g_object_ref (g_task_get_cancellable (task));
+	data->sparql = tracker_sparql_builder_new_update ();
 	data->file = g_object_ref (file);
+	data->task = g_object_ref (task);
 
 	priv = TRACKER_MINER_FILES (fs)->private;
 	priv->extraction_queue = g_list_prepend (priv->extraction_queue, data);
@@ -2276,7 +2435,7 @@ miner_files_process_file (TrackerMinerFS       *fs,
 	                         attrs,
 	                         G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 	                         G_PRIORITY_DEFAULT,
-	                         cancellable,
+	                         data->cancellable,
 	                         process_file_cb,
 	                         data);
 
@@ -2305,9 +2464,8 @@ process_file_attributes_cb (GObject      *object,
 
 	if (error) {
 		/* Something bad happened, notify about the error */
-		tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), file, error);
+		tracker_miner_fs_notify_finish (TRACKER_MINER_FS (data->miner), data->task, NULL, error);
 		process_file_data_free (data);
-		g_error_free (error);
 		return;
 	}
 
@@ -2320,9 +2478,8 @@ process_file_attributes_cb (GObject      *object,
 		                             0,
 		                             "Received request to update attributes but no IRI available!");
 		/* Notify about the error */
-		tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), file, error);
+		tracker_miner_fs_notify_finish (TRACKER_MINER_FS (data->miner), data->task, NULL, error);
 		process_file_data_free (data);
-		g_error_free (error);
 		return;
 	}
 
@@ -2382,25 +2539,27 @@ process_file_attributes_cb (GObject      *object,
 	g_free (uri);
 
 	/* Notify about the success */
-	tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), data->file, NULL);
+	tracker_miner_fs_notify_finish (TRACKER_MINER_FS (data->miner), data->task,
+					tracker_sparql_builder_get_result (sparql),
+					NULL);
 
 	process_file_data_free (data);
 }
 
 static gboolean
-miner_files_process_file_attributes (TrackerMinerFS       *fs,
-                                     GFile                *file,
-                                     TrackerSparqlBuilder *sparql,
-                                     GCancellable         *cancellable)
+miner_files_process_file_attributes (TrackerMinerFS *fs,
+                                     GFile          *file,
+                                     GTask          *task)
 {
 	ProcessFileData *data;
 	const gchar *attrs;
 
 	data = g_slice_new0 (ProcessFileData);
 	data->miner = g_object_ref (fs);
-	data->cancellable = g_object_ref (cancellable);
-	data->sparql = g_object_ref (sparql);
+	data->cancellable = g_object_ref (g_task_get_cancellable (task));
+	data->sparql = tracker_sparql_builder_new_update ();
 	data->file = g_object_ref (file);
+	data->task = g_object_ref (task);
 
 	/* Query only attributes that may change in an ATTRIBUTES_UPDATED event */
 	attrs = G_FILE_ATTRIBUTE_TIME_MODIFIED ","
@@ -2410,82 +2569,9 @@ miner_files_process_file_attributes (TrackerMinerFS       *fs,
 	                         attrs,
 	                         G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 	                         G_PRIORITY_DEFAULT,
-	                         cancellable,
+	                         data->cancellable,
 	                         process_file_attributes_cb,
 	                         data);
-
-	return TRUE;
-}
-
-static gboolean
-miner_files_ignore_next_update_file (TrackerMinerFS       *fs,
-                                     GFile                *file,
-                                     TrackerSparqlBuilder *sparql,
-                                     GCancellable         *cancellable)
-{
-	const gchar *attrs;
-	const gchar *mime_type;
-	GFileInfo *file_info;
-	guint64 time_;
-	gchar *uri;
-	GError *error = NULL;
-
-	attrs = G_FILE_ATTRIBUTE_STANDARD_TYPE ","
-		G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
-		G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME ","
-		G_FILE_ATTRIBUTE_STANDARD_SIZE ","
-		G_FILE_ATTRIBUTE_TIME_MODIFIED ","
-		G_FILE_ATTRIBUTE_TIME_ACCESS;
-
-	file_info = g_file_query_info (file, attrs,
-	                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
-	                               cancellable, &error);
-
-	if (error) {
-		g_warning ("Can't ignore-next-update: '%s'", error->message);
-		g_clear_error (&error);
-		return FALSE;
-	}
-
-	uri = g_file_get_uri (file);
-	mime_type = g_file_info_get_content_type (file_info);
-
-	/* For ignore-next-update we only write a few properties back. These properties
-	 * should NEVER be marked as tracker:writeback in the ontology! (else you break
-	 * the tracker-writeback feature) */
-
-	tracker_sparql_builder_insert_silent_open (sparql, TRACKER_OWN_GRAPH_URN);
-
-	tracker_sparql_builder_subject_variable (sparql, "urn");
-	tracker_sparql_builder_predicate (sparql, "a");
-	tracker_sparql_builder_object (sparql, "nfo:FileDataObject");
-
-	tracker_sparql_builder_predicate (sparql, "nfo:fileSize");
-	tracker_sparql_builder_object_int64 (sparql, g_file_info_get_size (file_info));
-
-	time_ = g_file_info_get_attribute_uint64 (file_info, G_FILE_ATTRIBUTE_TIME_MODIFIED);
-	tracker_sparql_builder_predicate (sparql, "nfo:fileLastModified");
-	tracker_sparql_builder_object_date (sparql, (time_t *) &time_);
-
-	time_ = g_file_info_get_attribute_uint64 (file_info, G_FILE_ATTRIBUTE_TIME_ACCESS);
-	tracker_sparql_builder_predicate (sparql, "nfo:fileLastAccessed");
-	tracker_sparql_builder_object_date (sparql, (time_t *) &time_);
-
-	tracker_sparql_builder_predicate (sparql, "nie:mimeType");
-	tracker_sparql_builder_object_string (sparql, mime_type);
-
-	tracker_sparql_builder_insert_close (sparql);
-
-	tracker_sparql_builder_where_open (sparql);
-
-	tracker_sparql_builder_subject_variable (sparql, "urn");
-	tracker_sparql_builder_predicate (sparql, "nie:url");
-	tracker_sparql_builder_object_string (sparql, uri);
-
-	tracker_sparql_builder_where_close (sparql);
-
-	g_object_unref (file_info);
-	g_free (uri);
 
 	return TRUE;
 }
@@ -2498,7 +2584,228 @@ miner_files_finished (TrackerMinerFS *fs,
                       gint            files_found,
                       gint            files_ignored)
 {
-	tracker_db_manager_set_last_crawl_done (TRUE);
+	TrackerMinerFilesPrivate *priv = TRACKER_MINER_FILES (fs)->private;
+
+	if (priv->thumbnailer)
+		tracker_thumbnailer_send (priv->thumbnailer);
+
+	tracker_miner_files_set_last_crawl_done (TRUE);
+}
+
+static gchar *
+create_delete_sparql (GFile    *file,
+		      gboolean  delete_self,
+		      gboolean  delete_children)
+{
+	GString *sparql;
+	gchar *uri;
+
+	g_return_val_if_fail (delete_self || delete_children, NULL);
+
+	uri = g_file_get_uri (file);
+	sparql = g_string_new ("DELETE {"
+			       "  ?f a rdfs:Resource . "
+			       "  ?ie a rdfs:Resource "
+			       "} WHERE {"
+			       "  ?f a rdfs:Resource ; "
+			       "     nie:url ?u . "
+			       "  ?ie nie:isStoredAs ?f . "
+			       "  FILTER (");
+
+	if (delete_self)
+		g_string_append_printf (sparql, "?u = \"%s\" ", uri);
+
+	if (delete_children) {
+		if (delete_self)
+			g_string_append (sparql, " || ");
+
+		g_string_append_printf (sparql, "STRSTARTS (?u, \"%s/\")", uri);
+	}
+
+	g_string_append (sparql, ")}");
+	g_free (uri);
+
+	return g_string_free (sparql, FALSE);
+}
+
+static gchar *
+miner_files_remove_children (TrackerMinerFS *fs,
+                             GFile          *file)
+{
+	return create_delete_sparql (file, FALSE, TRUE);
+}
+
+static gchar *
+miner_files_remove_file (TrackerMinerFS *fs,
+                         GFile          *file)
+{
+	TrackerMinerFilesPrivate *priv = TRACKER_MINER_FILES (fs)->private;
+
+	if (priv->thumbnailer) {
+		gchar *uri;
+
+		uri = g_file_get_uri (file);
+		tracker_thumbnailer_remove_add (priv->thumbnailer, uri, NULL);
+		g_free (uri);
+	}
+
+	return create_delete_sparql (file, TRUE, TRUE);
+}
+
+static void
+move_thumbnails_cb (GObject      *object,
+                    GAsyncResult *result,
+                    gpointer      user_data)
+{
+	ThumbnailMoveData *data = user_data;
+	TrackerMinerFilesPrivate *priv = TRACKER_MINER_FILES (data->miner)->private;
+	GError *error = NULL;
+
+	TrackerSparqlCursor *cursor = tracker_sparql_connection_query_finish (TRACKER_SPARQL_CONNECTION (object), result, &error);
+
+	if (error) {
+		g_critical ("Could move thumbnails: %s", error->message);
+		g_error_free (error);
+	} else {
+		while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+			const gchar *src, *dst, *mimetype;
+
+			src = tracker_sparql_cursor_get_string (cursor, 0, NULL);
+			dst = tracker_sparql_cursor_get_string (cursor, 1, NULL);
+			mimetype = tracker_sparql_cursor_get_string (cursor, 2, NULL);
+
+			if (priv->thumbnailer) {
+				tracker_thumbnailer_move_add (priv->thumbnailer,
+				                              src, mimetype, dst);
+			}
+		}
+	}
+
+	g_object_unref (cursor);
+	g_main_loop_quit (data->main_loop);
+}
+
+static gchar *
+miner_files_move_file (TrackerMinerFS *fs,
+                       GFile          *file,
+                       GFile          *source_file,
+                       gboolean        recursive)
+{
+	TrackerMinerFilesPrivate *priv = TRACKER_MINER_FILES (fs)->private;
+	GString *sparql = g_string_new (NULL);
+	const gchar *new_parent_iri;
+	gchar *uri, *source_uri, *display_name;
+	gchar *source_iri;
+	gchar *path, *basename;
+	GFile *new_parent;
+
+	uri = g_file_get_uri (file);
+	source_uri = g_file_get_uri (source_file);
+	source_iri = tracker_miner_fs_query_urn (fs, source_file);
+
+	if (priv->thumbnailer) {
+		GFileInfo *file_info;
+
+		file_info = g_file_query_info (file,
+		                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+		                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+		                               NULL, NULL);
+		tracker_thumbnailer_move_add (priv->thumbnailer, source_uri,
+		                              g_file_info_get_content_type (file_info),
+					      uri);
+		g_object_unref (file_info);
+
+		if (recursive) {
+			ThumbnailMoveData move_data;
+			gchar *query;
+
+			g_debug ("Moving thumbnails within '%s'", uri);
+
+			/* Push all moved files to thumbnailer */
+			move_data.main_loop = g_main_loop_new (NULL, FALSE);
+			move_data.miner = TRACKER_MINER (fs);
+
+			query = g_strdup_printf ("SELECT ?url ?new_url nie:mimeType(?u) {"
+			                         "  ?u a rdfs:Resource ;"
+			                         "     nie:url ?url ."
+			                         "  BIND (CONCAT (\"%s/\", SUBSTR (?url, STRLEN (\"%s/\") + 1)) AS ?new_url) ."
+			                         "  FILTER (STRSTARTS (?url, \"%s/\"))"
+			                         "}",
+			                         uri, source_uri, source_uri);
+
+			tracker_sparql_connection_query_async (tracker_miner_get_connection (TRACKER_MINER (fs)),
+			                                       query,
+			                                       NULL,
+			                                       move_thumbnails_cb,
+			                                       &move_data);
+
+			g_main_loop_run (move_data.main_loop);
+			g_main_loop_unref (move_data.main_loop);
+			g_free (query);
+		}
+	}
+
+	path = g_file_get_path (file);
+	basename = g_filename_display_basename (path);
+	display_name = tracker_sparql_escape_string (basename);
+	g_free (basename);
+	g_free (path);
+
+	g_string_append_printf (sparql,
+	                        "DELETE { "
+	                        "  <%s> nfo:fileName ?f ; "
+	                        "       nie:url ?u ; "
+	                        "       nie:isStoredAs ?s ; "
+	                        "       nfo:belongsToContainer ?b"
+	                        "} WHERE { "
+	                        "  <%s> nfo:fileName ?f ; "
+	                        "       nie:url ?u ; "
+	                        "       nie:isStoredAs ?s . "
+	                        "       OPTIONAL { <%s> nfo:belongsToContainer ?b }"
+	                        "} ",
+	                        source_iri, source_iri, source_iri);
+
+	/* Get new parent information */
+	new_parent = g_file_get_parent (file);
+	new_parent_iri = tracker_miner_fs_query_urn (fs, new_parent);
+
+	g_string_append_printf (sparql,
+	                        "INSERT INTO <" TRACKER_OWN_GRAPH_URN "> {"
+	                        "  <%s> nfo:fileName \"%s\" ; "
+	                        "       nie:url \"%s\" ; "
+	                        "       nie:isStoredAs <%s> ",
+	                        source_iri, display_name, uri, source_iri);
+
+	if (new_parent && new_parent_iri) {
+		g_string_append_printf (sparql, "; nfo:belongsToContainer \"%s\"",
+		                        new_parent_iri);
+	}
+
+	g_string_append (sparql, "}");
+
+	if (recursive) {
+		g_string_append_printf (sparql,
+		                        " DELETE {"
+		                        "  ?u nie:url ?url "
+		                        "} INSERT { "
+		                        "  GRAPH <" TRACKER_OWN_GRAPH_URN "> {"
+		                        "    ?u nie:url ?new_url "
+		                        "  }"
+		                        "} WHERE {"
+		                        "  ?u a rdfs:Resource;"
+		                        "     nie:url ?url ."
+		                        "  BIND (CONCAT (\"%s/\", SUBSTR (?url, STRLEN (\"%s/\") + 1)) AS ?new_url) ."
+		                        "  FILTER (STRSTARTS (?url, \"%s/\"))"
+		                        "} ",
+		                        uri, source_uri, source_uri);
+	}
+
+	g_free (uri);
+	g_free (source_uri);
+	g_free (display_name);
+	g_clear_object (&new_parent);
+
+	return g_string_free (sparql, FALSE);
 }
 
 TrackerMiner *
@@ -2508,7 +2815,6 @@ tracker_miner_files_new (TrackerConfig  *config,
 	return g_initable_new (TRACKER_TYPE_MINER_FILES,
 	                       NULL,
 	                       error,
-	                       "name", "Files",
 	                       "root", NULL,
 	                       "config", config,
 	                       "processing-pool-wait-limit", 10,
@@ -2948,4 +3254,304 @@ tracker_miner_files_is_file_eligible (TrackerMinerFiles *miner,
 
 	/* file is eligible to be indexed */
 	return TRUE;
+}
+
+inline static gchar *
+get_first_index_filename (void)
+{
+	return g_build_filename (g_get_user_cache_dir (),
+	                         "tracker",
+	                         FIRST_INDEX_FILENAME,
+	                         NULL);
+}
+
+/**
+ * tracker_miner_files_get_first_index_done:
+ *
+ * Check if first full index of files was already done.
+ *
+ * Returns: %TRUE if a first full index have been done, %FALSE otherwise.
+ **/
+gboolean
+tracker_miner_files_get_first_index_done (void)
+{
+	gboolean exists;
+	gchar *filename;
+
+	filename = get_first_index_filename ();
+	exists = g_file_test (filename, G_FILE_TEST_EXISTS);
+	g_free (filename);
+
+	return exists;
+}
+
+/**
+ * tracker_miner_files_set_first_index_done:
+ *
+ * Set the status of the first full index of files. Should be set to
+ *  %FALSE if the index was never done or if a reindex is needed. When
+ *  the index is completed, should be set to %TRUE.
+ **/
+void
+tracker_miner_files_set_first_index_done (gboolean done)
+{
+	gboolean already_exists;
+	gchar *filename;
+
+	filename = get_first_index_filename ();
+	already_exists = g_file_test (filename, G_FILE_TEST_EXISTS);
+
+	if (done && !already_exists) {
+		GError *error = NULL;
+
+		/* If done, create stamp file if not already there */
+		if (!g_file_set_contents (filename, PACKAGE_VERSION, -1, &error)) {
+			g_warning ("  Could not create file:'%s' failed, %s",
+			           filename,
+			           error->message);
+			g_error_free (error);
+		} else {
+			g_info ("  First index file:'%s' created", filename);
+		}
+	} else if (!done && already_exists) {
+		/* If NOT done, remove stamp file */
+		g_info ("  Removing first index file:'%s'", filename);
+
+		if (g_remove (filename)) {
+			g_warning ("    Could not remove file:'%s': %m",
+			           filename);
+		}
+	}
+
+	g_free (filename);
+}
+
+static inline gchar *
+get_last_crawl_filename (void)
+{
+	return g_build_filename (g_get_user_cache_dir (),
+	                         "tracker",
+	                         LAST_CRAWL_FILENAME,
+	                         NULL);
+}
+
+/**
+ * tracker_miner_files_get_last_crawl_done:
+ *
+ * Check when last crawl was performed.
+ *
+ * Returns: time_t() value when last crawl occurred, otherwise 0.
+ **/
+guint64
+tracker_miner_files_get_last_crawl_done (void)
+{
+	gchar *filename;
+	gchar *content;
+	guint64 then;
+
+	filename = get_last_crawl_filename ();
+
+	if (!g_file_get_contents (filename, &content, NULL, NULL)) {
+		g_info ("  No previous timestamp, crawling forced");
+		return 0;
+	}
+
+	then = g_ascii_strtoull (content, NULL, 10);
+	g_free (content);
+
+	return then;
+}
+
+/**
+ * tracker_miner_files_set_last_crawl_done:
+ *
+ * Set the status of the first full index of files. Should be set to
+ *  %FALSE if the index was never done or if a reindex is needed. When
+ *  the index is completed, should be set to %TRUE.
+ **/
+void
+tracker_miner_files_set_last_crawl_done (gboolean done)
+{
+	gboolean already_exists;
+	gchar *filename;
+
+	filename = get_last_crawl_filename ();
+	already_exists = g_file_test (filename, G_FILE_TEST_EXISTS);
+
+	if (done && !already_exists) {
+		GError *error = NULL;
+		gchar *content;
+
+		content = g_strdup_printf ("%" G_GUINT64_FORMAT, (guint64) time (NULL));
+
+		/* If done, create stamp file if not already there */
+		if (!g_file_set_contents (filename, content, -1, &error)) {
+			g_warning ("  Could not create file:'%s' failed, %s",
+			           filename,
+			           error->message);
+			g_error_free (error);
+		} else {
+			g_info ("  Last crawl file:'%s' created", filename);
+		}
+
+		g_free (content);
+	} else if (!done && already_exists) {
+		/* If NOT done, remove stamp file */
+		g_info ("  Removing last crawl file:'%s'", filename);
+
+		if (g_remove (filename)) {
+			g_warning ("    Could not remove file:'%s': %m",
+			           filename);
+		}
+	}
+
+	g_free (filename);
+}
+
+inline static gchar *
+get_need_mtime_check_filename (void)
+{
+	return g_build_filename (g_get_user_cache_dir (),
+	                         "tracker",
+	                         NEED_MTIME_CHECK_FILENAME,
+	                         NULL);
+}
+
+/**
+ * tracker_miner_files_get_need_mtime_check:
+ *
+ * Check if the miner-fs was cleanly shutdown or not.
+ *
+ * Returns: %TRUE if we need to check mtimes for directories against
+ * the database on the next start for the miner-fs, %FALSE otherwise.
+ **/
+gboolean
+tracker_miner_files_get_need_mtime_check (void)
+{
+	gboolean exists;
+	gchar *filename;
+
+	filename = get_need_mtime_check_filename ();
+	exists = g_file_test (filename, G_FILE_TEST_EXISTS);
+	g_free (filename);
+
+	/* Existence of the file means we cleanly shutdown before and
+	 * don't need to do the mtime check again on this start.
+	 */
+	return !exists;
+}
+
+/**
+ * tracker_miner_files_set_need_mtime_check:
+ * @needed: a #gboolean
+ *
+ * If the next start of miner-fs should perform a full mtime check
+ * against each directory found and those in the database (for
+ * complete synchronisation), then @needed should be #TRUE, otherwise
+ * #FALSE.
+ *
+ * Creates a file in $HOME/.cache/tracker/ if an mtime check is not
+ * needed. The idea behind this is that a check is forced if the file
+ * is not cleaned up properly on shutdown (i.e. due to a crash or any
+ * other uncontrolled shutdown reason).
+ **/
+void
+tracker_miner_files_set_need_mtime_check (gboolean needed)
+{
+	gboolean already_exists;
+	gchar *filename;
+
+	filename = get_need_mtime_check_filename ();
+	already_exists = g_file_test (filename, G_FILE_TEST_EXISTS);
+
+	/* !needed = add file
+	 *  needed = remove file
+	 */
+	if (!needed && !already_exists) {
+		GError *error = NULL;
+
+		/* Create stamp file if not already there */
+		if (!g_file_set_contents (filename, PACKAGE_VERSION, -1, &error)) {
+			g_warning ("  Could not create file:'%s' failed, %s",
+			           filename,
+			           error->message);
+			g_error_free (error);
+		} else {
+			g_info ("  Need mtime check file:'%s' created", filename);
+		}
+	} else if (needed && already_exists) {
+		/* Remove stamp file */
+		g_info ("  Removing need mtime check file:'%s'", filename);
+
+		if (g_remove (filename)) {
+			g_warning ("    Could not remove file:'%s': %m",
+			           filename);
+		}
+	}
+
+	g_free (filename);
+}
+
+void
+tracker_miner_files_set_mtime_checking (TrackerMinerFiles *mf,
+                                        gboolean           mtime_check)
+{
+	mf->private->mtime_check = mtime_check;
+}
+
+void
+tracker_miner_files_writeback_file (TrackerMinerFiles *mf,
+                                    GFile             *file,
+                                    GStrv              rdf_types,
+                                    GPtrArray         *results)
+{
+	GCancellable *cancellable;
+
+	if (!g_hash_table_contains (mf->private->writeback_tasks, file)) {
+		cancellable = g_cancellable_new ();
+		g_hash_table_insert (mf->private->writeback_tasks, file, cancellable);
+		sync_writeback_pause_state (mf);
+		g_signal_emit (mf, signals[WRITEBACK], 0, file, rdf_types,
+		               results, cancellable);
+	}
+}
+
+/**
+ * tracker_miner_files_writeback_notify:
+ * @fs: a #TrackerMinerFS
+ * @file: a #GFile
+ * @error: a #GError with the error that happened during processing, or %NULL.
+ *
+ * Notifies @fs that all writing back on @file has been finished, if any error
+ * happened during file data processing, it should be passed in @error, else
+ * that parameter will contain %NULL to reflect success.
+ **/
+void
+tracker_miner_files_writeback_notify (TrackerMinerFiles *mf,
+                                      GFile             *file,
+                                      const GError      *error)
+{
+	GCancellable *cancellable;
+
+	g_return_if_fail (TRACKER_IS_MINER_FILES (mf));
+	g_return_if_fail (G_IS_FILE (file));
+
+	cancellable = g_hash_table_lookup (mf->private->writeback_tasks, file);
+
+	if (!cancellable)
+		return;
+
+	if (error) {
+		gchar *uri = g_file_get_uri (file);
+		g_warning ("Writeback on %s got error: %s\n",
+		           uri, error->message);
+		g_free (uri);
+	}
+
+	/* Drop the cancellable, it will be detected on the next file
+	 * update in miner_files_filter_event().
+	 */
+	g_hash_table_steal (mf->private->writeback_tasks, file);
+	g_hash_table_insert (mf->private->writeback_tasks, file, NULL);
+	g_object_unref (cancellable);
 }

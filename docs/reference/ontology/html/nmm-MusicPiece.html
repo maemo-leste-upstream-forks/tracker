@@ -33,8 +33,8 @@
 </div>
 <div class="refsect1">
 <a name="nmm-MusicPiece.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <a class="link" href="nfo-Media.html" title="nfo:Media">nfo:Media</a> 
             ╰── <span class="emphasis"><em><a class="link" href="nmm-MusicPiece.html" title="nmm:MusicPiece">nmm:MusicPiece</a></em></span> 
 </pre>
@@ -43,7 +43,7 @@
 <a name="nmm-MusicPiece.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nmm-MusicPiece.nmm-internationalStandardRecordingCode"></a><h3>The <code class="literal">“nmm:internationalStandardRecordingCode”</code> property</h3>
-<pre class="programlisting">“nmm:internationalStandardRecordingCode”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nmm:internationalStandardRecordingCode”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>ISRC ID. Format: 'CC-XXX-YY-NNNNN'</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -54,7 +54,7 @@
 <hr>
 <div class="refsect2">
 <a name="nmm-MusicPiece.nmm-trackNumber"></a><h3>The <code class="literal">“nmm:trackNumber”</code> property</h3>
-<pre class="programlisting">“nmm:trackNumber”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nmm:trackNumber”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Track number of the music in its album</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -100,7 +100,7 @@
 <hr>
 <div class="refsect2">
 <a name="nmm-MusicPiece.nmm-beatsPerMinute"></a><h3>The <code class="literal">“nmm:beatsPerMinute”</code> property</h3>
-<pre class="programlisting">“nmm:beatsPerMinute”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nmm:beatsPerMinute”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>beats per minute</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -126,10 +126,6 @@
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="nie-InformationElement.html#nie-InformationElement.nie-isLogicalPartOf" title="The “nie:isLogicalPartOf” property"><code class="literal">“nie:isLogicalPartOf”</code> from the <code class="literal">nie:InformationElement</code> class</a></p></li></ul></div>
 </div>
 </div>
-</div>
-<div class="refsect1">
-<a name="nmm-MusicPiece.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/nmm#" target="_top">NMM ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

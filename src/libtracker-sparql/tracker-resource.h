@@ -26,11 +26,6 @@
 
 G_BEGIN_DECLS
 
-/* This is defined in the Vala code, which we can't include here
- * because it might not yet have been built.
- */
-typedef struct _TrackerSparqlBuilder TrackerSparqlBuilder;
-
 #define TRACKER_TYPE_RESOURCE tracker_resource_get_type()
 G_DECLARE_DERIVABLE_TYPE (TrackerResource, tracker_resource, TRACKER, RESOURCE, GObject)
 
@@ -47,6 +42,7 @@ void tracker_resource_set_double (TrackerResource *self, const char *property_ur
 void tracker_resource_set_int (TrackerResource *self, const char *property_uri, int value);
 void tracker_resource_set_int64 (TrackerResource *self, const char *property_uri, gint64 value);
 void tracker_resource_set_relation (TrackerResource *self, const char *property_uri, TrackerResource *resource);
+void tracker_resource_set_take_relation (TrackerResource *self, const char *property_uri, TrackerResource *resource);
 void tracker_resource_set_string (TrackerResource *self, const char *property_uri, const char *value);
 void tracker_resource_set_uri (TrackerResource *self, const char *property_uri, const char *value);
 
@@ -56,6 +52,7 @@ void tracker_resource_add_double (TrackerResource *self, const char *property_ur
 void tracker_resource_add_int (TrackerResource *self, const char *property_uri, int value);
 void tracker_resource_add_int64 (TrackerResource *self, const char *property_uri, gint64 value);
 void tracker_resource_add_relation (TrackerResource *self, const char *property_uri, TrackerResource *resource);
+void tracker_resource_add_take_relation (TrackerResource *self, const char *property_uri, TrackerResource *resource);
 void tracker_resource_add_string (TrackerResource *self, const char *property_uri, const char *value);
 void tracker_resource_add_uri (TrackerResource *self, const char *property_uri, const char *value);
 

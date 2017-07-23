@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="ncal-Attachment.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-DataObject.html" title="nie:DataObject">nie:DataObject</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-DataObject.html" title="nie:DataObject">nie:DataObject</a> 
         ╰── <a class="link" href="nfo-FileDataObject.html" title="nfo:FileDataObject">nfo:FileDataObject</a> 
             ╰── <a class="link" href="nfo-EmbeddedFileDataObject.html" title="nfo:EmbeddedFileDataObject">nfo:EmbeddedFileDataObject</a> 
                 ╰── <a class="link" href="nfo-Attachment.html" title="nfo:Attachment">nfo:Attachment</a> 
@@ -46,7 +46,7 @@
 <a name="ncal-Attachment.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="ncal-Attachment.ncal-attachmentContent"></a><h3>The <code class="literal">“ncal:attachmentContent”</code> property</h3>
-<pre class="programlisting">“ncal:attachmentContent”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:attachmentContent”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>The uri of the attachment. Created to express the actual value of the ATTACH property defined in RFC 2445 sec. 4.8.1.1. This property expresses the BINARY datatype of that property. see ncal:attachmentUri for the URI datatype.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -60,21 +60,17 @@
 <hr>
 <div class="refsect2">
 <a name="ncal-Attachment.ncal-fmttype"></a><h3>The <code class="literal">“ncal:fmttype”</code> property</h3>
-<pre class="programlisting">“ncal:fmttype”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:fmttype”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>To specify the content type of a referenced object. Inspired by RFC 2445 sec. 4.2.8. The value of this property should be an IANA-registered content type (e.g. application/binary)</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-Attachment.ncal-attachmentUri"></a><h3>The <code class="literal">“ncal:attachmentUri”</code> property</h3>
-<pre class="programlisting">“ncal:attachmentUri”          <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a></pre>
+<pre class="programlisting">“ncal:attachmentUri”          http://www.w3.org/2000/01/rdf-schema#Resource</pre>
 <p>The uri of the attachment. Created to express the actual value of the ATTACH property defined in RFC 2445 sec. 4.8.1.1. This property expresses the default URI datatype of that property. see ncal:attachmentContents for the BINARY datatype.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-Attachment.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

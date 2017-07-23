@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="slo-GeoLocation.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <span class="emphasis"><em><a class="link" href="slo-GeoLocation.html" title="slo:GeoLocation">slo:GeoLocation</a></em></span> 
             ╰── <a class="link" href="slo-Route.html" title="slo:Route">slo:Route</a> 
 </pre>
@@ -52,84 +52,80 @@
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-timestamp"></a><h3>The <code class="literal">“slo:timestamp”</code> property</h3>
-<pre class="programlisting">“slo:timestamp”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“slo:timestamp”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Timestamp when the geolocation is referenced. Create subproperties for certain use cases</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-radius"></a><h3>The <code class="literal">“slo:radius”</code> property</h3>
-<pre class="programlisting">“slo:radius”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:radius”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Radius from the center to define an area. Some applications can use it in 2D sense, making then a circle instead of a sphere</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-boundingLongitudeMax"></a><h3>The <code class="literal">“slo:boundingLongitudeMax”</code> property</h3>
-<pre class="programlisting">“slo:boundingLongitudeMax”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:boundingLongitudeMax”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Eastern longitude of the bounding box</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-boundingLongitudeMin"></a><h3>The <code class="literal">“slo:boundingLongitudeMin”</code> property</h3>
-<pre class="programlisting">“slo:boundingLongitudeMin”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:boundingLongitudeMin”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Western longitude of the bounding box</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-boundingLatitudeMax"></a><h3>The <code class="literal">“slo:boundingLatitudeMax”</code> property</h3>
-<pre class="programlisting">“slo:boundingLatitudeMax”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:boundingLatitudeMax”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Northern latitude of the bounding box</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-boundingLatitudeMin"></a><h3>The <code class="literal">“slo:boundingLatitudeMin”</code> property</h3>
-<pre class="programlisting">“slo:boundingLatitudeMin”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:boundingLatitudeMin”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Southern latitude of the bounding box</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-altitude"></a><h3>The <code class="literal">“slo:altitude”</code> property</h3>
-<pre class="programlisting">“slo:altitude”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:altitude”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Altitude following WGS 84 reference</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-horizontalAccuracy"></a><h3>The <code class="literal">“slo:horizontalAccuracy”</code> property</h3>
-<pre class="programlisting">“slo:horizontalAccuracy”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:horizontalAccuracy”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Represents the error estimate of horizontal (earths-surface) accuracy in meters.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-verticalAccuracy"></a><h3>The <code class="literal">“slo:verticalAccuracy”</code> property</h3>
-<pre class="programlisting">“slo:verticalAccuracy”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:verticalAccuracy”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Represents the error estimate of vertical (earths-surface) accuracy in meters.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-longitude"></a><h3>The <code class="literal">“slo:longitude”</code> property</h3>
-<pre class="programlisting">“slo:longitude”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:longitude”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Positive to the East of the Greenwich meridian, negative to the West (following WGS-84)</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="slo-GeoLocation.slo-latitude"></a><h3>The <code class="literal">“slo:latitude”</code> property</h3>
-<pre class="programlisting">“slo:latitude”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“slo:latitude”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Positive values for the north hemisphere, negative for the south</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="slo-GeoLocation.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/slo#" target="_top">SLO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

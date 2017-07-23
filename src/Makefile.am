@@ -18,7 +18,6 @@ SUBDIRS =                                              \
 	libtracker-control                             \
 	tracker                                        \
 	miners                                         \
-	plugins                                        \
 	tracker-store
 
 if HAVE_TRACKER_EXTRACT
@@ -29,10 +28,7 @@ if HAVE_TRACKER_WRITEBACK
 SUBDIRS += tracker-writeback
 endif
 
-if HAVE_TRACKER_PREFERENCES
-SUBDIRS += tracker-preferences
-endif
-
-if HAVE_TRACKER_NEEDLE
-SUBDIRS += tracker-needle
-endif
+EXTRA_DIST = \
+	meson.build \
+	create-miner-symlinks.sh \
+	install-generated-header.sh

@@ -14,6 +14,7 @@
 
 @SET_MAKE@
 
+
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -135,11 +136,12 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libdir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" \
+	"$(DESTDIR)$(typelibdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtracker_sparql_@TRACKER_API_VERSION@_la_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-sparql/libtracker-sparql.la \
+libtracker_sparql_@TRACKER_API_VERSION@_la_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql/libtracker-sparql-intermediate-vala.la \
+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-intermediate-c.la \
 	$(top_builddir)/src/libtracker-bus/libtracker-bus.la \
 	$(top_builddir)/src/libtracker-direct/libtracker-direct.la \
 	$(top_builddir)/src/libtracker-remote/libtracker-remote.la \
@@ -207,6 +209,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+DATA = $(gir_DATA) $(noinst_DATA) $(typelib_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp \
@@ -251,6 +254,7 @@ DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
+DTAGS_LDFLAGS = @DTAGS_LDFLAGS@
 DUMPBIN = @DUMPBIN@
 DVI_CFLAGS = @DVI_CFLAGS@
 DVI_LIBS = @DVI_LIBS@
@@ -264,12 +268,12 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-FIREFOX = @FIREFOX@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
 GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_PREFIX = @GLIB_PREFIX@
@@ -337,8 +341,6 @@ LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
-LIBMEDIAART_CFLAGS = @LIBMEDIAART_CFLAGS@
-LIBMEDIAART_LIBS = @LIBMEDIAART_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
 LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
@@ -366,7 +368,6 @@ LIBTRACKER_FTS_CFLAGS = @LIBTRACKER_FTS_CFLAGS@
 LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
 LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
 LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
-LIBTRACKER_MINER_PC_REQUIRES = @LIBTRACKER_MINER_PC_REQUIRES@
 LIBTRACKER_REMOTE_CFLAGS = @LIBTRACKER_REMOTE_CFLAGS@
 LIBTRACKER_REMOTE_LIBS = @LIBTRACKER_REMOTE_LIBS@
 LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
@@ -386,8 +387,6 @@ LT_REVISION = @LT_REVISION@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
-MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
-MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
 MP3_CFLAGS = @MP3_CFLAGS@
 MP3_LIBS = @MP3_LIBS@
@@ -429,7 +428,6 @@ TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
 TAGLIB_LIBS = @TAGLIB_LIBS@
 TEXT_CFLAGS = @TEXT_CFLAGS@
 TEXT_LIBS = @TEXT_LIBS@
-THUNDERBIRD = @THUNDERBIRD@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
@@ -449,25 +447,11 @@ TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
 TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
-TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
-TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
-TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
-TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
-TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
-TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
-TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
-TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
-TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
-TRACKER_NAUTILUS_EXTENSION_LIBS = @TRACKER_NAUTILUS_EXTENSION_LIBS@
-TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
-TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
-TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
-TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
 TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -549,7 +533,8 @@ AM_VALAFLAGS = \
 	$(top_srcdir)/src/libtracker-sparql/tracker-sparql-$(TRACKER_API_VERSION).vapi \
 	$(top_srcdir)/src/libtracker-bus/tracker-bus.vapi \
 	$(top_srcdir)/src/libtracker-direct/tracker-direct.vapi \
-	$(top_srcdir)/src/libtracker-remote/tracker-remote.vapi
+	$(top_srcdir)/src/libtracker-remote/tracker-remote.vapi \
+	$(top_srcdir)/src/libtracker-common/libtracker-common.vapi
 
 AM_CPPFLAGS = \
 	$(BUILD_VALACFLAGS)                            \
@@ -562,7 +547,8 @@ libtracker_sparql_@TRACKER_API_VERSION@_la_SOURCES = \
 	tracker-backend.vala
 
 libtracker_sparql_@TRACKER_API_VERSION@_la_LIBADD = \
-	$(top_builddir)/src/libtracker-sparql/libtracker-sparql.la \
+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-intermediate-vala.la \
+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-intermediate-c.la \
 	$(top_builddir)/src/libtracker-bus/libtracker-bus.la \
 	$(top_builddir)/src/libtracker-direct/libtracker-direct.la \
 	$(top_builddir)/src/libtracker-remote/libtracker-remote.la \
@@ -571,9 +557,44 @@ libtracker_sparql_@TRACKER_API_VERSION@_la_LIBADD = \
 	$(LIBTRACKER_SPARQL_LIBS)
 
 libtracker_sparql_@TRACKER_API_VERSION@_la_LDFLAGS = \
+	$(DTAGS_LDFLAGS)                               \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-symbols-regex '^(tracker_sparql_(connection|cursor|builder|escape|error|value|get)_.*|tracker_namespace_manager_.*|tracker_resource_.*|tracker_notifier_.*)'
 
+EXTRA_DIST = meson.build
+@HAVE_INTROSPECTION_TRUE@c_introspection_files = \
+@HAVE_INTROSPECTION_TRUE@	$(top_builddir)/src/libtracker-sparql/tracker-sparql-enum-types.c \
+@HAVE_INTROSPECTION_TRUE@	$(top_builddir)/src/libtracker-sparql/tracker-sparql-enum-types.h \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-namespace-manager.c \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-namespace-manager.h \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-notifier.c \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-notifier.h \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-resource.c \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-resource.h \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-ontologies.h \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-version.c \
+@HAVE_INTROSPECTION_TRUE@	$(top_srcdir)/src/libtracker-sparql/tracker-version.h
+
+@HAVE_INTROSPECTION_TRUE@INTROSPECTION_SCANNER_ARGS = \
+@HAVE_INTROSPECTION_TRUE@	-I $(top_srcdir)/src \
+@HAVE_INTROSPECTION_TRUE@	-D TRACKER_COMPILATION \
+@HAVE_INTROSPECTION_TRUE@	--identifier-prefix=Tracker \
+@HAVE_INTROSPECTION_TRUE@	--symbol-prefix=tracker \
+@HAVE_INTROSPECTION_TRUE@	--warn-all
+
+@HAVE_INTROSPECTION_TRUE@Tracker_C_@TRACKER_API_VERSION_UNDERSCORES@_gir_INCLUDES = GObject-2.0 GModule-2.0 Gio-2.0
+@HAVE_INTROSPECTION_TRUE@Tracker_C_@TRACKER_API_VERSION_UNDERSCORES@_gir_CFLAGS = $(INCLUDES)
+@HAVE_INTROSPECTION_TRUE@Tracker_C_@TRACKER_API_VERSION_UNDERSCORES@_gir_NAMESPACE = "Tracker"
+@HAVE_INTROSPECTION_TRUE@Tracker_C_@TRACKER_API_VERSION_UNDERSCORES@_gir_LIBS = libtracker-sparql-@TRACKER_API_VERSION@.la
+@HAVE_INTROSPECTION_TRUE@Tracker_C_@TRACKER_API_VERSION_UNDERSCORES@_gir_FILES = $(c_introspection_files)
+@HAVE_INTROSPECTION_TRUE@INTROSPECTION_GIRS = Tracker_C-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@noinst_DATA = $(INTROSPECTION_GIRS)
+@HAVE_INTROSPECTION_TRUE@GIRS = Tracker-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
+@HAVE_INTROSPECTION_TRUE@gir_DATA = $(GIRS)
+@HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0
+@HAVE_INTROSPECTION_TRUE@typelib_DATA = $(GIRS:.gir=.typelib)
+@HAVE_INTROSPECTION_TRUE@CLEANFILES = $(gir_DATA) $(typelib_DATA) $(INTROSPECTION_GIRS)
 all: all-am
 
 .SUFFIXES:
@@ -689,6 +710,48 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-girDATA: $(gir_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(girdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(girdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(girdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(girdir)" || exit $$?; \
+	done
+
+uninstall-girDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(girdir)'; $(am__uninstall_files_from_dir)
+install-typelibDATA: $(typelib_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(typelibdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(typelibdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(typelibdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(typelibdir)" || exit $$?; \
+	done
+
+uninstall-typelibDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(typelibdir)'; $(am__uninstall_files_from_dir)
 tags TAGS:
 
 ctags CTAGS:
@@ -728,9 +791,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES)
+all-am: Makefile $(LTLIBRARIES) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -755,6 +818,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -788,7 +852,7 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-girDATA install-typelibDATA
 
 install-dvi: install-dvi-am
 
@@ -834,7 +898,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libLTLIBRARIES
+uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
+	uninstall-typelibDATA
 
 .MAKE: install-am install-strip
 
@@ -843,17 +908,26 @@ uninstall-am: uninstall-libLTLIBRARIES
 	distclean distclean-compile distclean-generic \
 	distclean-libtool distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am \
+	install-dvi-am install-exec install-exec-am install-girDATA \
+	install-html install-html-am install-info install-info-am \
 	install-libLTLIBRARIES install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install-ps install-ps-am install-strip install-typelibDATA \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags-am uninstall uninstall-am uninstall-libLTLIBRARIES
+	tags-am uninstall uninstall-am uninstall-girDATA \
+	uninstall-libLTLIBRARIES uninstall-typelibDATA
 
 .PRECIOUS: Makefile
 
+
+# Introspection foo
+-include $(INTROSPECTION_MAKEFILE)
+
+@HAVE_INTROSPECTION_TRUE@Tracker_C-@TRACKER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) Makefile libtracker-sparql-@TRACKER_API_VERSION@.la
+
+@HAVE_INTROSPECTION_TRUE@Tracker-@TRACKER_API_VERSION@.gir: $(INTROSPECTION_GIRS) $(top_srcdir)/src/libtracker-sparql/Tracker_Vala-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@	$(AM_V_GEN) ($(top_srcdir)/utils/g-ir-merge/g-ir-merge --namespace Tracker --nsversion $(TRACKER_API_VERSION) $(INTROSPECTION_GIRS) $(top_srcdir)/src/libtracker-sparql/Tracker_Vala-$(TRACKER_API_VERSION).gir) > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

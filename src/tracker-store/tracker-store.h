@@ -16,6 +16,7 @@
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixinputstream.h>
 #include "libtracker-data/tracker-db-interface.h"
+#include "libtracker-data/tracker-data-manager.h"
 
 G_BEGIN_DECLS
 
@@ -191,7 +192,9 @@ void tracker_value_set_dbus (GValue* value, gpointer v_object);
 void tracker_value_take_dbus (GValue* value, gpointer v_object);
 gpointer tracker_value_get_dbus (const GValue* value);
 GType tracker_dbus_get_type (void) G_GNUC_CONST;
-gboolean tracker_dbus_register_names (void);
+gboolean tracker_dbus_register_names (const gchar* domain);
+void tracker_dbus_on_domain_name_disappeared (GDBusConnection* connection, const gchar* name);
+void tracker_dbus_watch_domain (const gchar* domain, GMainLoop* main_loop);
 gboolean tracker_dbus_init (TrackerConfig* config_p);
 void tracker_dbus_shutdown (void);
 GType tracker_status_get_type (void) G_GNUC_CONST;
@@ -262,16 +265,16 @@ void tracker_value_take_store (GValue* value, gpointer v_object);
 gpointer tracker_value_get_store (const GValue* value);
 GType tracker_store_get_type (void) G_GNUC_CONST;
 GType tracker_store_priority_get_type (void) G_GNUC_CONST;
-void tracker_store_wal_checkpoint (void);
+void tracker_store_wal_checkpoint (TrackerDBInterface* iface, gboolean blocking);
 void tracker_store_init (void);
 void tracker_store_shutdown (void);
-void tracker_store_sparql_query (const gchar* sparql, TrackerStorePriority priority, TrackerStoreSparqlQueryInThread in_thread, void* in_thread_target, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
+void tracker_store_sparql_query (TrackerDataManager* manager, const gchar* sparql, TrackerStorePriority priority, TrackerStoreSparqlQueryInThread in_thread, void* in_thread_target, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_store_sparql_query_finish (GAsyncResult* _res_, GError** error);
-void tracker_store_sparql_update (const gchar* sparql, TrackerStorePriority priority, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
+void tracker_store_sparql_update (TrackerDataManager* manager, const gchar* sparql, TrackerStorePriority priority, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_store_sparql_update_finish (GAsyncResult* _res_, GError** error);
-void tracker_store_sparql_update_blank (const gchar* sparql, TrackerStorePriority priority, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
+void tracker_store_sparql_update_blank (TrackerDataManager* manager, const gchar* sparql, TrackerStorePriority priority, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
 GVariant* tracker_store_sparql_update_blank_finish (GAsyncResult* _res_, GError** error);
-void tracker_store_queue_turtle_import (GFile* file, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
+void tracker_store_queue_turtle_import (TrackerDataManager* manager, GFile* file, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_store_queue_turtle_import_finish (GAsyncResult* _res_, GError** error);
 guint tracker_store_get_queue_size (TrackerStore* self);
 void tracker_store_unreg_batches (const gchar* client_id);

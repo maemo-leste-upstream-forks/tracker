@@ -35,13 +35,14 @@
 </div>
 <div class="refsect1">
 <a name="mfo-FeedMessage.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
-        ├── <a class="link" href="nfo-Document.html" title="nfo:Document">nfo:Document</a> 
-        │   ╰── <a class="link" href="nfo-TextDocument.html" title="nfo:TextDocument">nfo:TextDocument</a> 
-        │       ╰── <a class="link" href="nmo-Message.html" title="nmo:Message">nmo:Message</a> ──┐
-        ╰── <a class="link" href="mfo-FeedElement.html" title="mfo:FeedElement">mfo:FeedElement</a> ──────┤
-                                  └── <span class="emphasis"><em><a class="link" href="mfo-FeedMessage.html" title="mfo:FeedMessage">mfo:FeedMessage</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+        ├── <a class="link" href="nfo-Document.html" title="nfo:Document">nfo:Document</a> ├── 
+        │   ╰── <a class="link" href="nfo-TextDocument.html" title="nfo:TextDocument">nfo:TextDocument</a> │   
+        │       ╰── <a class="link" href="nmo-Message.html" title="nmo:Message">nmo:Message</a> │   ──┐
+        │               │             │
+        ╰── ╰── <a class="link" href="mfo-FeedElement.html" title="mfo:FeedElement">mfo:FeedElement</a> ──────┤
+                                      └── <span class="emphasis"><em><a class="link" href="mfo-FeedMessage.html" title="mfo:FeedMessage">mfo:FeedMessage</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
@@ -55,14 +56,10 @@
 <hr>
 <div class="refsect2">
 <a name="mfo-FeedMessage.mfo-downloadedTime"></a><h3>The <code class="literal">“mfo:downloadedTime”</code> property</h3>
-<pre class="programlisting">“mfo:downloadedTime”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“mfo:downloadedTime”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Captures the time stamp when message was downloaded</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="mfo-FeedMessage.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/mfo#" target="_top">MFO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

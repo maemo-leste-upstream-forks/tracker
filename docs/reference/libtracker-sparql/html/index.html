@@ -15,7 +15,7 @@
 <div>
 <div><table class="navigation" id="top" width="100%" cellpadding="2" cellspacing="0"><tr><th valign="middle"><p class="title">Tracker SPARQL Library Reference Manual</p></th></tr></table></div>
 <div><p class="releaseinfo">
-	  for libtracker-sparql 1.12.1
+	  for libtracker-sparql 1.99.1
 .
 	  The latest version of this documentation can be found on-line at
 	  <a class="ulink" href="http://library.gnome.org/devel/libtracker-sparql/unstable/" target="_top">
@@ -59,7 +59,90 @@
 <span class="refentrytitle"><a href="libtracker-sparql-Version-Information.html">Version Information</a></span><span class="refpurpose"></span>
 </dt>
 </dl></dd>
-<dt><span class="part"><a href="tracker-examples.html">III. Examples</a></span></dt>
+<dt><span class="part"><a href="base-ontology.html">III. Base ontology</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="dc-ontology.html">Dublin Core metadata (DC): Common superproperties for documents</a></span></dt>
+<dd><dl><dt><span class="section"><a href="dc-ontology.html#dc-classes">DC Ontology Classes</a></span></dt></dl></dd>
+<dt><span class="chapter"><a href="xsd-ontology.html">XML schema (XSD): Basic types definitions (int, double,...)</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="xsd-ontology.html#xsd-classes">XSD Ontology Classes</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="xsd-integer.html">xsd:integer</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xsd-boolean.html">xsd:boolean</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xsd-string.html">xsd:string</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xsd-double.html">xsd:double</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xsd-date.html">xsd:date</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="xsd-dateTime.html">xsd:dateTime</a></span><span class="refpurpose"></span>
+</dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="chapter"><a href="rdf-ontology.html">Resource Description Framework (RDF): Core RDF classes to keep the internal consistency of the ontology</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="rdf-ontology.html#rdf-classes">RDF Ontology Classes</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="rdfs-Class.html">rdfs:Class</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="rdfs-Literal.html">rdfs:Literal</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="rdfs-Resource.html">rdfs:Resource</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="tracker-Namespace.html">tracker:Namespace</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="tracker-Ontology.html">tracker:Ontology</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="rdf-Property.html">rdf:Property</a></span><span class="refpurpose"></span>
+</dt>
+</dl></dd>
+</dl></dd>
+<dt><span class="chapter"><a href="nrl-ontology.html">Nepomuk Resource Language (NRL): Properties describing the ontologies.</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="nrl-ontology.html#nrl-classes">NRL Ontology Classes</a></span></dt>
+<dd><dl><dt>
+<span class="refentrytitle"><a href="nrl-InverseFunctionalProperty.html">nrl:InverseFunctionalProperty</a></span><span class="refpurpose"></span>
+</dt></dl></dd>
+</dl></dd>
+<dt><span class="chapter"><a href="nao-ontology.html">Nepomuk Annotation Ontology (NAO): Tags, ratings and other common annotations to all classes</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="nao-ontology.html#nao-classes">NAO Ontology Classes</a></span></dt>
+<dd><dl><dt>
+<span class="refentrytitle"><a href="nao-Tag.html">nao:Tag</a></span><span class="refpurpose"></span>
+</dt></dl></dd>
+</dl></dd>
+</dl></dd>
+<dt><span class="part"><a href="tracker-ontologies.html">IV. Defining ontologies</a></span></dt>
+<dd><dl>
+<dt><span class="chapter"><a href="creating-ontology.html">Creating an ontology</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="creating-ontology.html#defining-namespaces">Defining a namespace</a></span></dt>
+<dt><span class="section"><a href="defining-classes.html">Defining classes</a></span></dt>
+<dt><span class="section"><a href="defining-properties.html">Defining properties</a></span></dt>
+<dt><span class="section"><a href="defining-cardinality.html">Defining cardinality of properties</a></span></dt>
+<dt><span class="section"><a href="defining-uniqueness.html">Defining uniqueness</a></span></dt>
+<dt><span class="section"><a href="defining-indexes.html">Defining indexes</a></span></dt>
+<dt><span class="section"><a href="defining-fts-indexes.html">Defining full-text search properties</a></span></dt>
+<dt><span class="section"><a href="predefined-elements.html">Predefined elements</a></span></dt>
+</dl></dd>
+<dt><span class="chapter"><a href="accompanying-metadata.html">Accompanying metadata</a></span></dt>
+<dt><span class="chapter"><a href="updating-ontology.html">Updating an ontology</a></span></dt>
+</dl></dd>
+<dt><span class="part"><a href="tracker-examples.html">V. Examples</a></span></dt>
 <dd><dl>
 <dt><span class="chapter"><a href="tracker-examples-builder.html">SPARQL query builder</a></span></dt>
 <dt><span class="chapter"><a href="tracker-examples-readonly.html">Querying the Store</a></span></dt>

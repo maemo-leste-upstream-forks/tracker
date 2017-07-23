@@ -6,6 +6,8 @@
 
 #include <glib.h>
 #include "libtracker-sparql/tracker-sparql.h"
+#include <stdlib.h>
+#include <string.h>
 #include <gio/gio.h>
 
 G_BEGIN_DECLS
@@ -33,8 +35,8 @@ struct _TrackerBusConnectionClass {
 
 
 GType tracker_bus_connection_get_type (void) G_GNUC_CONST;
-TrackerBusConnection* tracker_bus_connection_new (GError** error);
-TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GError** error);
+TrackerBusConnection* tracker_bus_connection_new (const gchar* dbus_name, GError** error);
+TrackerBusConnection* tracker_bus_connection_construct (GType object_type, const gchar* dbus_name, GError** error);
 
 
 G_END_DECLS

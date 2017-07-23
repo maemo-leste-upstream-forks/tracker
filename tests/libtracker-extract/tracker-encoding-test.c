@@ -23,6 +23,7 @@
 #include <glib-object.h>
 #include <libtracker-extract/tracker-encoding.h>
 #include <libtracker-common/tracker-locale.h>
+#include <locale.h>
 
 static void
 test_encoding_guessing ()
@@ -53,7 +54,7 @@ static void
 test_encoding_can_guess (void)
 {
         /* This just duplicates the function code... */
-#if defined (HAVE_ENCA) || defined (HAVE_MEEGOTOUCH) || defined (HAVE_LIBICU_CHARSET_DETECTION)
+#if defined (HAVE_ENCA) || defined (HAVE_LIBICU_CHARSET_DETECTION)
         g_assert (tracker_encoding_can_guess ());
 #else
         g_assert (!tracker_encoding_can_guess ());
@@ -65,12 +66,11 @@ main (int argc, char **argv)
 {
 	g_test_init (&argc, &argv, NULL);
 
-	tracker_locale_init ();
+	setlocale (LC_ALL, "");
 	g_test_add_func ("/libtracker-extract/tracker-encoding/encoding_guessing",
 	                 test_encoding_guessing);
 	g_test_add_func ("/libtracker-extract/tracker-encoding/can_guess",
 	                 test_encoding_can_guess);
-	tracker_locale_shutdown ();
 
 	return g_test_run ();
 }

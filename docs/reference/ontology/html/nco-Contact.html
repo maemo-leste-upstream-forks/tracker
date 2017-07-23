@@ -34,12 +34,13 @@
 </div>
 <div class="refsect1">
 <a name="nco-Contact.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ├── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> ──┐
-    ╰── <a class="link" href="nco-Role.html" title="nco:Role">nco:Role</a> ────────────────┤
-                                 └── <span class="emphasis"><em><a class="link" href="nco-Contact.html" title="nco:Contact">nco:Contact</a></em></span> 
-                <a class="link" href="nco-OrganizationContact.html" title="nco:OrganizationContact">nco:OrganizationContact</a> 
-                    <a class="link" href="nco-PersonContact.html" title="nco:PersonContact">nco:PersonContact</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a>     ──┐
+                                     │
+                <a class="link" href="nco-Role.html" title="nco:Role">nco:Role</a> ────────────┤
+                                     └── <span class="emphasis"><em><a class="link" href="nco-Contact.html" title="nco:Contact">nco:Contact</a></em></span> 
+                    <a class="link" href="nco-OrganizationContact.html" title="nco:OrganizationContact">nco:OrganizationContact</a> 
+                        <a class="link" href="nco-PersonContact.html" title="nco:PersonContact">nco:PersonContact</a> 
 </pre>
 </div>
 <div class="refsect1">
@@ -97,12 +98,12 @@
 <hr>
 <div class="refsect2">
 <a name="nco-Contact.nco-birthDate"></a><h3>The <code class="literal">“nco:birthDate”</code> property</h3>
-<pre class="programlisting">“nco:birthDate”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nco:birthDate”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Birth date of the object represented by this Contact. An equivalent of the 'BDAY' property as defined in RFC 2426 Sec. 3.1.5.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
 <p>This property supersedes the following properties from this or parent classes:</p>
-<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="rdfs-Resource.html#rdfs-Resource.dc-date" title="The “dc:date” property"><code class="literal">“dc:date”</code> from the <code class="literal">rdfs:Resource</code> class</a></p></li></ul></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "></ul></div>
 </div>
 </div>
 <hr>
@@ -122,7 +123,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-Contact.nco-note"></a><h3>The <code class="literal">“nco:note”</code> property</h3>
-<pre class="programlisting">“nco:note”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:note”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A note about the object represented by this Contact. An equivalent for the 'NOTE' property defined in RFC 2426 Sec. 3.6.2</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -130,7 +131,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-Contact.nco-nickname"></a><h3>The <code class="literal">“nco:nickname”</code> property</h3>
-<pre class="programlisting">“nco:nickname”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:nickname”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A nickname of the Object represented by this Contact. This is an equivalen of the 'NICKNAME' property as defined in RFC 2426 Sec. 3.1.3.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -138,21 +139,21 @@
 <hr>
 <div class="refsect2">
 <a name="nco-Contact.nco-hasLocation"></a><h3>The <code class="literal">“nco:hasLocation”</code> property</h3>
-<pre class="programlisting">“nco:hasLocation”          <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a></pre>
+<pre class="programlisting">“nco:hasLocation”          http://www.w3.org/2000/01/rdf-schema#Resource</pre>
 <p>Geographical location of the contact. Inspired by the 'GEO' property specified in RFC 2426 Sec. 3.4.2</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nco-Contact.nco-contactLocalUID"></a><h3>The <code class="literal">“nco:contactLocalUID”</code> property</h3>
-<pre class="programlisting">“nco:contactLocalUID”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:contactLocalUID”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Unique ID for the contact in the local storage</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nco-Contact.nco-contactUID"></a><h3>The <code class="literal">“nco:contactUID”</code> property</h3>
-<pre class="programlisting">“nco:contactUID”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:contactUID”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A value that represents a globally unique  identifier corresponding to the individual or resource associated with the Contact. An equivalent of the 'UID' property defined in RFC 2426 Sec. 3.6.7</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -170,19 +171,15 @@
 <hr>
 <div class="refsect2">
 <a name="nco-Contact.nco-fullname"></a><h3>The <code class="literal">“nco:fullname”</code> property</h3>
-<pre class="programlisting">“nco:fullname”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:fullname”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>To specify the formatted text corresponding to the name of the object the Contact represents. An equivalent of the FN property as defined in RFC 2426 Sec. 3.1.1.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 <div class="note">
 <p>This property supersedes the following properties from this or parent classes:</p>
-<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="rdfs-Resource.html#rdfs-Resource.dc-title" title="The “dc:title” property"><code class="literal">“dc:title”</code> from the <code class="literal">rdfs:Resource</code> class</a></p></li></ul></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "></ul></div>
 </div>
 </div>
-</div>
-<div class="refsect1">
-<a name="nco-Contact.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#" target="_top">NCO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

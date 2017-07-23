@@ -33,13 +33,14 @@
 </div>
 <div class="refsect1">
 <a name="nmm-Video.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
-        ╰── <a class="link" href="nfo-Media.html" title="nfo:Media">nfo:Media</a> 
-            ├── <a class="link" href="nfo-Visual.html" title="nfo:Visual">nfo:Visual</a> 
-            │   ╰── <a class="link" href="nfo-Video.html" title="nfo:Video">nfo:Video</a> ──┐
-            ╰── <a class="link" href="nfo-Audio.html" title="nfo:Audio">nfo:Audio</a> ──────┤
-                                └── <span class="emphasis"><em><a class="link" href="nmm-Video.html" title="nmm:Video">nmm:Video</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+        ╰── <a class="link" href="nfo-Media.html" title="nfo:Media">nfo:Media</a> <a class="link" href="nfo-Media.html" title="nfo:Media">nfo:Media</a> 
+            ├── <a class="link" href="nfo-Visual.html" title="nfo:Visual">nfo:Visual</a> ├── 
+            │   ╰── <a class="link" href="nfo-Video.html" title="nfo:Video">nfo:Video</a> │   ──┐
+        │   │                       │
+            ╰── ╰── <a class="link" href="nfo-Audio.html" title="nfo:Audio">nfo:Audio</a> ──────┤
+                                    └── <span class="emphasis"><em><a class="link" href="nmm-Video.html" title="nmm:Video">nmm:Video</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
@@ -51,14 +52,14 @@
 <a name="nmm-Video.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nmm-Video.mtp-waveformat"></a><h3>The <code class="literal">“mtp:waveformat”</code> property</h3>
-<pre class="programlisting">“mtp:waveformat”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“mtp:waveformat”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>the WAVE formats reserved with Microsoft as of June 1, 2003. These codes are used to uniquely identify audio formats, and are used in various legacy and current software development kits (SDKs), including MCI, Microsoft Video for Windows, Microsoft DirectShow, Microsoft DirectSound, and Microsoft Windows Media Format.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.mtp-fourCC"></a><h3>The <code class="literal">“mtp:fourCC”</code> property</h3>
-<pre class="programlisting">“mtp:fourCC”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“mtp:fourCC”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>These codes are used to uniquely identify video formats, and are used in various legacy and current software development kits (SDKs), including those for Microsoft Video for Windows (VfW), Microsoft DirectShow, and Microsoft Windows Media Format.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -72,7 +73,7 @@
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-isContentEncrypted"></a><h3>The <code class="literal">“nmm:isContentEncrypted”</code> property</h3>
-<pre class="programlisting">“nmm:isContentEncrypted”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmm:isContentEncrypted”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
@@ -84,7 +85,7 @@
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-hasSubtitle"></a><h3>The <code class="literal">“nmm:hasSubtitle”</code> property</h3>
-<pre class="programlisting">“nmm:hasSubtitle”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmm:hasSubtitle”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
@@ -108,44 +109,44 @@
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-category"></a><h3>The <code class="literal">“nmm:category”</code> property</h3>
-<pre class="programlisting">“nmm:category”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nmm:category”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-MPAARating"></a><h3>The <code class="literal">“nmm:MPAARating”</code> property</h3>
-<pre class="programlisting">“nmm:MPAARating”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nmm:MPAARating”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-synopsis"></a><h3>The <code class="literal">“nmm:synopsis”</code> property</h3>
-<pre class="programlisting">“nmm:synopsis”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nmm:synopsis”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-runTime"></a><h3>The <code class="literal">“nmm:runTime”</code> property</h3>
-<pre class="programlisting">“nmm:runTime”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nmm:runTime”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-episodeNumber"></a><h3>The <code class="literal">“nmm:episodeNumber”</code> property</h3>
-<pre class="programlisting">“nmm:episodeNumber”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nmm:episodeNumber”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-season"></a><h3>The <code class="literal">“nmm:season”</code> property</h3>
-<pre class="programlisting">“nmm:season”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nmm:season”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmm-Video.nmm-isSeries"></a><h3>The <code class="literal">“nmm:isSeries”</code> property</h3>
-<pre class="programlisting">“nmm:isSeries”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmm:isSeries”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
@@ -154,10 +155,6 @@
 <pre class="programlisting">“nmm:videoAlbum”          <a class="link" href="nfo-MediaList.html" title="nfo:MediaList">nfo:MediaList</a></pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="nmm-Video.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/nmm#" target="_top">NMM ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="nco-PostalAddress.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nco-ContactMedium.html" title="nco:ContactMedium">nco:ContactMedium</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nco-ContactMedium.html" title="nco:ContactMedium">nco:ContactMedium</a> 
         ╰── <span class="emphasis"><em><a class="link" href="nco-PostalAddress.html" title="nco:PostalAddress">nco:PostalAddress</a></em></span> 
             ├── <a class="link" href="nco-ParcelDeliveryAddress.html" title="nco:ParcelDeliveryAddress">nco:ParcelDeliveryAddress</a> 
             ├── <a class="link" href="nco-InternationalDeliveryAddress.html" title="nco:InternationalDeliveryAddress">nco:InternationalDeliveryAddress</a> 
@@ -62,7 +62,7 @@
 <a name="nco-PostalAddress.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-pobox"></a><h3>The <code class="literal">“nco:pobox”</code> property</h3>
-<pre class="programlisting">“nco:pobox”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:pobox”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Post office box. This is the first part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -70,7 +70,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-district"></a><h3>The <code class="literal">“nco:district”</code> property</h3>
-<pre class="programlisting">“nco:district”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:district”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Local division inside a city. Not in RFC 2426 sec 3.2.1. Added for API compatibility</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -78,7 +78,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-county"></a><h3>The <code class="literal">“nco:county”</code> property</h3>
-<pre class="programlisting">“nco:county”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:county”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Regional division between state and city. Not in RFC 2426 sec 3.2.1. Added for API compatibility</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -86,7 +86,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-locality"></a><h3>The <code class="literal">“nco:locality”</code> property</h3>
-<pre class="programlisting">“nco:locality”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:locality”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Locality or City. Inspired by the fourth part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -94,7 +94,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-postalcode"></a><h3>The <code class="literal">“nco:postalcode”</code> property</h3>
-<pre class="programlisting">“nco:postalcode”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:postalcode”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Postal Code. Inspired by the sixth part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -102,7 +102,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-streetAddress"></a><h3>The <code class="literal">“nco:streetAddress”</code> property</h3>
-<pre class="programlisting">“nco:streetAddress”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:streetAddress”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>The streed address. Inspired by the third part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -110,14 +110,14 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-addressLocation"></a><h3>The <code class="literal">“nco:addressLocation”</code> property</h3>
-<pre class="programlisting">“nco:addressLocation”          <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a></pre>
+<pre class="programlisting">“nco:addressLocation”          http://www.w3.org/2000/01/rdf-schema#Resource</pre>
 <p>The geographical location of a postal address.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-extendedAddress"></a><h3>The <code class="literal">“nco:extendedAddress”</code> property</h3>
-<pre class="programlisting">“nco:extendedAddress”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:extendedAddress”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>An extended part of an address. This field might be used to express parts of an address that aren't include in the name of the Contact but also aren't part of the actual location. Usually the streed address and following fields are enough for a postal letter to arrive. Examples may include ('University of California Campus building 45', 'Sears Tower 34th floor' etc.) Inspired by the second part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -125,7 +125,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-country"></a><h3>The <code class="literal">“nco:country”</code> property</h3>
-<pre class="programlisting">“nco:country”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:country”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A part of an address specifying the country. Inspired by the seventh part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -133,15 +133,11 @@
 <hr>
 <div class="refsect2">
 <a name="nco-PostalAddress.nco-region"></a><h3>The <code class="literal">“nco:region”</code> property</h3>
-<pre class="programlisting">“nco:region”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:region”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Region. Inspired by the fifth part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 </div>
-</div>
-<div class="refsect1">
-<a name="nco-PostalAddress.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#" target="_top">NCO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

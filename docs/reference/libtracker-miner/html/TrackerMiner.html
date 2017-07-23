@@ -69,14 +69,6 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">void</span>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-ignore-next-update" title="tracker_miner_ignore_next_update ()">tracker_miner_ignore_next_update</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
 <span class="returnvalue">gboolean</span>
 </td>
 <td class="function_name">
@@ -93,15 +85,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-get-n-pause-reasons" title="tracker_miner_get_n_pause_reasons ()">tracker_miner_get_n_pause_reasons</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">void</span>
 </td>
 <td class="function_name">
 <a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()">tracker_miner_pause</a> <span class="c_punctuation">()</span>
@@ -123,28 +107,6 @@
 <a class="link" href="TrackerMiner.html#tracker-miner-get-connection" title="tracker_miner_get_connection ()">tracker_miner_get_connection</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
-<tr>
-<td class="function_type">
-<span class="returnvalue">GDBusConnection</span> *
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-get-dbus-connection" title="tracker_miner_get_dbus_connection ()">tracker_miner_get_dbus_connection</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-get-dbus-full-name" title="tracker_miner_get_dbus_full_name ()">tracker_miner_get_dbus_full_name</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
-<tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
-</td>
-<td class="function_name">
-<a class="link" href="TrackerMiner.html#tracker-miner-get-dbus-full-path" title="tracker_miner_get_dbus_full_path ()">tracker_miner_get_dbus_full_path</a> <span class="c_punctuation">()</span>
-</td>
-</tr>
 </tbody>
 </table></div>
 </div>
@@ -158,20 +120,9 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gpointer</span></td>
-<td class="property_name"><a class="link" href="TrackerMiner.html#TrackerMiner--introspection-handler" title="The “introspection-handler” property">introspection-handler</a></td>
-<td class="property_flags">Read / Write / Construct</td>
-</tr>
-<tr>
 <td class="property_type">
-<span class="type">gchar</span> *</td>
-<td class="property_name"><a class="link" href="TrackerMiner.html#TrackerMiner--introspection-xml" title="The “introspection-xml” property">introspection-xml</a></td>
-<td class="property_flags">Read / Write / Construct</td>
-</tr>
-<tr>
-<td class="property_type">
-<span class="type">gchar</span> *</td>
-<td class="property_name"><a class="link" href="TrackerMiner.html#TrackerMiner--name" title="The “name” property">name</a></td>
+<a href="../html/TrackerSparqlConnection.html#TrackerSparqlConnection-struct"><span class="type">TrackerSparqlConnection</span></a> *</td>
+<td class="property_name"><a class="link" href="TrackerMiner.html#TrackerMiner--connection" title="The “connection” property">connection</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
 <tr>
@@ -202,11 +153,6 @@
 <col width="200px" class="signals_flags">
 </colgroup>
 <tbody>
-<tr>
-<td class="signal_type"><span class="returnvalue">void</span></td>
-<td class="signal_name"><a class="link" href="TrackerMiner.html#TrackerMiner-ignore-next-update" title="The “ignore-next-update” signal">ignore-next-update</a></td>
-<td class="signal_flags">Run Last</td>
-</tr>
 <tr>
 <td class="signal_type"><span class="returnvalue">void</span></td>
 <td class="signal_name"><a class="link" href="TrackerMiner.html#TrackerMiner-paused" title="The “paused” signal">paused</a></td>
@@ -371,38 +317,6 @@ tracker_miner_stop (<em class="parameter"><code><a class="link" href="TrackerMin
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-miner-ignore-next-update"></a><h3>tracker_miner_ignore_next_update ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>
-tracker_miner_ignore_next_update (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>,
-                                  <em class="parameter"><code>const <span class="type">GStrv</span> urls</code></em>);</pre>
-<p>Tells the miner to mark <em class="parameter"><code>urls</code></em>
- are to ignore on next update.</p>
-<div class="refsect3">
-<a name="tracker-miner-ignore-next-update.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>urls</p></td>
-<td class="parameter_description"><p> the urls to mark as to ignore on next update. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for input. Default is transfer none."><span class="acronym">in</span></acronym>]</span></td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p class="since">Since: 0.8</p>
-</div>
-<hr>
-<div class="refsect2">
 <a name="tracker-miner-is-started"></a><h3>tracker_miner_is_started ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 tracker_miner_is_started (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
@@ -457,14 +371,41 @@ tracker_miner_is_paused (<em class="parameter"><code><a class="link" href="Track
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-miner-get-n-pause-reasons"></a><h3>tracker_miner_get_n_pause_reasons ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
-tracker_miner_get_n_pause_reasons (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Returns the number of pause reasons holding <em class="parameter"><code>miner</code></em>
- from
-indexing contents.</p>
+<a name="tracker-miner-pause"></a><h3>tracker_miner_pause ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+tracker_miner_pause (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Asks <em class="parameter"><code>miner</code></em>
+ to pause. This call may be called multiple times,
+but <a class="link" href="TrackerMiner.html#TrackerMiner-paused" title="The “paused” signal"><span class="type">“paused”</span></a> will only be emitted the first time.
+The same number of <a class="link" href="TrackerMiner.html#tracker-miner-resume" title="tracker_miner_resume ()"><code class="function">tracker_miner_resume()</code></a> calls are expected
+in order to resume operations.</p>
 <div class="refsect3">
-<a name="tracker-miner-get-n-pause-reasons.parameters"></a><h4>Parameters</h4>
+<a name="tracker-miner-pause.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>miner</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-miner-resume"></a><h3>tracker_miner_resume ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+tracker_miner_resume (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<p>Asks the miner to resume processing. This needs to be called
+as many times as <a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()"><code class="function">tracker_miner_pause()</code></a> calls were done
+previously. This function will return <span class="type">TRUE</span> when the miner
+is actually resumed.</p>
+<div class="refsect3">
+<a name="tracker-miner-resume.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -479,98 +420,9 @@ indexing contents.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="tracker-miner-get-n-pause-reasons.returns"></a><h4>Returns</h4>
-<p> The number of current pause reasons</p>
-</div>
-<p class="since">Since: 0.10.5</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-miner-pause"></a><h3>tracker_miner_pause ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
-tracker_miner_pause (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>,
-                     <em class="parameter"><code>const <span class="type">gchar</span> *reason</code></em>,
-                     <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
-<p>Asks <em class="parameter"><code>miner</code></em>
- to pause. On success the cookie ID is returned,
-this is what must be used in <a class="link" href="TrackerMiner.html#tracker-miner-resume" title="tracker_miner_resume ()"><code class="function">tracker_miner_resume()</code></a> to resume
-operations. On failure <em class="parameter"><code>error</code></em>
- will be set and -1 will be returned.</p>
-<div class="refsect3">
-<a name="tracker-miner-pause.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>reason</p></td>
-<td class="parameter_description"><p>reason to pause</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p> return location for errors. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="tracker-miner-pause.returns"></a><h4>Returns</h4>
-<p> The pause cookie ID.</p>
-</div>
-<p class="since">Since: 0.8</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-miner-resume"></a><h3>tracker_miner_resume ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-tracker_miner_resume (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> cookie</code></em>,
-                      <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
-<p>Asks the miner to resume processing. The cookie must be something
-returned by <a class="link" href="TrackerMiner.html#tracker-miner-pause" title="tracker_miner_pause ()"><code class="function">tracker_miner_pause()</code></a>. The miner won't actually resume
-operations until all pause requests have been resumed.</p>
-<div class="refsect3">
-<a name="tracker-miner-resume.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>cookie</p></td>
-<td class="parameter_description"><p>pause cookie</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p> return location for errors. </p></td>
-<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<div class="refsect3">
 <a name="tracker-miner-resume.returns"></a><h4>Returns</h4>
-<p> <span class="type">TRUE</span> if the cookie was valid.</p>
+<p> <span class="type">TRUE</span> if the miner resumed its operations.</p>
 </div>
-<p class="since">Since: 0.8</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -598,91 +450,6 @@ tracker_miner_get_connection (<em class="parameter"><code><a class="link" href="
 <a name="tracker-miner-get-connection.returns"></a><h4>Returns</h4>
 <p> a <a href="../html/TrackerSparqlConnection.html#TrackerSparqlConnection-struct"><span class="type">TrackerSparqlConnection</span></a>. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
-</div>
-<p class="since">Since: 0.10</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-miner-get-dbus-connection"></a><h3>tracker_miner_get_dbus_connection ()</h3>
-<pre class="programlisting"><span class="returnvalue">GDBusConnection</span> *
-tracker_miner_get_dbus_connection (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Gets the <span class="type">GDBusConnection</span> initialized by <em class="parameter"><code>miner</code></em>
-</p>
-<div class="refsect3">
-<a name="tracker-miner-get-dbus-connection.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="tracker-miner-get-dbus-connection.returns"></a><h4>Returns</h4>
-<p> a <span class="type">GDBusConnection</span>. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
-</div>
-<p class="since">Since: 0.10</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-miner-get-dbus-full-name"></a><h3>tracker_miner_get_dbus_full_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
-tracker_miner_get_dbus_full_name (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Gets the DBus name registered by <em class="parameter"><code>miner</code></em>
-</p>
-<div class="refsect3">
-<a name="tracker-miner-get-dbus-full-name.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="tracker-miner-get-dbus-full-name.returns"></a><h4>Returns</h4>
-<p> a constant string which should not be modified by the caller.</p>
-</div>
-<p class="since">Since: 0.10</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="tracker-miner-get-dbus-full-path"></a><h3>tracker_miner_get_dbus_full_path ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
-tracker_miner_get_dbus_full_path (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
-<p>Gets the DBus path registered by <em class="parameter"><code>miner</code></em>
-</p>
-<div class="refsect3">
-<a name="tracker-miner-get-dbus-full-path.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody><tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>a <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect3">
-<a name="tracker-miner-get-dbus-full-path.returns"></a><h4>Returns</h4>
-<p> a constant string which should not be modified by the caller.</p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -762,10 +529,8 @@ implementations. This calls <a class="link" href="TrackerMiner.html#tracker-mine
 
 	void (* progress)           (TrackerMiner *miner,
 	                             const gchar  *status,
-	                             gdouble       progress);
-
-	void (* ignore_next_update) (TrackerMiner *miner,
-	                             const GStrv   urls);
+	                             gdouble       progress,
+	                             gint          remaining_time);
 
 	/* &lt;Private&gt; */
 	gpointer padding[10];
@@ -804,11 +569,6 @@ implementations. This calls <a class="link" href="TrackerMiner.html#tracker-mine
 <tr>
 <td class="struct_member_name"><p><em class="structfield"><code><a name="TrackerMinerClass.progress"></a>progress</code></em> ()</p></td>
 <td class="struct_member_description"><p>progress.</p></td>
-<td class="struct_member_annotations"> </td>
-</tr>
-<tr>
-<td class="struct_member_name"><p><em class="structfield"><code><a name="TrackerMinerClass.ignore-next-update"></a>ignore_next_update</code></em> ()</p></td>
-<td class="struct_member_description"><p>Called after ignore on next update event happens.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
@@ -889,26 +649,10 @@ is given.</p>
 <div class="refsect1">
 <a name="TrackerMiner.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="TrackerMiner--introspection-handler"></a><h3>The <code class="literal">“introspection-handler”</code> property</h3>
-<pre class="programlisting">  “introspection-handler”    <span class="type">gpointer</span></pre>
-<p>Introspection Method Handler function, expected to be a pointer to GDBusInterfaceVTable.</p>
-<p>Flags: Read / Write / Construct</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="TrackerMiner--introspection-xml"></a><h3>The <code class="literal">“introspection-xml”</code> property</h3>
-<pre class="programlisting">  “introspection-xml”        <span class="type">gchar</span> *</pre>
-<p>Introspection XML to *append* to the standard miner interface provided.</p>
-<p>Flags: Read / Write / Construct</p>
-<p>Default value: NULL</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="TrackerMiner--name"></a><h3>The <code class="literal">“name”</code> property</h3>
-<pre class="programlisting">  “name”                     <span class="type">gchar</span> *</pre>
-<p>Miner name.</p>
+<a name="TrackerMiner--connection"></a><h3>The <code class="literal">“connection”</code> property</h3>
+<pre class="programlisting">  “connection”               <a href="../html/TrackerSparqlConnection.html#TrackerSparqlConnection-struct"><span class="type">TrackerSparqlConnection</span></a> *</pre>
+<p>SPARQL Connection.</p>
 <p>Flags: Read / Write / Construct Only</p>
-<p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -939,47 +683,6 @@ is given.</p>
 </div>
 <div class="refsect1">
 <a name="TrackerMiner.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2">
-<a name="TrackerMiner-ignore-next-update"></a><h3>The <code class="literal">“ignore-next-update”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>
-user_function (<a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner,
-               <span class="type">GStrv</span>         urls,
-               <span class="type">gpointer</span>      user_data)</pre>
-<p>the ::ignore-next-update signal is emitted in the miner
-right after it has been asked to mark <em class="parameter"><code>urls</code></em>
- as to ignore on next update
-through <a class="link" href="TrackerMiner.html#tracker-miner-ignore-next-update" title="tracker_miner_ignore_next_update ()"><code class="function">tracker_miner_ignore_next_update()</code></a>.</p>
-<div class="refsect3">
-<a name="TrackerMiner-ignore-next-update.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
-<colgroup>
-<col width="150px" class="parameters_name">
-<col class="parameters_description">
-<col width="200px" class="parameters_annotations">
-</colgroup>
-<tbody>
-<tr>
-<td class="parameter_name"><p>miner</p></td>
-<td class="parameter_description"><p>the <a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a></p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>urls</p></td>
-<td class="parameter_description"><p>the urls to mark as ignore on next update</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-<tr>
-<td class="parameter_name"><p>user_data</p></td>
-<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
-<td class="parameter_annotations"> </td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<p>Flags: Run Last</p>
-<p class="since">Since: 0.8</p>
-</div>
-<hr>
 <div class="refsect2">
 <a name="TrackerMiner-paused"></a><h3>The <code class="literal">“paused”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>

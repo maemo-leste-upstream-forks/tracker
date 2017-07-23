@@ -5,9 +5,6 @@ TrackerDataProviderIface
 tracker_data_provider_begin
 tracker_data_provider_begin_async
 tracker_data_provider_begin_finish
-tracker_data_provider_end
-tracker_data_provider_end_async
-tracker_data_provider_end_finish
 TrackerDataProvider
 <SUBSECTION Standard>
 TRACKER_DATA_PROVIDER
@@ -38,7 +35,8 @@ tracker_decorator_info_get_urn
 tracker_decorator_info_get_url
 tracker_decorator_info_get_mimetype
 tracker_decorator_info_get_task
-tracker_decorator_info_get_sparql
+tracker_decorator_info_complete
+tracker_decorator_info_complete_error
 <SUBSECTION Standard>
 TRACKER_DECORATOR
 TRACKER_DECORATOR_CLASS
@@ -68,22 +66,6 @@ tracker_decorator_fs_get_type
 </SECTION>
 
 <SECTION>
-<FILE>tracker-enumerator</FILE>
-<TITLE>TrackerEnumerator</TITLE>
-TrackerEnumeratorIface
-tracker_enumerator_next
-tracker_enumerator_next_async
-tracker_enumerator_next_finish
-TrackerEnumerator
-<SUBSECTION Standard>
-TRACKER_ENUMERATOR
-TRACKER_ENUMERATOR_GET_IFACE
-TRACKER_IS_ENUMERATOR
-TRACKER_TYPE_ENUMERATOR
-tracker_enumerator_get_type
-</SECTION>
-
-<SECTION>
 <FILE>tracker-file-data-provider</FILE>
 <TITLE>TrackerFileDataProvider</TITLE>
 TrackerFileDataProviderClass
@@ -98,22 +80,6 @@ TRACKER_IS_FILE_DATA_PROVIDER_CLASS
 TRACKER_TYPE_FILE_DATA_PROVIDER
 TrackerFileDataProviderPrivate
 tracker_file_data_provider_get_type
-</SECTION>
-
-<SECTION>
-<FILE>tracker-file-enumerator</FILE>
-<TITLE>TrackerFileEnumerator</TITLE>
-TrackerFileEnumeratorClass
-tracker_file_enumerator_new
-TrackerFileEnumerator
-<SUBSECTION Standard>
-TRACKER_FILE_ENUMERATOR
-TRACKER_FILE_ENUMERATOR_CLASS
-TRACKER_FILE_ENUMERATOR_GET_CLASS
-TRACKER_IS_FILE_ENUMERATOR
-TRACKER_IS_FILE_ENUMERATOR_CLASS
-TRACKER_TYPE_FILE_ENUMERATOR
-tracker_file_enumerator_get_type
 </SECTION>
 
 <SECTION>
@@ -185,26 +151,10 @@ tracker_miner_fs_error_quark
 tracker_miner_fs_get_indexing_tree
 tracker_miner_fs_get_data_provider
 tracker_miner_fs_get_throttle
-tracker_miner_fs_get_mtime_checking
-tracker_miner_fs_get_initial_crawling
 tracker_miner_fs_set_throttle
-tracker_miner_fs_set_mtime_checking
-tracker_miner_fs_set_initial_crawling
-tracker_miner_fs_add_directory_without_parent
-tracker_miner_fs_directory_add
-tracker_miner_fs_directory_remove
-tracker_miner_fs_directory_remove_full
-tracker_miner_fs_force_mtime_checking
 tracker_miner_fs_check_file
-tracker_miner_fs_check_file_with_priority
-tracker_miner_fs_check_directory
-tracker_miner_fs_check_directory_with_priority
-tracker_miner_fs_force_recheck
-tracker_miner_fs_writeback_file
-tracker_miner_fs_writeback_notify
-tracker_miner_fs_file_notify
+tracker_miner_fs_notify_finish
 tracker_miner_fs_get_urn
-tracker_miner_fs_get_parent_urn
 tracker_miner_fs_query_urn
 tracker_miner_fs_has_items_to_process
 <SUBSECTION Standard>
@@ -232,7 +182,6 @@ TrackerMinerError
 tracker_miner_error_quark
 tracker_miner_start
 tracker_miner_stop
-tracker_miner_ignore_next_update
 tracker_miner_is_started
 tracker_miner_is_paused
 tracker_miner_get_n_pause_reasons

@@ -98,7 +98,7 @@ struct _TrackerStatusWaitData {
 	GAsyncResult* _res_;
 	GTask* _async_result;
 	TrackerStatus* self;
-	gdouble _tmp0_;
+	const gchar* _tmp0_;
 	TrackerStatusWaitContext* context;
 	TrackerStatusWaitContext* _tmp1_;
 	TrackerStatusWaitContext* _tmp2_;
@@ -510,9 +510,9 @@ static gboolean tracker_status_wait_co (TrackerStatusWaitData* _data_) {
 	}
 	_state_0:
 #line 113 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-status.vala"
-	_data_->_tmp0_ = _data_->self->priv->_progress;
+	_data_->_tmp0_ = _data_->self->priv->status;
 #line 113 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-status.vala"
-	if (_data_->_tmp0_ == ((gdouble) 1)) {
+	if (g_strcmp0 (_data_->_tmp0_, "Idle") == 0) {
 #line 517 "tracker-status.c"
 	} else {
 #line 116 "/home/carlos/Source/gnome/tracker/src/tracker-store/tracker-status.vala"

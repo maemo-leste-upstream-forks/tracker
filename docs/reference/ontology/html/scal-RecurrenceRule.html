@@ -34,15 +34,15 @@
 </div>
 <div class="refsect1">
 <a name="scal-RecurrenceRule.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <span class="emphasis"><em><a class="link" href="scal-RecurrenceRule.html" title="scal:RecurrenceRule">scal:RecurrenceRule</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <span class="emphasis"><em><a class="link" href="scal-RecurrenceRule.html" title="scal:RecurrenceRule">scal:RecurrenceRule</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
 <a name="scal-RecurrenceRule.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="scal-RecurrenceRule.scal-exception"></a><h3>The <code class="literal">“scal:exception”</code> property</h3>
-<pre class="programlisting">“scal:exception”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“scal:exception”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>True if this recurrence rules must be interpreted as an exception</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -56,14 +56,10 @@
 <hr>
 <div class="refsect2">
 <a name="scal-RecurrenceRule.scal-recurrencePattern"></a><h3>The <code class="literal">“scal:recurrencePattern”</code> property</h3>
-<pre class="programlisting">“scal:recurrencePattern”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“scal:recurrencePattern”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Recurrence pattern enforcing all (14) the fields in RFC2445/4.3.10, with ';' as separator: freq;until;count;interval;bysecond;byminute;byhour;byday;bymonthday;byyearday;byweekno;bymonth;bysetpos;wkst </p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="scal-RecurrenceRule.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/scal#" target="_top">SCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

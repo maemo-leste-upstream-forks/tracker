@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="scal-CalendarItem.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <span class="emphasis"><em><a class="link" href="scal-CalendarItem.html" title="scal:CalendarItem">scal:CalendarItem</a></em></span> 
             ├── <a class="link" href="scal-Event.html" title="scal:Event">scal:Event</a> 
             ├── <a class="link" href="scal-Todo.html" title="scal:Todo">scal:Todo</a> 
@@ -46,14 +46,14 @@
 <a name="scal-CalendarItem.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="scal-CalendarItem.scal-exceptionRDate"></a><h3>The <code class="literal">“scal:exceptionRDate”</code> property</h3>
-<pre class="programlisting">“scal:exceptionRDate”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“scal:exceptionRDate”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>One of more concrete exceptions of the calendar item using ';' as separator. Included for backward compatibility. Use rrule with exception='true' instead</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="scal-CalendarItem.scal-rdate"></a><h3>The <code class="literal">“scal:rdate”</code> property</h3>
-<pre class="programlisting">“scal:rdate”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“scal:rdate”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>One of more concrete ocurrences of the calendar item using ';' as separator. Included for backward compatibility. Use rrule instead</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -74,14 +74,14 @@
 <hr>
 <div class="refsect2">
 <a name="scal-CalendarItem.scal-priority"></a><h3>The <code class="literal">“scal:priority”</code> property</h3>
-<pre class="programlisting">“scal:priority”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“scal:priority”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Relative priority of th event</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="scal-CalendarItem.scal-isAllDay"></a><h3>The <code class="literal">“scal:isAllDay”</code> property</h3>
-<pre class="programlisting">“scal:isAllDay”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“scal:isAllDay”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>True if the event applies to the whole day</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -137,14 +137,14 @@
 <hr>
 <div class="refsect2">
 <a name="scal-CalendarItem.scal-resources"></a><h3>The <code class="literal">“scal:resources”</code> property</h3>
-<pre class="programlisting">“scal:resources”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“scal:resources”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Resources required for the calendar item (equipment, installations...)</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="scal-CalendarItem.scal-textLocation"></a><h3>The <code class="literal">“scal:textLocation”</code> property</h3>
-<pre class="programlisting">“scal:textLocation”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“scal:textLocation”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Textual description of location for an item. Sec. 4.8.1.7. Use better mlo:location</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -159,10 +159,6 @@
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="nie-InformationElement.html#nie-InformationElement.nie-isLogicalPartOf" title="The “nie:isLogicalPartOf” property"><code class="literal">“nie:isLogicalPartOf”</code> from the <code class="literal">nie:InformationElement</code> class</a></p></li></ul></div>
 </div>
 </div>
-</div>
-<div class="refsect1">
-<a name="scal-CalendarItem.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/scal#" target="_top">SCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

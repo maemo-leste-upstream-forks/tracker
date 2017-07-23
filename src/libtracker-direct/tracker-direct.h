@@ -25,6 +25,9 @@ typedef struct _TrackerDirectConnectionPrivate TrackerDirectConnectionPrivate;
 struct _TrackerDirectConnection {
 	TrackerSparqlConnection parent_instance;
 	TrackerDirectConnectionPrivate * priv;
+	GSourceFunc init_callback;
+	gpointer init_callback_target;
+	GDestroyNotify init_callback_target_destroy_notify;
 };
 
 struct _TrackerDirectConnectionClass {
@@ -33,8 +36,8 @@ struct _TrackerDirectConnectionClass {
 
 
 GType tracker_direct_connection_get_type (void) G_GNUC_CONST;
-TrackerDirectConnection* tracker_direct_connection_new (GError** error);
-TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, GError** error);
+TrackerDirectConnection* tracker_direct_connection_new (TrackerSparqlConnectionFlags connection_flags, GFile* loc, GFile* journal, GFile* ontology, GError** error);
+TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, TrackerSparqlConnectionFlags connection_flags, GFile* loc, GFile* journal, GFile* ontology, GError** error);
 
 
 G_END_DECLS

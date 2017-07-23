@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="ncal-AttendeeOrOrganizer.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <span class="emphasis"><em><a class="link" href="ncal-AttendeeOrOrganizer.html" title="ncal:AttendeeOrOrganizer">ncal:AttendeeOrOrganizer</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <span class="emphasis"><em><a class="link" href="ncal-AttendeeOrOrganizer.html" title="ncal:AttendeeOrOrganizer">ncal:AttendeeOrOrganizer</a></em></span> 
         ├── <a class="link" href="ncal-Organizer.html" title="ncal:Organizer">ncal:Organizer</a> 
         ╰── <a class="link" href="ncal-Attendee.html" title="ncal:Attendee">ncal:Attendee</a> 
 </pre>
@@ -58,14 +58,10 @@
 <hr>
 <div class="refsect2">
 <a name="ncal-AttendeeOrOrganizer.ncal-dir"></a><h3>The <code class="literal">“ncal:dir”</code> property</h3>
-<pre class="programlisting">“ncal:dir”          <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a></pre>
+<pre class="programlisting">“ncal:dir”          http://www.w3.org/2000/01/rdf-schema#Resource</pre>
 <p>Specifies a reference to a directory entry associated with the calendar user specified by the property. Inspired by RFC 2445 sec. 4.2.6. Originally the data type of the value of this parameter was URI (Usually an LDAP URI). This has been expressed as rdfs:resource.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-AttendeeOrOrganizer.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

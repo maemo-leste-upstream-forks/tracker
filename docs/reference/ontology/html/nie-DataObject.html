@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="nie-DataObject.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <span class="emphasis"><em><a class="link" href="nie-DataObject.html" title="nie:DataObject">nie:DataObject</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <span class="emphasis"><em><a class="link" href="nie-DataObject.html" title="nie:DataObject">nie:DataObject</a></em></span> 
         ├── <a class="link" href="nco-ContactListDataObject.html" title="nco:ContactListDataObject">nco:ContactListDataObject</a> 
         ├── <a class="link" href="nfo-FileDataObject.html" title="nfo:FileDataObject">nfo:FileDataObject</a> 
         ├── <a class="link" href="nfo-RemotePortAddress.html" title="nfo:RemotePortAddress">nfo:RemotePortAddress</a> 
@@ -51,7 +51,7 @@
 <a name="nie-DataObject.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nie-DataObject.tracker-available"></a><h3>The <code class="literal">“tracker:available”</code> property</h3>
-<pre class="programlisting">“tracker:available”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“tracker:available”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
@@ -74,17 +74,17 @@
 <hr>
 <div class="refsect2">
 <a name="nie-DataObject.nie-created"></a><h3>The <code class="literal">“nie:created”</code> property</h3>
-<pre class="programlisting">“nie:created”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nie:created”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nie-DataObject.nie-lastRefreshed"></a><h3>The <code class="literal">“nie:lastRefreshed”</code> property</h3>
-<pre class="programlisting">“nie:lastRefreshed”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nie:lastRefreshed”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
 <p>This property supersedes the following properties from this or parent classes:</p>
-<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="rdfs-Resource.html#rdfs-Resource.dc-date" title="The “dc:date” property"><code class="literal">“dc:date”</code> from the <code class="literal">rdfs:Resource</code> class</a></p></li></ul></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "></ul></div>
 </div>
 </div>
 <hr>
@@ -100,27 +100,23 @@
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 <div class="note">
 <p>This property supersedes the following properties from this or parent classes:</p>
-<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="rdfs-Resource.html#rdfs-Resource.dc-source" title="The “dc:source” property"><code class="literal">“dc:source”</code> from the <code class="literal">rdfs:Resource</code> class</a></p></li></ul></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "></ul></div>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nie-DataObject.nie-byteSize"></a><h3>The <code class="literal">“nie:byteSize”</code> property</h3>
-<pre class="programlisting">“nie:byteSize”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nie:byteSize”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>File size in bytes</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nie-DataObject.nie-url"></a><h3>The <code class="literal">“nie:url”</code> property</h3>
-<pre class="programlisting">“nie:url”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nie:url”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>URL pointing at the location of the resource. In cases where creating a simple file:// or http:// URL for a file is difficult (e.g. for files inside compressed archives) the applications are encouraged to use conventions defined by Apache Commons VFS Project at http://jakarta.apache.org/  commons/ vfs/ filesystems.html.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="nie-DataObject.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/01/19/nie#" target="_top">NIE ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

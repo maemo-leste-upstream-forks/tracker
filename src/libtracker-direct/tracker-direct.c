@@ -3,6 +3,7 @@
 
 /*
  * Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
+ * Copyright (C) 2017, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,15 +24,19 @@
 #include <glib.h>
 #include <glib-object.h>
 #include "libtracker-sparql/tracker-sparql.h"
-#include <stdlib.h>
-#include <string.h>
 #include <gio/gio.h>
 #include "libtracker-data/tracker-data-manager.h"
+#include <stdlib.h>
+#include <string.h>
+#include "libtracker-data/tracker-db-interface.h"
 #include "libtracker-common/tracker-locale.h"
 #include "libtracker-data/tracker-db-manager.h"
+#include "libtracker-data/tracker-db-interface-sqlite.h"
 #include "libtracker-data/tracker-sparql-query.h"
-#include "libtracker-data/tracker-db-interface.h"
 #include "libtracker-common/tracker-date-time.h"
+#include "libtracker-data/tracker-data-query.h"
+#include "libtracker-data/tracker-data-update.h"
+#include <gobject/gvaluecollector.h>
 
 
 #define TRACKER_DIRECT_TYPE_CONNECTION (tracker_direct_connection_get_type ())
@@ -44,17 +49,66 @@
 typedef struct _TrackerDirectConnection TrackerDirectConnection;
 typedef struct _TrackerDirectConnectionClass TrackerDirectConnectionClass;
 typedef struct _TrackerDirectConnectionPrivate TrackerDirectConnectionPrivate;
-#define _g_free0(var) (var = (g_free (var), NULL))
-#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
+
+#define TRACKER_DIRECT_CONNECTION_TYPE_TASK (tracker_direct_connection_task_get_type ())
+#define TRACKER_DIRECT_CONNECTION_TASK(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_DIRECT_CONNECTION_TYPE_TASK, TrackerDirectConnectionTask))
+#define TRACKER_DIRECT_CONNECTION_TASK_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_DIRECT_CONNECTION_TYPE_TASK, TrackerDirectConnectionTaskClass))
+#define TRACKER_DIRECT_CONNECTION_IS_TASK(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_DIRECT_CONNECTION_TYPE_TASK))
+#define TRACKER_DIRECT_CONNECTION_IS_TASK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_DIRECT_CONNECTION_TYPE_TASK))
+#define TRACKER_DIRECT_CONNECTION_TASK_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_DIRECT_CONNECTION_TYPE_TASK, TrackerDirectConnectionTaskClass))
+
+typedef struct _TrackerDirectConnectionTask TrackerDirectConnectionTask;
+typedef struct _TrackerDirectConnectionTaskClass TrackerDirectConnectionTaskClass;
+
+#define TRACKER_DIRECT_CONNECTION_TYPE_TASK_TYPE (tracker_direct_connection_task_type_get_type ())
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
+#define _g_thread_unref0(var) ((var == NULL) ? NULL : (var = (g_thread_unref (var), NULL)))
+#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
+#define _g_async_queue_unref0(var) ((var == NULL) ? NULL : (var = (g_async_queue_unref (var), NULL)))
 typedef struct _Block1Data Block1Data;
+typedef struct _TrackerDirectConnectionTaskPrivate TrackerDirectConnectionTaskPrivate;
+
+#define TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK (tracker_direct_connection_update_task_get_type ())
+#define TRACKER_DIRECT_CONNECTION_UPDATE_TASK(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK, TrackerDirectConnectionUpdateTask))
+#define TRACKER_DIRECT_CONNECTION_UPDATE_TASK_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK, TrackerDirectConnectionUpdateTaskClass))
+#define TRACKER_DIRECT_CONNECTION_IS_UPDATE_TASK(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK))
+#define TRACKER_DIRECT_CONNECTION_IS_UPDATE_TASK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK))
+#define TRACKER_DIRECT_CONNECTION_UPDATE_TASK_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK, TrackerDirectConnectionUpdateTaskClass))
+
+typedef struct _TrackerDirectConnectionUpdateTask TrackerDirectConnectionUpdateTask;
+typedef struct _TrackerDirectConnectionUpdateTaskClass TrackerDirectConnectionUpdateTaskClass;
+typedef struct _TrackerDirectConnectionUpdateTaskPrivate TrackerDirectConnectionUpdateTaskPrivate;
+#define _tracker_direct_connection_task_unref0(var) ((var == NULL) ? NULL : (var = (tracker_direct_connection_task_unref (var), NULL)))
+#define _g_variant_unref0(var) ((var == NULL) ? NULL : (var = (g_variant_unref (var), NULL)))
+
+#define TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK (tracker_direct_connection_turtle_task_get_type ())
+#define TRACKER_DIRECT_CONNECTION_TURTLE_TASK(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK, TrackerDirectConnectionTurtleTask))
+#define TRACKER_DIRECT_CONNECTION_TURTLE_TASK_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK, TrackerDirectConnectionTurtleTaskClass))
+#define TRACKER_DIRECT_CONNECTION_IS_TURTLE_TASK(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK))
+#define TRACKER_DIRECT_CONNECTION_IS_TURTLE_TASK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK))
+#define TRACKER_DIRECT_CONNECTION_TURTLE_TASK_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK, TrackerDirectConnectionTurtleTaskClass))
+
+typedef struct _TrackerDirectConnectionTurtleTask TrackerDirectConnectionTurtleTask;
+typedef struct _TrackerDirectConnectionTurtleTaskClass TrackerDirectConnectionTurtleTaskClass;
+typedef struct _TrackerDirectConnectionTurtleTaskPrivate TrackerDirectConnectionTurtleTaskPrivate;
+typedef struct _TrackerDirectConnectionInitAsyncData TrackerDirectConnectionInitAsyncData;
+#define _g_free0(var) (var = (g_free (var), NULL))
+typedef struct _Block2Data Block2Data;
 #define _g_main_context_unref0(var) ((var == NULL) ? NULL : (var = (g_main_context_unref (var), NULL)))
-#define _g_source_unref0(var) ((var == NULL) ? NULL : (var = (g_source_unref (var), NULL)))
 typedef struct _TrackerDirectConnectionQueryAsyncData TrackerDirectConnectionQueryAsyncData;
+typedef struct _TrackerDirectConnectionUpdateAsyncData TrackerDirectConnectionUpdateAsyncData;
+typedef struct _TrackerDirectConnectionUpdateBlankAsyncData TrackerDirectConnectionUpdateBlankAsyncData;
+typedef struct _TrackerDirectConnectionLoadAsyncData TrackerDirectConnectionLoadAsyncData;
+#define _g_list_free0(var) ((var == NULL) ? NULL : (var = (g_list_free (var), NULL)))
+#define _g_hash_table_unref0(var) ((var == NULL) ? NULL : (var = (g_hash_table_unref (var), NULL)))
+typedef struct _TrackerDirectConnectionParamSpecTask TrackerDirectConnectionParamSpecTask;
 
 struct _TrackerDirectConnection {
 	TrackerSparqlConnection parent_instance;
 	TrackerDirectConnectionPrivate * priv;
+	GSourceFunc init_callback;
+	gpointer init_callback_target;
+	GDestroyNotify init_callback_target_destroy_notify;
 };
 
 struct _TrackerDirectConnectionClass {
@@ -62,11 +116,86 @@ struct _TrackerDirectConnectionClass {
 };
 
 struct _TrackerDirectConnectionPrivate {
-	gboolean initialized;
+	GFile* database_loc;
+	GFile* journal_loc;
+	GFile* ontology_loc;
+	TrackerSparqlConnectionFlags flags;
+	TrackerDataManager* data_manager;
 	GMutex mutex;
+	GThread* thread;
+	GMutex init_mutex;
+	GCond init_cond;
+	gboolean initialized;
+	GError* init_error;
+	GAsyncQueue* update_queue;
+	TrackerNamespaceManager* namespace_manager;
 };
 
+typedef enum  {
+	TRACKER_DIRECT_CONNECTION_TASK_TYPE_QUERY,
+	TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE,
+	TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE_BLANK,
+	TRACKER_DIRECT_CONNECTION_TASK_TYPE_TURTLE
+} TrackerDirectConnectionTaskType;
+
 struct _Block1Data {
+	int _ref_count_;
+	TrackerDBInterface* iface;
+};
+
+struct _TrackerDirectConnectionTask {
+	GTypeInstance parent_instance;
+	volatile int ref_count;
+	TrackerDirectConnectionTaskPrivate * priv;
+	TrackerDirectConnectionTaskType type;
+	gint priority;
+	GCancellable* cancellable;
+	GSourceFunc callback;
+	gpointer callback_target;
+	GDestroyNotify callback_target_destroy_notify;
+	GError* error;
+};
+
+struct _TrackerDirectConnectionTaskClass {
+	GTypeClass parent_class;
+	void (*finalize) (TrackerDirectConnectionTask *self);
+};
+
+struct _TrackerDirectConnectionUpdateTask {
+	TrackerDirectConnectionTask parent_instance;
+	TrackerDirectConnectionUpdateTaskPrivate * priv;
+	gchar* sparql;
+	GVariant* blank_nodes;
+};
+
+struct _TrackerDirectConnectionUpdateTaskClass {
+	TrackerDirectConnectionTaskClass parent_class;
+};
+
+struct _TrackerDirectConnectionTurtleTask {
+	TrackerDirectConnectionTask parent_instance;
+	TrackerDirectConnectionTurtleTaskPrivate * priv;
+	GFile* file;
+};
+
+struct _TrackerDirectConnectionTurtleTaskClass {
+	TrackerDirectConnectionTaskClass parent_class;
+};
+
+struct _TrackerDirectConnectionInitAsyncData {
+	int _state_;
+	GObject* _source_object_;
+	GAsyncResult* _res_;
+	GTask* _async_result;
+	TrackerDirectConnection* self;
+	gint io_priority;
+	GCancellable* cancellable;
+	gboolean result;
+	GThread* _tmp0_;
+	gboolean _tmp1_;
+};
+
+struct _Block2Data {
 	int _ref_count_;
 	TrackerDirectConnection* self;
 	GError* sparql_error;
@@ -75,7 +204,6 @@ struct _Block1Data {
 	TrackerSparqlCursor* _result_;
 	GMainContext* context;
 	gchar* sparql;
-	GCancellable* cancellable;
 	gpointer _async_data_;
 };
 
@@ -88,16 +216,16 @@ struct _TrackerDirectConnectionQueryAsyncData {
 	gchar* sparql;
 	GCancellable* cancellable;
 	TrackerSparqlCursor* result;
-	Block1Data* _data1_;
+	Block2Data* _data2_;
 	const gchar* _tmp0_;
-	GCancellable* _tmp1_;
+	GMainContext* _tmp1_;
 	GMainContext* _tmp2_;
-	GMainContext* _tmp3_;
-	GCancellable* _tmp4_;
-	gboolean _tmp5_;
+	GCancellable* _tmp3_;
+	gboolean _tmp4_;
+	GCancellable* _tmp5_;
 	GCancellable* _tmp6_;
-	GCancellable* _tmp7_;
-	gboolean _tmp8_;
+	gboolean _tmp7_;
+	GError* _tmp8_;
 	GError* _tmp9_;
 	GError* _tmp10_;
 	GError* _tmp11_;
@@ -107,35 +235,185 @@ struct _TrackerDirectConnectionQueryAsyncData {
 	GError* _tmp15_;
 	GError* _tmp16_;
 	GError* _tmp17_;
-	GError* _tmp18_;
+	TrackerSparqlCursor* _tmp18_;
 	TrackerSparqlCursor* _tmp19_;
-	TrackerSparqlCursor* _tmp20_;
 	GError * _inner_error_;
+};
+
+struct _TrackerDirectConnectionUpdateAsyncData {
+	int _state_;
+	GObject* _source_object_;
+	GAsyncResult* _res_;
+	GTask* _async_result;
+	TrackerDirectConnection* self;
+	gchar* sparql;
+	gint priority;
+	GCancellable* cancellable;
+	TrackerDirectConnectionUpdateTask* task;
+	const gchar* _tmp0_;
+	gint _tmp1_;
+	GCancellable* _tmp2_;
+	TrackerDirectConnectionUpdateTask* _tmp3_;
+	TrackerDirectConnectionUpdateTask* _tmp4_;
+	GAsyncQueue* _tmp5_;
+	TrackerDirectConnectionUpdateTask* _tmp6_;
+	TrackerDirectConnectionTask* _tmp7_;
+	TrackerDirectConnectionUpdateTask* _tmp8_;
+	GError* _tmp9_;
+	TrackerDirectConnectionUpdateTask* _tmp10_;
+	GError* _tmp11_;
+	GError* _tmp12_;
+	GError * _inner_error_;
+};
+
+struct _TrackerDirectConnectionUpdateBlankAsyncData {
+	int _state_;
+	GObject* _source_object_;
+	GAsyncResult* _res_;
+	GTask* _async_result;
+	TrackerDirectConnection* self;
+	gchar* sparql;
+	gint priority;
+	GCancellable* cancellable;
+	GVariant* result;
+	TrackerDirectConnectionUpdateTask* task;
+	const gchar* _tmp0_;
+	gint _tmp1_;
+	GCancellable* _tmp2_;
+	TrackerDirectConnectionUpdateTask* _tmp3_;
+	TrackerDirectConnectionUpdateTask* _tmp4_;
+	GAsyncQueue* _tmp5_;
+	TrackerDirectConnectionUpdateTask* _tmp6_;
+	TrackerDirectConnectionTask* _tmp7_;
+	TrackerDirectConnectionUpdateTask* _tmp8_;
+	GError* _tmp9_;
+	TrackerDirectConnectionUpdateTask* _tmp10_;
+	GError* _tmp11_;
+	GError* _tmp12_;
+	TrackerDirectConnectionUpdateTask* _tmp13_;
+	GVariant* _tmp14_;
+	GVariant* _tmp15_;
+	GError * _inner_error_;
+};
+
+struct _TrackerDirectConnectionLoadAsyncData {
+	int _state_;
+	GObject* _source_object_;
+	GAsyncResult* _res_;
+	GTask* _async_result;
+	TrackerDirectConnection* self;
+	GFile* file;
+	GCancellable* cancellable;
+	TrackerDirectConnectionTurtleTask* task;
+	GFile* _tmp0_;
+	GCancellable* _tmp1_;
+	TrackerDirectConnectionTurtleTask* _tmp2_;
+	TrackerDirectConnectionTurtleTask* _tmp3_;
+	GAsyncQueue* _tmp4_;
+	TrackerDirectConnectionTurtleTask* _tmp5_;
+	TrackerDirectConnectionTask* _tmp6_;
+	TrackerDirectConnectionTurtleTask* _tmp7_;
+	GError* _tmp8_;
+	TrackerDirectConnectionTurtleTask* _tmp9_;
+	GError* _tmp10_;
+	const gchar* _tmp11_;
+	GError* _tmp12_;
+	GError * _inner_error_;
+};
+
+struct _TrackerDirectConnectionParamSpecTask {
+	GParamSpec parent_instance;
 };
 
 
 static gpointer tracker_direct_connection_parent_class = NULL;
-static gint tracker_direct_connection_use_count;
-static gint tracker_direct_connection_use_count = 0;
+static gpointer tracker_direct_connection_task_parent_class = NULL;
+static gpointer tracker_direct_connection_update_task_parent_class = NULL;
+static gpointer tracker_direct_connection_turtle_task_parent_class = NULL;
+static GAsyncInitableIface * tracker_direct_connection_g_async_initable_parent_iface = NULL;
+static GInitableIface * tracker_direct_connection_g_initable_parent_iface = NULL;
 
 GType tracker_direct_connection_get_type (void) G_GNUC_CONST;
+static gpointer tracker_direct_connection_task_ref (gpointer instance);
+static void tracker_direct_connection_task_unref (gpointer instance);
+static GParamSpec* tracker_direct_connection_param_spec_task (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags) G_GNUC_UNUSED;
+static void tracker_direct_connection_value_set_task (GValue* value, gpointer v_object) G_GNUC_UNUSED;
+static void tracker_direct_connection_value_take_task (GValue* value, gpointer v_object) G_GNUC_UNUSED;
+static gpointer tracker_direct_connection_value_get_task (const GValue* value) G_GNUC_UNUSED;
+static GType tracker_direct_connection_task_get_type (void) G_GNUC_CONST G_GNUC_UNUSED;
 #define TRACKER_DIRECT_CONNECTION_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_DIRECT_TYPE_CONNECTION, TrackerDirectConnectionPrivate))
 enum  {
 	TRACKER_DIRECT_CONNECTION_DUMMY_PROPERTY
 };
-TrackerDirectConnection* tracker_direct_connection_new (GError** error);
-TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, GError** error);
+static GType tracker_direct_connection_task_type_get_type (void) G_GNUC_CONST G_GNUC_UNUSED;
+static void tracker_direct_connection_wal_checkpoint (TrackerDBInterface* iface, gboolean blocking);
+static void tracker_direct_connection_wal_checkpoint_on_thread (TrackerDBInterface* iface);
+static Block1Data* block1_data_ref (Block1Data* _data1_);
+static void block1_data_unref (void * _userdata_);
+static void* __lambda4_ (Block1Data* _data1_);
+static gpointer ___lambda4__gthread_func (gpointer self);
+static void tracker_direct_connection_wal_hook (TrackerDBInterface* iface, gint n_pages);
+static void* tracker_direct_connection_thread_func (TrackerDirectConnection* self);
+static void _tracker_direct_connection_wal_hook_tracker_db_wal_callback (TrackerDBInterface* iface, gint n_pages);
+static GType tracker_direct_connection_update_task_get_type (void) G_GNUC_CONST G_GNUC_UNUSED;
+static GType tracker_direct_connection_turtle_task_get_type (void) G_GNUC_CONST G_GNUC_UNUSED;
+static void tracker_direct_connection_real_init_async_data_free (gpointer _data);
+static void tracker_direct_connection_real_init_async (GAsyncInitable* base, gint io_priority, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
+static gboolean tracker_direct_connection_real_init_async_co (TrackerDirectConnectionInitAsyncData* _data_);
+static gboolean _tracker_direct_connection_real_init_async_co_gsource_func (gpointer self);
+static gpointer _tracker_direct_connection_thread_func_gthread_func (gpointer self);
+static gboolean tracker_direct_connection_real_init (GInitable* base, GCancellable* cancellable, GError** error);
+TrackerDirectConnection* tracker_direct_connection_new (TrackerSparqlConnectionFlags connection_flags, GFile* loc, GFile* journal, GFile* ontology, GError** error);
+TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, TrackerSparqlConnectionFlags connection_flags, GFile* loc, GFile* journal, GFile* ontology, GError** error);
+static void _tracker_direct_connection_task_unref0_ (gpointer var);
+static void tracker_direct_connection_real_dispose (GObject* base);
 static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDirectConnection* self, const gchar* sparql, GError** error);
 static TrackerSparqlCursor* tracker_direct_connection_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
 static void tracker_direct_connection_real_query_async_data_free (gpointer _data);
 static void tracker_direct_connection_real_query_async (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 static gboolean tracker_direct_connection_real_query_async_co (TrackerDirectConnectionQueryAsyncData* _data_);
-static Block1Data* block1_data_ref (Block1Data* _data1_);
-static void block1_data_unref (void * _userdata_);
-static gboolean __lambda4_ (Block1Data* _data1_, GIOSchedulerJob* job);
-static gboolean __lambda5_ (Block1Data* _data1_);
-static gboolean ___lambda5__gsource_func (gpointer self);
-static gboolean ___lambda4__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self);
+static Block2Data* block2_data_ref (Block2Data* _data2_);
+static void block2_data_unref (void * _userdata_);
+static gboolean __lambda5_ (Block2Data* _data2_, GIOSchedulerJob* job, GCancellable* cancellable);
+static gboolean __lambda6_ (Block2Data* _data2_);
+static gboolean ___lambda6__gsource_func (gpointer self);
+static gboolean ___lambda5__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self);
+static void tracker_direct_connection_real_update (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GError** error);
+static void tracker_direct_connection_real_update_async_data_free (gpointer _data);
+static void tracker_direct_connection_real_update_async (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
+static gboolean tracker_direct_connection_real_update_async_co (TrackerDirectConnectionUpdateAsyncData* _data_);
+static TrackerDirectConnectionUpdateTask* tracker_direct_connection_update_task_new (const gchar* sparql, gint priority, GCancellable* cancellable);
+static TrackerDirectConnectionUpdateTask* tracker_direct_connection_update_task_construct (GType object_type, const gchar* sparql, gint priority, GCancellable* cancellable);
+static gboolean _tracker_direct_connection_real_update_async_co_gsource_func (gpointer self);
+static GVariant* tracker_direct_connection_real_update_blank (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GError** error);
+static void tracker_direct_connection_real_update_blank_async_data_free (gpointer _data);
+static void tracker_direct_connection_real_update_blank_async (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
+static gboolean tracker_direct_connection_real_update_blank_async_co (TrackerDirectConnectionUpdateBlankAsyncData* _data_);
+static TrackerDirectConnectionUpdateTask* tracker_direct_connection_update_task_new_blank (const gchar* sparql, gint priority, GCancellable* cancellable);
+static TrackerDirectConnectionUpdateTask* tracker_direct_connection_update_task_construct_blank (GType object_type, const gchar* sparql, gint priority, GCancellable* cancellable);
+static gboolean _tracker_direct_connection_real_update_blank_async_co_gsource_func (gpointer self);
+static void tracker_direct_connection_real_load (TrackerSparqlConnection* base, GFile* file, GCancellable* cancellable, GError** error);
+static void tracker_direct_connection_real_load_async_data_free (gpointer _data);
+static void tracker_direct_connection_real_load_async (TrackerSparqlConnection* base, GFile* file, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
+static gboolean tracker_direct_connection_real_load_async_co (TrackerDirectConnectionLoadAsyncData* _data_);
+static TrackerDirectConnectionTurtleTask* tracker_direct_connection_turtle_task_new (GFile* file, GCancellable* cancellable);
+static TrackerDirectConnectionTurtleTask* tracker_direct_connection_turtle_task_construct (GType object_type, GFile* file, GCancellable* cancellable);
+static gboolean _tracker_direct_connection_real_load_async_co_gsource_func (gpointer self);
+static TrackerNamespaceManager* tracker_direct_connection_real_get_namespace_manager (TrackerSparqlConnection* base);
+enum  {
+	TRACKER_DIRECT_CONNECTION_TASK_DUMMY_PROPERTY
+};
+static TrackerDirectConnectionTask* tracker_direct_connection_task_construct (GType object_type);
+static void tracker_direct_connection_task_finalize (TrackerDirectConnectionTask * obj);
+enum  {
+	TRACKER_DIRECT_CONNECTION_UPDATE_TASK_DUMMY_PROPERTY
+};
+static void tracker_direct_connection_update_task_set (TrackerDirectConnectionUpdateTask* self, TrackerDirectConnectionTaskType type, const gchar* sparql, gint priority, GCancellable* cancellable);
+static void tracker_direct_connection_update_task_finalize (TrackerDirectConnectionTask * obj);
+enum  {
+	TRACKER_DIRECT_CONNECTION_TURTLE_TASK_DUMMY_PROPERTY
+};
+static void tracker_direct_connection_turtle_task_finalize (TrackerDirectConnectionTask * obj);
 static void tracker_direct_connection_finalize (GObject * obj);
 static void _vala_clear_GMutex (GMutex * mutex);
 static void _vala_clear_GRecMutex (GRecMutex * mutex);
@@ -143,260 +421,1118 @@ static void _vala_clear_GRWLock (GRWLock * mutex);
 static void _vala_clear_GCond (GCond * mutex);
 
 
-TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, GError** error) {
-	TrackerDirectConnection * self = NULL;
+static GType tracker_direct_connection_task_type_get_type (void) {
+	static volatile gsize tracker_direct_connection_task_type_type_id__volatile = 0;
+	if (g_once_init_enter (&tracker_direct_connection_task_type_type_id__volatile)) {
+		static const GEnumValue values[] = {{TRACKER_DIRECT_CONNECTION_TASK_TYPE_QUERY, "TRACKER_DIRECT_CONNECTION_TASK_TYPE_QUERY", "query"}, {TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE, "TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE", "update"}, {TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE_BLANK, "TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE_BLANK", "update-blank"}, {TRACKER_DIRECT_CONNECTION_TASK_TYPE_TURTLE, "TRACKER_DIRECT_CONNECTION_TASK_TYPE_TURTLE", "turtle"}, {0, NULL, NULL}};
+		GType tracker_direct_connection_task_type_type_id;
+		tracker_direct_connection_task_type_type_id = g_enum_register_static ("TrackerDirectConnectionTaskType", values);
+		g_once_init_leave (&tracker_direct_connection_task_type_type_id__volatile, tracker_direct_connection_task_type_type_id);
+	}
+	return tracker_direct_connection_task_type_type_id__volatile;
+}
+
+
+static void tracker_direct_connection_wal_checkpoint (TrackerDBInterface* iface, gboolean blocking) {
 	GError * _inner_error_ = NULL;
-#line 25 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	self = (TrackerDirectConnection*) tracker_sparql_connection_construct (object_type);
-#line 152 "tracker-direct.c"
+#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (iface != NULL);
+#line 441 "tracker-direct.c"
 	{
-		gint _tmp0_;
-		gint _tmp7_;
-#line 27 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp0_ = tracker_direct_connection_use_count;
-#line 27 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		if (_tmp0_ == 0) {
-#line 160 "tracker-direct.c"
-			guint select_cache_size = 0U;
-			gchar* env_cache_size = NULL;
-			const gchar* _tmp1_;
-			gchar* _tmp2_;
-			const gchar* _tmp3_;
-			guint _tmp6_;
-#line 30 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			tracker_locale_init ();
-#line 31 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			tracker_db_manager_locale_changed (&_inner_error_);
-#line 31 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 173 "tracker-direct.c"
-				goto __catch0_g_error;
-			}
-#line 33 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			select_cache_size = (guint) 100;
-#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_tmp1_ = g_getenv ("TRACKER_SPARQL_CACHE_SIZE");
-#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_tmp2_ = g_strdup (_tmp1_);
-#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			env_cache_size = _tmp2_;
-#line 36 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_tmp3_ = env_cache_size;
-#line 36 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			if (_tmp3_ != NULL) {
-#line 188 "tracker-direct.c"
-				const gchar* _tmp4_;
-				gint _tmp5_;
-#line 37 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_tmp4_ = env_cache_size;
-#line 37 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_tmp5_ = atoi (_tmp4_);
-#line 37 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				select_cache_size = (guint) _tmp5_;
-#line 197 "tracker-direct.c"
-			}
-#line 40 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_tmp6_ = select_cache_size;
-#line 40 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			tracker_data_manager_init (TRACKER_DB_MANAGER_READONLY | TRACKER_DB_MANAGER_ENABLE_MUTEXES, NULL, NULL, FALSE, FALSE, _tmp6_, (guint) 0, NULL, NULL, NULL, &_inner_error_);
-#line 40 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 40 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_g_free0 (env_cache_size);
-#line 207 "tracker-direct.c"
-				goto __catch0_g_error;
-			}
-#line 27 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_g_free0 (env_cache_size);
-#line 212 "tracker-direct.c"
+		TrackerDBInterface* _tmp0_;
+		gboolean _tmp1_;
+#line 94 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_debug ("Checkpointing database...");
+#line 95 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = iface;
+#line 95 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp1_ = blocking;
+#line 95 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_db_interface_sqlite_wal_checkpoint (_tmp0_, _tmp1_, &_inner_error_);
+#line 95 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 455 "tracker-direct.c"
+			goto __catch0_g_error;
 		}
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp7_ = tracker_direct_connection_use_count;
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		tracker_direct_connection_use_count = _tmp7_ + 1;
-#line 44 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		self->priv->initialized = TRUE;
-#line 220 "tracker-direct.c"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_debug ("Checkpointing complete...");
+#line 460 "tracker-direct.c"
 	}
 	goto __finally0;
 	__catch0_g_error:
 	{
 		GError* e = NULL;
-		GError* _tmp8_;
-		const gchar* _tmp9_;
-		GError* _tmp10_;
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		GError* _tmp2_;
+		const gchar* _tmp3_;
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		e = _inner_error_;
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 46 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp8_ = e;
-#line 46 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp9_ = _tmp8_->message;
-#line 46 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp10_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp9_);
-#line 46 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_inner_error_ = _tmp10_;
-#line 46 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 98 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = e;
+#line 98 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp3_ = _tmp2_->message;
+#line 98 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_warning ("%s", _tmp3_);
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e);
-#line 243 "tracker-direct.c"
-		goto __finally0;
+#line 480 "tracker-direct.c"
 	}
 	__finally0:
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			g_propagate_error (error, _inner_error_);
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_g_object_unref0 (self);
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			return NULL;
-#line 257 "tracker-direct.c"
-		} else {
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			g_clear_error (&_inner_error_);
-#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			return NULL;
-#line 265 "tracker-direct.c"
-		}
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_clear_error (&_inner_error_);
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return;
+#line 491 "tracker-direct.c"
 	}
-#line 25 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	return self;
-#line 270 "tracker-direct.c"
 }
 
 
-TrackerDirectConnection* tracker_direct_connection_new (GError** error) {
-#line 25 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	return tracker_direct_connection_construct (TRACKER_DIRECT_TYPE_CONNECTION, error);
-#line 277 "tracker-direct.c"
+static gpointer _g_object_ref0 (gpointer self) {
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self ? g_object_ref (self) : NULL;
+#line 499 "tracker-direct.c"
+}
+
+
+static Block1Data* block1_data_ref (Block1Data* _data1_) {
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_atomic_int_inc (&_data1_->_ref_count_);
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return _data1_;
+#line 508 "tracker-direct.c"
+}
+
+
+static void block1_data_unref (void * _userdata_) {
+	Block1Data* _data1_;
+	_data1_ = (Block1Data*) _userdata_;
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (_data1_->iface);
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_slice_free (Block1Data, _data1_);
+#line 521 "tracker-direct.c"
+	}
+}
+
+
+static void* __lambda4_ (Block1Data* _data1_) {
+	void* result = NULL;
+	TrackerDBInterface* _tmp0_;
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = _data1_->iface;
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_wal_checkpoint (_tmp0_, FALSE);
+#line 105 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	result = NULL;
+#line 105 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 537 "tracker-direct.c"
+}
+
+
+static gpointer ___lambda4__gthread_func (gpointer self) {
+	gpointer result;
+	result = __lambda4_ (self);
+#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	block1_data_unref (self);
+#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 548 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_wal_checkpoint_on_thread (TrackerDBInterface* iface) {
+	Block1Data* _data1_;
+	TrackerDBInterface* _tmp0_;
+	TrackerDBInterface* _tmp1_;
+	GThread* _tmp2_;
+	GThread* _tmp3_;
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (iface != NULL);
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data1_ = g_slice_new0 (Block1Data);
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data1_->_ref_count_ = 1;
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = iface;
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data1_->iface);
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data1_->iface = _tmp1_;
+#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = g_thread_new ("wal-checkpoint", ___lambda4__gthread_func, block1_data_ref (_data1_));
+#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = _tmp2_;
+#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_thread_unref0 (_tmp3_);
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	block1_data_unref (_data1_);
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data1_ = NULL;
+#line 582 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_wal_hook (TrackerDBInterface* iface, gint n_pages) {
+	TrackerDataManager* manager = NULL;
+	TrackerDBInterface* _tmp0_;
+	GObject* _tmp1_;
+	TrackerDataManager* _tmp2_;
+	TrackerDBInterface* wal_iface = NULL;
+	TrackerDataManager* _tmp3_;
+	TrackerDBInterface* _tmp4_;
+	TrackerDBInterface* _tmp5_;
+	gint _tmp6_;
+#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (iface != NULL);
+#line 110 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = iface;
+#line 110 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = tracker_db_interface_get_user_data (_tmp0_);
+#line 110 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = _g_object_ref0 (G_TYPE_CHECK_INSTANCE_CAST (_tmp1_, TRACKER_TYPE_DATA_MANAGER, TrackerDataManager));
+#line 110 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	manager = _tmp2_;
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = manager;
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp4_ = tracker_data_manager_get_wal_db_interface (_tmp3_);
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp5_ = _g_object_ref0 (_tmp4_);
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	wal_iface = _tmp5_;
+#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp6_ = n_pages;
+#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_tmp6_ >= 10000) {
+#line 618 "tracker-direct.c"
+		TrackerDBInterface* _tmp7_;
+#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp7_ = wal_iface;
+#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_direct_connection_wal_checkpoint (_tmp7_, TRUE);
+#line 624 "tracker-direct.c"
+	} else {
+		gint _tmp8_;
+#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp8_ = n_pages;
+#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (_tmp8_ >= 1000) {
+#line 631 "tracker-direct.c"
+			TrackerDBInterface* _tmp9_;
+#line 118 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp9_ = wal_iface;
+#line 118 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			tracker_direct_connection_wal_checkpoint_on_thread (_tmp9_);
+#line 637 "tracker-direct.c"
+		}
+	}
+#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (wal_iface);
+#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (manager);
+#line 644 "tracker-direct.c"
+}
+
+
+static void _tracker_direct_connection_wal_hook_tracker_db_wal_callback (TrackerDBInterface* iface, gint n_pages) {
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_wal_hook (iface, n_pages);
+#line 651 "tracker-direct.c"
+}
+
+
+static gpointer _g_error_copy0 (gpointer self) {
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self ? g_error_copy (self) : NULL;
+#line 658 "tracker-direct.c"
+}
+
+
+static gpointer _tracker_direct_connection_task_ref0 (gpointer self) {
+#line 156 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self ? tracker_direct_connection_task_ref (self) : NULL;
+#line 665 "tracker-direct.c"
+}
+
+
+static void* tracker_direct_connection_thread_func (TrackerDirectConnection* self) {
+	void* result = NULL;
+	GError * _inner_error_ = NULL;
+#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_val_if_fail (self != NULL, NULL);
+#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_mutex_lock (&self->priv->init_mutex);
+#line 676 "tracker-direct.c"
+	{
+		TrackerDBManagerFlags db_flags = 0;
+		TrackerSparqlConnectionFlags _tmp0_;
+		TrackerDBManagerFlags _tmp2_;
+		GFile* _tmp3_;
+		GFile* _tmp4_;
+		GFile* _tmp5_;
+		TrackerDataManager* _tmp6_;
+		TrackerDataManager* _tmp7_;
+		TrackerDBInterface* iface = NULL;
+		TrackerDataManager* _tmp8_;
+		TrackerDBInterface* _tmp9_;
+		TrackerDBInterface* _tmp10_;
+		TrackerDBInterface* _tmp11_;
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_locale_sanity_check ();
+#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		db_flags = TRACKER_DB_MANAGER_ENABLE_MUTEXES;
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = self->priv->flags;
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if ((_tmp0_ & TRACKER_SPARQL_CONNECTION_FLAGS_READONLY) != 0) {
+#line 699 "tracker-direct.c"
+			TrackerDBManagerFlags _tmp1_;
+#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp1_ = db_flags;
+#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			db_flags = _tmp1_ | TRACKER_DB_MANAGER_READONLY;
+#line 705 "tracker-direct.c"
+		}
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = db_flags;
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp3_ = self->priv->database_loc;
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp4_ = self->priv->journal_loc;
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp5_ = self->priv->ontology_loc;
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp6_ = tracker_data_manager_new (_tmp2_, _tmp3_, _tmp4_, _tmp5_, FALSE, FALSE, (guint) 100, (guint) 100);
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (self->priv->data_manager);
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		self->priv->data_manager = _tmp6_;
+#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp7_ = self->priv->data_manager;
+#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_initable_init ((GInitable*) _tmp7_, NULL, &_inner_error_);
+#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 727 "tracker-direct.c"
+			goto __catch1_g_error;
+		}
+#line 136 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp8_ = self->priv->data_manager;
+#line 136 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp9_ = tracker_data_manager_get_writable_db_interface (_tmp8_);
+#line 136 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp10_ = _g_object_ref0 (_tmp9_);
+#line 136 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		iface = _tmp10_;
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp11_ = iface;
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_db_interface_sqlite_wal_hook (_tmp11_, _tracker_direct_connection_wal_hook_tracker_db_wal_callback);
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (iface);
+#line 744 "tracker-direct.c"
+	}
+	goto __finally1;
+	__catch1_g_error:
+	{
+		GError* e = NULL;
+		GError* _tmp12_;
+		GError* _tmp13_;
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		e = _inner_error_;
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_inner_error_ = NULL;
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp12_ = e;
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp13_ = _g_error_copy0 (_tmp12_);
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (self->priv->init_error);
+#line 139 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		self->priv->init_error = _tmp13_;
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (e);
+#line 766 "tracker-direct.c"
+	}
+	__finally1:
+	{
+		GSourceFunc _tmp14_;
+		void* _tmp14__target;
+#line 141 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp14_ = self->init_callback;
+#line 141 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp14__target = self->init_callback_target;
+#line 141 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (_tmp14_ != NULL) {
+#line 778 "tracker-direct.c"
+			GSourceFunc _tmp15_;
+			void* _tmp15__target;
+#line 142 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp15_ = self->init_callback;
+#line 142 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp15__target = self->init_callback_target;
+#line 142 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp15_ (_tmp15__target);
+#line 787 "tracker-direct.c"
+		} else {
+#line 144 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			self->priv->initialized = TRUE;
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_cond_signal (&self->priv->init_cond);
+#line 146 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_mutex_unlock (&self->priv->init_mutex);
+#line 795 "tracker-direct.c"
+		}
+	}
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_clear_error (&_inner_error_);
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return NULL;
+#line 806 "tracker-direct.c"
+	}
+#line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	while (TRUE) {
+#line 810 "tracker-direct.c"
+		TrackerDirectConnectionTask* task = NULL;
+		GAsyncQueue* _tmp16_;
+		gpointer _tmp17_;
+		TrackerDirectConnectionTask* _tmp49_;
+		GSourceFunc _tmp50_;
+		void* _tmp50__target;
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp16_ = self->priv->update_queue;
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp17_ = g_async_queue_pop (_tmp16_);
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		task = (TrackerDirectConnectionTask*) _tmp17_;
+#line 823 "tracker-direct.c"
+		{
+			TrackerDirectConnectionTask* _tmp18_;
+			TrackerDirectConnectionTaskType _tmp19_;
+#line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp18_ = task;
+#line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp19_ = _tmp18_->type;
+#line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			switch (_tmp19_) {
+#line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				case TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE:
+#line 835 "tracker-direct.c"
+				{
+					TrackerDirectConnectionUpdateTask* update_task = NULL;
+					TrackerDirectConnectionTask* _tmp20_;
+					TrackerDirectConnectionUpdateTask* _tmp21_;
+					TrackerDirectConnectionUpdateTask* _tmp22_;
+					const gchar* _tmp23_;
+					TrackerDirectConnectionUpdateTask* _tmp24_;
+					gint _tmp25_;
+					TrackerDirectConnectionUpdateTask* _tmp26_;
+					GCancellable* _tmp27_;
+#line 156 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp20_ = task;
+#line 156 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp21_ = _tracker_direct_connection_task_ref0 (G_TYPE_CHECK_INSTANCE_CAST (_tmp20_, TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK, TrackerDirectConnectionUpdateTask));
+#line 156 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					update_task = _tmp21_;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp22_ = update_task;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp23_ = _tmp22_->sparql;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp24_ = update_task;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp25_ = ((TrackerDirectConnectionTask*) _tmp24_)->priority;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp26_ = update_task;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp27_ = ((TrackerDirectConnectionTask*) _tmp26_)->cancellable;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					tracker_sparql_connection_update ((TrackerSparqlConnection*) self, _tmp23_, _tmp25_, _tmp27_, &_inner_error_);
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+						_tracker_direct_connection_task_unref0 (update_task);
+#line 870 "tracker-direct.c"
+						goto __catch2_g_error;
+					}
+#line 158 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tracker_direct_connection_task_unref0 (update_task);
+#line 158 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					break;
+#line 877 "tracker-direct.c"
+				}
+#line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				case TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE_BLANK:
+#line 881 "tracker-direct.c"
+				{
+					TrackerDirectConnectionUpdateTask* update_task = NULL;
+					TrackerDirectConnectionTask* _tmp28_;
+					TrackerDirectConnectionUpdateTask* _tmp29_;
+					GVariant* _tmp30_ = NULL;
+					TrackerDirectConnectionUpdateTask* _tmp31_;
+					const gchar* _tmp32_;
+					TrackerDirectConnectionUpdateTask* _tmp33_;
+					gint _tmp34_;
+					TrackerDirectConnectionUpdateTask* _tmp35_;
+					GCancellable* _tmp36_;
+					GVariant* _tmp37_;
+					TrackerDirectConnectionUpdateTask* _tmp38_;
+					GVariant* _tmp39_;
+#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp28_ = task;
+#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp29_ = _tracker_direct_connection_task_ref0 (G_TYPE_CHECK_INSTANCE_CAST (_tmp28_, TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK, TrackerDirectConnectionUpdateTask));
+#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					update_task = _tmp29_;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp31_ = update_task;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp32_ = _tmp31_->sparql;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp33_ = update_task;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp34_ = ((TrackerDirectConnectionTask*) _tmp33_)->priority;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp35_ = update_task;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp36_ = ((TrackerDirectConnectionTask*) _tmp35_)->cancellable;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp37_ = tracker_sparql_connection_update_blank ((TrackerSparqlConnection*) self, _tmp32_, _tmp34_, _tmp36_, &_inner_error_);
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp30_ = _tmp37_;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+						_tracker_direct_connection_task_unref0 (update_task);
+#line 922 "tracker-direct.c"
+						goto __catch2_g_error;
+					}
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp38_ = update_task;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp39_ = _tmp30_;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp30_ = NULL;
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_g_variant_unref0 (_tmp38_->blank_nodes);
+#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp38_->blank_nodes = _tmp39_;
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_g_variant_unref0 (_tmp30_);
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tracker_direct_connection_task_unref0 (update_task);
+#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					break;
+#line 941 "tracker-direct.c"
+				}
+#line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				case TRACKER_DIRECT_CONNECTION_TASK_TYPE_TURTLE:
+#line 945 "tracker-direct.c"
+				{
+					TrackerDirectConnectionTurtleTask* turtle_task = NULL;
+					TrackerDirectConnectionTask* _tmp40_;
+					TrackerDirectConnectionTurtleTask* _tmp41_;
+					TrackerDirectConnectionTurtleTask* _tmp42_;
+					GFile* _tmp43_;
+					TrackerDirectConnectionTurtleTask* _tmp44_;
+					GCancellable* _tmp45_;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp40_ = task;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp41_ = _tracker_direct_connection_task_ref0 (G_TYPE_CHECK_INSTANCE_CAST (_tmp40_, TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK, TrackerDirectConnectionTurtleTask));
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					turtle_task = _tmp41_;
+#line 165 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp42_ = turtle_task;
+#line 165 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp43_ = _tmp42_->file;
+#line 165 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp44_ = turtle_task;
+#line 165 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp45_ = ((TrackerDirectConnectionTask*) _tmp44_)->cancellable;
+#line 165 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					tracker_sparql_connection_load ((TrackerSparqlConnection*) self, _tmp43_, _tmp45_, &_inner_error_);
+#line 165 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 165 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+						_tracker_direct_connection_task_unref0 (turtle_task);
+#line 974 "tracker-direct.c"
+						goto __catch2_g_error;
+					}
+#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tracker_direct_connection_task_unref0 (turtle_task);
+#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					break;
+#line 981 "tracker-direct.c"
+				}
+				default:
+				{
+#line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					break;
+#line 987 "tracker-direct.c"
+				}
+			}
+		}
+		goto __finally2;
+		__catch2_g_error:
+		{
+			GError* e = NULL;
+			TrackerDirectConnectionTask* _tmp46_;
+			GError* _tmp47_;
+			GError* _tmp48_;
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			e = _inner_error_;
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_inner_error_ = NULL;
+#line 171 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp46_ = task;
+#line 171 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp47_ = e;
+#line 171 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp48_ = _g_error_copy0 (_tmp47_);
+#line 171 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_g_error_free0 (_tmp46_->error);
+#line 171 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp46_->error = _tmp48_;
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_g_error_free0 (e);
+#line 1014 "tracker-direct.c"
+		}
+		__finally2:
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tracker_direct_connection_task_unref0 (task);
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_clear_error (&_inner_error_);
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			return NULL;
+#line 1027 "tracker-direct.c"
+		}
+#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp49_ = task;
+#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp50_ = _tmp49_->callback;
+#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp50__target = _tmp49_->callback_target;
+#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp50_ (_tmp50__target);
+#line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tracker_direct_connection_task_unref0 (task);
+#line 1039 "tracker-direct.c"
+	}
+#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 1043 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_init_async_data_free (gpointer _data) {
+	TrackerDirectConnectionInitAsyncData* _data_;
+	_data_ = _data;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->self);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_slice_free (TrackerDirectConnectionInitAsyncData, _data_);
+#line 1056 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_init_async (GAsyncInitable* base, gint io_priority, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
+	TrackerDirectConnection * self;
+	TrackerDirectConnectionInitAsyncData* _data_;
+	TrackerDirectConnection* _tmp0_;
+	gint _tmp1_;
+	GCancellable* _tmp2_;
+	GCancellable* _tmp3_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_ = g_slice_new0 (TrackerDirectConnectionInitAsyncData);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_task_set_task_data (_data_->_async_result, _data_, tracker_direct_connection_real_init_async_data_free);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = _g_object_ref0 (self);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self = _tmp0_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = io_priority;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->io_priority = _tmp1_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = cancellable;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = _g_object_ref0 (_tmp2_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->cancellable = _tmp3_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_real_init_async_co (_data_);
+#line 1093 "tracker-direct.c"
+}
+
+
+static gboolean tracker_direct_connection_real_init_finish (GAsyncInitable* base, GAsyncResult* _res_, GError** error) {
+	gboolean result;
+	TrackerDirectConnectionInitAsyncData* _data_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (NULL == _data_) {
+#line 1104 "tracker-direct.c"
+		gboolean _tmp0_ = FALSE;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return _tmp0_;
+#line 1108 "tracker-direct.c"
+	}
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	result = _data_->result;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 1114 "tracker-direct.c"
+}
+
+
+static gboolean _tracker_direct_connection_real_init_async_co_gsource_func (gpointer self) {
+	gboolean result;
+	result = tracker_direct_connection_real_init_async_co (self);
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 1123 "tracker-direct.c"
+}
+
+
+static gpointer _tracker_direct_connection_thread_func_gthread_func (gpointer self) {
+	gpointer result;
+	result = tracker_direct_connection_thread_func ((TrackerDirectConnection*) self);
+#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_object_unref (self);
+#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 1134 "tracker-direct.c"
+}
+
+
+static gboolean tracker_direct_connection_real_init_async_co (TrackerDirectConnectionInitAsyncData* _data_) {
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	switch (_data_->_state_) {
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		case 0:
+#line 1143 "tracker-direct.c"
+		goto _state_0;
+		default:
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_assert_not_reached ();
+#line 1148 "tracker-direct.c"
+	}
+	_state_0:
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	(_data_->self->init_callback_target_destroy_notify == NULL) ? NULL : (_data_->self->init_callback_target_destroy_notify (_data_->self->init_callback_target), NULL);
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self->init_callback = NULL;
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self->init_callback_target = NULL;
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self->init_callback_target_destroy_notify = NULL;
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self->init_callback = _tracker_direct_connection_real_init_async_co_gsource_func;
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self->init_callback_target = _data_;
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self->init_callback_target_destroy_notify = NULL;
+#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp0_ = g_thread_new ("database", _tracker_direct_connection_thread_func_gthread_func, g_object_ref (_data_->self));
+#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_thread_unref0 (_data_->self->priv->thread);
+#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self->priv->thread = _data_->_tmp0_;
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp1_ = _data_->self->priv->initialized;
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->result = _data_->_tmp1_;
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_task_return_pointer (_data_->_async_result, _data_, NULL);
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_state_ != 0) {
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		while (g_task_get_completed (_data_->_async_result) != TRUE) {
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
+#line 1183 "tracker-direct.c"
+		}
+	}
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_object_unref (_data_->_async_result);
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return FALSE;
+#line 1190 "tracker-direct.c"
+}
+
+
+static gboolean tracker_direct_connection_real_init (GInitable* base, GCancellable* cancellable, GError** error) {
+	TrackerDirectConnection * self;
+	gboolean result = FALSE;
+	GError * _inner_error_ = NULL;
+#line 185 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 1200 "tracker-direct.c"
+	{
+		GThread* _tmp0_;
+		GError* _tmp2_;
+#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = g_thread_new ("database", _tracker_direct_connection_thread_func_gthread_func, g_object_ref (self));
+#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_thread_unref0 (self->priv->thread);
+#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		self->priv->thread = _tmp0_;
+#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_mutex_lock (&self->priv->init_mutex);
+#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		while (TRUE) {
+#line 1214 "tracker-direct.c"
+			gboolean _tmp1_;
+#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp1_ = self->priv->initialized;
+#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			if (!(!_tmp1_)) {
+#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				break;
+#line 1222 "tracker-direct.c"
+			}
+#line 191 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_cond_wait (&self->priv->init_cond, &self->priv->init_mutex);
+#line 1226 "tracker-direct.c"
+		}
+#line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_mutex_unlock (&self->priv->init_mutex);
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = self->priv->init_error;
+#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (_tmp2_ != NULL) {
+#line 1234 "tracker-direct.c"
+			GError* _tmp3_;
+			GError* _tmp4_;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp3_ = self->priv->init_error;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tmp4_ = _g_error_copy0 (_tmp3_);
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_inner_error_ = _tmp4_;
+#line 1243 "tracker-direct.c"
+			goto __catch3_g_error;
+		}
+	}
+	goto __finally3;
+	__catch3_g_error:
+	{
+		GError* e = NULL;
+		GError* _tmp5_;
+		const gchar* _tmp6_;
+		GError* _tmp7_;
+#line 186 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		e = _inner_error_;
+#line 186 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_inner_error_ = NULL;
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp5_ = e;
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp6_ = _tmp5_->message;
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp7_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp6_);
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_inner_error_ = _tmp7_;
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (e);
+#line 1268 "tracker-direct.c"
+		goto __finally3;
+	}
+	__finally3:
+#line 186 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 1274 "tracker-direct.c"
+		gboolean _tmp8_ = FALSE;
+#line 186 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_propagate_error (error, _inner_error_);
+#line 186 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return _tmp8_;
+#line 1280 "tracker-direct.c"
+	}
+#line 200 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	result = TRUE;
+#line 200 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 1286 "tracker-direct.c"
+}
+
+
+static void _tracker_direct_connection_task_unref0_ (gpointer var) {
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	(var == NULL) ? NULL : (var = (tracker_direct_connection_task_unref (var), NULL));
+#line 1293 "tracker-direct.c"
+}
+
+
+TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, TrackerSparqlConnectionFlags connection_flags, GFile* loc, GFile* journal, GFile* ontology, GError** error) {
+	TrackerDirectConnection * self = NULL;
+	GFile* _tmp0_;
+	GFile* _tmp1_;
+	GFile* _tmp2_;
+	GFile* _tmp3_;
+	GFile* _tmp4_;
+	GFile* _tmp5_;
+	TrackerSparqlConnectionFlags _tmp6_;
+	GFile* _tmp7_;
+	GFile* _tmp10_;
+	GAsyncQueue* _tmp14_;
+#line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_val_if_fail (loc != NULL, NULL);
+#line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) tracker_sparql_connection_construct (object_type);
+#line 204 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = loc;
+#line 204 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+#line 204 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->priv->database_loc);
+#line 204 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->priv->database_loc = _tmp1_;
+#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = journal;
+#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = _g_object_ref0 (_tmp2_);
+#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->priv->journal_loc);
+#line 205 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->priv->journal_loc = _tmp3_;
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp4_ = ontology;
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp5_ = _g_object_ref0 (_tmp4_);
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->priv->ontology_loc);
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->priv->ontology_loc = _tmp5_;
+#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp6_ = connection_flags;
+#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->priv->flags = _tmp6_;
+#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp7_ = self->priv->journal_loc;
+#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_tmp7_ == NULL) {
+#line 1345 "tracker-direct.c"
+		GFile* _tmp8_;
+		GFile* _tmp9_;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp8_ = self->priv->database_loc;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp9_ = _g_object_ref0 (_tmp8_);
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (self->priv->journal_loc);
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		self->priv->journal_loc = _tmp9_;
+#line 1356 "tracker-direct.c"
+	}
+#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp10_ = self->priv->ontology_loc;
+#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_tmp10_ == NULL) {
+#line 1362 "tracker-direct.c"
+		gchar* _tmp11_;
+		gchar* _tmp12_;
+		GFile* _tmp13_;
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp11_ = g_build_filename (SHAREDIR, "tracker", "ontologies", "nepomuk", NULL);
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp12_ = _tmp11_;
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp13_ = g_file_new_for_path (_tmp12_);
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (self->priv->ontology_loc);
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		self->priv->ontology_loc = _tmp13_;
+#line 212 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_free0 (_tmp12_);
+#line 1378 "tracker-direct.c"
+	}
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp14_ = g_async_queue_new_full (_tracker_direct_connection_task_unref0_);
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_async_queue_unref0 (self->priv->update_queue);
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->priv->update_queue = _tmp14_;
+#line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self;
+#line 1388 "tracker-direct.c"
+}
+
+
+TrackerDirectConnection* tracker_direct_connection_new (TrackerSparqlConnectionFlags connection_flags, GFile* loc, GFile* journal, GFile* ontology, GError** error) {
+#line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return tracker_direct_connection_construct (TRACKER_DIRECT_TYPE_CONNECTION, connection_flags, loc, journal, ontology, error);
+#line 1395 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_dispose (GObject* base) {
+	TrackerDirectConnection * self;
+	TrackerDataManager* _tmp0_;
+#line 217 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = self->priv->data_manager;
+#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_data_manager_shutdown (_tmp0_);
+#line 219 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	G_OBJECT_CLASS (tracker_direct_connection_parent_class)->dispose ((GObject*) G_TYPE_CHECK_INSTANCE_CAST (self, TRACKER_SPARQL_TYPE_CONNECTION, TrackerSparqlConnection));
+#line 1410 "tracker-direct.c"
 }
 
 
 static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDirectConnection* self, const gchar* sparql, GError** error) {
 	TrackerSparqlCursor* result = NULL;
 	GError * _inner_error_ = NULL;
-#line 64 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 64 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 288 "tracker-direct.c"
+#line 1421 "tracker-direct.c"
 	{
 		TrackerSparqlQuery* query_object = NULL;
-		const gchar* _tmp0_;
-		TrackerSparqlQuery* _tmp1_;
-		TrackerDBCursor* cursor = NULL;
+		TrackerDataManager* _tmp0_;
+		const gchar* _tmp1_;
 		TrackerSparqlQuery* _tmp2_;
-		TrackerDBCursor* _tmp3_;
+		TrackerDBCursor* cursor = NULL;
+		TrackerSparqlQuery* _tmp3_;
 		TrackerDBCursor* _tmp4_;
-#line 66 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp0_ = sparql;
-#line 66 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp1_ = tracker_sparql_query_new (_tmp0_);
-#line 66 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		query_object = _tmp1_;
-#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp2_ = query_object;
-#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp3_ = tracker_sparql_query_execute_cursor (_tmp2_, &_inner_error_);
-#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		cursor = _tmp3_;
-#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		TrackerDBCursor* _tmp5_;
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = self->priv->data_manager;
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp1_ = sparql;
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = tracker_sparql_query_new (_tmp0_, _tmp1_);
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		query_object = _tmp2_;
+#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp3_ = query_object;
+#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp4_ = tracker_sparql_query_execute_cursor (_tmp3_, &_inner_error_);
+#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		cursor = _tmp4_;
+#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			_g_object_unref0 (query_object);
-#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-#line 315 "tracker-direct.c"
-				goto __catch1_tracker_db_interface_error;
+#line 1451 "tracker-direct.c"
+				goto __catch4_tracker_db_interface_error;
 			}
-#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 225 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == TRACKER_DATE_ERROR) {
-#line 320 "tracker-direct.c"
-				goto __catch1_tracker_date_error;
+#line 1456 "tracker-direct.c"
+				goto __catch4_tracker_date_error;
 			}
-			goto __finally1;
+			goto __finally4;
 		}
-#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp4_ = cursor;
-#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		tracker_sparql_cursor_set_connection ((TrackerSparqlCursor*) _tmp4_, (TrackerSparqlConnection*) self);
-#line 69 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp5_ = cursor;
+#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_sparql_cursor_set_connection ((TrackerSparqlCursor*) _tmp5_, (TrackerSparqlConnection*) self);
+#line 227 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		result = (TrackerSparqlCursor*) cursor;
-#line 69 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 227 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (query_object);
-#line 69 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 227 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		return result;
-#line 335 "tracker-direct.c"
+#line 1471 "tracker-direct.c"
 	}
-	goto __finally1;
-	__catch1_tracker_db_interface_error:
+	goto __finally4;
+	__catch4_tracker_db_interface_error:
 	{
 		GError* e = NULL;
-		GError* _tmp5_;
-		const gchar* _tmp6_;
-		GError* _tmp7_;
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		e = _inner_error_;
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_inner_error_ = NULL;
-#line 71 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp5_ = e;
-#line 71 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp6_ = _tmp5_->message;
-#line 71 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp7_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp6_);
-#line 71 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_inner_error_ = _tmp7_;
-#line 71 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_error_free0 (e);
-#line 358 "tracker-direct.c"
-		goto __finally1;
-	}
-	goto __finally1;
-	__catch1_tracker_date_error:
-	{
-		GError* e = NULL;
+		GError* _tmp6_;
+		const gchar* _tmp7_;
 		GError* _tmp8_;
-		const gchar* _tmp9_;
-		GError* _tmp10_;
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		e = _inner_error_;
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp8_ = e;
-#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp9_ = _tmp8_->message;
-#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp10_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, _tmp9_);
-#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_inner_error_ = _tmp10_;
-#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp6_ = e;
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp7_ = _tmp6_->message;
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp8_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp7_);
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_inner_error_ = _tmp8_;
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e);
-#line 382 "tracker-direct.c"
-		goto __finally1;
+#line 1494 "tracker-direct.c"
+		goto __finally4;
 	}
-	__finally1:
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	goto __finally4;
+	__catch4_tracker_date_error:
+	{
+		GError* e = NULL;
+		GError* _tmp9_;
+		const gchar* _tmp10_;
+		GError* _tmp11_;
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		e = _inner_error_;
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_inner_error_ = NULL;
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp9_ = e;
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp10_ = _tmp9_->message;
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp11_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, _tmp10_);
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_inner_error_ = _tmp11_;
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (e);
+#line 1518 "tracker-direct.c"
+		goto __finally4;
+	}
+	__finally4:
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	if ((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_propagate_error (error, _inner_error_);
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
-#line 392 "tracker-direct.c"
+#line 1528 "tracker-direct.c"
 	} else {
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_clear_error (&_inner_error_);
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
-#line 400 "tracker-direct.c"
+#line 1536 "tracker-direct.c"
 	}
 }
 
@@ -407,112 +1543,112 @@ static TrackerSparqlCursor* tracker_direct_connection_real_query (TrackerSparqlC
 	gboolean _tmp0_ = FALSE;
 	GCancellable* _tmp1_;
 	GError * _inner_error_ = NULL;
-#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = (TrackerDirectConnection*) base;
-#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 80 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp1_ = cancellable;
-#line 80 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (_tmp1_ != NULL) {
-#line 419 "tracker-direct.c"
+#line 1555 "tracker-direct.c"
 		GCancellable* _tmp2_;
 		gboolean _tmp3_;
-#line 80 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp2_ = cancellable;
-#line 80 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp3_ = g_cancellable_is_cancelled (_tmp2_);
-#line 80 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp0_ = _tmp3_;
-#line 428 "tracker-direct.c"
+#line 1564 "tracker-direct.c"
 	} else {
-#line 80 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp0_ = FALSE;
-#line 432 "tracker-direct.c"
+#line 1568 "tracker-direct.c"
 	}
-#line 80 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (_tmp0_) {
-#line 436 "tracker-direct.c"
+#line 1572 "tracker-direct.c"
 		GError* _tmp4_;
-#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp4_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
-#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = _tmp4_;
-#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_propagate_error (error, _inner_error_);
-#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			return NULL;
-#line 448 "tracker-direct.c"
+#line 1584 "tracker-direct.c"
 		} else {
-#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_clear_error (&_inner_error_);
-#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			return NULL;
-#line 456 "tracker-direct.c"
+#line 1592 "tracker-direct.c"
 		}
 	}
-#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 242 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_mutex_lock (&self->priv->mutex);
-#line 461 "tracker-direct.c"
+#line 1597 "tracker-direct.c"
 	{
 		TrackerSparqlCursor* _tmp5_ = NULL;
 		const gchar* _tmp6_;
 		TrackerSparqlCursor* _tmp7_;
 		TrackerSparqlCursor* _tmp8_;
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp6_ = sparql;
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp7_ = tracker_direct_connection_query_unlocked (self, _tmp6_, &_inner_error_);
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp5_ = _tmp7_;
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 475 "tracker-direct.c"
-			goto __finally2;
+#line 1611 "tracker-direct.c"
+			goto __finally5;
 		}
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp8_ = _tmp5_;
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp5_ = NULL;
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		result = _tmp8_;
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (_tmp5_);
-#line 486 "tracker-direct.c"
+#line 1622 "tracker-direct.c"
 		{
-#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_mutex_unlock (&self->priv->mutex);
-#line 490 "tracker-direct.c"
+#line 1626 "tracker-direct.c"
 		}
-#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		return result;
-#line 494 "tracker-direct.c"
+#line 1630 "tracker-direct.c"
 	}
-	__finally2:
+	__finally5:
 	{
-#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_mutex_unlock (&self->priv->mutex);
-#line 500 "tracker-direct.c"
+#line 1636 "tracker-direct.c"
 	}
-#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_propagate_error (error, _inner_error_);
-#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
-#line 508 "tracker-direct.c"
+#line 1644 "tracker-direct.c"
 	} else {
-#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_clear_error (&_inner_error_);
-#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 243 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
-#line 516 "tracker-direct.c"
+#line 1652 "tracker-direct.c"
 	}
 }
 
@@ -520,20 +1656,15 @@ static TrackerSparqlCursor* tracker_direct_connection_real_query (TrackerSparqlC
 static void tracker_direct_connection_real_query_async_data_free (gpointer _data) {
 	TrackerDirectConnectionQueryAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_object_unref0 (_data_->result);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_slice_free (TrackerDirectConnectionQueryAsyncData, _data_);
-#line 530 "tracker-direct.c"
-}
-
-
-static gpointer _g_object_ref0 (gpointer self) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	return self ? g_object_ref (self) : NULL;
-#line 537 "tracker-direct.c"
+#line 1668 "tracker-direct.c"
 }
 
 
@@ -545,637 +1676,2070 @@ static void tracker_direct_connection_real_query_async (TrackerSparqlConnection*
 	gchar* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = (TrackerDirectConnection*) base;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_ = g_slice_new0 (TrackerDirectConnectionQueryAsyncData);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_task_set_task_data (_data_->_async_result, _data_, tracker_direct_connection_real_query_async_data_free);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp3_ = cancellable;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->cancellable = _tmp4_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	tracker_direct_connection_real_query_async_co (_data_);
-#line 579 "tracker-direct.c"
+#line 1710 "tracker-direct.c"
 }
 
 
 static TrackerSparqlCursor* tracker_direct_connection_real_query_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerDirectConnectionQueryAsyncData* _data_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (NULL == _data_) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		return NULL;
-#line 592 "tracker-direct.c"
+#line 1723 "tracker-direct.c"
 	}
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	result = _data_->result;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->result = NULL;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
-#line 600 "tracker-direct.c"
+#line 1731 "tracker-direct.c"
 }
 
 
-static Block1Data* block1_data_ref (Block1Data* _data1_) {
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	g_atomic_int_inc (&_data1_->_ref_count_);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	return _data1_;
-#line 609 "tracker-direct.c"
+static Block2Data* block2_data_ref (Block2Data* _data2_) {
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_atomic_int_inc (&_data2_->_ref_count_);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return _data2_;
+#line 1740 "tracker-direct.c"
 }
 
 
-static void block1_data_unref (void * _userdata_) {
-	Block1Data* _data1_;
-	_data1_ = (Block1Data*) _userdata_;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-#line 618 "tracker-direct.c"
+static void block2_data_unref (void * _userdata_) {
+	Block2Data* _data2_;
+	_data2_ = (Block2Data*) _userdata_;
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (g_atomic_int_dec_and_test (&_data2_->_ref_count_)) {
+#line 1749 "tracker-direct.c"
 		TrackerDirectConnection* self;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		self = _data1_->self;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_main_context_unref0 (_data1_->context);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_object_unref0 (_data1_->_result_);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_error_free0 (_data1_->dbus_error);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_error_free0 (_data1_->io_error);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_error_free0 (_data1_->sparql_error);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_free0 (_data1_->sparql);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_object_unref0 (_data1_->cancellable);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		self = _data2_->self;
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_main_context_unref0 (_data2_->context);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (_data2_->_result_);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (_data2_->dbus_error);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (_data2_->io_error);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (_data2_->sparql_error);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_free0 (_data2_->sparql);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (self);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		g_slice_free (Block1Data, _data1_);
-#line 640 "tracker-direct.c"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_slice_free (Block2Data, _data2_);
+#line 1769 "tracker-direct.c"
 	}
 }
 
 
 static gpointer _g_main_context_ref0 (gpointer self) {
-#line 98 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 256 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	return self ? g_main_context_ref (self) : NULL;
-#line 648 "tracker-direct.c"
+#line 1777 "tracker-direct.c"
 }
 
 
-static gpointer _g_error_copy0 (gpointer self) {
-#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	return self ? g_error_copy (self) : NULL;
-#line 655 "tracker-direct.c"
-}
-
-
-static gboolean __lambda5_ (Block1Data* _data1_) {
+static gboolean __lambda6_ (Block2Data* _data2_) {
 	TrackerDirectConnection* self;
 	gboolean result = FALSE;
-#line 112 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	self = _data1_->self;
-#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	tracker_direct_connection_real_query_async_co (_data1_->_async_data_);
-#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = _data2_->self;
+#line 270 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_real_query_async_co (_data2_->_async_data_);
+#line 271 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	result = FALSE;
-#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 271 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
-#line 670 "tracker-direct.c"
+#line 1792 "tracker-direct.c"
 }
 
 
-static gboolean ___lambda5__gsource_func (gpointer self) {
+static gboolean ___lambda6__gsource_func (gpointer self) {
 	gboolean result;
-	result = __lambda5_ (self);
-#line 112 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	result = __lambda6_ (self);
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
-#line 679 "tracker-direct.c"
+#line 1801 "tracker-direct.c"
 }
 
 
-static gboolean __lambda4_ (Block1Data* _data1_, GIOSchedulerJob* job) {
+static gboolean __lambda5_ (Block2Data* _data2_, GIOSchedulerJob* job, GCancellable* cancellable) {
 	TrackerDirectConnection* self;
 	gboolean result = FALSE;
-	GSource* source = NULL;
-	GSource* _tmp12_;
-	GSource* _tmp13_;
-	GSource* _tmp14_;
-	GMainContext* _tmp15_;
+	GMainContext* _tmp12_;
 	GError * _inner_error_ = NULL;
-#line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	self = _data1_->self;
-#line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = _data2_->self;
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_return_val_if_fail (job != NULL, FALSE);
-#line 696 "tracker-direct.c"
+#line 1814 "tracker-direct.c"
 	{
 		TrackerSparqlCursor* _tmp0_ = NULL;
 		const gchar* _tmp1_;
 		GCancellable* _tmp2_;
 		TrackerSparqlCursor* _tmp3_;
 		TrackerSparqlCursor* _tmp4_;
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp1_ = _data1_->sparql;
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_tmp2_ = _data1_->cancellable;
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp1_ = _data2_->sparql;
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = cancellable;
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp3_ = tracker_sparql_connection_query ((TrackerSparqlConnection*) self, _tmp1_, _tmp2_, &_inner_error_);
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp0_ = _tmp3_;
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == G_IO_ERROR) {
-#line 715 "tracker-direct.c"
-				goto __catch3_g_io_error;
+#line 1833 "tracker-direct.c"
+				goto __catch6_g_io_error;
 			}
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 720 "tracker-direct.c"
-				goto __catch3_tracker_sparql_error;
+#line 1838 "tracker-direct.c"
+				goto __catch6_tracker_sparql_error;
 			}
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (_inner_error_->domain == G_DBUS_ERROR) {
-#line 725 "tracker-direct.c"
-				goto __catch3_g_dbus_error;
+#line 1843 "tracker-direct.c"
+				goto __catch6_g_dbus_error;
 			}
-			goto __finally3;
+			goto __finally6;
 		}
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp4_ = _tmp0_;
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp0_ = NULL;
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_object_unref0 (_data1_->_result_);
-#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data1_->_result_ = _tmp4_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (_data2_->_result_);
+#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data2_->_result_ = _tmp4_;
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_object_unref0 (_tmp0_);
-#line 740 "tracker-direct.c"
+#line 1858 "tracker-direct.c"
 	}
-	goto __finally3;
-	__catch3_g_io_error:
+	goto __finally6;
+	__catch6_g_io_error:
 	{
 		GError* e_io = NULL;
 		GError* _tmp5_;
 		GError* _tmp6_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		e_io = _inner_error_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp5_ = e_io;
-#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp6_ = _g_error_copy0 (_tmp5_);
-#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_error_free0 (_data1_->io_error);
-#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data1_->io_error = _tmp6_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (_data2_->io_error);
+#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data2_->io_error = _tmp6_;
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e_io);
-#line 762 "tracker-direct.c"
+#line 1880 "tracker-direct.c"
 	}
-	goto __finally3;
-	__catch3_tracker_sparql_error:
+	goto __finally6;
+	__catch6_tracker_sparql_error:
 	{
 		GError* e_spql = NULL;
 		GError* _tmp7_;
 		GError* _tmp8_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		e_spql = _inner_error_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 264 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp7_ = e_spql;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 264 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp8_ = _g_error_copy0 (_tmp7_);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_error_free0 (_data1_->sparql_error);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data1_->sparql_error = _tmp8_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 264 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (_data2_->sparql_error);
+#line 264 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data2_->sparql_error = _tmp8_;
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e_spql);
-#line 784 "tracker-direct.c"
+#line 1902 "tracker-direct.c"
 	}
-	goto __finally3;
-	__catch3_g_dbus_error:
+	goto __finally6;
+	__catch6_g_dbus_error:
 	{
 		GError* e_dbus = NULL;
 		GError* _tmp9_;
 		GError* _tmp10_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		e_dbus = _inner_error_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_inner_error_ = NULL;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp9_ = e_dbus;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_tmp10_ = _g_error_copy0 (_tmp9_);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_g_error_free0 (_data1_->dbus_error);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data1_->dbus_error = _tmp10_;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_error_free0 (_data2_->dbus_error);
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data2_->dbus_error = _tmp10_;
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		_g_error_free0 (e_dbus);
-#line 806 "tracker-direct.c"
+#line 1924 "tracker-direct.c"
 	}
-	__finally3:
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	__finally6:
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 811 "tracker-direct.c"
+#line 1929 "tracker-direct.c"
 		gboolean _tmp11_ = FALSE;
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_clear_error (&_inner_error_);
-#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		return _tmp11_;
-#line 819 "tracker-direct.c"
+#line 1937 "tracker-direct.c"
 	}
-#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_tmp12_ = g_idle_source_new ();
-#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	source = _tmp12_;
-#line 112 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_tmp13_ = source;
-#line 112 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	g_source_set_callback (_tmp13_, ___lambda5__gsource_func, block1_data_ref (_data1_), block1_data_unref);
-#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_tmp14_ = source;
-#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_tmp15_ = _data1_->context;
-#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	g_source_attach (_tmp14_, _tmp15_);
-#line 118 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp12_ = _data2_->context;
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_main_context_invoke_full (_tmp12_, G_PRIORITY_DEFAULT, ___lambda6__gsource_func, block2_data_ref (_data2_), block2_data_unref);
+#line 274 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	result = FALSE;
-#line 118 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_g_source_unref0 (source);
-#line 118 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 274 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
-#line 841 "tracker-direct.c"
+#line 1947 "tracker-direct.c"
 }
 
 
-static gboolean ___lambda4__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self) {
+static gboolean ___lambda5__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self) {
 	gboolean result;
-	result = __lambda4_ (self, job);
-#line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	result = __lambda5_ (self, job, cancellable);
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	return result;
-#line 850 "tracker-direct.c"
+#line 1956 "tracker-direct.c"
 }
 
 
 static gboolean tracker_direct_connection_real_query_async_co (TrackerDirectConnectionQueryAsyncData* _data_) {
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	switch (_data_->_state_) {
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		case 0:
-#line 859 "tracker-direct.c"
+#line 1965 "tracker-direct.c"
 		goto _state_0;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		case 1:
-#line 863 "tracker-direct.c"
+#line 1969 "tracker-direct.c"
 		goto _state_1;
 		default:
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		g_assert_not_reached ();
-#line 868 "tracker-direct.c"
+#line 1974 "tracker-direct.c"
 	}
 	_state_0:
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_ = g_slice_new0 (Block1Data);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->_ref_count_ = 1;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->self = g_object_ref (_data_->self);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_ = g_slice_new0 (Block2Data);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->_ref_count_ = 1;
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->self = g_object_ref (_data_->self);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_tmp0_ = _data_->sparql;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_g_free0 (_data_->_data1_->sparql);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->sparql = _data_->_tmp0_;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_tmp1_ = _data_->cancellable;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_g_object_unref0 (_data_->_data1_->cancellable);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->cancellable = _data_->_tmp1_;
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->_async_data_ = _data_;
-#line 94 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->sparql_error = NULL;
-#line 95 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->io_error = NULL;
-#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->dbus_error = NULL;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->_result_ = NULL;
-#line 98 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_tmp2_ = g_main_context_get_thread_default ();
-#line 98 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_tmp3_ = _g_main_context_ref0 (_data_->_tmp2_);
-#line 98 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_->context = _data_->_tmp3_;
-#line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_tmp4_ = _data_->_data1_->cancellable;
-#line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	g_io_scheduler_push_job (___lambda4__gio_scheduler_job_func, block1_data_ref (_data_->_data1_), block1_data_unref, G_PRIORITY_DEFAULT, _data_->_tmp4_);
-#line 120 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_free0 (_data_->_data2_->sparql);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->sparql = _data_->_tmp0_;
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->_async_data_ = _data_;
+#line 252 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->sparql_error = NULL;
+#line 253 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->io_error = NULL;
+#line 254 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->dbus_error = NULL;
+#line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->_result_ = NULL;
+#line 256 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp1_ = g_main_context_get_thread_default ();
+#line 256 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp2_ = _g_main_context_ref0 (_data_->_tmp1_);
+#line 256 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_->context = _data_->_tmp2_;
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp3_ = _data_->cancellable;
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_io_scheduler_push_job (___lambda5__gio_scheduler_job_func, block2_data_ref (_data_->_data2_), block2_data_unref, G_PRIORITY_DEFAULT, _data_->_tmp3_);
+#line 277 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_data_->_state_ = 1;
-#line 120 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 277 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	return FALSE;
-#line 913 "tracker-direct.c"
+#line 2013 "tracker-direct.c"
 	_state_1:
 	;
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_tmp6_ = _data_->_data1_->cancellable;
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	if (_data_->_tmp6_ != NULL) {
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data_->_tmp7_ = _data_->_data1_->cancellable;
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data_->_tmp8_ = g_cancellable_is_cancelled (_data_->_tmp7_);
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data_->_tmp5_ = _data_->_tmp8_;
-#line 926 "tracker-direct.c"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp5_ = _data_->cancellable;
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_tmp5_ != NULL) {
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp6_ = _data_->cancellable;
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp7_ = g_cancellable_is_cancelled (_data_->_tmp6_);
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp4_ = _data_->_tmp7_;
+#line 2026 "tracker-direct.c"
 	} else {
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data_->_tmp5_ = FALSE;
-#line 930 "tracker-direct.c"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp4_ = FALSE;
+#line 2030 "tracker-direct.c"
 	}
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	if (_data_->_tmp5_) {
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data_->_tmp9_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data_->_inner_error_ = _data_->_tmp9_;
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_tmp4_) {
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp8_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_inner_error_ = _data_->_tmp8_;
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			block1_data_unref (_data_->_data1_);
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_data_->_data1_ = NULL;
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			block2_data_unref (_data_->_data2_);
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_data_->_data2_ = NULL;
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_object_unref (_data_->_async_result);
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			return FALSE;
-#line 950 "tracker-direct.c"
+#line 2050 "tracker-direct.c"
 		} else {
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			block1_data_unref (_data_->_data1_);
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_data_->_data1_ = NULL;
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			block2_data_unref (_data_->_data2_);
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_data_->_data2_ = NULL;
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			g_object_unref (_data_->_async_result);
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 280 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			return FALSE;
-#line 964 "tracker-direct.c"
+#line 2064 "tracker-direct.c"
 		}
 	} else {
-#line 124 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		_data_->_tmp10_ = _data_->_data1_->sparql_error;
-#line 124 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		if (_data_->_tmp10_ != NULL) {
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_data_->_tmp11_ = _data_->_data1_->sparql_error;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_data_->_tmp12_ = _g_error_copy0 (_data_->_tmp11_);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_data_->_inner_error_ = _data_->_tmp12_;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp9_ = _data_->_data2_->sparql_error;
+#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (_data_->_tmp9_ != NULL) {
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_data_->_tmp10_ = _data_->_data2_->sparql_error;
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_data_->_tmp11_ = _g_error_copy0 (_data_->_tmp10_);
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_data_->_inner_error_ = _data_->_tmp11_;
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				block1_data_unref (_data_->_data1_);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_data_->_data1_ = NULL;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				block2_data_unref (_data_->_data2_);
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				_data_->_data2_ = NULL;
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_object_unref (_data_->_async_result);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 				return FALSE;
-#line 989 "tracker-direct.c"
+#line 2089 "tracker-direct.c"
 			} else {
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				block1_data_unref (_data_->_data1_);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_data_->_data1_ = NULL;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				block2_data_unref (_data_->_data2_);
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				_data_->_data2_ = NULL;
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_clear_error (&_data_->_inner_error_);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 				g_object_unref (_data_->_async_result);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 282 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 				return FALSE;
-#line 1003 "tracker-direct.c"
+#line 2103 "tracker-direct.c"
 			}
 		} else {
-#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			_data_->_tmp13_ = _data_->_data1_->io_error;
-#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-			if (_data_->_tmp13_ != NULL) {
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_data_->_tmp14_ = _data_->_data1_->io_error;
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_data_->_tmp15_ = _g_error_copy0 (_data_->_tmp14_);
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_data_->_inner_error_ = _data_->_tmp15_;
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 283 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_data_->_tmp12_ = _data_->_data2_->io_error;
+#line 283 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			if (_data_->_tmp12_ != NULL) {
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				_data_->_tmp13_ = _data_->_data2_->io_error;
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				_data_->_tmp14_ = _g_error_copy0 (_data_->_tmp13_);
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				_data_->_inner_error_ = _data_->_tmp14_;
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 				if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					block1_data_unref (_data_->_data1_);
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->_data1_ = NULL;
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					block2_data_unref (_data_->_data2_);
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->_data2_ = NULL;
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_object_unref (_data_->_async_result);
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					return FALSE;
-#line 1028 "tracker-direct.c"
+#line 2128 "tracker-direct.c"
 				} else {
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					block1_data_unref (_data_->_data1_);
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->_data1_ = NULL;
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					block2_data_unref (_data_->_data2_);
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->_data2_ = NULL;
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_clear_error (&_data_->_inner_error_);
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_object_unref (_data_->_async_result);
-#line 127 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					return FALSE;
-#line 1042 "tracker-direct.c"
+#line 2142 "tracker-direct.c"
 				}
 			} else {
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				_data_->_tmp16_ = _data_->_data1_->dbus_error;
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-				if (_data_->_tmp16_ != NULL) {
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->_tmp17_ = _data_->_data1_->dbus_error;
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->_tmp18_ = _g_error_copy0 (_data_->_tmp17_);
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->_inner_error_ = _data_->_tmp18_;
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 285 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				_data_->_tmp15_ = _data_->_data2_->dbus_error;
+#line 285 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				if (_data_->_tmp15_ != NULL) {
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->_tmp16_ = _data_->_data2_->dbus_error;
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->_tmp17_ = _g_error_copy0 (_data_->_tmp16_);
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->_inner_error_ = _data_->_tmp17_;
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-						block1_data_unref (_data_->_data1_);
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-						_data_->_data1_ = NULL;
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+						block2_data_unref (_data_->_data2_);
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+						_data_->_data2_ = NULL;
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_object_unref (_data_->_async_result);
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 						return FALSE;
-#line 1067 "tracker-direct.c"
+#line 2167 "tracker-direct.c"
 					} else {
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-						block1_data_unref (_data_->_data1_);
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-						_data_->_data1_ = NULL;
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+						block2_data_unref (_data_->_data2_);
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+						_data_->_data2_ = NULL;
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_clear_error (&_data_->_inner_error_);
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 						g_object_unref (_data_->_async_result);
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 						return FALSE;
-#line 1081 "tracker-direct.c"
+#line 2181 "tracker-direct.c"
 					}
 				} else {
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->_tmp19_ = _data_->_data1_->_result_;
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->_tmp20_ = _g_object_ref0 (_data_->_tmp19_);
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->result = _data_->_tmp20_;
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					block1_data_unref (_data_->_data1_);
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-					_data_->_data1_ = NULL;
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->_tmp18_ = _data_->_data2_->_result_;
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->_tmp19_ = _g_object_ref0 (_data_->_tmp18_);
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->result = _data_->_tmp19_;
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					block2_data_unref (_data_->_data2_);
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_data_->_data2_ = NULL;
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					if (_data_->_state_ != 0) {
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 						while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 							g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1102 "tracker-direct.c"
+#line 2202 "tracker-direct.c"
 						}
 					}
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					g_object_unref (_data_->_async_result);
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 					return FALSE;
-#line 1109 "tracker-direct.c"
+#line 2209 "tracker-direct.c"
 				}
 			}
 		}
 	}
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	block1_data_unref (_data_->_data1_);
-#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_data_->_data1_ = NULL;
-#line 1118 "tracker-direct.c"
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	block2_data_unref (_data_->_data2_);
+#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_data2_ = NULL;
+#line 2218 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_update (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GError** error) {
+	TrackerDirectConnection * self;
+	GError * _inner_error_ = NULL;
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (sparql != NULL);
+#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_mutex_lock (&self->priv->mutex);
+#line 2231 "tracker-direct.c"
+	{
+		TrackerData* data = NULL;
+		TrackerDataManager* _tmp0_;
+		TrackerData* _tmp1_;
+		TrackerData* _tmp2_;
+		TrackerData* _tmp3_;
+		const gchar* _tmp4_;
+#line 295 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = self->priv->data_manager;
+#line 295 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp1_ = tracker_data_manager_get_data (_tmp0_);
+#line 295 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = _g_object_ref0 (_tmp1_);
+#line 295 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		data = _tmp2_;
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp3_ = data;
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp4_ = sparql;
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_data_update_sparql (_tmp3_, _tmp4_, &_inner_error_);
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_g_object_unref0 (data);
+#line 2257 "tracker-direct.c"
+			goto __finally7;
+		}
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (data);
+#line 2262 "tracker-direct.c"
+	}
+	__finally7:
+	{
+#line 298 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_mutex_unlock (&self->priv->mutex);
+#line 2268 "tracker-direct.c"
+	}
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_propagate_error (error, _inner_error_);
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return;
+#line 2276 "tracker-direct.c"
+	}
+}
+
+
+static void tracker_direct_connection_real_update_async_data_free (gpointer _data) {
+	TrackerDirectConnectionUpdateAsyncData* _data_;
+	_data_ = _data;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_free0 (_data_->sparql);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->self);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_slice_free (TrackerDirectConnectionUpdateAsyncData, _data_);
+#line 2292 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_update_async (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
+	TrackerDirectConnection * self;
+	TrackerDirectConnectionUpdateAsyncData* _data_;
+	TrackerDirectConnection* _tmp0_;
+	const gchar* _tmp1_;
+	gchar* _tmp2_;
+	gint _tmp3_;
+	GCancellable* _tmp4_;
+	GCancellable* _tmp5_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_ = g_slice_new0 (TrackerDirectConnectionUpdateAsyncData);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_task_set_task_data (_data_->_async_result, _data_, tracker_direct_connection_real_update_async_data_free);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = _g_object_ref0 (self);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self = _tmp0_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = sparql;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = g_strdup (_tmp1_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_free0 (_data_->sparql);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->sparql = _tmp2_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = priority;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->priority = _tmp3_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp4_ = cancellable;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp5_ = _g_object_ref0 (_tmp4_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->cancellable = _tmp5_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_real_update_async_co (_data_);
+#line 2339 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_update_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
+	TrackerDirectConnectionUpdateAsyncData* _data_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (NULL == _data_) {
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return;
+#line 2351 "tracker-direct.c"
+	}
+}
+
+
+static gboolean _tracker_direct_connection_real_update_async_co_gsource_func (gpointer self) {
+	gboolean result;
+	result = tracker_direct_connection_real_update_async_co (self);
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 2361 "tracker-direct.c"
+}
+
+
+static gboolean tracker_direct_connection_real_update_async_co (TrackerDirectConnectionUpdateAsyncData* _data_) {
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	switch (_data_->_state_) {
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		case 0:
+#line 2370 "tracker-direct.c"
+		goto _state_0;
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		case 1:
+#line 2374 "tracker-direct.c"
+		goto _state_1;
+		default:
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_assert_not_reached ();
+#line 2379 "tracker-direct.c"
+	}
+	_state_0:
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp0_ = _data_->sparql;
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp1_ = _data_->priority;
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp2_ = _data_->cancellable;
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp3_ = tracker_direct_connection_update_task_new (_data_->_tmp0_, _data_->_tmp1_, _data_->_tmp2_);
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->task = _data_->_tmp3_;
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp4_ = _data_->task;
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	(((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target_destroy_notify == NULL) ? NULL : (((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target_destroy_notify (((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target), NULL);
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback = NULL;
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target = NULL;
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target_destroy_notify = NULL;
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback = _tracker_direct_connection_real_update_async_co_gsource_func;
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target = _data_;
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target_destroy_notify = NULL;
+#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp5_ = _data_->self->priv->update_queue;
+#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp6_ = _data_->task;
+#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp7_ = _tracker_direct_connection_task_ref0 ((TrackerDirectConnectionTask*) _data_->_tmp6_);
+#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_async_queue_push (_data_->_tmp5_, _data_->_tmp7_);
+#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_state_ = 1;
+#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return FALSE;
+#line 2420 "tracker-direct.c"
+	_state_1:
+	;
+#line 308 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp8_ = _data_->task;
+#line 308 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp9_ = ((TrackerDirectConnectionTask*) _data_->_tmp8_)->error;
+#line 308 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_tmp9_ != NULL) {
+#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp10_ = _data_->task;
+#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp11_ = ((TrackerDirectConnectionTask*) _data_->_tmp10_)->error;
+#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp12_ = _g_error_copy0 (_data_->_tmp11_);
+#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_inner_error_ = _data_->_tmp12_;
+#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
+#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tracker_direct_connection_task_unref0 (_data_->task);
+#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_object_unref (_data_->_async_result);
+#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return FALSE;
+#line 2445 "tracker-direct.c"
+	}
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tracker_direct_connection_task_unref0 (_data_->task);
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_task_return_pointer (_data_->_async_result, _data_, NULL);
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_state_ != 0) {
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		while (g_task_get_completed (_data_->_async_result) != TRUE) {
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
+#line 2457 "tracker-direct.c"
+		}
+	}
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_object_unref (_data_->_async_result);
+#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return FALSE;
+#line 2464 "tracker-direct.c"
+}
+
+
+static GVariant* tracker_direct_connection_real_update_blank (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GError** error) {
+	TrackerDirectConnection * self;
+	GVariant* result = NULL;
+	GVariant* blank_nodes = NULL;
+	GError * _inner_error_ = NULL;
+#line 312 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 312 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_val_if_fail (sparql != NULL, NULL);
+#line 313 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	blank_nodes = NULL;
+#line 314 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_mutex_lock (&self->priv->mutex);
+#line 2481 "tracker-direct.c"
+	{
+		TrackerData* data = NULL;
+		TrackerDataManager* _tmp0_;
+		TrackerData* _tmp1_;
+		TrackerData* _tmp2_;
+		GVariant* _tmp3_ = NULL;
+		TrackerData* _tmp4_;
+		const gchar* _tmp5_;
+		GVariant* _tmp6_;
+		GVariant* _tmp7_;
+#line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = self->priv->data_manager;
+#line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp1_ = tracker_data_manager_get_data (_tmp0_);
+#line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = _g_object_ref0 (_tmp1_);
+#line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		data = _tmp2_;
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp4_ = data;
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp5_ = sparql;
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp6_ = tracker_data_update_sparql_blank (_tmp4_, _tmp5_, &_inner_error_);
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp3_ = _tmp6_;
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_g_object_unref0 (data);
+#line 2512 "tracker-direct.c"
+			goto __finally8;
+		}
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp7_ = _tmp3_;
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp3_ = NULL;
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_variant_unref0 (blank_nodes);
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		blank_nodes = _tmp7_;
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_variant_unref0 (_tmp3_);
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (data);
+#line 2527 "tracker-direct.c"
+	}
+	__finally8:
+	{
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_mutex_unlock (&self->priv->mutex);
+#line 2533 "tracker-direct.c"
+	}
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_propagate_error (error, _inner_error_);
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_variant_unref0 (blank_nodes);
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return NULL;
+#line 2543 "tracker-direct.c"
+	}
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	result = blank_nodes;
+#line 322 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 2549 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_update_blank_async_data_free (gpointer _data) {
+	TrackerDirectConnectionUpdateBlankAsyncData* _data_;
+	_data_ = _data;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_free0 (_data_->sparql);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_variant_unref0 (_data_->result);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->self);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_slice_free (TrackerDirectConnectionUpdateBlankAsyncData, _data_);
+#line 2566 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_update_blank_async (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
+	TrackerDirectConnection * self;
+	TrackerDirectConnectionUpdateBlankAsyncData* _data_;
+	TrackerDirectConnection* _tmp0_;
+	const gchar* _tmp1_;
+	gchar* _tmp2_;
+	gint _tmp3_;
+	GCancellable* _tmp4_;
+	GCancellable* _tmp5_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_ = g_slice_new0 (TrackerDirectConnectionUpdateBlankAsyncData);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_task_set_task_data (_data_->_async_result, _data_, tracker_direct_connection_real_update_blank_async_data_free);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = _g_object_ref0 (self);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self = _tmp0_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = sparql;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = g_strdup (_tmp1_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_free0 (_data_->sparql);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->sparql = _tmp2_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = priority;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->priority = _tmp3_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp4_ = cancellable;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp5_ = _g_object_ref0 (_tmp4_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->cancellable = _tmp5_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_real_update_blank_async_co (_data_);
+#line 2613 "tracker-direct.c"
+}
+
+
+static GVariant* tracker_direct_connection_real_update_blank_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
+	GVariant* result;
+	TrackerDirectConnectionUpdateBlankAsyncData* _data_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (NULL == _data_) {
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return NULL;
+#line 2626 "tracker-direct.c"
+	}
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	result = _data_->result;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->result = NULL;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 2634 "tracker-direct.c"
+}
+
+
+static gboolean _tracker_direct_connection_real_update_blank_async_co_gsource_func (gpointer self) {
+	gboolean result;
+	result = tracker_direct_connection_real_update_blank_async_co (self);
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 2643 "tracker-direct.c"
+}
+
+
+static gpointer _g_variant_ref0 (gpointer self) {
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self ? g_variant_ref (self) : NULL;
+#line 2650 "tracker-direct.c"
+}
+
+
+static gboolean tracker_direct_connection_real_update_blank_async_co (TrackerDirectConnectionUpdateBlankAsyncData* _data_) {
+#line 325 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	switch (_data_->_state_) {
+#line 325 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		case 0:
+#line 2659 "tracker-direct.c"
+		goto _state_0;
+#line 325 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		case 1:
+#line 2663 "tracker-direct.c"
+		goto _state_1;
+		default:
+#line 325 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_assert_not_reached ();
+#line 2668 "tracker-direct.c"
+	}
+	_state_0:
+#line 326 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp0_ = _data_->sparql;
+#line 326 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp1_ = _data_->priority;
+#line 326 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp2_ = _data_->cancellable;
+#line 326 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp3_ = tracker_direct_connection_update_task_new_blank (_data_->_tmp0_, _data_->_tmp1_, _data_->_tmp2_);
+#line 326 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->task = _data_->_tmp3_;
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp4_ = _data_->task;
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	(((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target_destroy_notify == NULL) ? NULL : (((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target_destroy_notify (((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target), NULL);
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback = NULL;
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target = NULL;
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target_destroy_notify = NULL;
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback = _tracker_direct_connection_real_update_blank_async_co_gsource_func;
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target = _data_;
+#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp4_)->callback_target_destroy_notify = NULL;
+#line 328 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp5_ = _data_->self->priv->update_queue;
+#line 328 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp6_ = _data_->task;
+#line 328 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp7_ = _tracker_direct_connection_task_ref0 ((TrackerDirectConnectionTask*) _data_->_tmp6_);
+#line 328 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_async_queue_push (_data_->_tmp5_, _data_->_tmp7_);
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_state_ = 1;
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return FALSE;
+#line 2709 "tracker-direct.c"
+	_state_1:
+	;
+#line 331 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp8_ = _data_->task;
+#line 331 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp9_ = ((TrackerDirectConnectionTask*) _data_->_tmp8_)->error;
+#line 331 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_tmp9_ != NULL) {
+#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp10_ = _data_->task;
+#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp11_ = ((TrackerDirectConnectionTask*) _data_->_tmp10_)->error;
+#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp12_ = _g_error_copy0 (_data_->_tmp11_);
+#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_inner_error_ = _data_->_tmp12_;
+#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
+#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tracker_direct_connection_task_unref0 (_data_->task);
+#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_object_unref (_data_->_async_result);
+#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return FALSE;
+#line 2734 "tracker-direct.c"
+	}
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp13_ = _data_->task;
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp14_ = _data_->_tmp13_->blank_nodes;
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp15_ = _g_variant_ref0 (_data_->_tmp14_);
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->result = _data_->_tmp15_;
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tracker_direct_connection_task_unref0 (_data_->task);
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_task_return_pointer (_data_->_async_result, _data_, NULL);
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_state_ != 0) {
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		while (g_task_get_completed (_data_->_async_result) != TRUE) {
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
+#line 2754 "tracker-direct.c"
+		}
+	}
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_object_unref (_data_->_async_result);
+#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return FALSE;
+#line 2761 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_load (TrackerSparqlConnection* base, GFile* file, GCancellable* cancellable, GError** error) {
+	TrackerDirectConnection * self;
+	GError * _inner_error_ = NULL;
+#line 337 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 337 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (file != NULL);
+#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_mutex_lock (&self->priv->mutex);
+#line 2774 "tracker-direct.c"
+	{
+		TrackerData* data = NULL;
+		TrackerDataManager* _tmp0_;
+		TrackerData* _tmp1_;
+		TrackerData* _tmp2_;
+		TrackerData* _tmp3_;
+		GFile* _tmp4_;
+#line 340 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = self->priv->data_manager;
+#line 340 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp1_ = tracker_data_manager_get_data (_tmp0_);
+#line 340 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = _g_object_ref0 (_tmp1_);
+#line 340 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		data = _tmp2_;
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp3_ = data;
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp4_ = file;
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_data_load_turtle_file (_tmp3_, _tmp4_, &_inner_error_);
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_g_object_unref0 (data);
+#line 2800 "tracker-direct.c"
+			goto __finally9;
+		}
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (data);
+#line 2805 "tracker-direct.c"
+	}
+	__finally9:
+	{
+#line 343 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_mutex_unlock (&self->priv->mutex);
+#line 2811 "tracker-direct.c"
+	}
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_propagate_error (error, _inner_error_);
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			return;
+#line 2821 "tracker-direct.c"
+		} else {
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_clear_error (&_inner_error_);
+#line 339 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			return;
+#line 2829 "tracker-direct.c"
+		}
+	}
+}
+
+
+static void tracker_direct_connection_real_load_async_data_free (gpointer _data) {
+	TrackerDirectConnectionLoadAsyncData* _data_;
+	_data_ = _data;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->file);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->self);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_slice_free (TrackerDirectConnectionLoadAsyncData, _data_);
+#line 2846 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_load_async (TrackerSparqlConnection* base, GFile* file, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
+	TrackerDirectConnection * self;
+	TrackerDirectConnectionLoadAsyncData* _data_;
+	TrackerDirectConnection* _tmp0_;
+	GFile* _tmp1_;
+	GFile* _tmp2_;
+	GCancellable* _tmp3_;
+	GCancellable* _tmp4_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_ = g_slice_new0 (TrackerDirectConnectionLoadAsyncData);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_task_set_task_data (_data_->_async_result, _data_, tracker_direct_connection_real_load_async_data_free);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = _g_object_ref0 (self);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->self = _tmp0_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = file;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = _g_object_ref0 (_tmp1_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->file);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->file = _tmp2_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = cancellable;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp4_ = _g_object_ref0 (_tmp3_);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (_data_->cancellable);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->cancellable = _tmp4_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_real_load_async_co (_data_);
+#line 2888 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_real_load_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
+	TrackerDirectConnectionLoadAsyncData* _data_;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (NULL == _data_) {
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return;
+#line 2900 "tracker-direct.c"
+	}
+}
+
+
+static gboolean _tracker_direct_connection_real_load_async_co_gsource_func (gpointer self) {
+	gboolean result;
+	result = tracker_direct_connection_real_load_async_co (self);
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 2910 "tracker-direct.c"
+}
+
+
+static gboolean tracker_direct_connection_real_load_async_co (TrackerDirectConnectionLoadAsyncData* _data_) {
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	switch (_data_->_state_) {
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		case 0:
+#line 2919 "tracker-direct.c"
+		goto _state_0;
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		case 1:
+#line 2923 "tracker-direct.c"
+		goto _state_1;
+		default:
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_assert_not_reached ();
+#line 2928 "tracker-direct.c"
+	}
+	_state_0:
+#line 348 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp0_ = _data_->file;
+#line 348 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp1_ = _data_->cancellable;
+#line 348 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp2_ = tracker_direct_connection_turtle_task_new (_data_->_tmp0_, _data_->_tmp1_);
+#line 348 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->task = _data_->_tmp2_;
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp3_ = _data_->task;
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	(((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback_target_destroy_notify == NULL) ? NULL : (((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback_target_destroy_notify (((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback_target), NULL);
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback = NULL;
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback_target = NULL;
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback_target_destroy_notify = NULL;
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback = _tracker_direct_connection_real_load_async_co_gsource_func;
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback_target = _data_;
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) _data_->_tmp3_)->callback_target_destroy_notify = NULL;
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp4_ = _data_->self->priv->update_queue;
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp5_ = _data_->task;
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp6_ = _tracker_direct_connection_task_ref0 ((TrackerDirectConnectionTask*) _data_->_tmp5_);
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_async_queue_push (_data_->_tmp4_, _data_->_tmp6_);
+#line 351 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_state_ = 1;
+#line 351 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return FALSE;
+#line 2967 "tracker-direct.c"
+	_state_1:
+	;
+#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp7_ = _data_->task;
+#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_data_->_tmp8_ = ((TrackerDirectConnectionTask*) _data_->_tmp7_)->error;
+#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_tmp8_ != NULL) {
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp9_ = _data_->task;
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp10_ = ((TrackerDirectConnectionTask*) _data_->_tmp9_)->error;
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp11_ = _data_->_tmp10_->message;
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_tmp12_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp11_);
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_data_->_inner_error_ = _data_->_tmp12_;
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tracker_direct_connection_task_unref0 (_data_->task);
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_object_unref (_data_->_async_result);
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			return FALSE;
+#line 2996 "tracker-direct.c"
+		} else {
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_tracker_direct_connection_task_unref0 (_data_->task);
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_object_unref (_data_->_async_result);
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			return FALSE;
+#line 3008 "tracker-direct.c"
+		}
+	}
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tracker_direct_connection_task_unref0 (_data_->task);
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_task_return_pointer (_data_->_async_result, _data_, NULL);
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_data_->_state_ != 0) {
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		while (g_task_get_completed (_data_->_async_result) != TRUE) {
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
+#line 3021 "tracker-direct.c"
+		}
+	}
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_object_unref (_data_->_async_result);
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return FALSE;
+#line 3028 "tracker-direct.c"
+}
+
+
+static TrackerNamespaceManager* tracker_direct_connection_real_get_namespace_manager (TrackerSparqlConnection* base) {
+	TrackerDirectConnection * self;
+	TrackerNamespaceManager* result = NULL;
+	gboolean _tmp0_ = FALSE;
+	TrackerNamespaceManager* _tmp1_;
+	TrackerNamespaceManager* _tmp17_;
+	TrackerNamespaceManager* _tmp18_;
+#line 357 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnection*) base;
+#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = self->priv->namespace_manager;
+#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_tmp1_ == NULL) {
+#line 3045 "tracker-direct.c"
+		TrackerDataManager* _tmp2_;
+#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp2_ = self->priv->data_manager;
+#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = _tmp2_ != NULL;
+#line 3051 "tracker-direct.c"
+	} else {
+#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp0_ = FALSE;
+#line 3055 "tracker-direct.c"
+	}
+#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (_tmp0_) {
+#line 3059 "tracker-direct.c"
+		GHashTable* ht = NULL;
+		TrackerDataManager* _tmp3_;
+		GHashTable* _tmp4_;
+		TrackerNamespaceManager* _tmp5_;
+		GHashTable* _tmp6_;
+		GList* _tmp7_;
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp3_ = self->priv->data_manager;
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp4_ = tracker_data_manager_get_namespaces (_tmp3_);
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		ht = _tmp4_;
+#line 360 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp5_ = tracker_namespace_manager_new ();
+#line 360 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_object_unref0 (self->priv->namespace_manager);
+#line 360 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		self->priv->namespace_manager = _tmp5_;
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp6_ = ht;
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_tmp7_ = g_hash_table_get_keys (_tmp6_);
+#line 3082 "tracker-direct.c"
+		{
+			GList* prefix_collection = NULL;
+			GList* prefix_it = NULL;
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			prefix_collection = _tmp7_;
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			for (prefix_it = prefix_collection; prefix_it != NULL; prefix_it = prefix_it->next) {
+#line 3090 "tracker-direct.c"
+				const gchar* prefix = NULL;
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+				prefix = (const gchar*) prefix_it->data;
+#line 3094 "tracker-direct.c"
+				{
+					const gchar* _tmp8_;
+					GHashTable* _tmp9_;
+					const gchar* _tmp10_;
+					gconstpointer _tmp11_;
+					TrackerNamespaceManager* _tmp12_;
+					const gchar* _tmp13_;
+					GHashTable* _tmp14_;
+					const gchar* _tmp15_;
+					gconstpointer _tmp16_;
+#line 363 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp8_ = prefix;
+#line 363 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp9_ = ht;
+#line 363 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp10_ = prefix;
+#line 363 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp11_ = g_hash_table_lookup (_tmp9_, _tmp10_);
+#line 363 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					g_print ("%s %s\n", _tmp8_, (const gchar*) _tmp11_);
+#line 364 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp12_ = self->priv->namespace_manager;
+#line 364 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp13_ = prefix;
+#line 364 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp14_ = ht;
+#line 364 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp15_ = prefix;
+#line 364 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					_tmp16_ = g_hash_table_lookup (_tmp14_, _tmp15_);
+#line 364 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+					tracker_namespace_manager_add_prefix (_tmp12_, _tmp13_, (const gchar*) _tmp16_);
+#line 3127 "tracker-direct.c"
+				}
+			}
+#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			_g_list_free0 (prefix_collection);
+#line 3132 "tracker-direct.c"
+		}
+#line 358 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		_g_hash_table_unref0 (ht);
+#line 3136 "tracker-direct.c"
+	}
+#line 368 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp17_ = self->priv->namespace_manager;
+#line 368 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp18_ = _g_object_ref0 (_tmp17_);
+#line 368 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	result = _tmp18_;
+#line 368 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return result;
+#line 3146 "tracker-direct.c"
+}
+
+
+static TrackerDirectConnectionTask* tracker_direct_connection_task_construct (GType object_type) {
+	TrackerDirectConnectionTask* self = NULL;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnectionTask*) g_type_create_instance (object_type);
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self;
+#line 3156 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_value_task_init (GValue* value) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	value->data[0].v_pointer = NULL;
+#line 3163 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_value_task_free_value (GValue* value) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (value->data[0].v_pointer) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_direct_connection_task_unref (value->data[0].v_pointer);
+#line 3172 "tracker-direct.c"
+	}
+}
+
+
+static void tracker_direct_connection_value_task_copy_value (const GValue* src_value, GValue* dest_value) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (src_value->data[0].v_pointer) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		dest_value->data[0].v_pointer = tracker_direct_connection_task_ref (src_value->data[0].v_pointer);
+#line 3182 "tracker-direct.c"
+	} else {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		dest_value->data[0].v_pointer = NULL;
+#line 3186 "tracker-direct.c"
+	}
+}
+
+
+static gpointer tracker_direct_connection_value_task_peek_pointer (const GValue* value) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return value->data[0].v_pointer;
+#line 3194 "tracker-direct.c"
+}
+
+
+static gchar* tracker_direct_connection_value_task_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (collect_values[0].v_pointer) {
+#line 3201 "tracker-direct.c"
+		TrackerDirectConnectionTask * object;
+		object = collect_values[0].v_pointer;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		if (object->parent_instance.g_class == NULL) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
+#line 3208 "tracker-direct.c"
+		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
+#line 3212 "tracker-direct.c"
+		}
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		value->data[0].v_pointer = tracker_direct_connection_task_ref (object);
+#line 3216 "tracker-direct.c"
+	} else {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		value->data[0].v_pointer = NULL;
+#line 3220 "tracker-direct.c"
+	}
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return NULL;
+#line 3224 "tracker-direct.c"
+}
+
+
+static gchar* tracker_direct_connection_value_task_lcopy_value (const GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
+	TrackerDirectConnectionTask ** object_p;
+	object_p = collect_values[0].v_pointer;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (!object_p) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+#line 3235 "tracker-direct.c"
+	}
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (!value->data[0].v_pointer) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		*object_p = NULL;
+#line 3241 "tracker-direct.c"
+	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		*object_p = value->data[0].v_pointer;
+#line 3245 "tracker-direct.c"
+	} else {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		*object_p = tracker_direct_connection_task_ref (value->data[0].v_pointer);
+#line 3249 "tracker-direct.c"
+	}
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return NULL;
+#line 3253 "tracker-direct.c"
+}
+
+
+static GParamSpec* tracker_direct_connection_param_spec_task (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags) {
+	TrackerDirectConnectionParamSpecTask* spec;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_val_if_fail (g_type_is_a (object_type, TRACKER_DIRECT_CONNECTION_TYPE_TASK), NULL);
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	spec = g_param_spec_internal (G_TYPE_PARAM_OBJECT, name, nick, blurb, flags);
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	G_PARAM_SPEC (spec)->value_type = object_type;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return G_PARAM_SPEC (spec);
+#line 3267 "tracker-direct.c"
+}
+
+
+static gpointer tracker_direct_connection_value_get_task (const GValue* value) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_DIRECT_CONNECTION_TYPE_TASK), NULL);
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return value->data[0].v_pointer;
+#line 3276 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_value_set_task (GValue* value, gpointer v_object) {
+	TrackerDirectConnectionTask * old;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_DIRECT_CONNECTION_TYPE_TASK));
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	old = value->data[0].v_pointer;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (v_object) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TRACKER_DIRECT_CONNECTION_TYPE_TASK));
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		value->data[0].v_pointer = v_object;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_direct_connection_task_ref (value->data[0].v_pointer);
+#line 3296 "tracker-direct.c"
+	} else {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		value->data[0].v_pointer = NULL;
+#line 3300 "tracker-direct.c"
+	}
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (old) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_direct_connection_task_unref (old);
+#line 3306 "tracker-direct.c"
+	}
+}
+
+
+static void tracker_direct_connection_value_take_task (GValue* value, gpointer v_object) {
+	TrackerDirectConnectionTask * old;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_DIRECT_CONNECTION_TYPE_TASK));
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	old = value->data[0].v_pointer;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (v_object) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TRACKER_DIRECT_CONNECTION_TYPE_TASK));
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		value->data[0].v_pointer = v_object;
+#line 3325 "tracker-direct.c"
+	} else {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		value->data[0].v_pointer = NULL;
+#line 3329 "tracker-direct.c"
+	}
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (old) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		tracker_direct_connection_task_unref (old);
+#line 3335 "tracker-direct.c"
+	}
+}
+
+
+static void tracker_direct_connection_task_class_init (TrackerDirectConnectionTaskClass * klass) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_task_parent_class = g_type_class_peek_parent (klass);
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTaskClass *) klass)->finalize = tracker_direct_connection_task_finalize;
+#line 3345 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_task_instance_init (TrackerDirectConnectionTask * self) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->ref_count = 1;
+#line 3352 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_task_finalize (TrackerDirectConnectionTask * obj) {
+	TrackerDirectConnectionTask * self;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_DIRECT_CONNECTION_TYPE_TASK, TrackerDirectConnectionTask);
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_signal_handlers_destroy (self);
+#line 56 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->cancellable);
+#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	(self->callback_target_destroy_notify == NULL) ? NULL : (self->callback_target_destroy_notify (self->callback_target), NULL);
+#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->callback = NULL;
+#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->callback_target = NULL;
+#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->callback_target_destroy_notify = NULL;
+#line 58 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_error_free0 (self->error);
+#line 3374 "tracker-direct.c"
+}
+
+
+static GType tracker_direct_connection_task_get_type (void) {
+	static volatile gsize tracker_direct_connection_task_type_id__volatile = 0;
+	if (g_once_init_enter (&tracker_direct_connection_task_type_id__volatile)) {
+		static const GTypeValueTable g_define_type_value_table = { tracker_direct_connection_value_task_init, tracker_direct_connection_value_task_free_value, tracker_direct_connection_value_task_copy_value, tracker_direct_connection_value_task_peek_pointer, "p", tracker_direct_connection_value_task_collect_value, "p", tracker_direct_connection_value_task_lcopy_value };
+		static const GTypeInfo g_define_type_info = { sizeof (TrackerDirectConnectionTaskClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) tracker_direct_connection_task_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TrackerDirectConnectionTask), 0, (GInstanceInitFunc) tracker_direct_connection_task_instance_init, &g_define_type_value_table };
+		static const GTypeFundamentalInfo g_define_type_fundamental_info = { (G_TYPE_FLAG_CLASSED | G_TYPE_FLAG_INSTANTIATABLE | G_TYPE_FLAG_DERIVABLE | G_TYPE_FLAG_DEEP_DERIVABLE) };
+		GType tracker_direct_connection_task_type_id;
+		tracker_direct_connection_task_type_id = g_type_register_fundamental (g_type_fundamental_next (), "TrackerDirectConnectionTask", &g_define_type_info, &g_define_type_fundamental_info, G_TYPE_FLAG_ABSTRACT);
+		g_once_init_leave (&tracker_direct_connection_task_type_id__volatile, tracker_direct_connection_task_type_id);
+	}
+	return tracker_direct_connection_task_type_id__volatile;
+}
+
+
+static gpointer tracker_direct_connection_task_ref (gpointer instance) {
+	TrackerDirectConnectionTask * self;
+	self = instance;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_atomic_int_inc (&self->ref_count);
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return instance;
+#line 3399 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_task_unref (gpointer instance) {
+	TrackerDirectConnectionTask * self;
+	self = instance;
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	if (g_atomic_int_dec_and_test (&self->ref_count)) {
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		TRACKER_DIRECT_CONNECTION_TASK_GET_CLASS (self)->finalize (self);
+#line 53 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+		g_type_free_instance ((GTypeInstance *) self);
+#line 3412 "tracker-direct.c"
+	}
+}
+
+
+static void tracker_direct_connection_update_task_set (TrackerDirectConnectionUpdateTask* self, TrackerDirectConnectionTaskType type, const gchar* sparql, gint priority, GCancellable* cancellable) {
+	TrackerDirectConnectionTaskType _tmp0_;
+	const gchar* _tmp1_;
+	gchar* _tmp2_;
+	gint _tmp3_;
+	GCancellable* _tmp4_;
+	GCancellable* _tmp5_;
+#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (self != NULL);
+#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_if_fail (sparql != NULL);
+#line 66 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = type;
+#line 66 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) self)->type = _tmp0_;
+#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = sparql;
+#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = g_strdup (_tmp1_);
+#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_free0 (self->sparql);
+#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->sparql = _tmp2_;
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = priority;
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) self)->priority = _tmp3_;
+#line 69 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp4_ = cancellable;
+#line 69 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp5_ = _g_object_ref0 (_tmp4_);
+#line 69 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (((TrackerDirectConnectionTask*) self)->cancellable);
+#line 69 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) self)->cancellable = _tmp5_;
+#line 3452 "tracker-direct.c"
+}
+
+
+static TrackerDirectConnectionUpdateTask* tracker_direct_connection_update_task_construct (GType object_type, const gchar* sparql, gint priority, GCancellable* cancellable) {
+	TrackerDirectConnectionUpdateTask* self = NULL;
+	const gchar* _tmp0_;
+	gint _tmp1_;
+	GCancellable* _tmp2_;
+#line 72 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_val_if_fail (sparql != NULL, NULL);
+#line 72 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnectionUpdateTask*) tracker_direct_connection_task_construct (object_type);
+#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = sparql;
+#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = priority;
+#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = cancellable;
+#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_update_task_set (self, TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE, _tmp0_, _tmp1_, _tmp2_);
+#line 72 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self;
+#line 3475 "tracker-direct.c"
+}
+
+
+static TrackerDirectConnectionUpdateTask* tracker_direct_connection_update_task_new (const gchar* sparql, gint priority, GCancellable* cancellable) {
+#line 72 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return tracker_direct_connection_update_task_construct (TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK, sparql, priority, cancellable);
+#line 3482 "tracker-direct.c"
+}
+
+
+static TrackerDirectConnectionUpdateTask* tracker_direct_connection_update_task_construct_blank (GType object_type, const gchar* sparql, gint priority, GCancellable* cancellable) {
+	TrackerDirectConnectionUpdateTask* self = NULL;
+	const gchar* _tmp0_;
+	gint _tmp1_;
+	GCancellable* _tmp2_;
+#line 76 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_val_if_fail (sparql != NULL, NULL);
+#line 76 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnectionUpdateTask*) tracker_direct_connection_task_construct (object_type);
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = sparql;
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = priority;
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = cancellable;
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_update_task_set (self, TRACKER_DIRECT_CONNECTION_TASK_TYPE_UPDATE_BLANK, _tmp0_, _tmp1_, _tmp2_);
+#line 76 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self;
+#line 3505 "tracker-direct.c"
+}
+
+
+static TrackerDirectConnectionUpdateTask* tracker_direct_connection_update_task_new_blank (const gchar* sparql, gint priority, GCancellable* cancellable) {
+#line 76 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return tracker_direct_connection_update_task_construct_blank (TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK, sparql, priority, cancellable);
+#line 3512 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_update_task_class_init (TrackerDirectConnectionUpdateTaskClass * klass) {
+#line 61 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_update_task_parent_class = g_type_class_peek_parent (klass);
+#line 61 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTaskClass *) klass)->finalize = tracker_direct_connection_update_task_finalize;
+#line 3521 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_update_task_instance_init (TrackerDirectConnectionUpdateTask * self) {
+}
+
+
+static void tracker_direct_connection_update_task_finalize (TrackerDirectConnectionTask * obj) {
+	TrackerDirectConnectionUpdateTask * self;
+#line 61 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_DIRECT_CONNECTION_TYPE_UPDATE_TASK, TrackerDirectConnectionUpdateTask);
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_free0 (self->sparql);
+#line 63 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_variant_unref0 (self->blank_nodes);
+#line 61 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	TRACKER_DIRECT_CONNECTION_TASK_CLASS (tracker_direct_connection_update_task_parent_class)->finalize (obj);
+#line 3539 "tracker-direct.c"
+}
+
+
+static GType tracker_direct_connection_update_task_get_type (void) {
+	static volatile gsize tracker_direct_connection_update_task_type_id__volatile = 0;
+	if (g_once_init_enter (&tracker_direct_connection_update_task_type_id__volatile)) {
+		static const GTypeInfo g_define_type_info = { sizeof (TrackerDirectConnectionUpdateTaskClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) tracker_direct_connection_update_task_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TrackerDirectConnectionUpdateTask), 0, (GInstanceInitFunc) tracker_direct_connection_update_task_instance_init, NULL };
+		GType tracker_direct_connection_update_task_type_id;
+		tracker_direct_connection_update_task_type_id = g_type_register_static (TRACKER_DIRECT_CONNECTION_TYPE_TASK, "TrackerDirectConnectionUpdateTask", &g_define_type_info, 0);
+		g_once_init_leave (&tracker_direct_connection_update_task_type_id__volatile, tracker_direct_connection_update_task_type_id);
+	}
+	return tracker_direct_connection_update_task_type_id__volatile;
+}
+
+
+static TrackerDirectConnectionTurtleTask* tracker_direct_connection_turtle_task_construct (GType object_type, GFile* file, GCancellable* cancellable) {
+	TrackerDirectConnectionTurtleTask* self = NULL;
+	GFile* _tmp0_;
+	GFile* _tmp1_;
+	GCancellable* _tmp2_;
+	GCancellable* _tmp3_;
+#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_return_val_if_fail (file != NULL, NULL);
+#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = (TrackerDirectConnectionTurtleTask*) tracker_direct_connection_task_construct (object_type);
+#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) self)->type = TRACKER_DIRECT_CONNECTION_TASK_TYPE_TURTLE;
+#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp0_ = file;
+#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->file);
+#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->file = _tmp1_;
+#line 87 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) self)->priority = G_PRIORITY_DEFAULT;
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp2_ = cancellable;
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_tmp3_ = _g_object_ref0 (_tmp2_);
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (((TrackerDirectConnectionTask*) self)->cancellable);
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTask*) self)->cancellable = _tmp3_;
+#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return self;
+#line 3587 "tracker-direct.c"
+}
+
+
+static TrackerDirectConnectionTurtleTask* tracker_direct_connection_turtle_task_new (GFile* file, GCancellable* cancellable) {
+#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	return tracker_direct_connection_turtle_task_construct (TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK, file, cancellable);
+#line 3594 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_turtle_task_class_init (TrackerDirectConnectionTurtleTaskClass * klass) {
+#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_turtle_task_parent_class = g_type_class_peek_parent (klass);
+#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerDirectConnectionTaskClass *) klass)->finalize = tracker_direct_connection_turtle_task_finalize;
+#line 3603 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_turtle_task_instance_init (TrackerDirectConnectionTurtleTask * self) {
+}
+
+
+static void tracker_direct_connection_turtle_task_finalize (TrackerDirectConnectionTask * obj) {
+	TrackerDirectConnectionTurtleTask * self;
+#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_DIRECT_CONNECTION_TYPE_TURTLE_TASK, TrackerDirectConnectionTurtleTask);
+#line 82 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->file);
+#line 81 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	TRACKER_DIRECT_CONNECTION_TASK_CLASS (tracker_direct_connection_turtle_task_parent_class)->finalize (obj);
+#line 3619 "tracker-direct.c"
+}
+
+
+static GType tracker_direct_connection_turtle_task_get_type (void) {
+	static volatile gsize tracker_direct_connection_turtle_task_type_id__volatile = 0;
+	if (g_once_init_enter (&tracker_direct_connection_turtle_task_type_id__volatile)) {
+		static const GTypeInfo g_define_type_info = { sizeof (TrackerDirectConnectionTurtleTaskClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) tracker_direct_connection_turtle_task_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TrackerDirectConnectionTurtleTask), 0, (GInstanceInitFunc) tracker_direct_connection_turtle_task_instance_init, NULL };
+		GType tracker_direct_connection_turtle_task_type_id;
+		tracker_direct_connection_turtle_task_type_id = g_type_register_static (TRACKER_DIRECT_CONNECTION_TYPE_TASK, "TrackerDirectConnectionTurtleTask", &g_define_type_info, 0);
+		g_once_init_leave (&tracker_direct_connection_turtle_task_type_id__volatile, tracker_direct_connection_turtle_task_type_id);
+	}
+	return tracker_direct_connection_turtle_task_type_id__volatile;
 }
 
 
 static void tracker_direct_connection_class_init (TrackerDirectConnectionClass * klass) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	tracker_direct_connection_parent_class = g_type_class_peek_parent (klass);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_type_class_add_private (klass, sizeof (TrackerDirectConnectionPrivate));
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((GObjectClass *) klass)->dispose = (void (*) (GObject *)) tracker_direct_connection_real_dispose;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	((TrackerSparqlConnectionClass *) klass)->query = (TrackerSparqlCursor* (*) (TrackerSparqlConnection *, const gchar*, GCancellable*, GError**)) tracker_direct_connection_real_query;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	((TrackerSparqlConnectionClass *) klass)->query_async = (void (*) (TrackerSparqlConnection *, const gchar*, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_direct_connection_real_query_async;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	((TrackerSparqlConnectionClass *) klass)->query_finish = (TrackerSparqlCursor* (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_direct_connection_real_query_finish;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->update = (void (*) (TrackerSparqlConnection *, const gchar*, gint, GCancellable*, GError**)) tracker_direct_connection_real_update;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->update_async = (void (*) (TrackerSparqlConnection *, const gchar*, gint, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_direct_connection_real_update_async;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->update_finish = (void (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_direct_connection_real_update_finish;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->update_blank = (GVariant* (*) (TrackerSparqlConnection *, const gchar*, gint, GCancellable*, GError**)) tracker_direct_connection_real_update_blank;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->update_blank_async = (void (*) (TrackerSparqlConnection *, const gchar*, gint, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_direct_connection_real_update_blank_async;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->update_blank_finish = (GVariant* (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_direct_connection_real_update_blank_finish;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->load = (void (*) (TrackerSparqlConnection *, GFile*, GCancellable*, GError**)) tracker_direct_connection_real_load;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->load_async = (void (*) (TrackerSparqlConnection *, GFile*, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_direct_connection_real_load_async;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->load_finish = (void (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_direct_connection_real_load_finish;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	((TrackerSparqlConnectionClass *) klass)->get_namespace_manager = (TrackerNamespaceManager* (*) (TrackerSparqlConnection *)) tracker_direct_connection_real_get_namespace_manager;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_direct_connection_finalize;
-#line 1135 "tracker-direct.c"
+#line 3670 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_g_async_initable_interface_init (GAsyncInitableIface * iface) {
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_g_async_initable_parent_iface = g_type_interface_peek_parent (iface);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	iface->init_async = (void (*) (GAsyncInitable *, gint, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_direct_connection_real_init_async;
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	iface->init_finish = (gboolean (*) (GAsyncInitable *, GAsyncResult*, GError**)) tracker_direct_connection_real_init_finish;
+#line 3681 "tracker-direct.c"
+}
+
+
+static void tracker_direct_connection_g_initable_interface_init (GInitableIface * iface) {
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	tracker_direct_connection_g_initable_parent_iface = g_type_interface_peek_parent (iface);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	iface->init = (gboolean (*) (GInitable *, GCancellable*, GError**)) tracker_direct_connection_real_init;
+#line 3690 "tracker-direct.c"
 }
 
 
 static void tracker_direct_connection_instance_init (TrackerDirectConnection * self) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	self->priv = TRACKER_DIRECT_CONNECTION_GET_PRIVATE (self);
-#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 30 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	g_mutex_init (&self->priv->mutex);
-#line 1144 "tracker-direct.c"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_mutex_init (&self->priv->init_mutex);
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	g_cond_init (&self->priv->init_cond);
+#line 3703 "tracker-direct.c"
 }
 
 
 static void tracker_direct_connection_finalize (GObject * obj) {
 	TrackerDirectConnection * self;
-	gboolean _tmp0_;
-	gint _tmp1_;
-	gint _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_DIRECT_TYPE_CONNECTION, TrackerDirectConnection);
-#line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_tmp0_ = self->priv->initialized;
-#line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	if (!_tmp0_) {
-#line 1159 "tracker-direct.c"
-		goto _return;
-	}
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_tmp1_ = tracker_direct_connection_use_count;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	tracker_direct_connection_use_count = _tmp1_ - 1;
-#line 59 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	_tmp2_ = tracker_direct_connection_use_count;
-#line 59 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-	if (_tmp2_ == 0) {
-#line 60 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
-		tracker_data_manager_shutdown ();
-#line 1172 "tracker-direct.c"
-	}
-	_return:
+#line 22 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->priv->database_loc);
 #line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->priv->journal_loc);
+#line 24 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->priv->ontology_loc);
+#line 27 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->priv->data_manager);
+#line 30 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	_vala_clear_GMutex (&self->priv->mutex);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+#line 31 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_thread_unref0 (self->priv->thread);
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_vala_clear_GMutex (&self->priv->init_mutex);
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_vala_clear_GCond (&self->priv->init_cond);
+#line 37 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_error_free0 (self->priv->init_error);
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	(self->init_callback_target_destroy_notify == NULL) ? NULL : (self->init_callback_target_destroy_notify (self->init_callback_target), NULL);
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->init_callback = NULL;
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->init_callback_target = NULL;
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	self->init_callback_target_destroy_notify = NULL;
+#line 40 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_async_queue_unref0 (self->priv->update_queue);
+#line 41 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
+	_g_object_unref0 (self->priv->namespace_manager);
+#line 21 "/home/carlos/Source/gnome/tracker/src/libtracker-direct/tracker-direct.vala"
 	G_OBJECT_CLASS (tracker_direct_connection_parent_class)->finalize (obj);
-#line 1179 "tracker-direct.c"
+#line 3743 "tracker-direct.c"
 }
 
 
@@ -1183,8 +3747,12 @@ GType tracker_direct_connection_get_type (void) {
 	static volatile gsize tracker_direct_connection_type_id__volatile = 0;
 	if (g_once_init_enter (&tracker_direct_connection_type_id__volatile)) {
 		static const GTypeInfo g_define_type_info = { sizeof (TrackerDirectConnectionClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) tracker_direct_connection_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TrackerDirectConnection), 0, (GInstanceInitFunc) tracker_direct_connection_instance_init, NULL };
+		static const GInterfaceInfo g_async_initable_info = { (GInterfaceInitFunc) tracker_direct_connection_g_async_initable_interface_init, (GInterfaceFinalizeFunc) NULL, NULL};
+		static const GInterfaceInfo g_initable_info = { (GInterfaceInitFunc) tracker_direct_connection_g_initable_interface_init, (GInterfaceFinalizeFunc) NULL, NULL};
 		GType tracker_direct_connection_type_id;
 		tracker_direct_connection_type_id = g_type_register_static (TRACKER_SPARQL_TYPE_CONNECTION, "TrackerDirectConnection", &g_define_type_info, 0);
+		g_type_add_interface_static (tracker_direct_connection_type_id, g_async_initable_get_type (), &g_async_initable_info);
+		g_type_add_interface_static (tracker_direct_connection_type_id, g_initable_get_type (), &g_initable_info);
 		g_once_init_leave (&tracker_direct_connection_type_id__volatile, tracker_direct_connection_type_id);
 	}
 	return tracker_direct_connection_type_id__volatile;

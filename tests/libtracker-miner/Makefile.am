@@ -31,6 +31,7 @@ AM_CPPFLAGS = \
 	-DLIBEXEC_PATH=\""$(libexecdir)"\" \
 	-DTEST_DATA_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/data"\" \
 	-DTEST_MINERS_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/mock-miners"\" \
+	-DTEST_ONTOLOGIES_DIR=\""$(abs_top_srcdir)/src/ontologies/nepomuk"\" \
 	-I$(top_srcdir)/src \
 	-I$(top_builddir)/src \
 	-I$(top_srcdir)/tests/common \
@@ -115,5 +116,6 @@ EXTRA_DIST += \
 	data/dir/empty-dir/.hidden \
 	data/dir/file1 \
 	data/dir/file2 \
+	meson.build \
 	mock-miners/mock-miner-1.desktop \
 	mock-miners/mock-miner-2.desktop

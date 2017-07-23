@@ -34,8 +34,11 @@ class Tracker.Sparql.Expression : Object {
 
 	string? fts_sql;
 
+        Data.Manager manager;
+
 	public Expression (Query query) {
 		this.query = query;
+                this.manager = query.manager;
 	}
 
 	Context context {
@@ -176,16 +179,9 @@ class Tracker.Sparql.Expression : Object {
 		}
 
 		if (accept (SparqlTokenType.AS)) {
-			if (accept (SparqlTokenType.PN_PREFIX)) {
-				// deprecated but supported for backward compatibility
-				// (...) AS foo
-				variable = context.get_variable (get_last_string ());
-			} else {
-				// syntax from SPARQL 1.1 Draft
-				// (...) AS ?foo
-				expect (SparqlTokenType.VAR);
-				variable = context.get_variable (get_last_string ().substring (1));
-			}
+			// (...) AS ?foo
+			expect (SparqlTokenType.VAR);
+			variable = context.get_variable (get_last_string ().substring (1));
 			sql.append_printf (" AS %s", variable.sql_expression);
 			as_handled = true;
 
@@ -526,6 +522,10 @@ class Tracker.Sparql.Expression : Object {
 			translate_expression_as_string (sql);
 			sql.append (")");
 			return PropertyType.STRING;
+		} else if (uri == TRACKER_NS + "title-order") {
+			translate_expression_as_string (sql);
+			sql.append_printf (" COLLATE %s", TITLE_COLLATION_NAME);
+			return PropertyType.STRING;
 		} else if (uri == FN_NS + "lower-case") {
 			// conversion to string
 			sql.append ("SparqlLowerCase (");
@@ -853,7 +853,8 @@ class Tracker.Sparql.Expression : Object {
 			return PropertyType.STRING;
 		} else {
 			// support properties as functions
-			var prop = Ontologies.get_property_by_uri (uri);
+                        var ontologies = manager.get_ontologies ();
+			var prop = ontologies.get_property_by_uri (uri);
 			if (prop == null) {
 				throw get_error ("Unknown function");
 			}

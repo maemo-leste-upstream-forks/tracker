@@ -33,13 +33,13 @@
 // Convenience, hidden in the documentation
 namespace Tracker {
 	public const string DBUS_SERVICE = "org.freedesktop.Tracker1";
-	public const string DBUS_INTERFACE_RESOURCES = DBUS_SERVICE + ".Resources";
+	public const string DBUS_INTERFACE_RESOURCES = "org.freedesktop.Tracker1.Resources";
 	public const string DBUS_OBJECT_RESOURCES = "/org/freedesktop/Tracker1/Resources";
-	public const string DBUS_INTERFACE_STATISTICS = DBUS_SERVICE + ".Statistics";
+	public const string DBUS_INTERFACE_STATISTICS = "org.freedesktop.Tracker1.Statistics";
 	public const string DBUS_OBJECT_STATISTICS = "/org/freedesktop/Tracker1/Statistics";
-	public const string DBUS_INTERFACE_STATUS = DBUS_SERVICE + ".Status";
+	public const string DBUS_INTERFACE_STATUS = "org.freedesktop.Tracker1.Status";
 	public const string DBUS_OBJECT_STATUS = "/org/freedesktop/Tracker1/Status";
-	public const string DBUS_INTERFACE_STEROIDS = DBUS_SERVICE + ".Steroids";
+	public const string DBUS_INTERFACE_STEROIDS = "org.freedesktop.Tracker1.Steroids";
 	public const string DBUS_OBJECT_STEROIDS = "/org/freedesktop/Tracker1/Steroids";
 }
 
@@ -72,6 +72,11 @@ public errordomain Tracker.Sparql.Error {
 	NO_SPACE,
 	INTERNAL,
 	UNSUPPORTED
+}
+
+public enum Tracker.Sparql.ConnectionFlags {
+	NONE     = 0,
+	READONLY = 1 << 0,
 }
 
 /**
@@ -152,65 +157,6 @@ public abstract class Tracker.Sparql.Connection : Object {
 	public extern static new Connection get (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError;
 
 	/**
-	 * tracker_sparql_connection_get_direct_finish:
-	 * @_res_: The #GAsyncResult from the callback used to return the #TrackerSparqlConnection
-	 * @error: The error which occurred or %NULL
-	 *
-	 * This function is called from the callback provided for
-	 * tracker_sparql_connection_get_direct_async() to return the connection
-	 * requested or an error in cases of failure.
-	 *
-	 * Returns: a new #TrackerSparqlConnection. Call g_object_unref() on the
-	 * object when no longer used.
-	 *
-	 * Since: 0.10
-	 *
-	 * Deprecated: 0.12: Use tracker_sparql_connection_get_finish instead.
-	 */
-
-	/**
-	 * tracker_sparql_connection_get_direct_async:
-	 * @cancellable: a #GCancellable used to cancel the operation
-	 * @_callback_: user-defined #GAsyncReadyCallback to be called when
-	 *              asynchronous operation is finished.
-	 * @_user_data_: user-defined data to be passed to @_callback_
-	 *
-	 * A #TrackerSparqlConnection is returned asynchronously in the @_callback_ of
-	 * your choosing. You must call
-	 * tracker_sparql_connection_get_direct_finish() to find out if the
-	 * connection was returned without error.
-	 *
-	 * See also: tracker_sparql_connection_get_direct().
-	 *
-	 * Since: 0.10
-	 *
-	 * Deprecated: 0.12: Use tracker_sparql_connection_get_async instead.
-	 */
-	[Version (deprecated=true)]
-	public extern async static Connection get_direct_async (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError;
-
-	/**
-	 * tracker_sparql_connection_get_direct:
-	 * @cancellable: a #GCancellable used to cancel the operation
-	 * @error: #GError for error reporting.
-	 *
-	 * This behaves the same way tracker_sparql_connection_get() does, however,
-	 * the #TrackerSparqlConnection can only be used for read-only requests.
-	 * The advantage to this API over the tracker_sparql_connection_get()
-	 * function is that it will use direct-access. This is faster than using
-	 * D-Bus which may be the case with tracker_sparql_connection_get().
-	 *
-	 * Returns: a new #TrackerSparqlConnection. Call g_object_unref() on the
-	 * object when no longer used.
-	 *
-	 * Since: 0.10
-	 *
-	 * Deprecated: 0.12: Use tracker_sparql_connection_get instead.
-	 */
-	[Version (deprecated=true)]
-	public extern static new Connection get_direct (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError;
-
-	/**
 	 * tracker_sparql_connection_remote_new:
 	 *
 	 * Returns: a new remote #TrackerSparqlConnection. Call g_object_unref() on the
@@ -219,6 +165,28 @@ public abstract class Tracker.Sparql.Connection : Object {
 	 * Since: 1.12
 	 */
 	public extern static new Connection remote_new (string uri_base);
+
+	/**
+	 * tracker_sparql_connection_local_new:
+	 *
+	 * Returns: a new local #TrackerSparqlConnection using the specified
+	 * @cache/@journal locations, and the ontology specified in the @ontology
+	 * directory. Call g_object_unref() on the object when no longer used.
+	 *
+	 * Since: 1.12
+	 */
+	public extern static new Connection local_new (Tracker.Sparql.ConnectionFlags flags, File store, File? journal, File? ontology, Cancellable? cancellable = null) throws Sparql.Error, IOError;
+
+	/**
+	 * tracker_sparql_connection_local_new_async:
+	 *
+	 * Returns: a new local #TrackerSparqlConnection using the specified
+	 * @cache/@journal locations, and the ontology specified in the @ontology
+	 * directory. Call g_object_unref() on the object when no longer used.
+	 *
+	 * Since: 1.12
+	 */
+	public extern async static new Connection local_new_async (Tracker.Sparql.ConnectionFlags flags, File store, File? journal, File? ontology, Cancellable? cancellable = null) throws Sparql.Error, IOError;
 
 	/**
 	 * tracker_sparql_connection_query:
@@ -542,4 +510,24 @@ public abstract class Tracker.Sparql.Connection : Object {
 		warning ("Interface 'statistics_async' not implemented");
 		return null;
 	}
+
+	/**
+	 * tracker_sparql_connection_get_namespace_manager:
+	 * @self: a #TrackerSparqlConnection
+	 *
+	 * Retrieves a #TrackerNamespaceManager that contains all
+	 * prefixes in the ontology of @self.
+	 *
+	 * Returns: (transfer none): a #TrackerNamespaceManager for this
+	 * connection. This object is owned by @self and must not be freed.
+	 *
+	 * Since: 2.0
+	 */
+	public virtual NamespaceManager? get_namespace_manager () {
+		warning ("Not implemented");
+		return null;
+	}
+
+	public extern static void set_domain (string? domain);
+	public extern static string? get_domain ();
 }

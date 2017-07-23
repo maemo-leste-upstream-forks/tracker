@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="mto-TransferElement.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <span class="emphasis"><em><a class="link" href="mto-TransferElement.html" title="mto:TransferElement">mto:TransferElement</a></em></span> 
 </pre>
 </div>
@@ -51,35 +51,31 @@
 <hr>
 <div class="refsect2">
 <a name="mto-TransferElement.mto-completedTime"></a><h3>The <code class="literal">“mto:completedTime”</code> property</h3>
-<pre class="programlisting">“mto:completedTime”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“mto:completedTime”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Captures the date and time when the transfer ended. It must be set only when the trasfer element is completed succesfully</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mto-TransferElement.mto-startedTime"></a><h3>The <code class="literal">“mto:startedTime”</code> property</h3>
-<pre class="programlisting">“mto:startedTime”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“mto:startedTime”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Captures the date and time when the transfer was started</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mto-TransferElement.mto-destination"></a><h3>The <code class="literal">“mto:destination”</code> property</h3>
-<pre class="programlisting">“mto:destination”          <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a></pre>
+<pre class="programlisting">“mto:destination”          http://www.w3.org/2000/01/rdf-schema#Resource</pre>
 <p>The destination of the transfer. If the transfer is an download, it would be the URI for a file on the device. If the transfer is a (web) upload, it will be a URL, which will be filled once the upload is completed.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="mto-TransferElement.mto-source"></a><h3>The <code class="literal">“mto:source”</code> property</h3>
-<pre class="programlisting">“mto:source”          <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a></pre>
+<pre class="programlisting">“mto:source”          http://www.w3.org/2000/01/rdf-schema#Resource</pre>
 <p>The source for the transfer. If the transfer is an upload, it would be the URI for a file on the device. If the transfer is a (web) download, it will be a URL. Question: Does it make more sense to have two fields: uploadSource and downloadSource?</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="mto-TransferElement.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/mto#" target="_top">MTO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">
