@@ -1,9 +1,19 @@
-tracker (1.99.1-1) UNRELEASED; urgency=medium
+tracker (1.99.1-1) experimental; urgency=medium
 
   * New upstream version 1.99.1
   * Track unstable releases
+  * Drop tracker-miner-evolution
+  * Drop tracker-gui
+  * Drop obsolete configure switches
+  * Rename packages for the API bump from 1.0 → 2.0
+  * Drop tracker-miner-user-guides related files
+  * Update symbols files
+  * Add a Build-Depends-Package field to all symbols files
+  * Fix format-security issue in libtracker-data
+  * Remove leftover @LIBTRACKER_MINER_PC_REQUIRES@ from tracker-miner.pc.in
+  * Install default domain ontology
 
- -- Michael Biebl <biebl@debian.org>  Sun, 23 Jul 2017 17:38:26 +0200
+ -- Michael Biebl <biebl@debian.org>  Sun, 23 Jul 2017 19:27:07 +0200
 
 tracker (1.12.1-1) unstable; urgency=medium
 
