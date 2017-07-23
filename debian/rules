@@ -24,7 +24,6 @@ override_dh_auto_configure:
 		--enable-upower \
 		--enable-libiptcdata \
 		--enable-exempi \
-		--disable-libmediaart \
 		--enable-libexif \
 		--enable-libgif \
 		--enable-libjpeg \
@@ -47,8 +46,6 @@ override_dh_auto_configure:
 		--enable-unit-tests \
 		--disable-network-manager \
 		--disable-miner-rss \
-		--disable-miner-thunderbird \
-		--disable-miner-firefox \
 		--disable-hal \
 		--enable-taglib \
 		--enable-libosinfo \
