@@ -20,10 +20,6 @@ endif
 
 if HAVE_ENCA
 test_programs += tracker-encoding
-else
-if HAVE_MEEGOTOUCH
-test_programs += tracker-encoding
-endif
 endif
 
 AM_CPPFLAGS =                                          \
@@ -70,4 +66,5 @@ EXTRA_DIST += \
 	exif-free-img.jpg		\
 	guarantee-mtime-test.txt	\
 	getline-test.txt		\
-	iptc-img.jpg
+	iptc-img.jpg			\
+	meson.build

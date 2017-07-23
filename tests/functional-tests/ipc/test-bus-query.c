@@ -43,7 +43,7 @@ gint _vala_main (gchar** args, int args_length1) {
 		TestApp* _tmp3_;
 		gint _tmp4_;
 #line 8 "/home/carlos/Source/gnome/tracker/tests/functional-tests/ipc/test-bus-query.vala"
-		_tmp1_ = tracker_bus_connection_new (&_inner_error_);
+		_tmp1_ = tracker_bus_connection_new ("org.freedesktop.Tracker1", &_inner_error_);
 #line 8 "/home/carlos/Source/gnome/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp0_ = _tmp1_;
 #line 8 "/home/carlos/Source/gnome/tracker/tests/functional-tests/ipc/test-bus-query.vala"

@@ -18,34 +18,61 @@ namespace Tracker {
 				GRAPH
 			}
 			public Builder ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void append (string raw);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void delete_close ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void delete_open (string? graph);
 			public Builder.embedded_insert ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void graph_close ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void graph_open (string graph);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void insert_close ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void insert_open (string? graph);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void insert_silent_open (string? graph);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object (string s);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_blank_close ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_blank_open ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_boolean (bool literal);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_date (ref time_t literal);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_double (double literal);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_int64 (int64 literal);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_iri (string iri);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_string (string literal);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_unvalidated (string value);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void object_variable (string var_name);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void predicate (string s);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void predicate_iri (string iri);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void prepend (string raw);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void subject (string s);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void subject_iri (string iri);
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void subject_variable (string var_name);
 			public Builder.update ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void where_close ();
+			[Version (deprecated = true, deprecated_since = "2.0", replacement = "Tracker.Resource")]
 			public void where_open ();
 			public int length { get; private set; }
 			public string result { get; }
@@ -56,15 +83,16 @@ namespace Tracker {
 			public Connection ();
 			public static new Tracker.Sparql.Connection @get (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError, GLib.SpawnError;
 			public static new async Tracker.Sparql.Connection get_async (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError, GLib.SpawnError;
-			[Version (deprecated = true)]
-			public static new Tracker.Sparql.Connection get_direct (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError, GLib.SpawnError;
-			[Version (deprecated = true)]
-			public static async Tracker.Sparql.Connection get_direct_async (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError, GLib.SpawnError;
+			public static string? get_domain ();
+			public virtual Tracker.NamespaceManager? get_namespace_manager ();
 			public virtual void load (GLib.File file, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError;
 			public virtual async void load_async (GLib.File file, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError;
+			public static new Tracker.Sparql.Connection local_new (Tracker.Sparql.ConnectionFlags flags, GLib.File store, GLib.File? journal, GLib.File? ontology, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError;
+			public static new async Tracker.Sparql.Connection local_new_async (Tracker.Sparql.ConnectionFlags flags, GLib.File store, GLib.File? journal, GLib.File? ontology, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError;
 			public abstract Tracker.Sparql.Cursor query (string sparql, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.Error, GLib.IOError, GLib.DBusError;
 			public abstract async Tracker.Sparql.Cursor query_async (string sparql, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.Error, GLib.IOError, GLib.DBusError;
 			public static new Tracker.Sparql.Connection remote_new (string uri_base);
+			public static void set_domain (string? domain);
 			public virtual Tracker.Sparql.Cursor? statistics (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError;
 			public virtual async Tracker.Sparql.Cursor? statistics_async (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError;
 			public virtual void update (string sparql, int priority = GLib.Priority.DEFAULT, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.Error, GLib.IOError, GLib.DBusError;
@@ -89,6 +117,11 @@ namespace Tracker {
 			public abstract void rewind ();
 			public Tracker.Sparql.Connection connection { get; set; }
 			public abstract int n_columns { get; }
+		}
+		[CCode (cheader_filename = "libtracker-sparql/tracker-generated-no-checks.h")]
+		public enum ConnectionFlags {
+			NONE,
+			READONLY
 		}
 		[CCode (cheader_filename = "libtracker-sparql/tracker-generated-no-checks.h")]
 		public enum ValueType {

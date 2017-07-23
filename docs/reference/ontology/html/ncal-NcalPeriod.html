@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="ncal-NcalPeriod.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="ncal-NcalTimeEntity.html" title="ncal:NcalTimeEntity">ncal:NcalTimeEntity</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="ncal-NcalTimeEntity.html" title="ncal:NcalTimeEntity">ncal:NcalTimeEntity</a> 
         ╰── <span class="emphasis"><em><a class="link" href="ncal-NcalPeriod.html" title="ncal:NcalPeriod">ncal:NcalPeriod</a></em></span> 
             ╰── <a class="link" href="ncal-FreebusyPeriod.html" title="ncal:FreebusyPeriod">ncal:FreebusyPeriod</a> 
 </pre>
@@ -44,28 +44,24 @@
 <a name="ncal-NcalPeriod.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="ncal-NcalPeriod.ncal-periodEnd"></a><h3>The <code class="literal">“ncal:periodEnd”</code> property</h3>
-<pre class="programlisting">“ncal:periodEnd”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“ncal:periodEnd”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>End of a period of time. Inspired by the second part of a structured value of a PERIOD datatype specified in RFC 2445 sec. 4.3.9. Note that a single NcalPeriod instance shouldn't have the periodEnd and periodDuration properties specified simultaneously.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-NcalPeriod.ncal-periodDuration"></a><h3>The <code class="literal">“ncal:periodDuration”</code> property</h3>
-<pre class="programlisting">“ncal:periodDuration”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“ncal:periodDuration”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Duration of a period of time. Inspired by the second part of a structured value of the PERIOD datatype specified in RFC 2445 sec. 4.3.9. Note that a single NcalPeriod instance shouldn't have the periodEnd and periodDuration properties specified simultaneously.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-NcalPeriod.ncal-periodBegin"></a><h3>The <code class="literal">“ncal:periodBegin”</code> property</h3>
-<pre class="programlisting">“ncal:periodBegin”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“ncal:periodBegin”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Beginng of a period. Inspired by the first part of a structured value of the PERIOD datatype specified in RFC 2445 sec. 4.3.9</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-NcalPeriod.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

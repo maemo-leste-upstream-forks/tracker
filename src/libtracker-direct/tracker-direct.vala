@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
+ * Copyright (C) 2017, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,53 +18,210 @@
  * Boston, MA  02110-1301, USA.
  */
 
-public class Tracker.Direct.Connection : Tracker.Sparql.Connection {
-	static int use_count;
-	bool initialized;
+public class Tracker.Direct.Connection : Tracker.Sparql.Connection, AsyncInitable, Initable {
+	File? database_loc;
+	File? journal_loc;
+	File? ontology_loc;
+	Sparql.ConnectionFlags flags;
+
+	Data.Manager data_manager;
+
+	// Mutex to hold datamanager
 	private Mutex mutex = Mutex ();
+	Thread<void*> thread;
 
-	public Connection () throws Sparql.Error, IOError, DBusError {
+	// Initialization stuff, both sync and async
+	private Mutex init_mutex = Mutex ();
+	private Cond init_cond = Cond ();
+	private bool initialized;
+	private Error init_error;
+	public SourceFunc init_callback;
+
+	private AsyncQueue<Task> update_queue;
+	private NamespaceManager namespace_manager;
+
+	[CCode (cname = "SHAREDIR")]
+	extern const string SHAREDIR;
+
+	enum TaskType {
+		QUERY,
+		UPDATE,
+		UPDATE_BLANK,
+		TURTLE,
+	}
+
+	abstract class Task {
+		public TaskType type;
+		public int priority;
+		public Cancellable? cancellable;
+		public SourceFunc callback;
+		public Error error;
+	}
+
+	private class UpdateTask : Task {
+		public string sparql;
+		public Variant blank_nodes;
+
+		private void set (TaskType type, string sparql, int priority = Priority.DEFAULT, Cancellable? cancellable = null) {
+			this.type = type;
+			this.sparql = sparql;
+			this.priority = priority;
+			this.cancellable = cancellable;
+		}
+
+		public UpdateTask (string sparql, int priority = Priority.DEFAULT, Cancellable? cancellable) {
+			this.set (TaskType.UPDATE, sparql, priority, cancellable);
+		}
+
+		public UpdateTask.blank (string sparql, int priority = Priority.DEFAULT, Cancellable? cancellable) {
+			this.set (TaskType.UPDATE_BLANK, sparql, priority, cancellable);
+		}
+	}
+
+	private class TurtleTask : Task {
+		public File file;
+
+		public TurtleTask (File file, Cancellable? cancellable) {
+			this.type = TaskType.TURTLE;
+			this.file = file;
+			this.priority = Priority.DEFAULT;
+			this.cancellable = cancellable;
+		}
+	}
+
+	static void wal_checkpoint (DBInterface iface, bool blocking) {
 		try {
-			if (use_count == 0) {
-				// make sure that current locale vs db locale are the same,
-				// otherwise return an error
-				Locale.init ();
-				DBManager.locale_changed ();
+			debug ("Checkpointing database...");
+			iface.sqlite_wal_checkpoint (blocking);
+			debug ("Checkpointing complete...");
+		} catch (Error e) {
+			warning (e.message);
+		}
+	}
 
-				uint select_cache_size = 100;
-				string env_cache_size = Environment.get_variable ("TRACKER_SPARQL_CACHE_SIZE");
+	static void wal_checkpoint_on_thread (DBInterface iface) {
+		new Thread<void*> ("wal-checkpoint", () => {
+			wal_checkpoint (iface, false);
+			return null;
+		});
+	}
 
-				if (env_cache_size != null) {
-					select_cache_size = int.parse (env_cache_size);
+	static void wal_hook (DBInterface iface, int n_pages) {
+		var manager = (Data.Manager) iface.get_user_data ();
+		var wal_iface = manager.get_wal_db_interface ();
+
+		if (n_pages >= 10000) {
+			// do immediate checkpointing (blocking updates)
+			// to prevent excessive wal file growth
+			wal_checkpoint (wal_iface, true);
+		} else if (n_pages >= 1000) {
+			wal_checkpoint_on_thread (wal_iface);
+		}
+	}
+
+	private void* thread_func () {
+		init_mutex.lock ();
+
+		try {
+			Locale.sanity_check ();
+			DBManagerFlags db_flags = DBManagerFlags.ENABLE_MUTEXES;
+			if ((flags & Sparql.ConnectionFlags.READONLY) != 0)
+				db_flags |= DBManagerFlags.READONLY;
+
+			data_manager = new Data.Manager (db_flags,
+			                                 database_loc, journal_loc, ontology_loc,
+			                                 false, false, 100, 100);
+			data_manager.init ();
+
+			var iface = data_manager.get_writable_db_interface ();
+			iface.sqlite_wal_hook (wal_hook);
+		} catch (Error e) {
+			init_error = e;
+		} finally {
+			if (init_callback != null) {
+				init_callback ();
+			} else {
+				initialized = true;
+				init_cond.signal ();
+				init_mutex.unlock ();
+			}
+		}
+
+		while (true) {
+			var task = update_queue.pop();
+
+			try {
+				switch (task.type) {
+				case TaskType.UPDATE:
+					UpdateTask update_task = (UpdateTask) task;
+					update (update_task.sparql, update_task.priority, update_task.cancellable);
+					break;
+				case TaskType.UPDATE_BLANK:
+					UpdateTask update_task = (UpdateTask) task;
+					update_task.blank_nodes = update_blank (update_task.sparql, update_task.priority, update_task.cancellable);
+					break;
+				case TaskType.TURTLE:
+					TurtleTask turtle_task = (TurtleTask) task;
+					load (turtle_task.file, turtle_task.cancellable);
+					break;
+				default:
+					break;
 				}
-
-				Data.Manager.init (DBManagerFlags.READONLY | DBManagerFlags.ENABLE_MUTEXES, null, null, false, false, select_cache_size, 0, null, null);
+			} catch (Error e) {
+				task.error = e;
 			}
 
-			use_count++;
-			initialized = true;
+			task.callback ();
+		}
+	}
+
+	public async bool init_async (int io_priority, Cancellable? cancellable) throws Error {
+		init_callback = init_async.callback;
+		thread = new Thread<void*> ("database", thread_func);
+
+		return initialized;
+	}
+
+	public bool init (Cancellable? cancellable) throws Error {
+		try {
+			thread = new Thread<void*> ("database", thread_func);
+
+			init_mutex.lock ();
+			while (!initialized)
+				init_cond.wait(init_mutex);
+			init_mutex.unlock ();
+
+			if (init_error != null)
+				throw init_error;
 		} catch (Error e) {
 			throw new Sparql.Error.INTERNAL (e.message);
 		}
+
+		return true;
 	}
 
-	~Connection () {
-		if (!initialized) {
-			// use_count did not get increased if initialization failed
-			return;
-		}
+	public Connection (Sparql.ConnectionFlags connection_flags, File loc, File? journal, File? ontology) throws Sparql.Error, IOError, DBusError {
+		database_loc = loc;
+		journal_loc = journal;
+		ontology_loc = ontology;
+		flags = connection_flags;
 
-		// Clean up connection
-		use_count--;
+		if (journal_loc == null)
+			journal_loc = database_loc;
+		if (ontology_loc == null)
+			ontology_loc = File.new_for_path (Path.build_filename (SHAREDIR, "tracker", "ontologies", "nepomuk"));
 
-		if (use_count == 0) {
-			Data.Manager.shutdown ();
-		}
+		update_queue = new AsyncQueue<Task> ();
 	}
+
+	public override void dispose () {
+		data_manager.shutdown ();
+		base.dispose ();
+        }
 
 	Sparql.Cursor query_unlocked (string sparql) throws Sparql.Error, DBusError {
 		try {
-			var query_object = new Sparql.Query (sparql);
+			var query_object = new Sparql.Query (data_manager, sparql);
 			var cursor = query_object.execute_cursor ();
 			cursor.connection = this;
 			return cursor;
@@ -97,7 +255,7 @@ public class Tracker.Direct.Connection : Tracker.Sparql.Connection {
 		Sparql.Cursor result = null;
 		var context = MainContext.get_thread_default ();
 
-		g_io_scheduler_push_job (job => {
+		IOSchedulerJob.push ((job, cancellable) => {
 			try {
 				result = query (sparql, cancellable);
 			} catch (IOError e_io) {
@@ -108,15 +266,14 @@ public class Tracker.Direct.Connection : Tracker.Sparql.Connection {
 				dbus_error = e_dbus;
 			}
 
-			var source = new IdleSource ();
-			source.set_callback (() => {
+			context.invoke (() => {
 				query_async.callback ();
 				return false;
 			});
-			source.attach (context);
 
 			return false;
 		}, Priority.DEFAULT, cancellable);
+
 		yield;
 
 		if (cancellable != null && cancellable.is_cancelled ()) {
@@ -130,5 +287,84 @@ public class Tracker.Direct.Connection : Tracker.Sparql.Connection {
 		} else {
 			return result;
 		}
+	}
+
+	public override void update (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, GLib.Error {
+		mutex.lock ();
+		try {
+			var data = data_manager.get_data ();
+			data.update_sparql (sparql);
+		} finally {
+			mutex.unlock ();
+		}
+	}
+
+	public async override void update_async (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, GLib.Error {
+		var task = new UpdateTask (sparql, priority, cancellable);
+		task.callback = update_async.callback;
+		update_queue.push (task);
+		yield;
+
+		if (task.error != null)
+			throw task.error;
+	}
+
+	public override GLib.Variant? update_blank (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, GLib.Error {
+		GLib.Variant? blank_nodes = null;
+		mutex.lock ();
+		try {
+			var data = data_manager.get_data ();
+			blank_nodes = data.update_sparql_blank (sparql);
+		} finally {
+			mutex.unlock ();
+		}
+
+		return blank_nodes;
+	}
+
+	public async override GLib.Variant? update_blank_async (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, GLib.Error {
+		var task = new UpdateTask.blank (sparql, priority, cancellable);
+		task.callback = update_blank_async.callback;
+		update_queue.push (task);
+		yield;
+
+		if (task.error != null)
+			throw task.error;
+
+		return task.blank_nodes;
+	}
+
+	public override void load (File file, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
+		mutex.lock ();
+		try {
+			var data = data_manager.get_data ();
+			data.load_turtle_file (file);
+		} finally {
+			mutex.unlock ();
+		}
+	}
+
+	public async override void load_async (File file, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
+		var task = new TurtleTask (file, cancellable);
+		task.callback = load_async.callback;
+		update_queue.push (task);
+		yield;
+
+		if (task.error != null)
+			throw new Sparql.Error.INTERNAL (task.error.message);
+	}
+
+	public override NamespaceManager? get_namespace_manager () {
+		if (namespace_manager == null && data_manager != null) {
+			var ht = data_manager.get_namespaces ();
+			namespace_manager = new NamespaceManager ();
+
+			foreach (var prefix in ht.get_keys ()) {
+				print ("%s %s\n", prefix, ht.lookup (prefix));
+				namespace_manager.add_prefix (prefix, ht.lookup (prefix));
+			}
+		}
+
+		return namespace_manager;
 	}
 }

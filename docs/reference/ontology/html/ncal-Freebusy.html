@@ -34,10 +34,11 @@
 </div>
 <div class="refsect1">
 <a name="ncal-Freebusy.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ├── <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a> ───┐
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> ──┤
-                                 └── <span class="emphasis"><em><a class="link" href="ncal-Freebusy.html" title="ncal:Freebusy">ncal:Freebusy</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a>     ───────┐
+                                         │
+                <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> ──┤
+                                         └── <span class="emphasis"><em><a class="link" href="ncal-Freebusy.html" title="ncal:Freebusy">ncal:Freebusy</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
@@ -48,10 +49,6 @@
 <p>The property defines one or more free or busy time intervals. Inspired by RFC 2445 sec. 4.8.2.6. Note that the periods specified by this property can only be expressed with UTC times. Originally this property could have many comma-separated values. Please use a separate triple for each value.</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-Freebusy.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

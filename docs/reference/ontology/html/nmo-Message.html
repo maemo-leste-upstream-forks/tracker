@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="nmo-Message.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <a class="link" href="nfo-Document.html" title="nfo:Document">nfo:Document</a> 
             ╰── <a class="link" href="nfo-TextDocument.html" title="nfo:TextDocument">nfo:TextDocument</a> 
                 ╰── <span class="emphasis"><em><a class="link" href="nmo-Message.html" title="nmo:Message">nmo:Message</a></em></span> 
@@ -56,14 +56,14 @@
 <a name="nmo-Message.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nmo-Message.nmo-mmsId"></a><h3>The <code class="literal">“nmo:mmsId”</code> property</h3>
-<pre class="programlisting">“nmo:mmsId”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nmo:mmsId”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Unique identifier of an MMS message. It comes from the server</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-mustAnswerReportRead"></a><h3>The <code class="literal">“nmo:mustAnswerReportRead”</code> property</h3>
-<pre class="programlisting">“nmo:mustAnswerReportRead”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:mustAnswerReportRead”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>The message came with the report-read flag enabled, and somebody must be send the answer back. Once the report is sent, this property goes to False.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -77,14 +77,14 @@
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-sentWithReportRead"></a><h3>The <code class="literal">“nmo:sentWithReportRead”</code> property</h3>
-<pre class="programlisting">“nmo:sentWithReportRead”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:sentWithReportRead”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>The message has been send with a flag indicating that we want to receive a confirmation when the recipient reads it</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-reportDelivery"></a><h3>The <code class="literal">“nmo:reportDelivery”</code> property</h3>
-<pre class="programlisting">“nmo:reportDelivery”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:reportDelivery”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>Report delivery has been requested for the message</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -151,20 +151,20 @@
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-receivedDate"></a><h3>The <code class="literal">“nmo:receivedDate”</code> property</h3>
-<pre class="programlisting">“nmo:receivedDate”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nmo:receivedDate”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-messageSubject"></a><h3>The <code class="literal">“nmo:messageSubject”</code> property</h3>
-<pre class="programlisting">“nmo:messageSubject”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nmo:messageSubject”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-messageId"></a><h3>The <code class="literal">“nmo:messageId”</code> property</h3>
-<pre class="programlisting">“nmo:messageId”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nmo:messageId”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
@@ -192,47 +192,47 @@
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-htmlMessageContent"></a><h3>The <code class="literal">“nmo:htmlMessageContent”</code> property</h3>
-<pre class="programlisting">“nmo:htmlMessageContent”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nmo:htmlMessageContent”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-isEmergency"></a><h3>The <code class="literal">“nmo:isEmergency”</code> property</h3>
-<pre class="programlisting">“nmo:isEmergency”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:isEmergency”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>Special message from the network, probably coming via Cell broadcasting with emergency information</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-isSent"></a><h3>The <code class="literal">“nmo:isSent”</code> property</h3>
-<pre class="programlisting">“nmo:isSent”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:isSent”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-isRead"></a><h3>The <code class="literal">“nmo:isRead”</code> property</h3>
-<pre class="programlisting">“nmo:isRead”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:isRead”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>The messsage has been readed. The user has opened the message or has marked it directly as readed</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-isDraft"></a><h3>The <code class="literal">“nmo:isDraft”</code> property</h3>
-<pre class="programlisting">“nmo:isDraft”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:isDraft”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>The user hasn't finished editing the message and might want to continue later</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-isDeleted"></a><h3>The <code class="literal">“nmo:isDeleted”</code> property</h3>
-<pre class="programlisting">“nmo:isDeleted”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:isDeleted”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>True when the user has removed the Email in the UI but still exists in the DB. Usually a purge or confirmation from the user will actually remove the data.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-isAnswered"></a><h3>The <code class="literal">“nmo:isAnswered”</code> property</h3>
-<pre class="programlisting">“nmo:isAnswered”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nmo:isAnswered”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>True when the user has sent a replay to this message</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -252,14 +252,10 @@
 <hr>
 <div class="refsect2">
 <a name="nmo-Message.nmo-sentDate"></a><h3>The <code class="literal">“nmo:sentDate”</code> property</h3>
-<pre class="programlisting">“nmo:sentDate”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nmo:sentDate”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Date when this message was sent.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="nmo-Message.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#" target="_top">NMO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

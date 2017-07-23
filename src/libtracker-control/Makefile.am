@@ -20,6 +20,7 @@ libtracker_controlinclude_HEADERS =                      \
 	tracker-miner-manager.h
 
 libtracker_control_@TRACKER_API_VERSION@_la_LDFLAGS =    \
+	$(DTAGS_LDFLAGS)                                 \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 if !ENABLE_GCOV 
 # Using enable_gcov instead of have_unit_test because when doing a release
@@ -30,6 +31,7 @@ endif
 
 libtracker_control_@TRACKER_API_VERSION@_la_LIBADD =     \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	-lm                                              \
 	$(BUILD_LIBS)                                    \
 	$(LIBTRACKER_MINER_LIBS)
@@ -62,7 +64,8 @@ CLEANFILES += $(BUILT_SOURCES)
 
 EXTRA_DIST =                                           \
 	tracker-control.vapi                           \
-	tracker-control.deps
+	tracker-control.deps                           \
+	meson.build
 
 # Introspection foo
 -include $(INTROSPECTION_MAKEFILE)

@@ -3,42 +3,12 @@
   <chapters>
     <sub name="Overview" link="overview.html"/>
     <sub name="Ontology" link="ontology.html">
-      <sub name="XML schema (XSD): Basic types definitions (int, double,...)" link="xsd-ontology.html">
-        <sub name="Overview" link="xsd-ontology.html#xsd-explanation"/>
-        <sub name="XSD Ontology Classes" link="xsd-classes.html">
-          <sub name="xsd:integer" link="xsd-integer.html"/>
-          <sub name="xsd:boolean" link="xsd-boolean.html"/>
-          <sub name="xsd:string" link="xsd-string.html"/>
-          <sub name="xsd:double" link="xsd-double.html"/>
-          <sub name="xsd:date" link="xsd-date.html"/>
-          <sub name="xsd:dateTime" link="xsd-dateTime.html"/>
-        </sub>
-      </sub>
-      <sub name="Resource Description Framework (RDF): Core RDF classes to keep the internal consistency of the ontology" link="rdf-ontology.html">
-        <sub name="RDF Ontology Classes" link="rdf-ontology.html#rdf-classes">
-          <sub name="rdfs:Class" link="rdfs-Class.html"/>
-          <sub name="rdfs:Literal" link="rdfs-Literal.html"/>
-          <sub name="rdfs:Resource" link="rdfs-Resource.html"/>
-          <sub name="tracker:Namespace" link="tracker-Namespace.html"/>
-          <sub name="tracker:Ontology" link="tracker-Ontology.html"/>
-          <sub name="rdf:Property" link="rdf-Property.html"/>
-        </sub>
-      </sub>
-      <sub name="Dublin Core metadata (DC): Common superproperties for documents" link="dc-ontology.html">
-        <sub name="DC Ontology Classes" link="dc-ontology.html#dc-classes"/>
-      </sub>
       <sub name="Nepomuk Information Element (NIE): Top classes in the ontology. Almost everything else is subclass of these." link="nie-ontology.html">
         <sub name="Overview" link="nie-ontology.html#nie-explanation"/>
         <sub name="NIE Ontology Classes" link="nie-classes.html">
           <sub name="nie:DataObject" link="nie-DataObject.html"/>
           <sub name="nie:DataSource" link="nie-DataSource.html"/>
           <sub name="nie:InformationElement" link="nie-InformationElement.html"/>
-        </sub>
-      </sub>
-      <sub name="Nepomuk Annotation Ontology (NAO): Tags, ratings and other common annotations to all classes" link="nao-ontology.html">
-        <sub name="NAO Ontology Classes" link="nao-ontology.html#nao-classes">
-          <sub name="nao:Property" link="nao-Property.html"/>
-          <sub name="nao:Tag" link="nao-Tag.html"/>
         </sub>
       </sub>
       <sub name="Nepomuk File Ontology (NFO): About files and other desktop resources." link="nfo-ontology.html">
@@ -324,51 +294,6 @@
     </sub>
   </chapters>
   <functions>
-    <keyword type="property" name="The “tracker:notify” property" link="rdfs-Class.html#rdfs-Class.tracker-notify"/>
-    <keyword type="property" name="The “tracker:domainIndex” property" link="rdfs-Class.html#rdfs-Class.tracker-domainIndex"/>
-    <keyword type="property" name="The “rdfs:subClassOf” property" link="rdfs-Class.html#rdfs-Class.rdfs-subClassOf"/>
-    <keyword type="property" name="The “nfo:depiction” property" link="rdfs-Resource.html#rdfs-Resource.nfo-depiction"/>
-    <keyword type="property" name="The “nao:isRelated” property" link="rdfs-Resource.html#rdfs-Resource.nao-isRelated"/>
-    <keyword type="property" name="The “nao:lastModified” property" link="rdfs-Resource.html#rdfs-Resource.nao-lastModified"/>
-    <keyword type="property" name="The “nao:deprecated” property" link="rdfs-Resource.html#rdfs-Resource.nao-deprecated"/>
-    <keyword type="property" name="The “nao:numericRating” property" link="rdfs-Resource.html#rdfs-Resource.nao-numericRating"/>
-    <keyword type="property" name="The “nao:identifier” property" link="rdfs-Resource.html#rdfs-Resource.nao-identifier"/>
-    <keyword type="property" name="The “nao:hasTag” property" link="rdfs-Resource.html#rdfs-Resource.nao-hasTag"/>
-    <keyword type="property" name="The “dc:rights” property" link="rdfs-Resource.html#rdfs-Resource.dc-rights"/>
-    <keyword type="property" name="The “dc:coverage” property" link="rdfs-Resource.html#rdfs-Resource.dc-coverage"/>
-    <keyword type="property" name="The “dc:relation” property" link="rdfs-Resource.html#rdfs-Resource.dc-relation"/>
-    <keyword type="property" name="The “dc:language” property" link="rdfs-Resource.html#rdfs-Resource.dc-language"/>
-    <keyword type="property" name="The “dc:source” property" link="rdfs-Resource.html#rdfs-Resource.dc-source"/>
-    <keyword type="property" name="The “dc:identifier” property" link="rdfs-Resource.html#rdfs-Resource.dc-identifier"/>
-    <keyword type="property" name="The “dc:format” property" link="rdfs-Resource.html#rdfs-Resource.dc-format"/>
-    <keyword type="property" name="The “dc:type” property" link="rdfs-Resource.html#rdfs-Resource.dc-type"/>
-    <keyword type="property" name="The “dc:date” property" link="rdfs-Resource.html#rdfs-Resource.dc-date"/>
-    <keyword type="property" name="The “dc:contributor” property" link="rdfs-Resource.html#rdfs-Resource.dc-contributor"/>
-    <keyword type="property" name="The “dc:publisher” property" link="rdfs-Resource.html#rdfs-Resource.dc-publisher"/>
-    <keyword type="property" name="The “dc:description” property" link="rdfs-Resource.html#rdfs-Resource.dc-description"/>
-    <keyword type="property" name="The “dc:subject” property" link="rdfs-Resource.html#rdfs-Resource.dc-subject"/>
-    <keyword type="property" name="The “dc:creator” property" link="rdfs-Resource.html#rdfs-Resource.dc-creator"/>
-    <keyword type="property" name="The “dc:title” property" link="rdfs-Resource.html#rdfs-Resource.dc-title"/>
-    <keyword type="property" name="The “tracker:damaged” property" link="rdfs-Resource.html#rdfs-Resource.tracker-damaged"/>
-    <keyword type="property" name="The “tracker:modified” property" link="rdfs-Resource.html#rdfs-Resource.tracker-modified"/>
-    <keyword type="property" name="The “tracker:added” property" link="rdfs-Resource.html#rdfs-Resource.tracker-added"/>
-    <keyword type="property" name="The “rdfs:label” property" link="rdfs-Resource.html#rdfs-Resource.rdfs-label"/>
-    <keyword type="property" name="The “rdfs:comment” property" link="rdfs-Resource.html#rdfs-Resource.rdfs-comment"/>
-    <keyword type="property" name="The “rdf:type” property" link="rdfs-Resource.html#rdfs-Resource.rdf-type"/>
-    <keyword type="property" name="The “tracker:prefix” property" link="tracker-Namespace.html#tracker-Namespace.tracker-prefix"/>
-    <keyword type="property" name="The “tracker:forceJournal” property" link="rdf-Property.html#rdf-Property.tracker-forceJournal"/>
-    <keyword type="property" name="The “tracker:writeback” property" link="rdf-Property.html#rdf-Property.tracker-writeback"/>
-    <keyword type="property" name="The “nrl:maxCardinality” property" link="rdf-Property.html#rdf-Property.nrl-maxCardinality"/>
-    <keyword type="property" name="The “tracker:defaultValue” property" link="rdf-Property.html#rdf-Property.tracker-defaultValue"/>
-    <keyword type="property" name="The “tracker:weight” property" link="rdf-Property.html#rdf-Property.tracker-weight"/>
-    <keyword type="property" name="The “tracker:transient” property" link="rdf-Property.html#rdf-Property.tracker-transient"/>
-    <keyword type="property" name="The “tracker:fulltextNoLimit” property" link="rdf-Property.html#rdf-Property.tracker-fulltextNoLimit"/>
-    <keyword type="property" name="The “tracker:fulltextIndexed” property" link="rdf-Property.html#rdf-Property.tracker-fulltextIndexed"/>
-    <keyword type="property" name="The “tracker:secondaryIndex” property" link="rdf-Property.html#rdf-Property.tracker-secondaryIndex"/>
-    <keyword type="property" name="The “tracker:indexed” property" link="rdf-Property.html#rdf-Property.tracker-indexed"/>
-    <keyword type="property" name="The “rdfs:range” property" link="rdf-Property.html#rdf-Property.rdfs-range"/>
-    <keyword type="property" name="The “rdfs:domain” property" link="rdf-Property.html#rdf-Property.rdfs-domain"/>
-    <keyword type="property" name="The “rdfs:subPropertyOf” property" link="rdf-Property.html#rdf-Property.rdfs-subPropertyOf"/>
     <keyword type="property" name="The “tracker:available” property" link="nie-DataObject.html#nie-DataObject.tracker-available"/>
     <keyword type="property" name="The “nfo:belongsToContainer” property" link="nie-DataObject.html#nie-DataObject.nfo-belongsToContainer"/>
     <keyword type="property" name="The “nie:isPartOf” property" link="nie-DataObject.html#nie-DataObject.nie-isPartOf"/>
@@ -388,7 +313,6 @@
     <keyword type="property" name="The “nco:publisher” property" link="nie-InformationElement.html#nie-InformationElement.nco-publisher"/>
     <keyword type="property" name="The “nco:creator” property" link="nie-InformationElement.html#nie-InformationElement.nco-creator"/>
     <keyword type="property" name="The “nco:contributor” property" link="nie-InformationElement.html#nie-InformationElement.nco-contributor"/>
-    <keyword type="property" name="The “nao:hasProperty” property" link="nie-InformationElement.html#nie-InformationElement.nao-hasProperty"/>
     <keyword type="property" name="The “nie:usageCounter” property" link="nie-InformationElement.html#nie-InformationElement.nie-usageCounter"/>
     <keyword type="property" name="The “nie:rootElementOf” property" link="nie-InformationElement.html#nie-InformationElement.nie-rootElementOf"/>
     <keyword type="property" name="The “nie:contentSize” property" link="nie-InformationElement.html#nie-InformationElement.nie-contentSize"/>
@@ -420,12 +344,6 @@
     <keyword type="property" name="The “nie:contentLastModified” property" link="nie-InformationElement.html#nie-InformationElement.nie-contentLastModified"/>
     <keyword type="property" name="The “nie:informationElementDate” property" link="nie-InformationElement.html#nie-InformationElement.nie-informationElementDate"/>
     <keyword type="property" name="The “nie:title” property" link="nie-InformationElement.html#nie-InformationElement.nie-title"/>
-    <keyword type="property" name="The “nao:propertyValue” property" link="nao-Property.html#nao-Property.nao-propertyValue"/>
-    <keyword type="property" name="The “nao:propertyName” property" link="nao-Property.html#nao-Property.nao-propertyName"/>
-    <keyword type="property" name="The “tracker:tagRelatedTo” property" link="nao-Tag.html#nao-Tag.tracker-tagRelatedTo"/>
-    <keyword type="property" name="The “tracker:isDefaultTag” property" link="nao-Tag.html#nao-Tag.tracker-isDefaultTag"/>
-    <keyword type="property" name="The “nao:description” property" link="nao-Tag.html#nao-Tag.nao-description"/>
-    <keyword type="property" name="The “nao:prefLabel” property" link="nao-Tag.html#nao-Tag.nao-prefLabel"/>
     <keyword type="property" name="The “nfo:fileLastModified” property" link="nfo-FileDataObject.html#nfo-FileDataObject.nfo-fileLastModified"/>
     <keyword type="property" name="The “nfo:fileOwner” property" link="nfo-FileDataObject.html#nfo-FileDataObject.nfo-fileOwner"/>
     <keyword type="property" name="The “nfo:hasHash” property" link="nfo-FileDataObject.html#nfo-FileDataObject.nfo-hasHash"/>

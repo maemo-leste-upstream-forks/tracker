@@ -12,6 +12,7 @@
 #include <float.h>
 #include <math.h>
 #include <gio/gio.h>
+#include "libtracker-sparql/tracker-namespace-manager.h"
 #include <stdarg.h>
 
 G_BEGIN_DECLS
@@ -29,6 +30,8 @@ typedef struct _TrackerSparqlBuilderClass TrackerSparqlBuilderClass;
 typedef struct _TrackerSparqlBuilderPrivate TrackerSparqlBuilderPrivate;
 
 #define TRACKER_SPARQL_BUILDER_TYPE_STATE (tracker_sparql_builder_state_get_type ())
+
+#define TRACKER_SPARQL_TYPE_CONNECTION_FLAGS (tracker_sparql_connection_flags_get_type ())
 
 #define TRACKER_SPARQL_TYPE_CONNECTION (tracker_sparql_connection_get_type ())
 #define TRACKER_SPARQL_CONNECTION(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_SPARQL_TYPE_CONNECTION, TrackerSparqlConnection))
@@ -87,6 +90,11 @@ typedef enum  {
 	TRACKER_SPARQL_ERROR_UNSUPPORTED
 } TrackerSparqlError;
 #define TRACKER_SPARQL_ERROR tracker_sparql_error_quark ()
+typedef enum  {
+	TRACKER_SPARQL_CONNECTION_FLAGS_NONE = 0,
+	TRACKER_SPARQL_CONNECTION_FLAGS_READONLY = 1 << 0
+} TrackerSparqlConnectionFlags;
+
 struct _TrackerSparqlConnection {
 	GObject parent_instance;
 	TrackerSparqlConnectionPrivate * priv;
@@ -111,6 +119,7 @@ struct _TrackerSparqlConnectionClass {
 	TrackerSparqlCursor* (*statistics) (TrackerSparqlConnection* self, GCancellable* cancellable, GError** error);
 	void (*statistics_async) (TrackerSparqlConnection* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 	TrackerSparqlCursor* (*statistics_finish) (TrackerSparqlConnection* self, GAsyncResult* _res_, GError** error);
+	TrackerNamespaceManager* (*get_namespace_manager) (TrackerSparqlConnection* self);
 };
 
 typedef enum  {
@@ -153,57 +162,58 @@ TrackerSparqlBuilder* tracker_sparql_builder_new_update (void);
 TrackerSparqlBuilder* tracker_sparql_builder_construct_update (GType object_type);
 TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void);
 TrackerSparqlBuilder* tracker_sparql_builder_construct_embedded_insert (GType object_type);
-void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar* graph);
-void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph);
-void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar* graph);
-void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_graph_open (TrackerSparqlBuilder* self, const gchar* graph);
-void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_subject_variable (TrackerSparqlBuilder* self, const gchar* var_name);
-void tracker_sparql_builder_object_variable (TrackerSparqlBuilder* self, const gchar* var_name);
-void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar* iri);
-void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s);
-void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gchar* iri);
-void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* s);
-void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar* iri);
-void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s);
-void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gchar* literal);
-void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, const gchar* value);
-void tracker_sparql_builder_object_boolean (TrackerSparqlBuilder* self, gboolean literal);
-void tracker_sparql_builder_object_int64 (TrackerSparqlBuilder* self, gint64 literal);
-void tracker_sparql_builder_object_date (TrackerSparqlBuilder* self, time_t* literal);
-void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble literal);
-void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self);
-void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* raw);
-void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw);
+void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar* graph) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar* graph) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_graph_open (TrackerSparqlBuilder* self, const gchar* graph) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_subject_variable (TrackerSparqlBuilder* self, const gchar* var_name) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_variable (TrackerSparqlBuilder* self, const gchar* var_name) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar* iri) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gchar* iri) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* s) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar* iri) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gchar* literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, const gchar* value) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_boolean (TrackerSparqlBuilder* self, gboolean literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_int64 (TrackerSparqlBuilder* self, gint64 literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_date (TrackerSparqlBuilder* self, time_t* literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble literal) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* raw) G_GNUC_DEPRECATED;
+void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw) G_GNUC_DEPRECATED;
 TrackerSparqlBuilder* tracker_sparql_builder_new (void);
 TrackerSparqlBuilder* tracker_sparql_builder_construct (GType object_type);
 const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self);
 gint tracker_sparql_builder_get_length (TrackerSparqlBuilder* self);
 TrackerSparqlBuilderState tracker_sparql_builder_get_state (TrackerSparqlBuilder* self);
 #define TRACKER_DBUS_SERVICE "org.freedesktop.Tracker1"
-#define TRACKER_DBUS_INTERFACE_RESOURCES TRACKER_DBUS_SERVICE ".Resources"
+#define TRACKER_DBUS_INTERFACE_RESOURCES "org.freedesktop.Tracker1.Resources"
 #define TRACKER_DBUS_OBJECT_RESOURCES "/org/freedesktop/Tracker1/Resources"
-#define TRACKER_DBUS_INTERFACE_STATISTICS TRACKER_DBUS_SERVICE ".Statistics"
+#define TRACKER_DBUS_INTERFACE_STATISTICS "org.freedesktop.Tracker1.Statistics"
 #define TRACKER_DBUS_OBJECT_STATISTICS "/org/freedesktop/Tracker1/Statistics"
-#define TRACKER_DBUS_INTERFACE_STATUS TRACKER_DBUS_SERVICE ".Status"
+#define TRACKER_DBUS_INTERFACE_STATUS "org.freedesktop.Tracker1.Status"
 #define TRACKER_DBUS_OBJECT_STATUS "/org/freedesktop/Tracker1/Status"
-#define TRACKER_DBUS_INTERFACE_STEROIDS TRACKER_DBUS_SERVICE ".Steroids"
+#define TRACKER_DBUS_INTERFACE_STEROIDS "org.freedesktop.Tracker1.Steroids"
 #define TRACKER_DBUS_OBJECT_STEROIDS "/org/freedesktop/Tracker1/Steroids"
 GQuark tracker_sparql_error_quark (void);
+GType tracker_sparql_connection_flags_get_type (void) G_GNUC_CONST;
 GType tracker_sparql_connection_get_type (void) G_GNUC_CONST;
 GType tracker_sparql_cursor_get_type (void) G_GNUC_CONST;
 void tracker_sparql_connection_get_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlConnection* tracker_sparql_connection_get_finish (GAsyncResult* _res_, GError** error);
 TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellable, GError** error);
-void tracker_sparql_connection_get_direct_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) G_GNUC_DEPRECATED;
-TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResult* _res_, GError** error) G_GNUC_DEPRECATED;
-TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* cancellable, GError** error) G_GNUC_DEPRECATED;
 TrackerSparqlConnection* tracker_sparql_connection_remote_new (const gchar* uri_base);
+TrackerSparqlConnection* tracker_sparql_connection_local_new (TrackerSparqlConnectionFlags flags, GFile* store, GFile* journal, GFile* ontology, GCancellable* cancellable, GError** error);
+void tracker_sparql_connection_local_new_async (TrackerSparqlConnectionFlags flags, GFile* store, GFile* journal, GFile* ontology, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
+TrackerSparqlConnection* tracker_sparql_connection_local_new_finish (GAsyncResult* _res_, GError** error);
 TrackerSparqlCursor* tracker_sparql_connection_query (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GError** error);
 void tracker_sparql_connection_query_async (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlCursor* tracker_sparql_connection_query_finish (TrackerSparqlConnection* self, GAsyncResult* _res_, GError** error);
@@ -221,6 +231,9 @@ void tracker_sparql_connection_load_finish (TrackerSparqlConnection* self, GAsyn
 TrackerSparqlCursor* tracker_sparql_connection_statistics (TrackerSparqlConnection* self, GCancellable* cancellable, GError** error);
 void tracker_sparql_connection_statistics_async (TrackerSparqlConnection* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlCursor* tracker_sparql_connection_statistics_finish (TrackerSparqlConnection* self, GAsyncResult* _res_, GError** error);
+TrackerNamespaceManager* tracker_sparql_connection_get_namespace_manager (TrackerSparqlConnection* self);
+void tracker_sparql_connection_set_domain (const gchar* domain);
+gchar* tracker_sparql_connection_get_domain (void);
 TrackerSparqlConnection* tracker_sparql_connection_construct (GType object_type);
 GType tracker_sparql_value_type_get_type (void) G_GNUC_CONST;
 TrackerSparqlValueType tracker_sparql_cursor_get_value_type (TrackerSparqlCursor* self, gint column);

@@ -34,17 +34,18 @@
 </div>
 <div class="refsect1">
 <a name="ncal-Timezone.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ├── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> ──┐
-    ╰── <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a> ───┤
-                                 └── <span class="emphasis"><em><a class="link" href="ncal-Timezone.html" title="ncal:Timezone">ncal:Timezone</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a>     ─────┐
+                                        │
+                <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a> ──┤
+                                        └── <span class="emphasis"><em><a class="link" href="ncal-Timezone.html" title="ncal:Timezone">ncal:Timezone</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
 <a name="ncal-Timezone.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="ncal-Timezone.ncal-tzid"></a><h3>The <code class="literal">“ncal:tzid”</code> property</h3>
-<pre class="programlisting">“ncal:tzid”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:tzid”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>This property specifies the text value that uniquely identifies the 'VTIMEZONE' calendar component. Inspired by RFC 2445 sec 4.8.3.1</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -65,14 +66,10 @@
 <hr>
 <div class="refsect2">
 <a name="ncal-Timezone.ncal-tzurl"></a><h3>The <code class="literal">“ncal:tzurl”</code> property</h3>
-<pre class="programlisting">“ncal:tzurl”          <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a></pre>
+<pre class="programlisting">“ncal:tzurl”          http://www.w3.org/2000/01/rdf-schema#Resource</pre>
 <p>The TZURL provides a means for a VTIMEZONE component to point to a network location that can be used to retrieve an up-to- date version of itself. Inspired by RFC 2445 sec. 4.8.3.5. Originally the range of this property had been specified as URI.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-Timezone.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

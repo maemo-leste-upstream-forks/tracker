@@ -1,5 +1,3 @@
-tp = tracker-preferences.1
-tn = tracker-needle.1
 tmrss = tracker-miner-rss.1
 
 common = \
@@ -20,14 +18,6 @@ common = \
 # Require only common and enabled manpages
 man_MANS = $(common)
 
-if HAVE_TRACKER_PREFERENCES
-man_MANS += $(tp)
-endif
-
-if HAVE_TRACKER_NEEDLE
-man_MANS += $(tn)
-endif
-
 if HAVE_TRACKER_MINER_RSS
 man_MANS += $(tmrss)
 endif
@@ -37,4 +27,5 @@ EXTRA_DIST = \
 	$(common) \
 	$(tp) \
 	$(tn) \
-	$(tmrss)
+	$(tmrss) \
+	meson.build

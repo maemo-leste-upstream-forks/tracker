@@ -76,6 +76,9 @@ service_DATA = org.freedesktop.Tracker1.service
 systemd_userdir = $(prefix)/lib/systemd/user
 systemd_user_DATA = tracker-store.service
 
+domain_ontologiesdir = $(datadir)/tracker/domain-ontologies
+domain_ontologies_DATA = default.rule
+
 # Desktop files: First we fix the VERSION and libexecdir
 %.desktop.in: %.desktop.in.in
 	@sed -e "s|@libexecdir[@]|${libexecdir}|" \
@@ -114,5 +117,7 @@ EXTRA_DIST += \
 	$(systemd_user_DATA:.service=.service.in) \
 	$(config_DATA) \
 	$(gsettings_SCHEMAS:.xml=.xml.in) \
-	$(man_MANS)
+	$(man_MANS) \
+	$(domain_ontologies_DATA) \
+	meson.build
 

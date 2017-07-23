@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="nfo-Document.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <span class="emphasis"><em><a class="link" href="nfo-Document.html" title="nfo:Document">nfo:Document</a></em></span> 
             ├── <a class="link" href="nfo-TextDocument.html" title="nfo:TextDocument">nfo:TextDocument</a> 
             ├── <a class="link" href="nfo-Presentation.html" title="nfo:Presentation">nfo:Presentation</a> 
@@ -55,15 +55,11 @@
 <a name="nfo-Document.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nfo-Document.nfo-tableOfContents"></a><h3>The <code class="literal">“nfo:tableOfContents”</code> property</h3>
-<pre class="programlisting">“nfo:tableOfContents”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nfo:tableOfContents”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Section titles and figure descriptions of the document.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 </div>
-</div>
-<div class="refsect1">
-<a name="nfo-Document.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#" target="_top">NFO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="ncal-Attendee.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="ncal-AttendeeOrOrganizer.html" title="ncal:AttendeeOrOrganizer">ncal:AttendeeOrOrganizer</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="ncal-AttendeeOrOrganizer.html" title="ncal:AttendeeOrOrganizer">ncal:AttendeeOrOrganizer</a> 
         ╰── <span class="emphasis"><em><a class="link" href="ncal-Attendee.html" title="ncal:Attendee">ncal:Attendee</a></em></span> 
 </pre>
 </div>
@@ -50,7 +50,7 @@
 <hr>
 <div class="refsect2">
 <a name="ncal-Attendee.ncal-rsvp"></a><h3>The <code class="literal">“ncal:rsvp”</code> property</h3>
-<pre class="programlisting">“ncal:rsvp”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“ncal:rsvp”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>To specify whether there is an expectation of a favor of a reply from the calendar user specified by the property value. Inspired by RFC 2445 sec. 4.2.17</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -89,10 +89,6 @@
 <p>To specify the calendar users to whom the calendar user specified by the property has delegated participation. Inspired by RFC 2445 sec. 4.2.5. Originally the value type for this parameter was CAL-ADDRESS. This has been expressed as nco:Contact to promote integration between NCAL and NCO.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-Attendee.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

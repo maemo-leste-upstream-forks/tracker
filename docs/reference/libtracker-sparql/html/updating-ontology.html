@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Updating an ontology: Tracker SPARQL Library Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
+<link rel="up" href="tracker-ontologies.html" title="Part IV. Defining ontologies">
+<link rel="prev" href="accompanying-metadata.html" title="Accompanying metadata">
+<link rel="next" href="tracker-examples.html" title="Part V. Examples">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="tracker-ontologies.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="accompanying-metadata.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="tracker-examples.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="updating-ontology"></a>Updating an ontology</h2></div></div></div>
+<p>
+      As software evolves, sometimes changes in the ontology are unavoidable.
+      Tracker can transparently handle certain ontology changes on existing
+      databases.
+    </p>
+<p><b><code class="systemitem">Adding a class.</code> </b></p>
+<p><b><code class="systemitem">Removing a class.</code> </b>
+	All resources will be removed from this class, and all related
+	properties will disappear.
+      </p>
+<p><b><code class="systemitem">Adding a property.</code> </b></p>
+<p><b><code class="systemitem">Removing a property.</code> </b>
+	The property will disappear from all elements pertaining to the
+	class in domain of the property.
+      </p>
+<p><b><code class="systemitem">Changing rdfs:range of a property.</code> </b>
+	The following conversions are allowed:
+      </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p></p></td>
+<td>xsd:integer to xsd:bool, xsd:double and xsd:string</td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>xsd:double to xsd:bool, xsd:integer and xsd:string</td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>xsd:string to xsd:bool, xsd:integer and xsd:double</td>
+</tr>
+</tbody>
+</table></div>
+<p><b><code class="systemitem">Adding and removing tracker:domainIndex from a class.</code> </b></p>
+<p><b><code class="systemitem">Adding and removing tracker:fulltextIndexed from a property.</code> </b></p>
+<p><b><code class="systemitem">Changing the tracker:weight on a property.</code> </b></p>
+<p><b><code class="systemitem">Removing nrl:maxCardinality from a property.</code> </b></p>
+<p>
+      However, there are certain ontology changes that Tracker will find
+      incompatible. Either because they are incoherent or resulting into
+      situations where it can not deterministically satisfy the change
+      in the stored data. Tracker will error out and refuse to do any data
+      changes in these situations:
+    </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p></p></td>
+<td>
+	Properties with rdfs:range being xsd:bool, xsd:date, xsd:dateTime,
+	or any other custom class are not convertible. Only conversions
+	covered in the list above are accepted.
+      </td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>
+	You can not add rdfs:subClassOf in classes that are not being
+	newly added. You can not remove rdfs:subClassOf from classes.
+	The only allowed change to rdfs:subClassOf is to correct
+	subclasses when deleting a class, so they point a common
+	superclass.
+      </td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>
+	You can not add rdfs:subPropertyOf to properties that are not
+	being newly added. You can not change an existing
+	rdfs:subPropertyOf unless it is made to point to a common
+	superproperty. You can however remove rdfs:subPropertyOf from
+	non-new properties.
+      </td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>
+	Properties can not move across classes, thus any change in
+	rdfs:domain forbidden.
+      </td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>
+	You can not add nrl:maxCardinality restrictions on properties that
+	are not being newly added.
+      </td>
+</tr>
+<tr>
+<td><p></p></td>
+<td>
+	You can not add nor remove nrl:InverseFunctionalProperty from a
+	property that is not being newly added.
+      </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+      The recommendation to bypass these situations is the same for all,
+      use different property and class names and use SPARQL to manually
+      migrate the old data to the new format if necessary.
+    </p>
+<p>
+      High level code is in a better position to solve the
+      possible incoherences (e.g. picking a single value if a property
+      changes from multiple values to single value). After the manual
+      data migration has been completed, the old classes and properties
+      can be dropped.
+    </p>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

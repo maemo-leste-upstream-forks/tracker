@@ -31,8 +31,8 @@
 <div class="refsect1"><a name="ncal-TimezoneObservance.description"></a></div>
 <div class="refsect1">
 <a name="ncal-TimezoneObservance.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a> 
         ╰── <span class="emphasis"><em><a class="link" href="ncal-TimezoneObservance.html" title="ncal:TimezoneObservance">ncal:TimezoneObservance</a></em></span> 
 </pre>
 </div>
@@ -40,28 +40,24 @@
 <a name="ncal-TimezoneObservance.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="ncal-TimezoneObservance.ncal-tzname"></a><h3>The <code class="literal">“ncal:tzname”</code> property</h3>
-<pre class="programlisting">“ncal:tzname”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:tzname”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Specifies the customary designation for a timezone description. Inspired by RFC 2445 sec. 4.8.3.2 The LANGUAGE parameter has been discarded. Please xml:lang literals to express languages. Original specification for the domain of this property stated that it must appear within the timezone component. In this ontology the TimezoneObservance class has been itroduced to clarify this specification.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-TimezoneObservance.ncal-tzoffsetto"></a><h3>The <code class="literal">“ncal:tzoffsetto”</code> property</h3>
-<pre class="programlisting">“ncal:tzoffsetto”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:tzoffsetto”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>This property specifies the offset which is in use in this time zone observance. nspired by RFC 2445 sec. 4.8.3.4. The original domain was underspecified. It said that this property must appear within a Timezone component. In this ontology a TimezoneObservance class has been introduced to clarify this specification. The original range was UTC-OFFSET. There is no equivalent among the XSD datatypes so plain string was chosen.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-TimezoneObservance.ncal-tzoffsetfrom"></a><h3>The <code class="literal">“ncal:tzoffsetfrom”</code> property</h3>
-<pre class="programlisting">“ncal:tzoffsetfrom”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“ncal:tzoffsetfrom”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>This property specifies the offset which is in use prior to this time zone observance. Inspired by RFC 2445 sec. 4.8.3.3. The original domain was underspecified. It said that this property must appear within a Timezone component. In this ontology a TimezoneObservance class has been introduced to clarify this specification. The original range was UTC-OFFSET. There is no equivalent among the XSD datatypes so plain string was chosen.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-TimezoneObservance.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

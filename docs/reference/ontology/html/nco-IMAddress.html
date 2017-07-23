@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="nco-IMAddress.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nco-ContactMedium.html" title="nco:ContactMedium">nco:ContactMedium</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nco-ContactMedium.html" title="nco:ContactMedium">nco:ContactMedium</a> 
         ╰── <span class="emphasis"><em><a class="link" href="nco-IMAddress.html" title="nco:IMAddress">nco:IMAddress</a></em></span> 
 </pre>
 </div>
@@ -73,7 +73,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-IMAddress.nco-presenceLastModified"></a><h3>The <code class="literal">“nco:presenceLastModified”</code> property</h3>
-<pre class="programlisting">“nco:presenceLastModified”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nco:presenceLastModified”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Timestamp of the last change in the presence status</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -86,14 +86,14 @@
 <hr>
 <div class="refsect2">
 <a name="nco-IMAddress.nco-imStatusMessage"></a><h3>The <code class="literal">“nco:imStatusMessage”</code> property</h3>
-<pre class="programlisting">“nco:imStatusMessage”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:imStatusMessage”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A feature common in most IM systems. A message left by the user for all his/her contacts to see.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nco-IMAddress.nco-imProtocol"></a><h3>The <code class="literal">“nco:imProtocol”</code> property</h3>
-<pre class="programlisting">“nco:imProtocol”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:imProtocol”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Protocol of the account ('skype', 'gtalk', 'icq', ...)</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -107,7 +107,7 @@
 <hr>
 <div class="refsect2">
 <a name="nco-IMAddress.nco-imNickname"></a><h3>The <code class="literal">“nco:imNickname”</code> property</h3>
-<pre class="programlisting">“nco:imNickname”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:imNickname”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A nickname attached to a particular IM address.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -115,19 +115,15 @@
 <hr>
 <div class="refsect2">
 <a name="nco-IMAddress.nco-imID"></a><h3>The <code class="literal">“nco:imID”</code> property</h3>
-<pre class="programlisting">“nco:imID”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nco:imID”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Identifier of the IM account. Examples of such identifier might include ICQ UINs, Jabber IDs, Skype names etc.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
 <div class="note">
 <p>This property supersedes the following properties from this or parent classes:</p>
-<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="rdfs-Resource.html#rdfs-Resource.nao-identifier" title="The “nao:identifier” property"><code class="literal">“nao:identifier”</code> from the <code class="literal">rdfs:Resource</code> class</a></p></li></ul></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "></ul></div>
 </div>
 </div>
-</div>
-<div class="refsect1">
-<a name="nco-IMAddress.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nco#" target="_top">NCO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="nfo-Visual.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <a class="link" href="nfo-Media.html" title="nfo:Media">nfo:Media</a> 
             ╰── <span class="emphasis"><em><a class="link" href="nfo-Visual.html" title="nfo:Visual">nfo:Visual</a></em></span> 
                 ├── <a class="link" href="nfo-Image.html" title="nfo:Image">nfo:Image</a> 
@@ -46,7 +46,7 @@
 <a name="nfo-Visual.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nfo-Visual.nfo-colorDepth"></a><h3>The <code class="literal">“nfo:colorDepth”</code> property</h3>
-<pre class="programlisting">“nfo:colorDepth”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:colorDepth”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Amount of bits used to express the color of each pixel.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -57,49 +57,45 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-Visual.nfo-width"></a><h3>The <code class="literal">“nfo:width”</code> property</h3>
-<pre class="programlisting">“nfo:width”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:width”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Visual content width in pixels.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Visual.nfo-height"></a><h3>The <code class="literal">“nfo:height”</code> property</h3>
-<pre class="programlisting">“nfo:height”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:height”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Visual content height in pixels.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Visual.nfo-interlaceMode"></a><h3>The <code class="literal">“nfo:interlaceMode”</code> property</h3>
-<pre class="programlisting">“nfo:interlaceMode”          <a class="link" href="xsd-boolean.html" title="xsd:boolean">xsd:boolean</a></pre>
+<pre class="programlisting">“nfo:interlaceMode”          http://www.w3.org/2001/XMLSchema#boolean</pre>
 <p>True if the image is interlaced, false if not.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Visual.nfo-tilt"></a><h3>The <code class="literal">“nfo:tilt”</code> property</h3>
-<pre class="programlisting">“nfo:tilt”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“nfo:tilt”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Vertical inclination of the camera while capturing the image, in angles starting on 0 as horizontal, positive numbers pointing up, negative angles pointing down</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Visual.nfo-heading"></a><h3>The <code class="literal">“nfo:heading”</code> property</h3>
-<pre class="programlisting">“nfo:heading”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“nfo:heading”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Specifies the direction of travelling while capturing image/video. The range of values from 0.00 to 359.99 (where 0 is due North, 90 is East, 180 South and 270 is West)</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Visual.nfo-aspectRatio"></a><h3>The <code class="literal">“nfo:aspectRatio”</code> property</h3>
-<pre class="programlisting">“nfo:aspectRatio”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“nfo:aspectRatio”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Visual content aspect ratio. (Width divided by Height)</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="nfo-Visual.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#" target="_top">NFO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

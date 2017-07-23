@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="ncal-BydayRulePart.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <span class="emphasis"><em><a class="link" href="ncal-BydayRulePart.html" title="ncal:BydayRulePart">ncal:BydayRulePart</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <span class="emphasis"><em><a class="link" href="ncal-BydayRulePart.html" title="ncal:BydayRulePart">ncal:BydayRulePart</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
@@ -49,14 +49,10 @@
 <hr>
 <div class="refsect2">
 <a name="ncal-BydayRulePart.ncal-bydayModifier"></a><h3>The <code class="literal">“ncal:bydayModifier”</code> property</h3>
-<pre class="programlisting">“ncal:bydayModifier”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“ncal:bydayModifier”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>A n integer modifier for the BYDAY rule part. Each BYDAY value can also be preceded by a positive (+n) or negative  (-n) integer. If present, this indicates the nth occurrence of the specific day within the MONTHLY or YEARLY RRULE. For example, within a MONTHLY rule, +1MO (or simply 1MO) represents the first Monday within the month, whereas -1MO represents the last Monday of the month. If an integer modifier is not present, it means all days of this type within the specified frequency. For example, within a MONTHLY rule, MO represents all Mondays within the month. Inspired by RFC 2445 sec. 4.3.10</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-BydayRulePart.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

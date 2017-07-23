@@ -34,22 +34,22 @@
 </div>
 <div class="refsect1">
 <a name="ncal-Trigger.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <span class="emphasis"><em><a class="link" href="ncal-Trigger.html" title="ncal:Trigger">ncal:Trigger</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <span class="emphasis"><em><a class="link" href="ncal-Trigger.html" title="ncal:Trigger">ncal:Trigger</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
 <a name="ncal-Trigger.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="ncal-Trigger.ncal-triggerDuration"></a><h3>The <code class="literal">“ncal:triggerDuration”</code> property</h3>
-<pre class="programlisting">“ncal:triggerDuration”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“ncal:triggerDuration”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>The duration of a trigger. This property has been created to express the VALUE=DURATION parameter of the TRIGGER property. See documentation for ncal:trigger for more details.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-Trigger.ncal-triggerDateTime"></a><h3>The <code class="literal">“ncal:triggerDateTime”</code> property</h3>
-<pre class="programlisting">“ncal:triggerDateTime”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“ncal:triggerDateTime”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>The exact date and time of the trigger. This property has been created to express the VALUE=DATE, and VALUE=DATE-TIME parameters of the TRIGGER property. See the documentation for ncal:trigger for more details</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -60,10 +60,6 @@
 <p>To specify the relationship of the alarm trigger with respect to the start or end of the calendar component. Inspired by RFC 2445 4.2.14. The RFC has specified two possible values for this property ('START' and 'END') they have been expressed as instances of the TriggerRelation class.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-Trigger.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

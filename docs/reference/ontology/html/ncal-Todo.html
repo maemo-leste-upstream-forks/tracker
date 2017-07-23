@@ -35,10 +35,11 @@
 </div>
 <div class="refsect1">
 <a name="ncal-Todo.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ├── <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a> ───┐
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> ──┤
-                                 └── <span class="emphasis"><em><a class="link" href="ncal-Todo.html" title="ncal:Todo">ncal:Todo</a></em></span> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="ncal-UnionParentClass.html" title="ncal:UnionParentClass">ncal:UnionParentClass</a>     ───────┐
+                                         │
+                <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> ──┤
+                                         └── <span class="emphasis"><em><a class="link" href="ncal-Todo.html" title="ncal:Todo">ncal:Todo</a></em></span> 
 </pre>
 </div>
 <div class="refsect1">
@@ -59,21 +60,17 @@
 <hr>
 <div class="refsect2">
 <a name="ncal-Todo.ncal-completed"></a><h3>The <code class="literal">“ncal:completed”</code> property</h3>
-<pre class="programlisting">“ncal:completed”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“ncal:completed”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>This property defines the date and time that a to-do was actually completed. Inspired by RFC 2445 sec. 4.8.2.1. Note that the RFC allows ONLY UTC time values for this property.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-Todo.ncal-percentComplete"></a><h3>The <code class="literal">“ncal:percentComplete”</code> property</h3>
-<pre class="programlisting">“ncal:percentComplete”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“ncal:percentComplete”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>This property is used by an assignee or delegatee of a to-do to convey the percent completion of a to-do to the Organizer. Inspired by RFC 2445 sec. 4.8.1.8</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-Todo.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

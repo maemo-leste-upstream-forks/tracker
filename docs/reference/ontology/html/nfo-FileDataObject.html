@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="nfo-FileDataObject.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-DataObject.html" title="nie:DataObject">nie:DataObject</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-DataObject.html" title="nie:DataObject">nie:DataObject</a> 
         ╰── <span class="emphasis"><em><a class="link" href="nfo-FileDataObject.html" title="nfo:FileDataObject">nfo:FileDataObject</a></em></span> 
             ├── <a class="link" href="nfo-RemoteDataObject.html" title="nfo:RemoteDataObject">nfo:RemoteDataObject</a> 
             ├── <a class="link" href="nfo-EmbeddedFileDataObject.html" title="nfo:EmbeddedFileDataObject">nfo:EmbeddedFileDataObject</a> 
@@ -51,12 +51,12 @@
 <a name="nfo-FileDataObject.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nfo-FileDataObject.nfo-fileLastModified"></a><h3>The <code class="literal">“nfo:fileLastModified”</code> property</h3>
-<pre class="programlisting">“nfo:fileLastModified”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nfo:fileLastModified”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>last modification date</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
 <p>This property supersedes the following properties from this or parent classes:</p>
-<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="rdfs-Resource.html#rdfs-Resource.dc-date" title="The “dc:date” property"><code class="literal">“dc:date”</code> from the <code class="literal">rdfs:Resource</code> class</a></p></li></ul></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "></ul></div>
 </div>
 </div>
 <hr>
@@ -76,7 +76,7 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-FileDataObject.nfo-fileName"></a><h3>The <code class="literal">“nfo:fileName”</code> property</h3>
-<pre class="programlisting">“nfo:fileName”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nfo:fileName”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>Name of the file, together with the extension</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note"><p>This property is full-text-indexed, and can be looked up through <code class="literal">fts:match</code>.</p></div>
@@ -84,14 +84,14 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-FileDataObject.nfo-permissions"></a><h3>The <code class="literal">“nfo:permissions”</code> property</h3>
-<pre class="programlisting">“nfo:permissions”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“nfo:permissions”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A string containing the permissions of a file. A feature common in many UNIX-like operating systems.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-FileDataObject.nfo-fileSize"></a><h3>The <code class="literal">“nfo:fileSize”</code> property</h3>
-<pre class="programlisting">“nfo:fileSize”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:fileSize”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>The size of the file in bytes. For compressed files it means the size of the packed file, not of the contents. For folders it means the aggregated size of all contained files and folders</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -102,7 +102,7 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-FileDataObject.nfo-fileCreated"></a><h3>The <code class="literal">“nfo:fileCreated”</code> property</h3>
-<pre class="programlisting">“nfo:fileCreated”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nfo:fileCreated”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>File creation date</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -113,18 +113,14 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-FileDataObject.nfo-fileLastAccessed"></a><h3>The <code class="literal">“nfo:fileLastAccessed”</code> property</h3>
-<pre class="programlisting">“nfo:fileLastAccessed”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“nfo:fileLastAccessed”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Time when the file was last accessed.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
 <p>This property supersedes the following properties from this or parent classes:</p>
-<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><a class="link" href="rdfs-Resource.html#rdfs-Resource.dc-date" title="The “dc:date” property"><code class="literal">“dc:date”</code> from the <code class="literal">rdfs:Resource</code> class</a></p></li></ul></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "></ul></div>
 </div>
 </div>
-</div>
-<div class="refsect1">
-<a name="nfo-FileDataObject.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#" target="_top">NFO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

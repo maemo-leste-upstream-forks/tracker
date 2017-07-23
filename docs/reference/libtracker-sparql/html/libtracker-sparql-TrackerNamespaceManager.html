@@ -133,7 +133,7 @@ prefixes predefined.
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_namespace_manager_add_prefix (<em class="parameter"><code><span class="type">TrackerNamespaceManager</span> *self</code></em>,
                                       <em class="parameter"><code>const <span class="type">char</span> *prefix</code></em>,
-                                      <em class="parameter"><code>const <span class="type">char</span> *ns</code></em>);</pre>
+                                      <em class="parameter"><code>const <span class="type">char</span> *namespace</code></em>);</pre>
 <p>Adds <em class="parameter"><code>prefix</code></em>
  as the recognised abbreviaton of <em class="parameter"><code>namespace</code></em>
 .</p>
@@ -220,7 +220,8 @@ libtracker-sparql. It may not correspond with the installed set of
 ontologies, if they have been modified since they were installed.</p>
 <div class="refsect3">
 <a name="tracker-namespace-manager-get-default.returns"></a><h4>Returns</h4>
-<p> a global, shared <span class="type">TrackerNamespaceManager</span> instance</p>
+<p> a global, shared <span class="type">TrackerNamespaceManager</span> instance. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 1.10</p>
 </div>

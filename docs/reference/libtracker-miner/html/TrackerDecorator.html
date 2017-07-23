@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch03.html" title="Base abstract miner classes">
-<link rel="prev" href="libtracker-miner-TrackerEnumerator.html" title="TrackerEnumerator">
+<link rel="prev" href="TrackerDataProvider.html" title="TrackerDataProvider">
 <link rel="next" href="TrackerIndexingTree.html" title="TrackerIndexingTree">
 <meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -23,7 +23,7 @@
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ch03.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="libtracker-miner-TrackerEnumerator.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="TrackerDataProvider.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="TrackerIndexingTree.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -160,10 +160,18 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="../html/TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"><span class="returnvalue">TrackerSparqlBuilder</span></a> *
+<span class="returnvalue">void</span>
 </td>
 <td class="function_name">
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-sparql" title="tracker_decorator_info_get_sparql ()">tracker_decorator_info_get_sparql</a> <span class="c_punctuation">()</span>
+<a class="link" href="TrackerDecorator.html#tracker-decorator-info-complete" title="tracker_decorator_info_complete ()">tracker_decorator_info_complete</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerDecorator.html#tracker-decorator-info-complete-error" title="tracker_decorator_info_complete_error ()">tracker_decorator_info_complete_error</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -730,7 +738,7 @@ information for a URN in Tracker.</p>
 <p>The task object's data (accessible with <code class="function">g_task_get_task_data()</code>) is the
 <a href="../html/TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"><span class="type">TrackerSparqlBuilder</span></a> that you must populate with the results of the
 metadata extraction. This can also be accessed with
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-sparql" title="tracker_decorator_info_get_sparql ()"><code class="function">tracker_decorator_info_get_sparql()</code></a>.</p>
+<code class="function">tracker_decorator_info_get_sparql()</code>.</p>
 <div class="refsect3">
 <a name="tracker-decorator-info-get-task.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -756,35 +764,69 @@ success or <span class="type">NULL</span> if there is no existing <span class="t
 </div>
 <hr>
 <div class="refsect2">
-<a name="tracker-decorator-info-get-sparql"></a><h3>tracker_decorator_info_get_sparql ()</h3>
-<pre class="programlisting"><a href="../html/TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"><span class="returnvalue">TrackerSparqlBuilder</span></a> *
-tracker_decorator_info_get_sparql (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>);</pre>
-<p>A <a href="../html/TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"><span class="type">TrackerSparqlBuilder</span></a> allows the caller to extract the final
-SPARQL used to insert the extracted metadata into the database for
-the resource being processed.</p>
-<p>This function calls <code class="function">g_task_get_task_data()</code> on the return value of
-<a class="link" href="TrackerDecorator.html#tracker-decorator-info-get-task" title="tracker_decorator_info_get_task ()"><code class="function">tracker_decorator_info_get_task()</code></a>.</p>
+<a name="tracker-decorator-info-complete"></a><h3>tracker_decorator_info_complete ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+tracker_decorator_info_complete (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>,
+                                 <em class="parameter"><code><span class="type">gchar</span> *sparql</code></em>);</pre>
+<p>Completes the task associated to this <span class="type">TrackerDecoratorInfo</span>.
+Takes ownership of <em class="parameter"><code>sparql</code></em>
+.</p>
 <div class="refsect3">
-<a name="tracker-decorator-info-get-sparql.parameters"></a><h4>Parameters</h4>
+<a name="tracker-decorator-info-complete.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
 <col width="200px" class="parameters_annotations">
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td class="parameter_name"><p>info</p></td>
-<td class="parameter_description"><p>a <span class="type">TrackerDecoratorInfo</span>.</p></td>
+<td class="parameter_description"><p>a <span class="type">TrackerDecoratorInfo</span></p></td>
 <td class="parameter_annotations"> </td>
-</tr></tbody>
+</tr>
+<tr>
+<td class="parameter_name"><p>sparql</p></td>
+<td class="parameter_description"><p>SPARQL string</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
 </table></div>
 </div>
-<div class="refsect3">
-<a name="tracker-decorator-info-get-sparql.returns"></a><h4>Returns</h4>
-<p> a <a href="../html/TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"><span class="type">TrackerSparqlBuilder</span></a> on success or <span class="type">NULL</span> on error. </p>
-<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+<p class="since">Since: 2.0</p>
 </div>
-<p class="since">Since: 0.18.</p>
+<hr>
+<div class="refsect2">
+<a name="tracker-decorator-info-complete-error"></a><h3>tracker_decorator_info_complete_error ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+tracker_decorator_info_complete_error (<em class="parameter"><code><span class="type">TrackerDecoratorInfo</span> *info</code></em>,
+                                       <em class="parameter"><code><span class="type">GError</span> *error</code></em>);</pre>
+<p>Completes the task associated to this <span class="type">TrackerDecoratorInfo</span>,
+returning the given <em class="parameter"><code>error</code></em>
+ happened during SPARQL generation.</p>
+<div class="refsect3">
+<a name="tracker-decorator-info-complete-error.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>info</p></td>
+<td class="parameter_description"><p>a <span class="type">TrackerDecoratorInfo</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>error</p></td>
+<td class="parameter_description"><p>An error occurred during SPARQL generation</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.0</p>
 </div>
 </div>
 <div class="refsect1">

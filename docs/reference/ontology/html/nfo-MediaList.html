@@ -34,8 +34,8 @@
 </div>
 <div class="refsect1">
 <a name="nfo-MediaList.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <span class="emphasis"><em><a class="link" href="nfo-MediaList.html" title="nfo:MediaList">nfo:MediaList</a></em></span> 
             ├── <a class="link" href="nmm-MusicAlbum.html" title="nmm:MusicAlbum">nmm:MusicAlbum</a> 
             ├── <a class="link" href="nmm-Playlist.html" title="nmm:Playlist">nmm:Playlist</a> 
@@ -53,14 +53,14 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-MediaList.nfo-listDuration"></a><h3>The <code class="literal">“nfo:listDuration”</code> property</h3>
-<pre class="programlisting">“nfo:listDuration”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:listDuration”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Sum of the duration of all items in the list. Optimize some common queries. In seconds</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-MediaList.nfo-entryCounter"></a><h3>The <code class="literal">“nfo:entryCounter”</code> property</h3>
-<pre class="programlisting">“nfo:entryCounter”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:entryCounter”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of entries in the list. Optimize some common queries</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -71,10 +71,6 @@
 <p>This property is intended to point to an RDF list of MediaFiles.</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="nfo-MediaList.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#" target="_top">NFO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

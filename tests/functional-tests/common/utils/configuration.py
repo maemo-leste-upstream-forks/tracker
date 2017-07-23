@@ -78,8 +78,7 @@ RAW_BINDIR = "${exec_prefix}/bin"
 EXEC_PREFIX = os.path.normpath (expandvars (RAW_EXEC_DIR))
 DATADIR = os.path.normpath (expandvars (RAW_DATA_DIR))
 BINDIR = os.path.normpath (expandvars (RAW_BINDIR))
-                            
-haveMaemo = ("#" == "")
+
 haveUpstart = ("#" == "")
 disableJournal = ("#" == "")
 

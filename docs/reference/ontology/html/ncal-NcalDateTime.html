@@ -31,8 +31,8 @@
 <div class="refsect1"><a name="ncal-NcalDateTime.description"></a></div>
 <div class="refsect1">
 <a name="ncal-NcalDateTime.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="ncal-NcalTimeEntity.html" title="ncal:NcalTimeEntity">ncal:NcalTimeEntity</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="ncal-NcalTimeEntity.html" title="ncal:NcalTimeEntity">ncal:NcalTimeEntity</a> 
         ╰── <span class="emphasis"><em><a class="link" href="ncal-NcalDateTime.html" title="ncal:NcalDateTime">ncal:NcalDateTime</a></em></span> 
 </pre>
 </div>
@@ -40,14 +40,14 @@
 <a name="ncal-NcalDateTime.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="ncal-NcalDateTime.ncal-dateTime"></a><h3>The <code class="literal">“ncal:dateTime”</code> property</h3>
-<pre class="programlisting">“ncal:dateTime”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“ncal:dateTime”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Representation of a date an instance of NcalDateTime actually refers to. It's purpose is to express values in DATE-TIME datatype, as defined in RFC 2445 sec. 4.3.5</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="ncal-NcalDateTime.ncal-date"></a><h3>The <code class="literal">“ncal:date”</code> property</h3>
-<pre class="programlisting">“ncal:date”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“ncal:date”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>Date an instance of NcalDateTime refers to. It was conceived to express values in DATE datatype specified in RFC 2445 4.3.4</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -58,10 +58,6 @@
 <p>The timezone instance that should be used to interpret an NcalDateTime. The purpose of this property is similar to the TZID parameter specified in RFC 2445 sec. 4.2.19</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="ncal-NcalDateTime.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#" target="_top">NCAL ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

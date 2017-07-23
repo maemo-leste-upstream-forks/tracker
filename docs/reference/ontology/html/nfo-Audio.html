@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="nfo-Audio.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <a class="link" href="nfo-Media.html" title="nfo:Media">nfo:Media</a> 
             ╰── <span class="emphasis"><em><a class="link" href="nfo-Audio.html" title="nfo:Audio">nfo:Audio</a></em></span> 
                 ├── nid3:ID3Audio 
@@ -48,28 +48,28 @@
 <a name="nfo-Audio.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-audioOffset"></a><h3>The <code class="literal">“nfo:audioOffset”</code> property</h3>
-<pre class="programlisting">“nfo:audioOffset”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“nfo:audioOffset”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>Specifies the start offset of this resource within a larger file, such as a single song within a recording of a radio broadcast or a CD rip.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-peakGain"></a><h3>The <code class="literal">“nfo:peakGain”</code> property</h3>
-<pre class="programlisting">“nfo:peakGain”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:peakGain”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Peak Gain of media</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-gain"></a><h3>The <code class="literal">“nfo:gain”</code> property</h3>
-<pre class="programlisting">“nfo:gain”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:gain”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Gain of media</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-rearChannels"></a><h3>The <code class="literal">“nfo:rearChannels”</code> property</h3>
-<pre class="programlisting">“nfo:rearChannels”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:rearChannels”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of rear channels.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -80,21 +80,21 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-averageAudioBitrate"></a><h3>The <code class="literal">“nfo:averageAudioBitrate”</code> property</h3>
-<pre class="programlisting">“nfo:averageAudioBitrate”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“nfo:averageAudioBitrate”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-sampleRate"></a><h3>The <code class="literal">“nfo:sampleRate”</code> property</h3>
-<pre class="programlisting">“nfo:sampleRate”          <a class="link" href="xsd-double.html" title="xsd:double">xsd:double</a></pre>
+<pre class="programlisting">“nfo:sampleRate”          http://www.w3.org/2001/XMLSchema#double</pre>
 <p>The amount of audio samples per second.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-frontChannels"></a><h3>The <code class="literal">“nfo:frontChannels”</code> property</h3>
-<pre class="programlisting">“nfo:frontChannels”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:frontChannels”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of front channels.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -105,7 +105,7 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-bitsPerSample"></a><h3>The <code class="literal">“nfo:bitsPerSample”</code> property</h3>
-<pre class="programlisting">“nfo:bitsPerSample”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:bitsPerSample”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Amount of bits in each audio sample.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -116,7 +116,7 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-sampleCount"></a><h3>The <code class="literal">“nfo:sampleCount”</code> property</h3>
-<pre class="programlisting">“nfo:sampleCount”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:sampleCount”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>The amount of samples in an audio clip.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -127,7 +127,7 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-lfeChannels"></a><h3>The <code class="literal">“nfo:lfeChannels”</code> property</h3>
-<pre class="programlisting">“nfo:lfeChannels”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:lfeChannels”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of Low Frequency Expansion (subwoofer) channels.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -138,7 +138,7 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-sideChannels"></a><h3>The <code class="literal">“nfo:sideChannels”</code> property</h3>
-<pre class="programlisting">“nfo:sideChannels”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:sideChannels”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of side channels</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 <div class="note">
@@ -149,14 +149,10 @@
 <hr>
 <div class="refsect2">
 <a name="nfo-Audio.nfo-channels"></a><h3>The <code class="literal">“nfo:channels”</code> property</h3>
-<pre class="programlisting">“nfo:channels”          <a class="link" href="xsd-integer.html" title="xsd:integer">xsd:integer</a></pre>
+<pre class="programlisting">“nfo:channels”          http://www.w3.org/2001/XMLSchema#integer</pre>
 <p>Number of channels. This property is to be used directly if no detailed information is necessary. Otherwise use more detailed subproperties.</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="nfo-Audio.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#" target="_top">NFO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

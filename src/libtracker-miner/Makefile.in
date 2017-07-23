@@ -93,18 +93,14 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@HAVE_LIBMEDIAART_TRUE@am__append_1 = \
-@HAVE_LIBMEDIAART_TRUE@	tracker-media-art.c                            \
-@HAVE_LIBMEDIAART_TRUE@	tracker-media-art.h
-
 # Using enable_gcov instead of have_unit_test because when doing a release
 #  we disable gcov but NOT the unit tests
-@ENABLE_GCOV_FALSE@am__append_2 = \
-@ENABLE_GCOV_FALSE@	-export-symbols-regex '^tracker_(data_provider|enumerator|miner|indexing_tree|directory_flags|filter_type|filter_policy|network_type|decorator)_.*'
+@ENABLE_GCOV_FALSE@am__append_1 = \
+@ENABLE_GCOV_FALSE@	-export-symbols-regex '^tracker_(data_provider|miner|indexing_tree|directory_flags|filter_type|filter_policy|network_type|decorator)_.*'
 
-@HAVE_INTROSPECTION_TRUE@am__append_3 = $(AM_CPPFLAGS)
-@HAVE_INTROSPECTION_TRUE@am__append_4 = TrackerMiner-$(TRACKER_API_VERSION).gir
-@HAVE_INTROSPECTION_TRUE@am__append_5 = $(gir_DATA) $(typelib_DATA)
+@HAVE_INTROSPECTION_TRUE@am__append_2 = $(AM_CPPFLAGS)
+@HAVE_INTROSPECTION_TRUE@am__append_3 = TrackerMiner-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@am__append_4 = $(gir_DATA) $(typelib_DATA)
 subdir = src/libtracker-miner
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
@@ -168,9 +164,9 @@ am__objects_1 = tracker-monitor.lo
 am__objects_2 =
 am__objects_3 = $(am__objects_1) $(am__objects_2) \
 	tracker-data-provider.lo tracker-decorator.lo \
-	tracker-decorator-fs.lo tracker-enumerator.lo \
-	tracker-indexing-tree.lo tracker-miner-enum-types.lo \
-	tracker-miner-object.lo tracker-miner-online.lo \
+	tracker-decorator-fs.lo tracker-indexing-tree.lo \
+	tracker-miner-enum-types.lo tracker-miner-object.lo \
+	tracker-miner-online.lo tracker-miner-proxy.lo \
 	tracker-miner-fs.lo
 am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am__objects_3)
@@ -186,24 +182,11 @@ libtracker_miner_@TRACKER_API_VERSION@_la_LINK = $(LIBTOOL) $(AM_V_lt) \
 	$(libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
 libtracker_miner_private_la_LIBADD =
-am__libtracker_miner_private_la_SOURCES_DIST = tracker-crawler.c \
-	tracker-crawler.h tracker-decorator-private.h \
-	tracker-file-data-provider.c tracker-file-data-provider.h \
-	tracker-file-enumerator.c tracker-file-enumerator.h \
-	tracker-file-notifier.h tracker-file-notifier.c \
-	tracker-file-system.h tracker-file-system.c \
-	tracker-priority-queue.h tracker-priority-queue.c \
-	tracker-task-pool.h tracker-task-pool.c \
-	tracker-sparql-buffer.h tracker-sparql-buffer.c \
-	tracker-thumbnailer.c tracker-thumbnailer.h tracker-utils.c \
-	tracker-utils.h tracker-media-art.c tracker-media-art.h
-@HAVE_LIBMEDIAART_TRUE@am__objects_4 = tracker-media-art.lo
-am__objects_5 = tracker-crawler.lo tracker-file-data-provider.lo \
-	tracker-file-enumerator.lo tracker-file-notifier.lo \
-	tracker-file-system.lo tracker-priority-queue.lo \
-	tracker-task-pool.lo tracker-sparql-buffer.lo \
-	tracker-thumbnailer.lo tracker-utils.lo $(am__objects_4)
-am_libtracker_miner_private_la_OBJECTS = $(am__objects_5)
+am__objects_4 = tracker-crawler.lo tracker-file-data-provider.lo \
+	tracker-file-notifier.lo tracker-file-system.lo \
+	tracker-priority-queue.lo tracker-task-pool.lo \
+	tracker-sparql-buffer.lo tracker-utils.lo
+am_libtracker_miner_private_la_OBJECTS = $(am__objects_4)
 libtracker_miner_private_la_OBJECTS =  \
 	$(am_libtracker_miner_private_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -243,7 +226,7 @@ am__v_CCLD_1 =
 SOURCES = $(libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES) \
 	$(libtracker_miner_private_la_SOURCES)
 DIST_SOURCES = $(libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES) \
-	$(am__libtracker_miner_private_la_SOURCES_DIST)
+	$(libtracker_miner_private_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -314,6 +297,7 @@ DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
+DTAGS_LDFLAGS = @DTAGS_LDFLAGS@
 DUMPBIN = @DUMPBIN@
 DVI_CFLAGS = @DVI_CFLAGS@
 DVI_LIBS = @DVI_LIBS@
@@ -327,12 +311,12 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-FIREFOX = @FIREFOX@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
 GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_PREFIX = @GLIB_PREFIX@
@@ -372,7 +356,7 @@ INTLTOOL_V_MERGE = @INTLTOOL_V_MERGE@
 INTLTOOL_V_MERGE_OPTIONS = @INTLTOOL_V_MERGE_OPTIONS@
 INTLTOOL__v_MERGE_ = @INTLTOOL__v_MERGE_@
 INTLTOOL__v_MERGE_0 = @INTLTOOL__v_MERGE_0@
-INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@ $(am__append_3)
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@ $(am__append_2)
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
 INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
 INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
@@ -400,8 +384,6 @@ LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
-LIBMEDIAART_CFLAGS = @LIBMEDIAART_CFLAGS@
-LIBMEDIAART_LIBS = @LIBMEDIAART_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
 LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
@@ -429,7 +411,6 @@ LIBTRACKER_FTS_CFLAGS = @LIBTRACKER_FTS_CFLAGS@
 LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
 LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
 LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
-LIBTRACKER_MINER_PC_REQUIRES = @LIBTRACKER_MINER_PC_REQUIRES@
 LIBTRACKER_REMOTE_CFLAGS = @LIBTRACKER_REMOTE_CFLAGS@
 LIBTRACKER_REMOTE_LIBS = @LIBTRACKER_REMOTE_LIBS@
 LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
@@ -449,8 +430,6 @@ LT_REVISION = @LT_REVISION@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
-MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
-MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
 MP3_CFLAGS = @MP3_CFLAGS@
 MP3_LIBS = @MP3_LIBS@
@@ -492,7 +471,6 @@ TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
 TAGLIB_LIBS = @TAGLIB_LIBS@
 TEXT_CFLAGS = @TEXT_CFLAGS@
 TEXT_LIBS = @TEXT_LIBS@
-THUNDERBIRD = @THUNDERBIRD@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
@@ -512,25 +490,11 @@ TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
 TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
-TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
-TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
-TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
-TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
-TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
-TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
-TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
-TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
-TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
-TRACKER_NAUTILUS_EXTENSION_LIBS = @TRACKER_NAUTILUS_EXTENSION_LIBS@
-TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
-TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
-TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
-TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
 TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -635,17 +599,25 @@ lib_LTLIBRARIES = libtracker-miner-@TRACKER_API_VERSION@.la
 noinst_LTLIBRARIES = libtracker-miner-private.la
 libtracker_minerdir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_minerincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-miner/
-private_sources = tracker-crawler.c tracker-crawler.h \
-	tracker-decorator-private.h tracker-file-data-provider.c \
-	tracker-file-data-provider.h tracker-file-enumerator.c \
-	tracker-file-enumerator.h tracker-file-notifier.h \
-	tracker-file-notifier.c tracker-file-system.h \
-	tracker-file-system.c tracker-priority-queue.h \
-	tracker-priority-queue.c tracker-task-pool.h \
-	tracker-task-pool.c tracker-sparql-buffer.h \
-	tracker-sparql-buffer.c tracker-thumbnailer.c \
-	tracker-thumbnailer.h tracker-utils.c tracker-utils.h \
-	$(am__append_1)
+private_sources = \
+	tracker-crawler.c                              \
+	tracker-crawler.h                              \
+	tracker-decorator-private.h                    \
+	tracker-file-data-provider.c		       \
+	tracker-file-data-provider.h		       \
+	tracker-file-notifier.h                        \
+	tracker-file-notifier.c                        \
+	tracker-file-system.h                          \
+	tracker-file-system.c                          \
+	tracker-priority-queue.h                       \
+	tracker-priority-queue.c                       \
+	tracker-task-pool.h                            \
+	tracker-task-pool.c                            \
+	tracker-sparql-buffer.h                        \
+	tracker-sparql-buffer.c                        \
+	tracker-utils.c                                \
+	tracker-utils.h
+
 miner_sources = \
 	$(libtracker_miner_monitor_sources)            \
 	$(libtracker_miner_monitor_headers)            \
@@ -655,8 +627,6 @@ miner_sources = \
 	tracker-decorator.h                            \
 	tracker-decorator-fs.c                         \
 	tracker-decorator-fs.h                         \
-	tracker-enumerator.c			       \
-	tracker-enumerator.h			       \
 	tracker-indexing-tree.c                        \
 	tracker-indexing-tree.h			       \
 	tracker-miner-enum-types.c                     \
@@ -665,6 +635,8 @@ miner_sources = \
 	tracker-miner-object.h                         \
 	tracker-miner-online.c                         \
 	tracker-miner-online.h                         \
+	tracker-miner-proxy.c                          \
+	tracker-miner-proxy.h                          \
 	tracker-miner-fs.c                             \
 	tracker-miner-fs.h
 
@@ -678,17 +650,18 @@ libtracker_minerinclude_HEADERS = \
 	tracker-data-provider.h                        \
 	tracker-decorator.h                            \
 	tracker-decorator-fs.h                         \
-	tracker-enumerator.h			       \
 	tracker-indexing-tree.h                        \
 	tracker-miner.h                                \
 	tracker-miner-enums.h                          \
 	tracker-miner-enum-types.h                     \
 	tracker-miner-object.h                         \
 	tracker-miner-online.h                         \
+	tracker-miner-proxy.h                          \
 	tracker-miner-fs.h
 
-libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS = -version-info \
-	$(LT_CURRENT):$(LT_REVISION):$(LT_AGE) $(am__append_2)
+libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS = $(DTAGS_LDFLAGS) \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
+	$(am__append_1)
 libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD = \
 	libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
@@ -702,7 +675,7 @@ libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD = \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tracker-miner-$(TRACKER_API_VERSION).pc
 CLEANFILES = tracker-miner-$(TRACKER_API_VERSION).pc $(BUILT_SOURCES) \
-	$(am__append_5)
+	$(am__append_4)
 
 # Vala bindings
 vapidir = $(datadir)/vala/vapi
@@ -717,8 +690,8 @@ BUILT_SOURCES = \
 
 EXTRA_DIST = tracker-miner-enum-types.c.template \
 	tracker-miner-enum-types.h.template tracker-miner.vapi \
-	tracker-miner.deps $(config_DATA)
-INTROSPECTION_GIRS = $(am__append_4)
+	tracker-miner.deps $(config_DATA) meson.build
+INTROSPECTION_GIRS = $(am__append_3)
 INTROSPECTION_SCANNER_ARGS = \
 	-I $(top_srcdir)/src \
 	-D TRACKER_COMPILATION \
@@ -727,7 +700,7 @@ INTROSPECTION_SCANNER_ARGS = \
 	--symbol-prefix=tracker \
 	--warn-all
 
-INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)/src/libtracker-sparql
+INTROSPECTION_COMPILER_ARGS = --includedir=$(top_builddir)/src/libtracker-sparql-backend
 @HAVE_INTROSPECTION_TRUE@introspection_sources = \
 @HAVE_INTROSPECTION_TRUE@	$(filter-out $(libtracker_miner_monitor_sources) \
 @HAVE_INTROSPECTION_TRUE@	             $(libtracker_miner_monitor_headers)  \
@@ -736,7 +709,7 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)/src/libtracker-sparql
 
 @HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_API_VERSION_UNDERSCORES@_gir_INCLUDES = GObject-2.0 GModule-2.0 Gio-2.0
 @HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_API_VERSION_UNDERSCORES@_gir_SCANNERFLAGS = \
-@HAVE_INTROSPECTION_TRUE@	--include-uninstalled=$(top_srcdir)/src/libtracker-sparql/Tracker-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@	--include-uninstalled=$(top_builddir)/src/libtracker-sparql-backend/Tracker-$(TRACKER_API_VERSION).gir
 
 @HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_API_VERSION_UNDERSCORES@_gir_CFLAGS = $(INCLUDES)
 @HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_API_VERSION_UNDERSCORES@_gir_NAMESPACE = "TrackerMiner"
@@ -850,22 +823,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-provider.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-decorator-fs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-decorator.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-enumerator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-data-provider.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-enumerator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-notifier.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-system.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-indexing-tree.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-media-art.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-enum-types.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-fs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-object.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-online.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-proxy.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-monitor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-priority-queue.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sparql-buffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-task-pool.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-thumbnailer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
 
 .c.o:

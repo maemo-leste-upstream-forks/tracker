@@ -5,7 +5,7 @@
 <title>Querying the Store: Tracker SPARQL Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
-<link rel="up" href="tracker-examples.html" title="Part III. Examples">
+<link rel="up" href="tracker-examples.html" title="Part V. Examples">
 <link rel="prev" href="tracker-examples-builder.html" title="SPARQL query builder">
 <link rel="next" href="tracker-examples-writeonly.html" title="Updating the Store">
 <meta name="generator" content="GTK-Doc V1.25 (XML mode)">
@@ -29,7 +29,7 @@
       value in the store, both the general connection (with
       <code class="function"><a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()">tracker_sparql_connection_get</a></code>)
       or a specific direct-access connection (with
-      <code class="function"><a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" title="tracker_sparql_connection_get_direct ()">tracker_sparql_connection_get_direct</a></code>)
+      <code class="function">tracker_sparql_connection_get_direct</code>)
       may be acquired. Note that in the latter case, every non read-only operation will result
       in an error being thrown by the TrackerSparqlConnection.
     </p>
@@ -72,7 +72,7 @@ int main (int argc, const char **argv)
    * to use a connection with only direct-access setup. The NULL
    * represents a possible GCancellable.
    */
-  connection = <code class="function"><a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" title="tracker_sparql_connection_get_direct ()">tracker_sparql_connection_get_direct</a></code> (NULL, &amp;error);
+  connection = <code class="function">tracker_sparql_connection_get_direct</code> (NULL, &amp;error);
   if (!connection) {
     g_printerr ("Couldn't obtain a direct connection to the Tracker store: %s",
                 error ? error-&gt;message : "unknown error");

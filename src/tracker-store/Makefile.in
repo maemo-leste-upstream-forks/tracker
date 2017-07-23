@@ -114,7 +114,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(libexecdir)" \
 	"$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(configdir)" \
-	"$(DESTDIR)$(servicedir)" "$(DESTDIR)$(systemd_userdir)"
+	"$(DESTDIR)$(domain_ontologiesdir)" "$(DESTDIR)$(servicedir)" \
+	"$(DESTDIR)$(systemd_userdir)"
 PROGRAMS = $(libexec_PROGRAMS)
 am_tracker_store_OBJECTS = tracker-backup.$(OBJEXT) \
 	tracker-config.$(OBJEXT) tracker-dbus.$(OBJEXT) \
@@ -209,8 +210,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-DATA = $(autostart_DATA) $(config_DATA) $(service_DATA) \
-	$(systemd_user_DATA)
+DATA = $(autostart_DATA) $(config_DATA) $(domain_ontologies_DATA) \
+	$(service_DATA) $(systemd_user_DATA)
 HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -277,6 +278,7 @@ DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
+DTAGS_LDFLAGS = @DTAGS_LDFLAGS@
 DUMPBIN = @DUMPBIN@
 DVI_CFLAGS = @DVI_CFLAGS@
 DVI_LIBS = @DVI_LIBS@
@@ -290,12 +292,12 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-FIREFOX = @FIREFOX@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDBUS_CODEGEN = @GDBUS_CODEGEN@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
 GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_PREFIX = @GLIB_PREFIX@
@@ -363,8 +365,6 @@ LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
-LIBMEDIAART_CFLAGS = @LIBMEDIAART_CFLAGS@
-LIBMEDIAART_LIBS = @LIBMEDIAART_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBOSINFO_CFLAGS = @LIBOSINFO_CFLAGS@
 LIBOSINFO_LIBS = @LIBOSINFO_LIBS@
@@ -392,7 +392,6 @@ LIBTRACKER_FTS_CFLAGS = @LIBTRACKER_FTS_CFLAGS@
 LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
 LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
 LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
-LIBTRACKER_MINER_PC_REQUIRES = @LIBTRACKER_MINER_PC_REQUIRES@
 LIBTRACKER_REMOTE_CFLAGS = @LIBTRACKER_REMOTE_CFLAGS@
 LIBTRACKER_REMOTE_LIBS = @LIBTRACKER_REMOTE_LIBS@
 LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
@@ -412,8 +411,6 @@ LT_REVISION = @LT_REVISION@
 LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
-MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
-MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
 MP3_CFLAGS = @MP3_CFLAGS@
 MP3_LIBS = @MP3_LIBS@
@@ -455,7 +452,6 @@ TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
 TAGLIB_LIBS = @TAGLIB_LIBS@
 TEXT_CFLAGS = @TEXT_CFLAGS@
 TEXT_LIBS = @TEXT_LIBS@
-THUNDERBIRD = @THUNDERBIRD@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
@@ -475,25 +471,11 @@ TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_APPS_CFLAGS = @TRACKER_MINER_APPS_CFLAGS@
 TRACKER_MINER_APPS_LIBS = @TRACKER_MINER_APPS_LIBS@
-TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
-TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
-TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
-TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
-TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
-TRACKER_MINER_USER_GUIDES_CFLAGS = @TRACKER_MINER_USER_GUIDES_CFLAGS@
-TRACKER_MINER_USER_GUIDES_LIBS = @TRACKER_MINER_USER_GUIDES_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
-TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
-TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
-TRACKER_NAUTILUS_EXTENSION_LIBS = @TRACKER_NAUTILUS_EXTENSION_LIBS@
-TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
-TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
-TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
-TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
 TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
 TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -624,7 +606,8 @@ EXTRA_DIST = tracker-config.vapi tracker-events.vapi \
 	$(autostart_DATA:.desktop=.desktop.in.in) \
 	$(service_DATA:.service=.service.in) \
 	$(systemd_user_DATA:.service=.service.in) $(config_DATA) \
-	$(gsettings_SCHEMAS:.xml=.xml.in) $(man_MANS)
+	$(gsettings_SCHEMAS:.xml=.xml.in) $(man_MANS) \
+	$(domain_ontologies_DATA) meson.build
 
 # DBus interfaces (XML files) and services
 configdir = $(datadir)/tracker
@@ -638,6 +621,8 @@ servicedir = $(DBUS_SERVICES_DIR)
 service_DATA = org.freedesktop.Tracker1.service
 systemd_userdir = $(prefix)/lib/systemd/user
 systemd_user_DATA = tracker-store.service
+domain_ontologiesdir = $(datadir)/tracker/domain-ontologies
+domain_ontologies_DATA = default.rule
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = tracker-store.desktop
 
@@ -880,6 +865,27 @@ uninstall-configDATA:
 	@list='$(config_DATA)'; test -n "$(configdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	dir='$(DESTDIR)$(configdir)'; $(am__uninstall_files_from_dir)
+install-domain_ontologiesDATA: $(domain_ontologies_DATA)
+	@$(NORMAL_INSTALL)
+	@list='$(domain_ontologies_DATA)'; test -n "$(domain_ontologiesdir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(domain_ontologiesdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(domain_ontologiesdir)" || exit 1; \
+	fi; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(domain_ontologiesdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(domain_ontologiesdir)" || exit $$?; \
+	done
+
+uninstall-domain_ontologiesDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(domain_ontologies_DATA)'; test -n "$(domain_ontologiesdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(domain_ontologiesdir)'; $(am__uninstall_files_from_dir)
 install-serviceDATA: $(service_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(service_DATA)'; test -n "$(servicedir)" || list=; \
@@ -1010,7 +1016,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(PROGRAMS) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(configdir)" "$(DESTDIR)$(servicedir)" "$(DESTDIR)$(systemd_userdir)"; do \
+	for dir in "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(configdir)" "$(DESTDIR)$(domain_ontologiesdir)" "$(DESTDIR)$(servicedir)" "$(DESTDIR)$(systemd_userdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -1088,7 +1094,8 @@ info: info-am
 info-am:
 
 install-data-am: install-autostartDATA install-configDATA \
-	install-serviceDATA install-systemd_userDATA
+	install-domain_ontologiesDATA install-serviceDATA \
+	install-systemd_userDATA
 
 install-dvi: install-dvi-am
 
@@ -1135,8 +1142,8 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-autostartDATA uninstall-configDATA \
-	uninstall-libexecPROGRAMS uninstall-serviceDATA \
-	uninstall-systemd_userDATA
+	uninstall-domain_ontologiesDATA uninstall-libexecPROGRAMS \
+	uninstall-serviceDATA uninstall-systemd_userDATA
 
 .MAKE: all check install install-am install-strip
 
@@ -1145,18 +1152,19 @@ uninstall-am: uninstall-autostartDATA uninstall-configDATA \
 	ctags-am distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-autostartDATA \
-	install-configDATA install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am \
-	install-libexecPROGRAMS install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-serviceDATA install-strip \
+	install-configDATA install-data install-data-am \
+	install-domain_ontologiesDATA install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-libexecPROGRAMS \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-serviceDATA install-strip \
 	install-systemd_userDATA installcheck installcheck-am \
 	installdirs maintainer-clean maintainer-clean-generic \
 	mostlyclean mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
 	uninstall-am uninstall-autostartDATA uninstall-configDATA \
-	uninstall-libexecPROGRAMS uninstall-serviceDATA \
-	uninstall-systemd_userDATA
+	uninstall-domain_ontologiesDATA uninstall-libexecPROGRAMS \
+	uninstall-serviceDATA uninstall-systemd_userDATA
 
 .PRECIOUS: Makefile
 

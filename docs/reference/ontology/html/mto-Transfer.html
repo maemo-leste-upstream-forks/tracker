@@ -35,8 +35,8 @@
 </div>
 <div class="refsect1">
 <a name="mto-Transfer.hierarchy"></a><h2>Class hierarchy</h2>
-<pre class="screen">    <a class="link" href="rdfs-Resource.html" title="rdfs:Resource">rdfs:Resource</a> 
-    ╰── <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
+<pre class="screen">    http://www.w3.org/2000/01/rdf-schema#Resource 
+        <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> 
         ╰── <span class="emphasis"><em><a class="link" href="mto-Transfer.html" title="mto:Transfer">mto:Transfer</a></em></span> 
             ├── <a class="link" href="mto-UploadTransfer.html" title="mto:UploadTransfer">mto:UploadTransfer</a> 
             ├── <a class="link" href="mto-DownloadTransfer.html" title="mto:DownloadTransfer">mto:DownloadTransfer</a> 
@@ -47,7 +47,7 @@
 <a name="mto-Transfer.properties"></a><h2>Properties</h2>
 <div class="refsect2">
 <a name="mto-Transfer.mto-transferPrivacyLevel"></a><h3>The <code class="literal">“mto:transferPrivacyLevel”</code> property</h3>
-<pre class="programlisting">“mto:transferPrivacyLevel”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“mto:transferPrivacyLevel”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>It will contain an string with the privacy level in the service. The exact string and its interpretation is service specific</p>
 <p>Number of possible elements per resource (Cardinality): Unlimited</p>
 </div>
@@ -68,7 +68,7 @@
 <hr>
 <div class="refsect2">
 <a name="mto-Transfer.mto-account"></a><h3>The <code class="literal">“mto:account”</code> property</h3>
-<pre class="programlisting">“mto:account”          <a class="link" href="xsd-string.html" title="xsd:string">xsd:string</a></pre>
+<pre class="programlisting">“mto:account”          http://www.w3.org/2001/XMLSchema#string</pre>
 <p>A reference to the account to which the web upload is to be done. This should at least contain information about the account and the service which is being used. For instance, Google/YouTube or Google/Picassa</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -82,7 +82,7 @@
 <hr>
 <div class="refsect2">
 <a name="mto-Transfer.mto-created"></a><h3>The <code class="literal">“mto:created”</code> property</h3>
-<pre class="programlisting">“mto:created”          <a class="link" href="xsd-dateTime.html" title="xsd:dateTime">xsd:dateTime</a></pre>
+<pre class="programlisting">“mto:created”          http://www.w3.org/2001/XMLSchema#dateTime</pre>
 <p>The date and time when the transfer was created</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
@@ -100,10 +100,6 @@
 <p>Captures the state of the transfer. This is derived from the cumulative states of the transfer elements of this transfer. Applications are responsible to keep it up-to-date</p>
 <p>Number of possible elements per resource (Cardinality): 1</p>
 </div>
-</div>
-<div class="refsect1">
-<a name="mto-Transfer.see-also"></a><h2>See also</h2>
-<p>The upstream documentation for the <a class="ulink" href="http://www.tracker-project.org/temp/mto#" target="_top">MTO ontology</a>.</p>
 </div>
 </div>
 <div class="footer">

@@ -22,10 +22,11 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include "libtracker-sparql/tracker-sparql.h"
-#include <gio/gio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "libtracker-common/tracker-domain-ontology.h"
+#include "libtracker-sparql/tracker-sparql.h"
+#include <gio/gio.h>
 #include "libtracker-direct/tracker-direct.h"
 #include "libtracker-bus/tracker-bus.h"
 #include "libtracker-remote/tracker-remote.h"
@@ -44,8 +45,8 @@ typedef struct _TrackerSparqlBackendPrivate TrackerSparqlBackendPrivate;
 
 #define TRACKER_SPARQL_BACKEND_TYPE_BACKEND (tracker_sparql_backend_backend_get_type ())
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
-#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 #define _g_free0(var) (var = (g_free (var), NULL))
+#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 typedef struct _TrackerSparqlBackendQueryAsyncData TrackerSparqlBackendQueryAsyncData;
 #define _g_variant_unref0(var) ((var == NULL) ? NULL : (var = (g_variant_unref (var), NULL)))
 typedef struct _TrackerSparqlBackendUpdateAsyncData TrackerSparqlBackendUpdateAsyncData;
@@ -61,7 +62,7 @@ typedef struct _Block2Data Block2Data;
 #define _g_source_unref0(var) ((var == NULL) ? NULL : (var = (g_source_unref (var), NULL)))
 typedef struct _TrackerSparqlBackendGetInternalAsyncData TrackerSparqlBackendGetInternalAsyncData;
 typedef struct _TrackerSparqlConnectionGetAsyncData TrackerSparqlConnectionGetAsyncData;
-typedef struct _TrackerSparqlConnectionGetDirectAsyncData TrackerSparqlConnectionGetDirectAsyncData;
+typedef struct _TrackerSparqlConnectionLocalNewAsyncData TrackerSparqlConnectionLocalNewAsyncData;
 
 struct _TrackerSparqlBackend {
 	TrackerSparqlConnection parent_instance;
@@ -76,7 +77,6 @@ struct _TrackerSparqlBackendPrivate {
 	gboolean initialized;
 	TrackerSparqlConnection* direct;
 	TrackerSparqlConnection* bus;
-	GBusType bus_type;
 };
 
 typedef enum  {
@@ -282,26 +282,35 @@ struct _TrackerSparqlConnectionGetAsyncData {
 	GError * _inner_error_;
 };
 
-struct _TrackerSparqlConnectionGetDirectAsyncData {
+struct _TrackerSparqlConnectionLocalNewAsyncData {
 	int _state_;
 	GObject* _source_object_;
 	GAsyncResult* _res_;
 	GTask* _async_result;
+	TrackerSparqlConnectionFlags flags;
+	GFile* store;
+	GFile* journal;
+	GFile* ontology;
 	GCancellable* cancellable;
 	TrackerSparqlConnection* result;
-	TrackerSparqlConnection* _tmp0_;
-	GCancellable* _tmp1_;
-	TrackerSparqlConnection* _tmp2_;
-	TrackerSparqlConnection* _tmp3_;
+	TrackerDirectConnection* conn;
+	TrackerSparqlConnectionFlags _tmp0_;
+	GFile* _tmp1_;
+	GFile* _tmp2_;
+	GFile* _tmp3_;
+	TrackerDirectConnection* _tmp4_;
+	GCancellable* _tmp5_;
 	GError * _inner_error_;
 };
 
 
+extern gchar* domain_name;
+gchar* domain_name = NULL;
+extern TrackerDomainOntology* domain_ontology;
+TrackerDomainOntology* domain_ontology = NULL;
 static gpointer tracker_sparql_backend_parent_class = NULL;
 static TrackerSparqlConnection* tracker_sparql_backend_singleton;
 static TrackerSparqlConnection* tracker_sparql_backend_singleton = NULL;
-static gboolean tracker_sparql_backend_log_initialized;
-static gboolean tracker_sparql_backend_log_initialized = FALSE;
 static GMutex tracker_sparql_backend_door;
 static GMutex tracker_sparql_backend_door = {0};
 
@@ -313,7 +322,6 @@ enum  {
 static GType tracker_sparql_backend_backend_get_type (void) G_GNUC_CONST G_GNUC_UNUSED;
 TrackerSparqlBackend* tracker_sparql_backend_new (GError** error);
 TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GError** error);
-static void tracker_sparql_backend_load_env (TrackerSparqlBackend* self);
 static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GError** error);
 static void tracker_sparql_backend_real_dispose (GObject* base);
 static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
@@ -345,8 +353,9 @@ static void tracker_sparql_backend_real_statistics_async_data_free (gpointer _da
 static void tracker_sparql_backend_real_statistics_async (TrackerSparqlConnection* base, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBackendStatisticsAsyncData* _data_);
 static void tracker_sparql_backend_statistics_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
+static TrackerNamespaceManager* tracker_sparql_backend_real_get_namespace_manager (TrackerSparqlConnection* base);
+static TrackerSparqlConnection* tracker_sparql_backend_create_readonly_direct (TrackerSparqlBackend* self, GError** error);
 static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancellable, GError** error);
-static void tracker_sparql_backend_log_init (void);
 TrackerSparqlConnection* tracker_sparql_backend_get_internal (GCancellable* cancellable, GError** error);
 static Block1Data* block1_data_ref (Block1Data* _data1_);
 static void block1_data_unref (void * _userdata_);
@@ -362,8 +371,6 @@ static gboolean __lambda4_ (Block2Data* _data2_, GIOSchedulerJob* job);
 static gboolean __lambda5_ (Block2Data* _data2_);
 static gboolean ___lambda5__gsource_func (gpointer self);
 static gboolean ___lambda4__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self);
-static void tracker_sparql_backend_remove_log_handler (const gchar* log_domain, GLogLevelFlags log_level, const gchar* message);
-static void _tracker_sparql_backend_remove_log_handler_glog_func (const gchar* log_domain, GLogLevelFlags log_levels, const gchar* message, gpointer self);
 static void tracker_sparql_backend_finalize (GObject * obj);
 static void tracker_sparql_connection_get_async_data_free (gpointer _data);
 void tracker_sparql_connection_get_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
@@ -371,13 +378,14 @@ TrackerSparqlConnection* tracker_sparql_connection_get_finish (GAsyncResult* _re
 static gboolean tracker_sparql_connection_get_async_co (TrackerSparqlConnectionGetAsyncData* _data_);
 static void tracker_sparql_connection_get_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
 TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellable, GError** error);
-static void tracker_sparql_connection_get_direct_async_data_free (gpointer _data);
-void tracker_sparql_connection_get_direct_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResult* _res_, GError** error);
-static gboolean tracker_sparql_connection_get_direct_async_co (TrackerSparqlConnectionGetDirectAsyncData* _data_);
-static void tracker_sparql_connection_get_direct_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
-TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* cancellable, GError** error);
 TrackerSparqlConnection* tracker_sparql_connection_remote_new (const gchar* url_base);
+TrackerSparqlConnection* tracker_sparql_connection_local_new (TrackerSparqlConnectionFlags flags, GFile* store, GFile* journal, GFile* ontology, GCancellable* cancellable, GError** error);
+static void tracker_sparql_connection_local_new_async_data_free (gpointer _data);
+void tracker_sparql_connection_local_new_async (TrackerSparqlConnectionFlags flags, GFile* store, GFile* journal, GFile* ontology, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
+TrackerSparqlConnection* tracker_sparql_connection_local_new_finish (GAsyncResult* _res_, GError** error);
+static gboolean tracker_sparql_connection_local_new_async_co (TrackerSparqlConnectionLocalNewAsyncData* _data_);
+void tracker_sparql_connection_set_domain (const gchar* domain);
+gchar* tracker_sparql_connection_get_domain (void);
 
 
 static GType tracker_sparql_backend_backend_get_type (void) {
@@ -395,225 +403,115 @@ static GType tracker_sparql_backend_backend_get_type (void) {
 TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GError** error) {
 	TrackerSparqlBackend * self = NULL;
 	GError * _inner_error_ = NULL;
-#line 31 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 33 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) tracker_sparql_connection_construct (object_type);
-#line 401 "tracker-backend.c"
+#line 409 "tracker-backend.c"
 	{
-		GDBusConnection* bus = NULL;
-		GBusType _tmp0_;
-		GDBusConnection* _tmp1_;
-		GDBusMessage* msg = NULL;
-		GDBusMessage* _tmp2_;
-		GDBusMessage* _tmp3_ = NULL;
-		GDBusConnection* _tmp4_;
-		GDBusMessage* _tmp5_;
-		GDBusMessage* _tmp6_;
-		GDBusMessage* _tmp7_;
-		GDBusMessage* _tmp8_;
-#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		tracker_sparql_backend_load_env (self);
-#line 37 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:37: Waiting for service to become available...");
-#line 41 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp0_ = self->priv->bus_type;
-#line 41 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp1_ = g_bus_get_sync (_tmp0_, NULL, &_inner_error_);
-#line 41 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		bus = _tmp1_;
-#line 41 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		TrackerDomainOntology* _tmp0_ = NULL;
+		const gchar* _tmp1_;
+		TrackerDomainOntology* _tmp2_;
+		TrackerDomainOntology* _tmp3_;
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp1_ = domain_name;
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp2_ = tracker_domain_ontology_new (_tmp1_, NULL, &_inner_error_);
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp0_ = _tmp2_;
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 426 "tracker-backend.c"
+#line 423 "tracker-backend.c"
 			goto __catch0_g_error;
 		}
-#line 42 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp2_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STATUS, TRACKER_DBUS_INTERFACE_STATUS, "Wait");
-#line 42 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		msg = _tmp2_;
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp4_ = bus;
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp5_ = msg;
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp6_ = g_dbus_connection_send_message_with_reply_sync (_tmp4_, _tmp5_, 0, G_MAXINT, NULL, NULL, &_inner_error_);
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp3_ = _tmp6_;
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (msg);
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (bus);
-#line 447 "tracker-backend.c"
-			goto __catch0_g_error;
-		}
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp7_ = _tmp3_;
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp3_ = NULL;
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp8_ = _tmp7_;
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_dbus_message_to_gerror (_tmp8_, &_inner_error_);
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_g_object_unref0 (_tmp8_);
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp3_);
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (msg);
-#line 43 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (bus);
-#line 468 "tracker-backend.c"
-			goto __catch0_g_error;
-		}
-#line 45 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:45: Service is ready");
-#line 47 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:47: Constructing connection");
-#line 48 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp3_ = _tmp0_;
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp0_ = NULL;
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_g_object_unref0 (domain_ontology);
+#line 35 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		domain_ontology = _tmp3_;
+#line 36 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		tracker_sparql_backend_load_plugins (self, &_inner_error_);
-#line 48 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 36 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 48 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp3_);
-#line 48 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (msg);
-#line 48 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (bus);
-#line 485 "tracker-backend.c"
+#line 36 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp0_);
+#line 440 "tracker-backend.c"
 			goto __catch0_g_error;
 		}
-#line 49 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:49: Backend is ready");
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_g_object_unref0 (_tmp3_);
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_g_object_unref0 (msg);
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_g_object_unref0 (bus);
-#line 496 "tracker-backend.c"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_g_object_unref0 (_tmp0_);
+#line 445 "tracker-backend.c"
 	}
 	goto __finally0;
 	__catch0_g_error:
 	{
 		GError* e = NULL;
+		GError* _tmp4_;
+		const gchar* _tmp5_;
+		gchar* _tmp6_;
+		gchar* _tmp7_;
+		GError* _tmp8_;
 		GError* _tmp9_;
-		const gchar* _tmp10_;
-		GError* _tmp11_;
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e = _inner_error_;
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp9_ = e;
-#line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp10_ = _tmp9_->message;
-#line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp11_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp10_);
-#line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_inner_error_ = _tmp11_;
-#line 51 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp4_ = e;
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp5_ = _tmp4_->message;
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp6_ = g_strconcat ("Failed to load SPARQL backend: ", _tmp5_, NULL);
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp7_ = _tmp6_;
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp8_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp7_);
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp9_ = _tmp8_;
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_g_free0 (_tmp7_);
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_inner_error_ = _tmp9_;
+#line 38 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e);
-#line 519 "tracker-backend.c"
+#line 479 "tracker-backend.c"
 		goto __finally0;
 	}
 	__finally0:
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (self);
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 533 "tracker-backend.c"
+#line 493 "tracker-backend.c"
 		} else {
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 32 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 34 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 541 "tracker-backend.c"
+#line 501 "tracker-backend.c"
 		}
 	}
-#line 54 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 41 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self->priv->initialized = TRUE;
-#line 31 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 33 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self;
-#line 548 "tracker-backend.c"
+#line 508 "tracker-backend.c"
 }
 
 
 TrackerSparqlBackend* tracker_sparql_backend_new (GError** error) {
-#line 31 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 33 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return tracker_sparql_backend_construct (TRACKER_SPARQL_TYPE_BACKEND, error);
-#line 555 "tracker-backend.c"
-}
-
-
-static void tracker_sparql_backend_load_env (TrackerSparqlBackend* self) {
-	gchar* env_bus_type = NULL;
-	const gchar* _tmp0_;
-	gchar* _tmp1_;
-	const gchar* _tmp2_;
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_return_if_fail (self != NULL);
-#line 58 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp0_ = g_getenv ("TRACKER_BUS_TYPE");
-#line 58 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp1_ = g_strdup (_tmp0_);
-#line 58 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	env_bus_type = _tmp1_;
-#line 60 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp2_ = env_bus_type;
-#line 60 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_tmp2_ != NULL) {
-#line 576 "tracker-backend.c"
-		const gchar* _tmp3_;
-		gint _tmp4_;
-#line 61 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp3_ = env_bus_type;
-#line 61 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp4_ = g_ascii_strcasecmp (_tmp3_, "system");
-#line 61 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if (_tmp4_ == 0) {
-#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			self->priv->bus_type = G_BUS_TYPE_SYSTEM;
-#line 63 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_debug ("tracker-backend.vala:63: Using bus = 'SYSTEM'");
-#line 589 "tracker-backend.c"
-		} else {
-			const gchar* _tmp5_;
-			gint _tmp6_;
-#line 64 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp5_ = env_bus_type;
-#line 64 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp6_ = g_ascii_strcasecmp (_tmp5_, "session");
-#line 64 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			if (_tmp6_ == 0) {
-#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				self->priv->bus_type = G_BUS_TYPE_SESSION;
-#line 66 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_debug ("tracker-backend.vala:66: Using bus = 'SESSION'");
-#line 603 "tracker-backend.c"
-			} else {
-				const gchar* _tmp7_;
-#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp7_ = env_bus_type;
-#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_warning ("tracker-backend.vala:68: Environment variable TRACKER_BUS_TYPE set to " \
-"unknown value '%s'", _tmp7_);
-#line 610 "tracker-backend.c"
-			}
-		}
-	}
-#line 57 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_g_free0 (env_bus_type);
-#line 616 "tracker-backend.c"
+#line 515 "tracker-backend.c"
 }
 
 
@@ -621,46 +519,46 @@ static void tracker_sparql_backend_real_dispose (GObject* base) {
 	TrackerSparqlBackend * self;
 	gboolean _tmp0_;
 	GError * _inner_error_ = NULL;
-#line 73 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 44 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 75 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 46 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = self->priv->initialized;
-#line 75 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 46 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_) {
-#line 76 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 47 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_mutex_lock (&tracker_sparql_backend_door);
-#line 632 "tracker-backend.c"
+#line 531 "tracker-backend.c"
 		{
 			TrackerSparqlConnection* _tmp1_;
-#line 83 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 54 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp1_ = tracker_sparql_backend_singleton;
-#line 83 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 54 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp1_ == G_TYPE_CHECK_INSTANCE_CAST (self, TRACKER_SPARQL_TYPE_CONNECTION, TrackerSparqlConnection)) {
-#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 55 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				tracker_sparql_backend_singleton = NULL;
-#line 641 "tracker-backend.c"
+#line 540 "tracker-backend.c"
 			}
 		}
 		__finally1:
 		{
-#line 87 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 58 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_mutex_unlock (&tracker_sparql_backend_door);
-#line 648 "tracker-backend.c"
+#line 547 "tracker-backend.c"
 		}
-#line 78 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 49 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 78 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 49 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 78 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 49 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 78 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 49 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 658 "tracker-backend.c"
+#line 557 "tracker-backend.c"
 		}
 	}
-#line 91 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 62 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (tracker_sparql_backend_parent_class)->dispose ((GObject*) G_TYPE_CHECK_INSTANCE_CAST (self, TRACKER_SPARQL_TYPE_CONNECTION, TrackerSparqlConnection));
-#line 663 "tracker-backend.c"
+#line 562 "tracker-backend.c"
 }
 
 
@@ -670,54 +568,54 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 	const gchar* _tmp0_;
 	TrackerSparqlConnection* _tmp1_;
 	GError * _inner_error_ = NULL;
-#line 94 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 94 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 65 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 95 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 66 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = sparql;
-#line 95 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:95: %s(): '%s'", "Tracker.Sparql.Backend.query", _tmp0_);
-#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 66 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s(): '%s'", "Tracker.Sparql.Backend.query", _tmp0_);
+#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = self->priv->direct;
-#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 67 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp1_ != NULL) {
-#line 685 "tracker-backend.c"
+#line 584 "tracker-backend.c"
 		TrackerSparqlCursor* _tmp2_ = NULL;
 		TrackerSparqlConnection* _tmp3_;
 		const gchar* _tmp4_;
 		GCancellable* _tmp5_;
 		TrackerSparqlCursor* _tmp6_;
 		TrackerSparqlCursor* _tmp7_;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = self->priv->direct;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = sparql;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = cancellable;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp6_ = tracker_sparql_connection_query (_tmp3_, _tmp4_, _tmp5_, &_inner_error_);
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = _tmp6_;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 708 "tracker-backend.c"
+#line 607 "tracker-backend.c"
 		}
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp7_ = _tmp2_;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = NULL;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp7_;
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp2_);
-#line 97 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 68 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
-#line 720 "tracker-backend.c"
+#line 619 "tracker-backend.c"
 	} else {
 		TrackerSparqlCursor* _tmp8_ = NULL;
 		TrackerSparqlConnection* _tmp9_;
@@ -725,35 +623,35 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 		GCancellable* _tmp11_;
 		TrackerSparqlCursor* _tmp12_;
 		TrackerSparqlCursor* _tmp13_;
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp9_ = self->priv->bus;
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = sparql;
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp11_ = cancellable;
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp12_ = tracker_sparql_connection_query (_tmp9_, _tmp10_, _tmp11_, &_inner_error_);
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = _tmp12_;
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 744 "tracker-backend.c"
+#line 643 "tracker-backend.c"
 		}
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp13_ = _tmp8_;
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = NULL;
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp13_;
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp8_);
-#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 70 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
-#line 756 "tracker-backend.c"
+#line 655 "tracker-backend.c"
 	}
 }
 
@@ -761,24 +659,24 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 static void tracker_sparql_backend_real_query_async_data_free (gpointer _data) {
 	TrackerSparqlBackendQueryAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->result);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendQueryAsyncData, _data_);
-#line 774 "tracker-backend.c"
+#line 673 "tracker-backend.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_object_ref (self) : NULL;
-#line 781 "tracker-backend.c"
+#line 680 "tracker-backend.c"
 }
 
 
@@ -790,209 +688,209 @@ static void tracker_sparql_backend_real_query_async (TrackerSparqlConnection* ba
 	gchar* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendQueryAsyncData);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_backend_real_query_async_data_free);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = cancellable;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp4_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_query_async_co (_data_);
-#line 823 "tracker-backend.c"
+#line 722 "tracker-backend.c"
 }
 
 
 static TrackerSparqlCursor* tracker_sparql_backend_real_query_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerSparqlBackendQueryAsyncData* _data_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (NULL == _data_) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 836 "tracker-backend.c"
+#line 735 "tracker-backend.c"
 	}
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 844 "tracker-backend.c"
+#line 743 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_query_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendQueryAsyncData* _data_;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_query_async_co (_data_);
-#line 858 "tracker-backend.c"
+#line 757 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_query_async_co (TrackerSparqlBackendQueryAsyncData* _data_) {
-#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 74 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 74 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 867 "tracker-backend.c"
+#line 766 "tracker-backend.c"
 		goto _state_0;
-#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 74 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 871 "tracker-backend.c"
+#line 770 "tracker-backend.c"
 		goto _state_1;
-#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 74 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 2:
-#line 875 "tracker-backend.c"
+#line 774 "tracker-backend.c"
 		goto _state_2;
 		default:
-#line 103 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 74 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 880 "tracker-backend.c"
+#line 779 "tracker-backend.c"
 	}
 	_state_0:
-#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 75 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->sparql;
-#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:104: %s(): '%s'", "Tracker.Sparql.Backend.query_async", _data_->_tmp0_);
-#line 105 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 75 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s(): '%s'", "Tracker.Sparql.Backend.query_async", _data_->_tmp0_);
+#line 76 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->self->priv->direct;
-#line 105 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 76 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp1_ != NULL) {
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = _data_->self->priv->direct;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = _data_->sparql;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp5_ = _data_->cancellable;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_state_ = 1;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		tracker_sparql_connection_query_async (_data_->_tmp3_, _data_->_tmp4_, _data_->_tmp5_, tracker_sparql_backend_query_async_ready, _data_);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 903 "tracker-backend.c"
+#line 802 "tracker-backend.c"
 		_state_1:
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp6_ = tracker_sparql_connection_query_finish (_data_->_tmp3_, _data_->_res_, &_data_->_inner_error_);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp2_ = _data_->_tmp6_;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 917 "tracker-backend.c"
+#line 816 "tracker-backend.c"
 		}
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp7_ = _data_->_tmp2_;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp2_ = NULL;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->result = _data_->_tmp7_;
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data_->_tmp2_);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_state_ != 0) {
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 935 "tracker-backend.c"
+#line 834 "tracker-backend.c"
 			}
 		}
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 106 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 942 "tracker-backend.c"
+#line 841 "tracker-backend.c"
 	} else {
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp9_ = _data_->self->priv->bus;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp10_ = _data_->sparql;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp11_ = _data_->cancellable;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_state_ = 2;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		tracker_sparql_connection_query_async (_data_->_tmp9_, _data_->_tmp10_, _data_->_tmp11_, tracker_sparql_backend_query_async_ready, _data_);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 956 "tracker-backend.c"
+#line 855 "tracker-backend.c"
 		_state_2:
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp12_ = tracker_sparql_connection_query_finish (_data_->_tmp9_, _data_->_res_, &_data_->_inner_error_);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp8_ = _data_->_tmp12_;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 970 "tracker-backend.c"
+#line 869 "tracker-backend.c"
 		}
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp13_ = _data_->_tmp8_;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp8_ = NULL;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->result = _data_->_tmp13_;
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data_->_tmp8_);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_state_ != 0) {
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 988 "tracker-backend.c"
+#line 887 "tracker-backend.c"
 			}
 		}
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 995 "tracker-backend.c"
+#line 894 "tracker-backend.c"
 	}
 }
 
@@ -1007,49 +905,49 @@ static void tracker_sparql_backend_real_update (TrackerSparqlConnection* base, c
 	gint _tmp6_;
 	GCancellable* _tmp7_;
 	GError * _inner_error_ = NULL;
-#line 112 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 112 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (sparql != NULL);
-#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = priority;
-#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 113 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:113: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", _tmp0_, _tmp1_);
-#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 84 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", _tmp0_, _tmp1_);
+#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = self->priv->bus;
-#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 85 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ == NULL) {
-#line 1024 "tracker-backend.c"
+#line 923 "tracker-backend.c"
 		GError* _tmp3_;
-#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp3_;
-#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_propagate_error (error, _inner_error_);
-#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
-#line 1034 "tracker-backend.c"
+#line 933 "tracker-backend.c"
 	}
-#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = self->priv->bus;
-#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = sparql;
-#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = priority;
-#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = cancellable;
-#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update (_tmp4_, _tmp5_, _tmp6_, _tmp7_, &_inner_error_);
-#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_propagate_error (error, _inner_error_);
-#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
-#line 1052 "tracker-backend.c"
+#line 951 "tracker-backend.c"
 	}
 }
 
@@ -1068,78 +966,78 @@ static GVariant* tracker_sparql_backend_real_update_blank (TrackerSparqlConnecti
 	GVariant* _tmp9_;
 	GVariant* _tmp10_;
 	GError * _inner_error_ = NULL;
-#line 120 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 91 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 120 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 91 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 121 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = priority;
-#line 121 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 121 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:121: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", _tmp0_, _tmp1_);
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 92 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", _tmp0_, _tmp1_);
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = self->priv->bus;
-#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 93 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ == NULL) {
-#line 1085 "tracker-backend.c"
+#line 984 "tracker-backend.c"
 		GError* _tmp3_;
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp3_;
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_propagate_error (error, _inner_error_);
-#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 94 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 1095 "tracker-backend.c"
+#line 994 "tracker-backend.c"
 	}
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = self->priv->bus;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = sparql;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = priority;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp8_ = cancellable;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp9_ = tracker_sparql_connection_update_blank (_tmp5_, _tmp6_, _tmp7_, _tmp8_, &_inner_error_);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = _tmp9_;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_propagate_error (error, _inner_error_);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 1115 "tracker-backend.c"
+#line 1014 "tracker-backend.c"
 	}
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp10_ = _tmp4_;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = NULL;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp10_;
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_variant_unref0 (_tmp4_);
-#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 96 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 1127 "tracker-backend.c"
+#line 1026 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_real_update_async_data_free (gpointer _data) {
 	TrackerSparqlBackendUpdateAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateAsyncData, _data_);
-#line 1142 "tracker-backend.c"
+#line 1041 "tracker-backend.c"
 }
 
 
@@ -1152,169 +1050,169 @@ static void tracker_sparql_backend_real_update_async (TrackerSparqlConnection* b
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GCancellable* _tmp5_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendUpdateAsyncData);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_backend_real_update_async_data_free);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = priority;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->priority = _tmp3_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = cancellable;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = _g_object_ref0 (_tmp4_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp5_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_async_co (_data_);
-#line 1189 "tracker-backend.c"
+#line 1088 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_real_update_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlBackendUpdateAsyncData* _data_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (NULL == _data_) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
-#line 1201 "tracker-backend.c"
+#line 1100 "tracker-backend.c"
 	}
 }
 
 
 static void tracker_sparql_backend_update_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateAsyncData* _data_;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_async_co (_data_);
-#line 1216 "tracker-backend.c"
+#line 1115 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_async_co (TrackerSparqlBackendUpdateAsyncData* _data_) {
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 1225 "tracker-backend.c"
+#line 1124 "tracker-backend.c"
 		goto _state_0;
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 1229 "tracker-backend.c"
+#line 1128 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 1234 "tracker-backend.c"
+#line 1133 "tracker-backend.c"
 	}
 	_state_0:
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->priority;
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->sparql;
-#line 129 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:129: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", _data_->_tmp0_, _data_->_tmp1_);
-#line 130 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 100 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", _data_->_tmp0_, _data_->_tmp1_);
+#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->self->priv->bus;
-#line 130 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 101 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp2_ == NULL) {
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp3_;
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 102 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 1257 "tracker-backend.c"
+#line 1156 "tracker-backend.c"
 	}
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->self->priv->bus;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->sparql;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->priority;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->cancellable;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_async (_data_->_tmp4_, _data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, tracker_sparql_backend_update_async_ready, _data_);
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1273 "tracker-backend.c"
+#line 1172 "tracker-backend.c"
 	_state_1:
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_finish (_data_->_tmp4_, _data_->_res_, &_data_->_inner_error_);
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 104 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 1285 "tracker-backend.c"
+#line 1184 "tracker-backend.c"
 	}
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ != 0) {
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1295 "tracker-backend.c"
+#line 1194 "tracker-backend.c"
 		}
 	}
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 99 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1302 "tracker-backend.c"
+#line 1201 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_real_update_array_async_data_free (gpointer _data) {
 	TrackerSparqlBackendUpdateArrayAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_ptr_array_unref0 (_data_->result);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateArrayAsyncData, _data_);
-#line 1317 "tracker-backend.c"
+#line 1216 "tracker-backend.c"
 }
 
 
@@ -1327,185 +1225,185 @@ static void tracker_sparql_backend_real_update_array_async (TrackerSparqlConnect
 	gint _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendUpdateArrayAsyncData);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_backend_real_update_array_async_data_free);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1__length1 = sparql_length1;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = _tmp1_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql_length1 = _tmp1__length1;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = priority;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->priority = _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = cancellable;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp4_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_array_async_co (_data_);
-#line 1364 "tracker-backend.c"
+#line 1263 "tracker-backend.c"
 }
 
 
 static GPtrArray* tracker_sparql_backend_real_update_array_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	GPtrArray* result;
 	TrackerSparqlBackendUpdateArrayAsyncData* _data_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (NULL == _data_) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 1377 "tracker-backend.c"
+#line 1276 "tracker-backend.c"
 	}
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 1385 "tracker-backend.c"
+#line 1284 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_update_array_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateArrayAsyncData* _data_;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_array_async_co (_data_);
-#line 1399 "tracker-backend.c"
+#line 1298 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_array_async_co (TrackerSparqlBackendUpdateArrayAsyncData* _data_) {
-#line 136 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 107 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 136 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 107 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 1408 "tracker-backend.c"
+#line 1307 "tracker-backend.c"
 		goto _state_0;
-#line 136 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 107 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 1412 "tracker-backend.c"
+#line 1311 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 136 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 107 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 1417 "tracker-backend.c"
+#line 1316 "tracker-backend.c"
 	}
 	_state_0:
-#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->self->priv->bus;
-#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp0_ == NULL) {
-#line 138 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 138 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp1_;
-#line 138 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 138 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 138 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 109 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 1434 "tracker-backend.c"
+#line 1333 "tracker-backend.c"
 	}
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->self->priv->bus;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->sparql;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4__length1 = _data_->sparql_length1;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->priority;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->cancellable;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_array_async (_data_->_tmp3_, _data_->_tmp4_, _data_->_tmp4__length1, _data_->_tmp5_, _data_->_tmp6_, tracker_sparql_backend_update_array_async_ready, _data_);
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1452 "tracker-backend.c"
+#line 1351 "tracker-backend.c"
 	_state_1:
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = tracker_sparql_connection_update_array_finish (_data_->_tmp3_, _data_->_res_, &_data_->_inner_error_);
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->_tmp7_;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 1466 "tracker-backend.c"
+#line 1365 "tracker-backend.c"
 	}
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = _data_->_tmp2_;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp8_;
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_ptr_array_unref0 (_data_->_tmp2_);
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ != 0) {
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1484 "tracker-backend.c"
+#line 1383 "tracker-backend.c"
 		}
 	}
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1491 "tracker-backend.c"
+#line 1390 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_real_update_blank_async_data_free (gpointer _data) {
 	TrackerSparqlBackendUpdateBlankAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_variant_unref0 (_data_->result);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateBlankAsyncData, _data_);
-#line 1508 "tracker-backend.c"
+#line 1407 "tracker-backend.c"
 }
 
 
@@ -1518,172 +1416,172 @@ static void tracker_sparql_backend_real_update_blank_async (TrackerSparqlConnect
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GCancellable* _tmp5_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendUpdateBlankAsyncData);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_backend_real_update_blank_async_data_free);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = priority;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->priority = _tmp3_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = cancellable;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = _g_object_ref0 (_tmp4_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp5_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_blank_async_co (_data_);
-#line 1555 "tracker-backend.c"
+#line 1454 "tracker-backend.c"
 }
 
 
 static GVariant* tracker_sparql_backend_real_update_blank_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerSparqlBackendUpdateBlankAsyncData* _data_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (NULL == _data_) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 1568 "tracker-backend.c"
+#line 1467 "tracker-backend.c"
 	}
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 1576 "tracker-backend.c"
+#line 1475 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_update_blank_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateBlankAsyncData* _data_;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_blank_async_co (_data_);
-#line 1590 "tracker-backend.c"
+#line 1489 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_blank_async_co (TrackerSparqlBackendUpdateBlankAsyncData* _data_) {
-#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 1599 "tracker-backend.c"
+#line 1498 "tracker-backend.c"
 		goto _state_0;
-#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 1603 "tracker-backend.c"
+#line 1502 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 114 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 1608 "tracker-backend.c"
+#line 1507 "tracker-backend.c"
 	}
 	_state_0:
-#line 144 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->priority;
-#line 144 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->sparql;
-#line 144 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:144: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", _data_->_tmp0_, _data_->_tmp1_);
-#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 115 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", _data_->_tmp0_, _data_->_tmp1_);
+#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->self->priv->bus;
-#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp2_ == NULL) {
-#line 146 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 146 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp3_;
-#line 146 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 146 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 146 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 1631 "tracker-backend.c"
+#line 1530 "tracker-backend.c"
 	}
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->self->priv->bus;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->sparql;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->priority;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = _data_->cancellable;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_blank_async (_data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, _data_->_tmp8_, tracker_sparql_backend_update_blank_async_ready, _data_);
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1647 "tracker-backend.c"
+#line 1546 "tracker-backend.c"
 	_state_1:
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp9_ = tracker_sparql_connection_update_blank_finish (_data_->_tmp5_, _data_->_res_, &_data_->_inner_error_);
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->_tmp9_;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
-#line 1661 "tracker-backend.c"
+#line 1560 "tracker-backend.c"
 	}
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp10_ = _data_->_tmp4_;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = NULL;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp10_;
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_variant_unref0 (_data_->_tmp4_);
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ != 0) {
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1679 "tracker-backend.c"
+#line 1578 "tracker-backend.c"
 		}
 	}
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 119 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1686 "tracker-backend.c"
+#line 1585 "tracker-backend.c"
 }
 
 
@@ -1698,100 +1596,100 @@ static void tracker_sparql_backend_real_load (TrackerSparqlConnection* base, GFi
 	GFile* _tmp6_;
 	GCancellable* _tmp7_;
 	GError * _inner_error_ = NULL;
-#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (file != NULL);
-#line 152 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = file;
-#line 152 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = g_file_get_uri (_tmp0_);
-#line 152 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	uri = _tmp1_;
-#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 124 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = uri;
-#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:153: %s(): '%s'", "Tracker.Sparql.Backend.load", _tmp2_);
-#line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 124 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s(): '%s'", "Tracker.Sparql.Backend.load", _tmp2_);
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = self->priv->bus;
-#line 154 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 125 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp3_ == NULL) {
-#line 1719 "tracker-backend.c"
+#line 1618 "tracker-backend.c"
 		GError* _tmp4_;
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp4_;
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 1733 "tracker-backend.c"
+#line 1632 "tracker-backend.c"
 		} else {
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 155 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 1743 "tracker-backend.c"
+#line 1642 "tracker-backend.c"
 		}
 	}
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = self->priv->bus;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = file;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = cancellable;
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load (_tmp5_, _tmp6_, _tmp7_, &_inner_error_);
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 1764 "tracker-backend.c"
+#line 1663 "tracker-backend.c"
 		} else {
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
-#line 1774 "tracker-backend.c"
+#line 1673 "tracker-backend.c"
 		}
 	}
-#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 122 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (uri);
-#line 1779 "tracker-backend.c"
+#line 1678 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_real_load_async_data_free (gpointer _data) {
 	TrackerSparqlBackendLoadAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->file);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendLoadAsyncData, _data_);
-#line 1794 "tracker-backend.c"
+#line 1693 "tracker-backend.c"
 }
 
 
@@ -1803,188 +1701,188 @@ static void tracker_sparql_backend_real_load_async (TrackerSparqlConnection* bas
 	GFile* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendLoadAsyncData);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_backend_real_load_async_data_free);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = file;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _g_object_ref0 (_tmp1_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->file);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->file = _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = cancellable;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp4_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_load_async_co (_data_);
-#line 1836 "tracker-backend.c"
+#line 1735 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_real_load_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlBackendLoadAsyncData* _data_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (NULL == _data_) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
-#line 1848 "tracker-backend.c"
+#line 1747 "tracker-backend.c"
 	}
 }
 
 
 static void tracker_sparql_backend_load_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendLoadAsyncData* _data_;
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_load_async_co (_data_);
-#line 1863 "tracker-backend.c"
+#line 1762 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_load_async_co (TrackerSparqlBackendLoadAsyncData* _data_) {
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 1872 "tracker-backend.c"
+#line 1771 "tracker-backend.c"
 		goto _state_0;
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 1876 "tracker-backend.c"
+#line 1775 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 1881 "tracker-backend.c"
+#line 1780 "tracker-backend.c"
 	}
 	_state_0:
-#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 132 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->file;
-#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 132 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = g_file_get_uri (_data_->_tmp0_);
-#line 161 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 132 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->uri = _data_->_tmp1_;
-#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->uri;
-#line 162 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:162: %s(): '%s'", "Tracker.Sparql.Backend.load_async", _data_->_tmp2_);
-#line 163 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s(): '%s'", "Tracker.Sparql.Backend.load_async", _data_->_tmp2_);
+#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->self->priv->bus;
-#line 163 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 134 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp3_ == NULL) {
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp4_;
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1912 "tracker-backend.c"
+#line 1811 "tracker-backend.c"
 		} else {
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1924 "tracker-backend.c"
+#line 1823 "tracker-backend.c"
 		}
 	}
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->self->priv->bus;
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->file;
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->cancellable;
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load_async (_data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, tracker_sparql_backend_load_async_ready, _data_);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1939 "tracker-backend.c"
+#line 1838 "tracker-backend.c"
 	_state_1:
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load_finish (_data_->_tmp5_, _data_->_res_, &_data_->_inner_error_);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1955 "tracker-backend.c"
+#line 1854 "tracker-backend.c"
 		} else {
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 166 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 1967 "tracker-backend.c"
+#line 1866 "tracker-backend.c"
 		}
 	}
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->uri);
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ != 0) {
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 1980 "tracker-backend.c"
+#line 1879 "tracker-backend.c"
 		}
 	}
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 1987 "tracker-backend.c"
+#line 1886 "tracker-backend.c"
 }
 
 
@@ -1998,90 +1896,90 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics (TrackerSparq
 	TrackerSparqlCursor* _tmp5_;
 	TrackerSparqlCursor* _tmp6_;
 	GError * _inner_error_ = NULL;
-#line 169 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 170 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:170: %s()", "Tracker.Sparql.Backend.statistics");
-#line 171 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 141 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s()", "Tracker.Sparql.Backend.statistics");
+#line 142 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = self->priv->bus;
-#line 171 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 142 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_ == NULL) {
-#line 2009 "tracker-backend.c"
+#line 1908 "tracker-backend.c"
 		GError* _tmp1_;
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Statistics support not available for direct-only connection");
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp1_;
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2021 "tracker-backend.c"
+#line 1920 "tracker-backend.c"
 		} else {
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 172 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2029 "tracker-backend.c"
+#line 1928 "tracker-backend.c"
 		}
 	}
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = self->priv->bus;
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = cancellable;
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = tracker_sparql_connection_statistics (_tmp3_, _tmp4_, &_inner_error_);
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _tmp5_;
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2048 "tracker-backend.c"
+#line 1947 "tracker-backend.c"
 		} else {
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2056 "tracker-backend.c"
+#line 1955 "tracker-backend.c"
 		}
 	}
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = _tmp2_;
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = NULL;
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp6_;
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_tmp2_);
-#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 145 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 2069 "tracker-backend.c"
+#line 1968 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_real_statistics_async_data_free (gpointer _data) {
 	TrackerSparqlBackendStatisticsAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->result);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendStatisticsAsyncData, _data_);
-#line 2084 "tracker-backend.c"
+#line 1983 "tracker-backend.c"
 }
 
 
@@ -2091,178 +1989,291 @@ static void tracker_sparql_backend_real_statistics_async (TrackerSparqlConnectio
 	TrackerSparqlBackend* _tmp0_;
 	GCancellable* _tmp1_;
 	GCancellable* _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendStatisticsAsyncData);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_task_new (G_OBJECT (self), cancellable, _callback_, _user_data_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_backend_real_statistics_async_data_free);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = cancellable;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _g_object_ref0 (_tmp1_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp2_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_statistics_async_co (_data_);
-#line 2116 "tracker-backend.c"
+#line 2015 "tracker-backend.c"
 }
 
 
 static TrackerSparqlCursor* tracker_sparql_backend_real_statistics_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerSparqlBackendStatisticsAsyncData* _data_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (NULL == _data_) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 2129 "tracker-backend.c"
+#line 2028 "tracker-backend.c"
 	}
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 2137 "tracker-backend.c"
+#line 2036 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_statistics_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendStatisticsAsyncData* _data_;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_statistics_async_co (_data_);
-#line 2151 "tracker-backend.c"
+#line 2050 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBackendStatisticsAsyncData* _data_) {
-#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 2160 "tracker-backend.c"
+#line 2059 "tracker-backend.c"
 		goto _state_0;
-#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 2164 "tracker-backend.c"
+#line 2063 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 148 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 2169 "tracker-backend.c"
+#line 2068 "tracker-backend.c"
 	}
 	_state_0:
-#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_debug ("tracker-backend.vala:178: %s()", "Tracker.Sparql.Backend.statistics_async");
-#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 149 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_debug ("%s()", "Tracker.Sparql.Backend.statistics_async");
+#line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->self->priv->bus;
-#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 150 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp0_ == NULL) {
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Statistics support not available for direct-only connection");
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp1_;
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2190 "tracker-backend.c"
+#line 2089 "tracker-backend.c"
 		} else {
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2200 "tracker-backend.c"
+#line 2099 "tracker-backend.c"
 		}
 	}
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->self->priv->bus;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->cancellable;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_statistics_async (_data_->_tmp3_, _data_->_tmp4_, tracker_sparql_backend_statistics_async_ready, _data_);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 2213 "tracker-backend.c"
+#line 2112 "tracker-backend.c"
 	_state_1:
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = tracker_sparql_connection_statistics_finish (_data_->_tmp3_, _data_->_res_, &_data_->_inner_error_);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->_tmp5_;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2229 "tracker-backend.c"
+#line 2128 "tracker-backend.c"
 		} else {
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 2239 "tracker-backend.c"
+#line 2138 "tracker-backend.c"
 		}
 	}
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->_tmp2_;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = NULL;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp6_;
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_tmp2_);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ != 0) {
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 2258 "tracker-backend.c"
+#line 2157 "tracker-backend.c"
 		}
 	}
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 153 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 2265 "tracker-backend.c"
+#line 2164 "tracker-backend.c"
+}
+
+
+static TrackerNamespaceManager* tracker_sparql_backend_real_get_namespace_manager (TrackerSparqlConnection* base) {
+	TrackerSparqlBackend * self;
+	TrackerNamespaceManager* result = NULL;
+	TrackerSparqlConnection* _tmp0_;
+#line 156 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	self = (TrackerSparqlBackend*) base;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp0_ = self->priv->direct;
+#line 157 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (_tmp0_ != NULL) {
+#line 2178 "tracker-backend.c"
+		TrackerSparqlConnection* _tmp1_;
+		TrackerNamespaceManager* _tmp2_;
+#line 158 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp1_ = self->priv->direct;
+#line 158 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp2_ = tracker_sparql_connection_get_namespace_manager (_tmp1_);
+#line 158 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		result = _tmp2_;
+#line 158 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return result;
+#line 2189 "tracker-backend.c"
+	} else {
+		TrackerNamespaceManager* _tmp3_;
+#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp3_ = tracker_namespace_manager_get_default ();
+#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		result = _tmp3_;
+#line 160 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return result;
+#line 2198 "tracker-backend.c"
+	}
+}
+
+
+static TrackerSparqlConnection* tracker_sparql_backend_create_readonly_direct (TrackerSparqlBackend* self, GError** error) {
+	TrackerSparqlConnection* result = NULL;
+	TrackerDirectConnection* conn = NULL;
+	TrackerDomainOntology* _tmp0_;
+	GFile* _tmp1_;
+	GFile* _tmp2_;
+	TrackerDomainOntology* _tmp3_;
+	GFile* _tmp4_;
+	GFile* _tmp5_;
+	TrackerDomainOntology* _tmp6_;
+	GFile* _tmp7_;
+	GFile* _tmp8_;
+	TrackerDirectConnection* _tmp9_;
+	TrackerDirectConnection* _tmp10_;
+	TrackerDirectConnection* _tmp11_;
+	GError * _inner_error_ = NULL;
+#line 163 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_return_val_if_fail (self != NULL, NULL);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp0_ = domain_ontology;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp1_ = tracker_domain_ontology_get_cache (_tmp0_);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp2_ = _tmp1_;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp3_ = domain_ontology;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp4_ = tracker_domain_ontology_get_journal (_tmp3_);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp5_ = _tmp4_;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp6_ = domain_ontology;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp7_ = tracker_domain_ontology_get_ontology (_tmp6_);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp8_ = _tmp7_;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp9_ = tracker_direct_connection_new (TRACKER_SPARQL_CONNECTION_FLAGS_READONLY, _tmp2_, _tmp5_, _tmp8_, &_inner_error_);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp10_ = _tmp9_;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_g_object_unref0 (_tmp8_);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_g_object_unref0 (_tmp5_);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_g_object_unref0 (_tmp2_);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	conn = _tmp10_;
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_propagate_error (error, _inner_error_);
+#line 164 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return NULL;
+#line 2257 "tracker-backend.c"
+	}
+#line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp11_ = conn;
+#line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_initable_init ((GInitable*) _tmp11_, NULL, &_inner_error_);
+#line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_propagate_error (error, _inner_error_);
+#line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_g_object_unref0 (conn);
+#line 168 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return NULL;
+#line 2271 "tracker-backend.c"
+	}
+#line 169 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	result = (TrackerSparqlConnection*) conn;
+#line 169 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	return result;
+#line 2277 "tracker-backend.c"
 }
 
 
@@ -2275,406 +2286,434 @@ static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GEr
 	TrackerSparqlBackendBackend _tmp8_;
 	TrackerSparqlBackendBackend _tmp9_;
 	GError * _inner_error_ = NULL;
-#line 186 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (self != NULL);
-#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = g_getenv ("TRACKER_SPARQL_BACKEND");
-#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = g_strdup (_tmp0_);
-#line 187 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	env_backend = _tmp1_;
-#line 188 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 175 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	backend = TRACKER_SPARQL_BACKEND_BACKEND_AUTO;
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = env_backend;
-#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 177 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ != NULL) {
-#line 2292 "tracker-backend.c"
+#line 2304 "tracker-backend.c"
 		const gchar* _tmp3_;
 		gint _tmp4_;
-#line 191 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = env_backend;
-#line 191 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = g_ascii_strcasecmp (_tmp3_, "direct");
-#line 191 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 178 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_tmp4_ == 0) {
-#line 192 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 179 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			backend = TRACKER_SPARQL_BACKEND_BACKEND_DIRECT;
-#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_debug ("tracker-backend.vala:193: Using backend = 'DIRECT'");
-#line 2305 "tracker-backend.c"
+#line 180 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_debug ("Using backend = 'DIRECT'");
+#line 2317 "tracker-backend.c"
 		} else {
 			const gchar* _tmp5_;
 			gint _tmp6_;
-#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 181 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp5_ = env_backend;
-#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 181 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp6_ = g_ascii_strcasecmp (_tmp5_, "bus");
-#line 194 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 181 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp6_ == 0) {
-#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				backend = TRACKER_SPARQL_BACKEND_BACKEND_BUS;
-#line 196 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_debug ("tracker-backend.vala:196: Using backend = 'BUS'");
-#line 2319 "tracker-backend.c"
+#line 183 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_debug ("Using backend = 'BUS'");
+#line 2331 "tracker-backend.c"
 			} else {
 				const gchar* _tmp7_;
-#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 185 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp7_ = env_backend;
-#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_warning ("tracker-backend.vala:198: Environment variable TRACKER_SPARQL_BACKEND " \
-"set to unknown value '%s'", _tmp7_);
-#line 2326 "tracker-backend.c"
+#line 185 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_warning ("Environment variable TRACKER_SPARQL_BACKEND set to unknown value '%s'", _tmp7_);
+#line 2338 "tracker-backend.c"
 			}
 		}
 	}
-#line 202 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp8_ = backend;
-#line 202 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 189 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp8_ == TRACKER_SPARQL_BACKEND_BACKEND_AUTO) {
-#line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_debug ("tracker-backend.vala:203: Using backend = 'AUTO'");
-#line 2336 "tracker-backend.c"
+#line 190 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_debug ("Using backend = 'AUTO'");
+#line 2348 "tracker-backend.c"
 	}
-#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp9_ = backend;
-#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_tmp9_) {
-#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case TRACKER_SPARQL_BACKEND_BACKEND_AUTO:
-#line 2344 "tracker-backend.c"
+#line 2356 "tracker-backend.c"
 		{
-			TrackerBusConnection* _tmp17_ = NULL;
-			TrackerBusConnection* _tmp18_;
-			TrackerBusConnection* _tmp19_;
+			TrackerBusConnection* _tmp10_ = NULL;
+			TrackerDomainOntology* _tmp11_;
+			gchar* _tmp12_;
+			gchar* _tmp13_;
+			TrackerBusConnection* _tmp14_;
+			TrackerBusConnection* _tmp15_;
+			TrackerBusConnection* _tmp16_;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp11_ = domain_ontology;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp12_ = tracker_domain_ontology_get_domain (_tmp11_, NULL);
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp13_ = _tmp12_;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp14_ = tracker_bus_connection_new (_tmp13_, &_inner_error_);
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp15_ = _tmp14_;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_free0 (_tmp13_);
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp10_ = _tmp15_;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_propagate_error (error, _inner_error_);
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_g_free0 (env_backend);
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				return;
+#line 2387 "tracker-backend.c"
+			}
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp16_ = _tmp10_;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp10_ = NULL;
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (self->priv->bus);
+#line 195 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			self->priv->bus = (TrackerSparqlConnection*) _tmp16_;
+#line 2397 "tracker-backend.c"
 			{
-				TrackerDirectConnection* _tmp10_ = NULL;
-				TrackerDirectConnection* _tmp11_;
-				TrackerDirectConnection* _tmp12_;
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp11_ = tracker_direct_connection_new (&_inner_error_);
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp10_ = _tmp11_;
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				TrackerSparqlConnection* _tmp17_ = NULL;
+				TrackerSparqlConnection* _tmp18_;
+				TrackerSparqlConnection* _tmp19_;
+#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp18_ = tracker_sparql_backend_create_readonly_direct (self, &_inner_error_);
+#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp17_ = _tmp18_;
+#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 2361 "tracker-backend.c"
+#line 2410 "tracker-backend.c"
 						goto __catch2_tracker_sparql_error;
 					}
 					goto __finally2;
 				}
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp12_ = _tmp10_;
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp10_ = NULL;
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp19_ = _tmp17_;
+#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp17_ = NULL;
+#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (self->priv->direct);
-#line 209 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				self->priv->direct = (TrackerSparqlConnection*) _tmp12_;
-#line 208 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_object_unref0 (_tmp10_);
-#line 2376 "tracker-backend.c"
+#line 198 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				self->priv->direct = _tmp19_;
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_g_object_unref0 (_tmp17_);
+#line 2425 "tracker-backend.c"
 			}
 			goto __finally2;
 			__catch2_tracker_sparql_error:
 			{
 				GError* e = NULL;
-				GError* _tmp13_;
-				const gchar* _tmp14_;
-				gchar* _tmp15_;
-				gchar* _tmp16_;
-#line 208 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				GError* _tmp20_;
+				const gchar* _tmp21_;
+				gchar* _tmp22_;
+				gchar* _tmp23_;
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				e = _inner_error_;
-#line 208 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_inner_error_ = NULL;
-#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp13_ = e;
-#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp14_ = _tmp13_->message;
-#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp15_ = g_strconcat ("Falling back to bus backend, the direct backend failed to initialize: ", _tmp14_, NULL);
-#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_tmp16_ = _tmp15_;
-#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_warning ("tracker-backend.vala:211: %s", _tmp16_);
-#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_free0 (_tmp16_);
-#line 208 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 200 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp20_ = e;
+#line 200 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp21_ = _tmp20_->message;
+#line 200 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp22_ = g_strconcat ("Falling back to bus backend, the direct backend failed to initialize: ", _tmp21_, NULL);
+#line 200 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_tmp23_ = _tmp22_;
+#line 200 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_warning ("%s", _tmp23_);
+#line 200 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_g_free0 (_tmp23_);
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_error_free0 (e);
-#line 2404 "tracker-backend.c"
+#line 2453 "tracker-backend.c"
 			}
 			__finally2:
-#line 208 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 208 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 208 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_g_object_unref0 (_tmp10_);
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 208 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 197 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
-#line 2415 "tracker-backend.c"
+#line 2466 "tracker-backend.c"
 			}
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp18_ = tracker_bus_connection_new (&_inner_error_);
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp17_ = _tmp18_;
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_propagate_error (error, _inner_error_);
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_free0 (env_backend);
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				return;
-#line 2429 "tracker-backend.c"
-			}
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp19_ = _tmp17_;
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp17_ = NULL;
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (self->priv->bus);
-#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			self->priv->bus = (TrackerSparqlConnection*) _tmp19_;
-#line 215 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp17_);
-#line 215 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp10_);
+#line 203 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
-#line 2443 "tracker-backend.c"
+#line 2472 "tracker-backend.c"
 		}
-#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case TRACKER_SPARQL_BACKEND_BACKEND_DIRECT:
-#line 2447 "tracker-backend.c"
+#line 2476 "tracker-backend.c"
 		{
-			TrackerDirectConnection* _tmp20_ = NULL;
-			TrackerDirectConnection* _tmp21_;
-			TrackerDirectConnection* _tmp22_;
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp21_ = tracker_direct_connection_new (&_inner_error_);
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp20_ = _tmp21_;
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				g_propagate_error (error, _inner_error_);
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				_g_free0 (env_backend);
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-				return;
-#line 2464 "tracker-backend.c"
-			}
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp22_ = _tmp20_;
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp20_ = NULL;
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (self->priv->direct);
-#line 218 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			self->priv->direct = (TrackerSparqlConnection*) _tmp22_;
-#line 219 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp20_);
-#line 219 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			break;
-#line 2478 "tracker-backend.c"
-		}
+			TrackerSparqlConnection* _tmp24_ = NULL;
+			TrackerSparqlConnection* _tmp25_;
+			TrackerSparqlConnection* _tmp26_;
 #line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		case TRACKER_SPARQL_BACKEND_BACKEND_BUS:
-#line 2482 "tracker-backend.c"
-		{
-			TrackerBusConnection* _tmp23_ = NULL;
-			TrackerBusConnection* _tmp24_;
-			TrackerBusConnection* _tmp25_;
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp24_ = tracker_bus_connection_new (&_inner_error_);
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp23_ = _tmp24_;
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp25_ = tracker_sparql_backend_create_readonly_direct (self, &_inner_error_);
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp24_ = _tmp25_;
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
-#line 2499 "tracker-backend.c"
+#line 2493 "tracker-backend.c"
 			}
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp25_ = _tmp23_;
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_tmp23_ = NULL;
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (self->priv->bus);
-#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			self->priv->bus = (TrackerSparqlConnection*) _tmp25_;
-#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			_g_object_unref0 (_tmp23_);
-#line 223 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp26_ = _tmp24_;
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp24_ = NULL;
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (self->priv->direct);
+#line 206 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			self->priv->direct = _tmp26_;
+#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp24_);
+#line 207 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
-#line 2513 "tracker-backend.c"
+#line 2507 "tracker-backend.c"
+		}
+#line 193 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		case TRACKER_SPARQL_BACKEND_BACKEND_BUS:
+#line 2511 "tracker-backend.c"
+		{
+			TrackerBusConnection* _tmp27_ = NULL;
+			TrackerDomainOntology* _tmp28_;
+			gchar* _tmp29_;
+			gchar* _tmp30_;
+			TrackerBusConnection* _tmp31_;
+			TrackerBusConnection* _tmp32_;
+			TrackerBusConnection* _tmp33_;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp28_ = domain_ontology;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp29_ = tracker_domain_ontology_get_domain (_tmp28_, NULL);
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp30_ = _tmp29_;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp31_ = tracker_bus_connection_new (_tmp30_, &_inner_error_);
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp32_ = _tmp31_;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_free0 (_tmp30_);
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp27_ = _tmp32_;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				g_propagate_error (error, _inner_error_);
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				_g_free0 (env_backend);
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+				return;
+#line 2542 "tracker-backend.c"
+			}
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp33_ = _tmp27_;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_tmp27_ = NULL;
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (self->priv->bus);
+#line 210 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			self->priv->bus = (TrackerSparqlConnection*) _tmp33_;
+#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			_g_object_unref0 (_tmp27_);
+#line 211 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			break;
+#line 2556 "tracker-backend.c"
 		}
 		default:
 		{
-#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 214 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_assert_not_reached ();
-#line 2519 "tracker-backend.c"
+#line 2562 "tracker-backend.c"
 		}
 	}
-#line 186 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 173 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (env_backend);
-#line 2524 "tracker-backend.c"
+#line 2567 "tracker-backend.c"
 }
 
 
 static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancellable, GError** error) {
 	TrackerSparqlConnection* result = NULL;
 	GError * _inner_error_ = NULL;
-#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 222 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_mutex_lock (&tracker_sparql_backend_door);
-#line 2533 "tracker-backend.c"
+#line 2576 "tracker-backend.c"
 	{
 		TrackerSparqlConnection* _result_ = NULL;
 		TrackerSparqlConnection* _tmp0_;
 		TrackerSparqlConnection* _tmp1_;
 		TrackerSparqlConnection* _tmp2_;
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = tracker_sparql_backend_singleton;
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 239 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_result_ = _tmp1_;
-#line 241 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 228 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = _result_;
-#line 241 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 228 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_tmp2_ == NULL) {
-#line 2549 "tracker-backend.c"
+#line 2592 "tracker-backend.c"
 			TrackerSparqlBackend* _tmp3_ = NULL;
 			TrackerSparqlBackend* _tmp4_;
 			TrackerSparqlBackend* _tmp5_;
 			gboolean _tmp6_ = FALSE;
 			GCancellable* _tmp7_;
 			TrackerSparqlConnection* _tmp11_;
-#line 242 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			tracker_sparql_backend_log_init ();
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp4_ = tracker_sparql_backend_new (&_inner_error_);
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp3_ = _tmp4_;
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (_result_);
-#line 2566 "tracker-backend.c"
+#line 2607 "tracker-backend.c"
 				goto __finally3;
 			}
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp5_ = _tmp3_;
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp3_ = NULL;
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (_result_);
-#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 229 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_result_ = (TrackerSparqlConnection*) _tmp5_;
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp7_ = cancellable;
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp7_ != NULL) {
-#line 2581 "tracker-backend.c"
+#line 2622 "tracker-backend.c"
 				GCancellable* _tmp8_;
 				gboolean _tmp9_;
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp8_ = cancellable;
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp9_ = g_cancellable_is_cancelled (_tmp8_);
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp6_ = _tmp9_;
-#line 2590 "tracker-backend.c"
+#line 2631 "tracker-backend.c"
 			} else {
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp6_ = FALSE;
-#line 2594 "tracker-backend.c"
+#line 2635 "tracker-backend.c"
 			}
-#line 246 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 231 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp6_) {
-#line 2598 "tracker-backend.c"
+#line 2639 "tracker-backend.c"
 				GError* _tmp10_;
-#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 232 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp10_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
-#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 232 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_inner_error_ = _tmp10_;
-#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 232 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (_tmp3_);
-#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 232 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (_result_);
-#line 2608 "tracker-backend.c"
+#line 2649 "tracker-backend.c"
 				goto __finally3;
 			}
-#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp11_ = _result_;
-#line 250 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 235 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			tracker_sparql_backend_singleton = _tmp11_;
-#line 241 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 228 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (_tmp3_);
-#line 2617 "tracker-backend.c"
+#line 2658 "tracker-backend.c"
 		}
-#line 253 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _result_;
-#line 2621 "tracker-backend.c"
+#line 2662 "tracker-backend.c"
 		{
-#line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 240 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_mutex_unlock (&tracker_sparql_backend_door);
-#line 2625 "tracker-backend.c"
+#line 2666 "tracker-backend.c"
 		}
-#line 253 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 238 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
-#line 2629 "tracker-backend.c"
+#line 2670 "tracker-backend.c"
 	}
 	__finally3:
 	{
-#line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 240 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_mutex_unlock (&tracker_sparql_backend_door);
-#line 2635 "tracker-backend.c"
+#line 2676 "tracker-backend.c"
 	}
-#line 237 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 237 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_propagate_error (error, _inner_error_);
-#line 237 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 2643 "tracker-backend.c"
+#line 2684 "tracker-backend.c"
 	} else {
-#line 237 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 237 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_clear_error (&_inner_error_);
-#line 237 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 2651 "tracker-backend.c"
+#line 2692 "tracker-backend.c"
 	}
 }
 
 
 static Block1Data* block1_data_ref (Block1Data* _data1_) {
-#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_atomic_int_inc (&_data1_->_ref_count_);
-#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return _data1_;
-#line 2661 "tracker-backend.c"
+#line 2702 "tracker-backend.c"
 }
 
 
 static void block1_data_unref (void * _userdata_) {
 	Block1Data* _data1_;
 	_data1_ = (Block1Data*) _userdata_;
-#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data1_->async_result);
-#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_main_loop_unref0 (_data1_->loop);
-#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_slice_free (Block1Data, _data1_);
-#line 2676 "tracker-backend.c"
+#line 2717 "tracker-backend.c"
 	}
 }
 
@@ -2683,30 +2722,30 @@ static void __lambda6_ (Block1Data* _data1_, GObject* obj, GAsyncResult* res) {
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
 	GMainLoop* _tmp2_;
-#line 272 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (res != NULL);
-#line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = res;
-#line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data1_->async_result);
-#line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 258 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->async_result = _tmp1_;
-#line 274 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _data1_->loop;
-#line 274 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_loop_quit (_tmp2_);
-#line 2699 "tracker-backend.c"
+#line 2740 "tracker-backend.c"
 }
 
 
 static void ___lambda6__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 272 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	__lambda6_ (self, source_object, res);
-#line 272 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block1_data_unref (self);
-#line 2708 "tracker-backend.c"
+#line 2749 "tracker-backend.c"
 }
 
 
@@ -2727,161 +2766,161 @@ TrackerSparqlConnection* tracker_sparql_backend_get_internal (GCancellable* canc
 	TrackerSparqlConnection* _tmp14_;
 	TrackerSparqlConnection* _tmp15_;
 	GError * _inner_error_ = NULL;
-#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_ = g_slice_new0 (Block1Data);
-#line 259 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 244 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->_ref_count_ = 1;
-#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 245 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = g_main_context_get_thread_default ();
-#line 260 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 245 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_ == NULL) {
-#line 2737 "tracker-backend.c"
+#line 2778 "tracker-backend.c"
 		TrackerSparqlConnection* _tmp1_ = NULL;
 		GCancellable* _tmp2_;
 		TrackerSparqlConnection* _tmp3_;
 		TrackerSparqlConnection* _tmp4_;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = cancellable;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = tracker_sparql_backend_get (_tmp2_, &_inner_error_);
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = _tmp3_;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block1_data_unref (_data1_);
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data1_ = NULL;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
-#line 2760 "tracker-backend.c"
+#line 2801 "tracker-backend.c"
 			} else {
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block1_data_unref (_data1_);
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data1_ = NULL;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_inner_error_);
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
-#line 2772 "tracker-backend.c"
+#line 2813 "tracker-backend.c"
 			}
 		}
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = _tmp1_;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = NULL;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp4_;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp1_);
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		block1_data_unref (_data1_);
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data1_ = NULL;
-#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
-#line 2789 "tracker-backend.c"
+#line 2830 "tracker-backend.c"
 	}
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 251 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = g_main_context_new ();
-#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 251 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	context = _tmp5_;
-#line 267 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = context;
-#line 267 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = g_main_loop_new (_tmp6_, FALSE);
-#line 267 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 252 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->loop = _tmp7_;
-#line 268 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 253 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->async_result = NULL;
-#line 270 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp8_ = context;
-#line 270 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 255 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_context_push_thread_default (_tmp8_);
-#line 272 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp9_ = cancellable;
-#line 272 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 257 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async (_tmp9_, ___lambda6__gasync_ready_callback, block1_data_ref (_data1_));
-#line 277 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp10_ = _data1_->loop;
-#line 277 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 262 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_loop_run (_tmp10_);
-#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp11_ = context;
-#line 279 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_context_pop_thread_default (_tmp11_);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp13_ = _data1_->async_result;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp14_ = tracker_sparql_backend_get_internal_finish (_tmp13_, &_inner_error_);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp12_ = _tmp14_;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_main_context_unref0 (context);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block1_data_unref (_data1_);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data1_ = NULL;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2839 "tracker-backend.c"
+#line 2880 "tracker-backend.c"
 		} else {
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_main_context_unref0 (context);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block1_data_unref (_data1_);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data1_ = NULL;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 2853 "tracker-backend.c"
+#line 2894 "tracker-backend.c"
 		}
 	}
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp15_ = _tmp12_;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp12_ = NULL;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp15_;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_tmp12_);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_main_context_unref0 (context);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block1_data_unref (_data1_);
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_ = NULL;
-#line 281 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 2872 "tracker-backend.c"
+#line 2913 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_get_internal_async_data_free (gpointer _data) {
 	TrackerSparqlBackendGetInternalAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->result);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendGetInternalAsyncData, _data_);
-#line 2883 "tracker-backend.c"
+#line 2924 "tracker-backend.c"
 }
 
 
@@ -2889,114 +2928,114 @@ void tracker_sparql_backend_get_internal_async (GCancellable* cancellable, GAsyn
 	TrackerSparqlBackendGetInternalAsyncData* _data_;
 	GCancellable* _tmp0_;
 	GCancellable* _tmp1_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendGetInternalAsyncData);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_task_new (NULL, cancellable, _callback_, _user_data_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_backend_get_internal_async_data_free);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = cancellable;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp1_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async_co (_data_);
-#line 2907 "tracker-backend.c"
+#line 2948 "tracker-backend.c"
 }
 
 
 TrackerSparqlConnection* tracker_sparql_backend_get_internal_finish (GAsyncResult* _res_, GError** error) {
 	TrackerSparqlConnection* result;
 	TrackerSparqlBackendGetInternalAsyncData* _data_;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (NULL == _data_) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
-#line 2920 "tracker-backend.c"
+#line 2961 "tracker-backend.c"
 	}
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 2928 "tracker-backend.c"
+#line 2969 "tracker-backend.c"
 }
 
 
 static Block2Data* block2_data_ref (Block2Data* _data2_) {
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_atomic_int_inc (&_data2_->_ref_count_);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return _data2_;
-#line 2937 "tracker-backend.c"
+#line 2978 "tracker-backend.c"
 }
 
 
 static void block2_data_unref (void * _userdata_) {
 	Block2Data* _data2_;
 	_data2_ = (Block2Data*) _userdata_;
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_atomic_int_dec_and_test (&_data2_->_ref_count_)) {
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_main_context_unref0 (_data2_->context);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->_result_);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->spawn_error);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->dbus_error);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->io_error);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->sparql_error);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->cancellable);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_slice_free (Block2Data, _data2_);
-#line 2962 "tracker-backend.c"
+#line 3003 "tracker-backend.c"
 	}
 }
 
 
 static gpointer _g_main_context_ref0 (gpointer self) {
-#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_main_context_ref (self) : NULL;
-#line 2970 "tracker-backend.c"
+#line 3011 "tracker-backend.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_error_copy (self) : NULL;
-#line 2977 "tracker-backend.c"
+#line 3018 "tracker-backend.c"
 }
 
 
 static gboolean __lambda5_ (Block2Data* _data2_) {
 	gboolean result = FALSE;
-#line 320 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async_co (_data2_->_async_data_);
-#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = FALSE;
-#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 2989 "tracker-backend.c"
+#line 3030 "tracker-backend.c"
 }
 
 
 static gboolean ___lambda5__gsource_func (gpointer self) {
 	gboolean result;
 	result = __lambda5_ (self);
-#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 2998 "tracker-backend.c"
+#line 3039 "tracker-backend.c"
 }
 
 
@@ -3006,63 +3045,63 @@ static gboolean __lambda4_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 	GSource* _tmp14_;
 	GMainContext* _tmp15_;
 	GError * _inner_error_ = NULL;
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 290 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (job != NULL, FALSE);
-#line 3010 "tracker-backend.c"
+#line 3051 "tracker-backend.c"
 	{
 		TrackerSparqlConnection* _tmp0_ = NULL;
 		GCancellable* _tmp1_;
 		TrackerSparqlConnection* _tmp2_;
 		TrackerSparqlConnection* _tmp4_;
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = _data2_->cancellable;
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = tracker_sparql_backend_get (_tmp1_, &_inner_error_);
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = _tmp2_;
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 3024 "tracker-backend.c"
+#line 3065 "tracker-backend.c"
 			gboolean _tmp3_ = FALSE;
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_IO_ERROR) {
-#line 3028 "tracker-backend.c"
+#line 3069 "tracker-backend.c"
 				goto __catch4_g_io_error;
 			}
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-#line 3033 "tracker-backend.c"
+#line 3074 "tracker-backend.c"
 				goto __catch4_tracker_sparql_error;
 			}
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_DBUS_ERROR) {
-#line 3038 "tracker-backend.c"
+#line 3079 "tracker-backend.c"
 				goto __catch4_g_dbus_error;
 			}
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_SPAWN_ERROR) {
-#line 3043 "tracker-backend.c"
+#line 3084 "tracker-backend.c"
 				goto __catch4_g_spawn_error;
 			}
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return _tmp3_;
-#line 3052 "tracker-backend.c"
+#line 3093 "tracker-backend.c"
 		}
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = _tmp0_;
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = NULL;
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->_result_);
-#line 307 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->_result_ = _tmp4_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp0_);
-#line 3064 "tracker-backend.c"
+#line 3105 "tracker-backend.c"
 	}
 	goto __finally4;
 	__catch4_g_io_error:
@@ -3070,21 +3109,21 @@ static gboolean __lambda4_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_io = NULL;
 		GError* _tmp5_;
 		GError* _tmp6_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_io = _inner_error_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = e_io;
-#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp6_ = _g_error_copy0 (_tmp5_);
-#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->io_error);
-#line 309 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 294 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->io_error = _tmp6_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_io);
-#line 3086 "tracker-backend.c"
+#line 3127 "tracker-backend.c"
 	}
 	goto __finally4;
 	__catch4_tracker_sparql_error:
@@ -3092,21 +3131,21 @@ static gboolean __lambda4_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_spql = NULL;
 		GError* _tmp7_;
 		GError* _tmp8_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_spql = _inner_error_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 311 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp7_ = e_spql;
-#line 311 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = _g_error_copy0 (_tmp7_);
-#line 311 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->sparql_error);
-#line 311 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 296 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->sparql_error = _tmp8_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_spql);
-#line 3108 "tracker-backend.c"
+#line 3149 "tracker-backend.c"
 	}
 	goto __finally4;
 	__catch4_g_dbus_error:
@@ -3114,21 +3153,21 @@ static gboolean __lambda4_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_dbus = NULL;
 		GError* _tmp9_;
 		GError* _tmp10_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_dbus = _inner_error_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 313 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 298 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp9_ = e_dbus;
-#line 313 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 298 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = _g_error_copy0 (_tmp9_);
-#line 313 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 298 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->dbus_error);
-#line 313 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 298 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->dbus_error = _tmp10_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_dbus);
-#line 3130 "tracker-backend.c"
+#line 3171 "tracker-backend.c"
 	}
 	goto __finally4;
 	__catch4_g_spawn_error:
@@ -3136,556 +3175,426 @@ static gboolean __lambda4_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_spawn = NULL;
 		GError* _tmp11_;
 		GError* _tmp12_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_spawn = _inner_error_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 300 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp11_ = e_spawn;
-#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 300 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp12_ = _g_error_copy0 (_tmp11_);
-#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 300 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->spawn_error);
-#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 300 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->spawn_error = _tmp12_;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_spawn);
-#line 3152 "tracker-backend.c"
+#line 3193 "tracker-backend.c"
 	}
 	__finally4:
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 3157 "tracker-backend.c"
+#line 3198 "tracker-backend.c"
 		gboolean _tmp13_ = FALSE;
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_clear_error (&_inner_error_);
-#line 306 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return _tmp13_;
-#line 3165 "tracker-backend.c"
+#line 3206 "tracker-backend.c"
 	}
-#line 318 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp14_ = g_idle_source_new ();
-#line 318 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	source = _tmp14_;
-#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 304 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_source_set_callback (source, ___lambda5__gsource_func, block2_data_ref (_data2_), block2_data_unref);
-#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 308 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp15_ = _data2_->context;
-#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 308 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_source_attach (source, _tmp15_);
-#line 325 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = FALSE;
-#line 325 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_source_unref0 (source);
-#line 325 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3183 "tracker-backend.c"
+#line 3224 "tracker-backend.c"
 }
 
 
 static gboolean ___lambda4__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self) {
 	gboolean result;
 	result = __lambda4_ (self, job);
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 290 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3192 "tracker-backend.c"
+#line 3233 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_get_internal_async_co (TrackerSparqlBackendGetInternalAsyncData* _data_) {
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 3201 "tracker-backend.c"
+#line 3242 "tracker-backend.c"
 		goto _state_0;
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 3205 "tracker-backend.c"
+#line 3246 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 3210 "tracker-backend.c"
+#line 3251 "tracker-backend.c"
 	}
 	_state_0:
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_ = g_slice_new0 (Block2Data);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->_ref_count_ = 1;
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->cancellable;
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_data2_->cancellable);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->cancellable = _data_->_tmp0_;
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->_async_data_ = _data_;
-#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 271 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = g_mutex_trylock (&tracker_sparql_backend_door);
-#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 271 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp1_) {
-#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp2_ = tracker_sparql_backend_singleton;
-#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = _g_object_ref0 (_data_->_tmp2_);
-#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_result_ = _data_->_tmp3_;
-#line 290 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 275 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_mutex_unlock (&tracker_sparql_backend_door);
-#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 277 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = _data_->_result_;
-#line 292 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 277 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_tmp4_ != NULL) {
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->result = _data_->_result_;
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block2_data_unref (_data_->_data2_);
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_data2_ = NULL;
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ != 0) {
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 3255 "tracker-backend.c"
+#line 3296 "tracker-backend.c"
 				}
 			}
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 293 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 3262 "tracker-backend.c"
+#line 3303 "tracker-backend.c"
 		}
-#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 271 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data_->_result_);
-#line 3266 "tracker-backend.c"
+#line 3307 "tracker-backend.c"
 	}
-#line 298 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 283 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->sparql_error = NULL;
-#line 299 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->io_error = NULL;
-#line 300 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 285 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->dbus_error = NULL;
-#line 301 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->spawn_error = NULL;
-#line 302 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->_result_ = NULL;
-#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = g_main_context_get_thread_default ();
-#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _g_main_context_ref0 (_data_->_tmp5_);
-#line 303 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 288 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->context = _data_->_tmp6_;
-#line 305 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 290 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_io_scheduler_push_job (___lambda4__gio_scheduler_job_func, block2_data_ref (_data_->_data2_), block2_data_unref, G_PRIORITY_DEFAULT, NULL);
-#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 327 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 3290 "tracker-backend.c"
+#line 3331 "tracker-backend.c"
 	_state_1:
 	;
-#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->_data2_->sparql_error;
-#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp7_ != NULL) {
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp8_ = _data_->_data2_->sparql_error;
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp9_ = _g_error_copy0 (_data_->_tmp8_);
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp9_;
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block2_data_unref (_data_->_data2_);
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_data2_ = NULL;
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 3315 "tracker-backend.c"
+#line 3356 "tracker-backend.c"
 		} else {
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block2_data_unref (_data_->_data2_);
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_data2_ = NULL;
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 330 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 3329 "tracker-backend.c"
+#line 3370 "tracker-backend.c"
 		}
 	} else {
-#line 331 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp10_ = _data_->_data2_->io_error;
-#line 331 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_tmp10_ != NULL) {
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp11_ = _data_->_data2_->io_error;
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp12_ = _g_error_copy0 (_data_->_tmp11_);
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_inner_error_ = _data_->_tmp12_;
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block2_data_unref (_data_->_data2_);
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_data2_ = NULL;
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_object_unref (_data_->_async_result);
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
-#line 3354 "tracker-backend.c"
+#line 3395 "tracker-backend.c"
 			} else {
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block2_data_unref (_data_->_data2_);
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_data2_ = NULL;
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_data_->_inner_error_);
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_object_unref (_data_->_async_result);
-#line 332 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 317 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
-#line 3368 "tracker-backend.c"
+#line 3409 "tracker-backend.c"
 			}
 		} else {
-#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp13_ = _data_->_data2_->dbus_error;
-#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_tmp13_ != NULL) {
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp14_ = _data_->_data2_->dbus_error;
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp15_ = _g_error_copy0 (_data_->_tmp14_);
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_inner_error_ = _data_->_tmp15_;
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_object_unref (_data_->_async_result);
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
-#line 3393 "tracker-backend.c"
+#line 3434 "tracker-backend.c"
 				} else {
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_clear_error (&_data_->_inner_error_);
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_object_unref (_data_->_async_result);
-#line 334 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 319 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
-#line 3407 "tracker-backend.c"
+#line 3448 "tracker-backend.c"
 				}
 			} else {
-#line 335 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 320 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp16_ = _data_->_data2_->spawn_error;
-#line 335 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 320 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_data_->_tmp16_ != NULL) {
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp17_ = _data_->_data2_->spawn_error;
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp18_ = _g_error_copy0 (_data_->_tmp17_);
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_inner_error_ = _data_->_tmp18_;
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						block2_data_unref (_data_->_data2_);
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						_data_->_data2_ = NULL;
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_object_unref (_data_->_async_result);
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						return FALSE;
-#line 3432 "tracker-backend.c"
+#line 3473 "tracker-backend.c"
 					} else {
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						block2_data_unref (_data_->_data2_);
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						_data_->_data2_ = NULL;
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_clear_error (&_data_->_inner_error_);
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_object_unref (_data_->_async_result);
-#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 321 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						return FALSE;
-#line 3446 "tracker-backend.c"
+#line 3487 "tracker-backend.c"
 					}
 				} else {
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp19_ = _data_->_data2_->_result_;
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp20_ = _g_object_ref0 (_data_->_tmp19_);
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->result = _data_->_tmp20_;
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if (_data_->_state_ != 0) {
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 							g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 3467 "tracker-backend.c"
+#line 3508 "tracker-backend.c"
 						}
 					}
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_object_unref (_data_->_async_result);
-#line 338 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
-#line 3474 "tracker-backend.c"
+#line 3515 "tracker-backend.c"
 				}
 			}
 		}
 	}
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block2_data_unref (_data_->_data2_);
-#line 284 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 269 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_ = NULL;
-#line 3483 "tracker-backend.c"
-}
-
-
-static void _tracker_sparql_backend_remove_log_handler_glog_func (const gchar* log_domain, GLogLevelFlags log_levels, const gchar* message, gpointer self) {
-#line 388 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	tracker_sparql_backend_remove_log_handler (log_domain, log_levels, message);
-#line 3490 "tracker-backend.c"
-}
-
-
-static void tracker_sparql_backend_log_init (void) {
-	gboolean _tmp0_;
-	gint verbosity = 0;
-	gchar* env_verbosity = NULL;
-	const gchar* _tmp1_;
-	gchar* _tmp2_;
-	const gchar* _tmp3_;
-	GLogLevelFlags remove_levels = 0;
-	gint _tmp6_;
-	gint _tmp7_;
-	GLogLevelFlags _tmp8_;
-#line 343 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp0_ = tracker_sparql_backend_log_initialized;
-#line 343 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_tmp0_) {
-#line 344 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		return;
-#line 3511 "tracker-backend.c"
-	}
-#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	tracker_sparql_backend_log_initialized = TRUE;
-#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	verbosity = 0;
-#line 351 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp1_ = g_getenv ("TRACKER_VERBOSITY");
-#line 351 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp2_ = g_strdup (_tmp1_);
-#line 351 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	env_verbosity = _tmp2_;
-#line 352 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp3_ = env_verbosity;
-#line 352 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_tmp3_ != NULL) {
-#line 3527 "tracker-backend.c"
-		const gchar* _tmp4_;
-		gint _tmp5_;
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp4_ = env_verbosity;
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp5_ = atoi (_tmp4_);
-#line 353 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		verbosity = _tmp5_;
-#line 3536 "tracker-backend.c"
-	}
-#line 355 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	remove_levels = 0;
-#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp6_ = verbosity;
-#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_tmp6_ > 2) {
-#line 360 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
-#line 3546 "tracker-backend.c"
-	}
-#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp7_ = verbosity;
-#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	switch (_tmp7_) {
-#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		case 3:
-#line 3554 "tracker-backend.c"
-		{
-#line 365 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			break;
-#line 3558 "tracker-backend.c"
-		}
-#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		case 2:
-#line 3562 "tracker-backend.c"
-		{
-#line 369 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			remove_levels = G_LOG_LEVEL_DEBUG;
-#line 370 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			break;
-#line 3568 "tracker-backend.c"
-		}
-#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		case 1:
-#line 3572 "tracker-backend.c"
-		{
-#line 374 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			remove_levels = G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE;
-#line 376 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			break;
-#line 3578 "tracker-backend.c"
-		}
-		default:
-#line 362 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		case 0:
-#line 3583 "tracker-backend.c"
-		{
-#line 381 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			remove_levels = (G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE) | G_LOG_LEVEL_INFO;
-#line 384 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			break;
-#line 3589 "tracker-backend.c"
-		}
-	}
-#line 387 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp8_ = remove_levels;
-#line 387 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_tmp8_ != 0) {
-#line 3596 "tracker-backend.c"
-		GLogLevelFlags _tmp9_;
-#line 388 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		_tmp9_ = remove_levels;
-#line 388 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		g_log_set_handler ("Tracker", _tmp9_, _tracker_sparql_backend_remove_log_handler_glog_func, NULL);
-#line 3602 "tracker-backend.c"
-	}
-#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_g_free0 (env_verbosity);
-#line 3606 "tracker-backend.c"
-}
-
-
-static void tracker_sparql_backend_remove_log_handler (const gchar* log_domain, GLogLevelFlags log_level, const gchar* message) {
-#line 392 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_return_if_fail (message != NULL);
-#line 3613 "tracker-backend.c"
+#line 3524 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_class_init (TrackerSparqlBackendClass * klass) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_parent_class = g_type_class_peek_parent (klass);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_type_class_add_private (klass, sizeof (TrackerSparqlBackendPrivate));
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((GObjectClass *) klass)->dispose = (void (*) (GObject *)) tracker_sparql_backend_real_dispose;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->query = (TrackerSparqlCursor* (*) (TrackerSparqlConnection *, const gchar*, GCancellable*, GError**)) tracker_sparql_backend_real_query;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->query_async = (void (*) (TrackerSparqlConnection *, const gchar*, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_sparql_backend_real_query_async;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->query_finish = (TrackerSparqlCursor* (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_sparql_backend_real_query_finish;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->update = (void (*) (TrackerSparqlConnection *, const gchar*, gint, GCancellable*, GError**)) tracker_sparql_backend_real_update;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->update_blank = (GVariant* (*) (TrackerSparqlConnection *, const gchar*, gint, GCancellable*, GError**)) tracker_sparql_backend_real_update_blank;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->update_async = (void (*) (TrackerSparqlConnection *, const gchar*, gint, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_sparql_backend_real_update_async;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->update_finish = (void (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_sparql_backend_real_update_finish;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->update_array_async = (void (*) (TrackerSparqlConnection *, gchar**, int, gint, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_sparql_backend_real_update_array_async;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->update_array_finish = (GPtrArray* (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_sparql_backend_real_update_array_finish;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->update_blank_async = (void (*) (TrackerSparqlConnection *, const gchar*, gint, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_sparql_backend_real_update_blank_async;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->update_blank_finish = (GVariant* (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_sparql_backend_real_update_blank_finish;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->load = (void (*) (TrackerSparqlConnection *, GFile*, GCancellable*, GError**)) tracker_sparql_backend_real_load;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->load_async = (void (*) (TrackerSparqlConnection *, GFile*, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_sparql_backend_real_load_async;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->load_finish = (void (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_sparql_backend_real_load_finish;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->statistics = (TrackerSparqlCursor* (*) (TrackerSparqlConnection *, GCancellable*, GError**)) tracker_sparql_backend_real_statistics;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->statistics_async = (void (*) (TrackerSparqlConnection *, GCancellable*, GAsyncReadyCallback, gpointer)) tracker_sparql_backend_real_statistics_async;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	((TrackerSparqlConnectionClass *) klass)->statistics_finish = (TrackerSparqlCursor* (*) (TrackerSparqlConnection *, GAsyncResult*, GError**)) tracker_sparql_backend_real_statistics_finish;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	((TrackerSparqlConnectionClass *) klass)->get_namespace_manager = (TrackerNamespaceManager* (*) (TrackerSparqlConnection *)) tracker_sparql_backend_real_get_namespace_manager;
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_sparql_backend_finalize;
-#line 3660 "tracker-backend.c"
+#line 3573 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_instance_init (TrackerSparqlBackend * self) {
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	self->priv = TRACKER_SPARQL_BACKEND_GET_PRIVATE (self);
-#line 22 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	self->priv->direct = NULL;
 #line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	self->priv = TRACKER_SPARQL_BACKEND_GET_PRIVATE (self);
+#line 25 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	self->priv->direct = NULL;
+#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self->priv->bus = NULL;
-#line 29 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	self->priv->bus_type = G_BUS_TYPE_SESSION;
-#line 3673 "tracker-backend.c"
+#line 3584 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_finalize (GObject * obj) {
 	TrackerSparqlBackend * self;
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_SPARQL_TYPE_BACKEND, TrackerSparqlBackend);
-#line 22 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_g_object_unref0 (self->priv->direct);
 #line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_SPARQL_TYPE_BACKEND, TrackerSparqlBackend);
+#line 25 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_g_object_unref0 (self->priv->direct);
+#line 26 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (self->priv->bus);
-#line 20 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (tracker_sparql_backend_parent_class)->finalize (obj);
-#line 3687 "tracker-backend.c"
+#line 3598 "tracker-backend.c"
 }
 
 
@@ -3740,96 +3649,96 @@ TrackerSparqlConnection* tracker_sparql_connection_get_finish (GAsyncResult* _re
 
 static void tracker_sparql_connection_get_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlConnectionGetAsyncData* _data_;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_get_async_co (_data_);
-#line 3750 "tracker-backend.c"
+#line 3661 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_connection_get_async_co (TrackerSparqlConnectionGetAsyncData* _data_) {
-#line 397 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 328 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 397 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 328 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 3759 "tracker-backend.c"
+#line 3670 "tracker-backend.c"
 		goto _state_0;
-#line 397 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 328 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 3763 "tracker-backend.c"
+#line 3674 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 397 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 328 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 3768 "tracker-backend.c"
+#line 3679 "tracker-backend.c"
 	}
 	_state_0:
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->cancellable;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async (_data_->_tmp1_, tracker_sparql_connection_get_async_ready, _data_);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 3779 "tracker-backend.c"
+#line 3690 "tracker-backend.c"
 	_state_1:
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = tracker_sparql_backend_get_internal_finish (_data_->_res_, &_data_->_inner_error_);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->_tmp2_;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 3795 "tracker-backend.c"
+#line 3706 "tracker-backend.c"
 		} else {
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
-#line 3805 "tracker-backend.c"
+#line 3716 "tracker-backend.c"
 		}
 	}
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->_tmp0_;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = NULL;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp3_;
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->_tmp0_);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ != 0) {
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 3824 "tracker-backend.c"
+#line 3735 "tracker-backend.c"
 		}
 	}
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 398 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 329 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 3831 "tracker-backend.c"
+#line 3742 "tracker-backend.c"
 }
 
 
@@ -3840,72 +3749,171 @@ TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellabl
 	TrackerSparqlConnection* _tmp2_;
 	TrackerSparqlConnection* _tmp3_;
 	GError * _inner_error_ = NULL;
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = cancellable;
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = tracker_sparql_backend_get_internal (_tmp1_, &_inner_error_);
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _tmp2_;
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 3856 "tracker-backend.c"
+#line 3767 "tracker-backend.c"
 		} else {
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
-#line 3864 "tracker-backend.c"
+#line 3775 "tracker-backend.c"
 		}
 	}
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = _tmp0_;
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = NULL;
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp3_;
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_tmp0_);
-#line 402 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 3877 "tracker-backend.c"
+#line 3788 "tracker-backend.c"
 }
 
 
-static void tracker_sparql_connection_get_direct_async_data_free (gpointer _data) {
-	TrackerSparqlConnectionGetDirectAsyncData* _data_;
+TrackerSparqlConnection* tracker_sparql_connection_remote_new (const gchar* url_base) {
+	TrackerSparqlConnection* result = NULL;
+	const gchar* _tmp0_;
+	TrackerRemoteConnection* _tmp1_;
+#line 336 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_return_val_if_fail (url_base != NULL, NULL);
+#line 337 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp0_ = url_base;
+#line 337 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp1_ = tracker_remote_connection_new (_tmp0_);
+#line 337 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	result = (TrackerSparqlConnection*) _tmp1_;
+#line 337 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	return result;
+#line 3806 "tracker-backend.c"
+}
+
+
+TrackerSparqlConnection* tracker_sparql_connection_local_new (TrackerSparqlConnectionFlags flags, GFile* store, GFile* journal, GFile* ontology, GCancellable* cancellable, GError** error) {
+	TrackerSparqlConnection* result = NULL;
+	TrackerDirectConnection* conn = NULL;
+	TrackerSparqlConnectionFlags _tmp0_;
+	GFile* _tmp1_;
+	GFile* _tmp2_;
+	GFile* _tmp3_;
+	TrackerDirectConnection* _tmp4_;
+	TrackerDirectConnection* _tmp5_;
+	GCancellable* _tmp6_;
+	GError * _inner_error_ = NULL;
+#line 340 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_return_val_if_fail (store != NULL, NULL);
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp0_ = flags;
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp1_ = store;
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp2_ = journal;
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp3_ = ontology;
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp4_ = tracker_direct_connection_new (_tmp0_, _tmp1_, _tmp2_, _tmp3_, &_inner_error_);
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	conn = _tmp4_;
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_propagate_error (error, _inner_error_);
+#line 341 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return NULL;
+#line 3841 "tracker-backend.c"
+	}
+#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp5_ = conn;
+#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp6_ = cancellable;
+#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_initable_init ((GInitable*) _tmp5_, _tmp6_, &_inner_error_);
+#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (G_UNLIKELY (_inner_error_ != NULL)) {
+#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_propagate_error (error, _inner_error_);
+#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_g_object_unref0 (conn);
+#line 342 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return NULL;
+#line 3857 "tracker-backend.c"
+	}
+#line 343 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	result = (TrackerSparqlConnection*) conn;
+#line 343 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	return result;
+#line 3863 "tracker-backend.c"
+}
+
+
+static void tracker_sparql_connection_local_new_async_data_free (gpointer _data) {
+	TrackerSparqlConnectionLocalNewAsyncData* _data_;
 	_data_ = _data;
+	_g_object_unref0 (_data_->store);
+	_g_object_unref0 (_data_->journal);
+	_g_object_unref0 (_data_->ontology);
 	_g_object_unref0 (_data_->cancellable);
 	_g_object_unref0 (_data_->result);
-	g_slice_free (TrackerSparqlConnectionGetDirectAsyncData, _data_);
+	g_slice_free (TrackerSparqlConnectionLocalNewAsyncData, _data_);
 }
 
 
-void tracker_sparql_connection_get_direct_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	TrackerSparqlConnectionGetDirectAsyncData* _data_;
-	GCancellable* _tmp0_;
-	GCancellable* _tmp1_;
-	_data_ = g_slice_new0 (TrackerSparqlConnectionGetDirectAsyncData);
+void tracker_sparql_connection_local_new_async (TrackerSparqlConnectionFlags flags, GFile* store, GFile* journal, GFile* ontology, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
+	TrackerSparqlConnectionLocalNewAsyncData* _data_;
+	TrackerSparqlConnectionFlags _tmp0_;
+	GFile* _tmp1_;
+	GFile* _tmp2_;
+	GFile* _tmp3_;
+	GFile* _tmp4_;
+	GFile* _tmp5_;
+	GFile* _tmp6_;
+	GCancellable* _tmp7_;
+	GCancellable* _tmp8_;
+	_data_ = g_slice_new0 (TrackerSparqlConnectionLocalNewAsyncData);
 	_data_->_async_result = g_task_new (NULL, cancellable, _callback_, _user_data_);
-	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_connection_get_direct_async_data_free);
-	_tmp0_ = cancellable;
-	_tmp1_ = _g_object_ref0 (_tmp0_);
+	g_task_set_task_data (_data_->_async_result, _data_, tracker_sparql_connection_local_new_async_data_free);
+	_tmp0_ = flags;
+	_data_->flags = _tmp0_;
+	_tmp1_ = store;
+	_tmp2_ = _g_object_ref0 (_tmp1_);
+	_g_object_unref0 (_data_->store);
+	_data_->store = _tmp2_;
+	_tmp3_ = journal;
+	_tmp4_ = _g_object_ref0 (_tmp3_);
+	_g_object_unref0 (_data_->journal);
+	_data_->journal = _tmp4_;
+	_tmp5_ = ontology;
+	_tmp6_ = _g_object_ref0 (_tmp5_);
+	_g_object_unref0 (_data_->ontology);
+	_data_->ontology = _tmp6_;
+	_tmp7_ = cancellable;
+	_tmp8_ = _g_object_ref0 (_tmp7_);
 	_g_object_unref0 (_data_->cancellable);
-	_data_->cancellable = _tmp1_;
-	tracker_sparql_connection_get_direct_async_co (_data_);
+	_data_->cancellable = _tmp8_;
+	tracker_sparql_connection_local_new_async_co (_data_);
 }
 
 
-TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResult* _res_, GError** error) {
+TrackerSparqlConnection* tracker_sparql_connection_local_new_finish (GAsyncResult* _res_, GError** error) {
 	TrackerSparqlConnection* result;
-	TrackerSparqlConnectionGetDirectAsyncData* _data_;
+	TrackerSparqlConnectionLocalNewAsyncData* _data_;
 	_data_ = g_task_propagate_pointer (G_TASK (_res_), error);
 	if (NULL == _data_) {
 		return NULL;
@@ -3916,162 +3924,112 @@ TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResu
 }
 
 
-static void tracker_sparql_connection_get_direct_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
-	TrackerSparqlConnectionGetDirectAsyncData* _data_;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_ = _user_data_;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_source_object_ = source_object;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_res_ = _res_;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	tracker_sparql_connection_get_direct_async_co (_data_);
-#line 3928 "tracker-backend.c"
-}
-
-
-static gboolean tracker_sparql_connection_get_direct_async_co (TrackerSparqlConnectionGetDirectAsyncData* _data_) {
-#line 405 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+static gboolean tracker_sparql_connection_local_new_async_co (TrackerSparqlConnectionLocalNewAsyncData* _data_) {
+#line 346 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 405 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 346 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
-#line 3937 "tracker-backend.c"
+#line 3933 "tracker-backend.c"
 		goto _state_0;
-#line 405 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 346 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
-#line 3941 "tracker-backend.c"
+#line 3937 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 405 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 346 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
-#line 3946 "tracker-backend.c"
+#line 3942 "tracker-backend.c"
 	}
 	_state_0:
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp1_ = _data_->cancellable;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_state_ = 1;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	tracker_sparql_backend_get_internal_async (_data_->_tmp1_, tracker_sparql_connection_get_direct_async_ready, _data_);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	return FALSE;
-#line 3957 "tracker-backend.c"
-	_state_1:
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp2_ = tracker_sparql_backend_get_internal_finish (_data_->_res_, &_data_->_inner_error_);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp0_ = _data_->_tmp2_;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp0_ = _data_->flags;
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp1_ = _data_->store;
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp2_ = _data_->journal;
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp3_ = _data_->ontology;
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp4_ = tracker_direct_connection_new (_data_->_tmp0_, _data_->_tmp1_, _data_->_tmp2_, _data_->_tmp3_, &_data_->_inner_error_);
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->conn = _data_->_tmp4_;
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (G_UNLIKELY (_data_->_inner_error_ != NULL)) {
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_task_return_error (_data_->_async_result, _data_->_inner_error_);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_object_unref (_data_->_async_result);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return FALSE;
-#line 3973 "tracker-backend.c"
-		} else {
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_clear_error (&_data_->_inner_error_);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_object_unref (_data_->_async_result);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return FALSE;
-#line 3983 "tracker-backend.c"
-		}
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_task_return_error (_data_->_async_result, _data_->_inner_error_);
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		g_object_unref (_data_->_async_result);
+#line 347 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		return FALSE;
+#line 3965 "tracker-backend.c"
 	}
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp3_ = _data_->_tmp0_;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->_tmp0_ = NULL;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_data_->result = _data_->_tmp3_;
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_g_object_unref0 (_data_->_tmp0_);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_task_return_pointer (_data_->_async_result, _data_, NULL);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (_data_->_state_ != 0) {
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		while (g_task_get_completed (_data_->_async_result) != TRUE) {
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
-#line 4002 "tracker-backend.c"
-		}
-	}
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_object_unref (_data_->_async_result);
-#line 406 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 348 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_tmp5_ = _data_->cancellable;
+#line 348 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_async_initable_init_async ((GAsyncInitable*) _data_->conn, G_PRIORITY_DEFAULT, _data_->_tmp5_, NULL, NULL);
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->_state_ = 1;
+#line 349 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 4009 "tracker-backend.c"
-}
-
-
-TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* cancellable, GError** error) {
-	TrackerSparqlConnection* result = NULL;
-	TrackerSparqlConnection* _tmp0_ = NULL;
-	GCancellable* _tmp1_;
-	TrackerSparqlConnection* _tmp2_;
-	TrackerSparqlConnection* _tmp3_;
-	GError * _inner_error_ = NULL;
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp1_ = cancellable;
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp2_ = tracker_sparql_backend_get_internal (_tmp1_, &_inner_error_);
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp0_ = _tmp2_;
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	if (G_UNLIKELY (_inner_error_ != NULL)) {
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_propagate_error (error, _inner_error_);
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return NULL;
-#line 4034 "tracker-backend.c"
-		} else {
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			g_clear_error (&_inner_error_);
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-			return NULL;
-#line 4042 "tracker-backend.c"
+#line 3975 "tracker-backend.c"
+	_state_1:
+	;
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_data_->result = (TrackerSparqlConnection*) _data_->conn;
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_task_return_pointer (_data_->_async_result, _data_, NULL);
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (_data_->_state_ != 0) {
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		while (g_task_get_completed (_data_->_async_result) != TRUE) {
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+			g_main_context_iteration (g_task_get_context (_data_->_async_result), TRUE);
+#line 3988 "tracker-backend.c"
 		}
 	}
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp3_ = _tmp0_;
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp0_ = NULL;
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	result = _tmp3_;
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_g_object_unref0 (_tmp0_);
-#line 410 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	return result;
-#line 4055 "tracker-backend.c"
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	g_object_unref (_data_->_async_result);
+#line 350 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	return FALSE;
+#line 3995 "tracker-backend.c"
 }
 
 
-TrackerSparqlConnection* tracker_sparql_connection_remote_new (const gchar* url_base) {
-	TrackerSparqlConnection* result = NULL;
+void tracker_sparql_connection_set_domain (const gchar* domain) {
 	const gchar* _tmp0_;
-	TrackerRemoteConnection* _tmp1_;
-#line 413 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	g_return_val_if_fail (url_base != NULL, NULL);
-#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp0_ = url_base;
-#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	_tmp1_ = tracker_remote_connection_new (_tmp0_);
-#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
-	result = (TrackerSparqlConnection*) _tmp1_;
-#line 414 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp0_ = domain_name;
+#line 354 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	if (_tmp0_ == NULL) {
+#line 4005 "tracker-backend.c"
+		const gchar* _tmp1_;
+		gchar* _tmp2_;
+#line 355 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp1_ = domain;
+#line 355 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_tmp2_ = g_strdup (_tmp1_);
+#line 355 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		_g_free0 (domain_name);
+#line 355 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+		domain_name = _tmp2_;
+#line 4016 "tracker-backend.c"
+	}
+}
+
+
+gchar* tracker_sparql_connection_get_domain (void) {
+	gchar* result = NULL;
+	const gchar* _tmp0_;
+	gchar* _tmp1_;
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp0_ = domain_name;
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	_tmp1_ = g_strdup (_tmp0_);
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+	result = _tmp1_;
+#line 359 "/home/carlos/Source/gnome/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
-#line 4073 "tracker-backend.c"
+#line 4033 "tracker-backend.c"
 }
 
 

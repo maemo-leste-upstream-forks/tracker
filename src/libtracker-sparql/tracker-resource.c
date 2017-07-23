@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016, Sam Thursfield <sam@afuera.me.uk>
+ * Copyright (C) 2016-2017, Sam Thursfield <sam@afuera.me.uk>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -404,6 +404,21 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int64, gint64, G_TYPE_INT64, g_valu
 SET_PROPERTY_FOR_GTYPE (tracker_resource_set_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_set_object, validate_pointer);
 
 /**
+ * tracker_resource_set_take_relation: (skip)
+ * @self: the #TrackerResource
+ * @property_uri: a string identifying the property to modify
+ * @resource: the property object
+ *
+ * Sets a single-valued resource object as a #TrackerResource. This
+ * function produces similar RDF to tracker_resource_set_uri(),
+ * although in this function the URI will depend on the identifier
+ * set on @resource. This function takes ownership of @resource.
+ *
+ * Since: 2.0
+ */
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_take_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_take_object, validate_pointer);
+
+/**
  * tracker_resource_set_string:
  * @self: the #TrackerResource
  * @property_uri: a string identifying the property to modify
@@ -582,7 +597,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_double, double, G_TYPE_DOUBLE, g_va
 ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int, int, G_TYPE_INT, g_value_set_int, validate_int);
 
 /**
- * tracker_resource_add_boolean:
+ * tracker_resource_add_int64:
  * @self: the #TrackerResource
  * @property_uri: a string identifying the property to modify
  * @value: the property object
@@ -607,6 +622,22 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int64, gint64, G_TYPE_INT64, g_valu
  * Since: 1.10
  */
 ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_set_object, validate_pointer);
+
+/**
+ * tracker_resource_add_take_relation: (skip)
+ * @self: the #TrackerResource
+ * @property_uri: a string identifying the property to modify
+ * @resource: the property object
+ *
+ * Adds a resource object to a multi-valued property. This
+ * function produces similar RDF to tracker_resource_add_uri(),
+ * although in this function the URI will depend on the identifier
+ * set on @resource. This function takes ownership of @resource.
+ *
+ * Since: 2.0
+ */
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_take_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_take_object, validate_pointer);
+
 
 /**
  * tracker_resource_add_string:
@@ -642,7 +673,8 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_uri, const char *, TRACKER_TYPE_URI
  *
  * Returns the list of all known values of the given property.
  *
- * Returns: a #GList of #GValue instances, which must be freed by the caller.
+ * Returns: (transfer full) (element-type GValue): a #GList of #GValue
+ * instances, which must be freed by the caller.
  *
  * Since: 1.10
  */
@@ -771,7 +803,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_int64, gint64, G_TYPE_INT64, 
  *
  * Returns the first resource object previously assigned to a property.
  *
- * Returns: the first resource object
+ * Returns: (transfer none): the first resource object
  *
  * Since: 1.10
  */
