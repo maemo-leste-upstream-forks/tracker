@@ -65,7 +65,7 @@ Description: metadata database, indexer and search tool
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-sparql-1.0-0
+Package: libtracker-sparql-2.0-0
 Architecture: any
 Multi-Arch: same
 Section: libs
@@ -80,15 +80,15 @@ Description: metadata database, indexer and search tool - library
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-sparql-1.0-dev
+Package: libtracker-sparql-2.0-dev
 Architecture: any
 Multi-Arch: same
 Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libtracker-sparql-1.0-0 (= ${binary:Version}),
+         libtracker-sparql-2.0-0 (= ${binary:Version}),
          libglib2.0-dev,
-         gir1.2-tracker-1.0 (= ${binary:Version})
+         gir1.2-tracker-2.0 (= ${binary:Version})
 Suggests: libtracker-sparql-doc
 Description: metadata database, indexer and search tool - development files
  This package contains the static libraries and header files needed to link
@@ -118,7 +118,7 @@ Description: metadata database, indexer and search tool - API documentation
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-miner-1.0-0
+Package: libtracker-miner-2.0-0
 Architecture: any
 Multi-Arch: same
 Section: libs
@@ -133,16 +133,16 @@ Description: tracker data miner library
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-miner-1.0-dev
+Package: libtracker-miner-2.0-dev
 Architecture: any
 Multi-Arch: same
 Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libtracker-miner-1.0-0 (= ${binary:Version}),
-         libtracker-sparql-1.0-dev,
+         libtracker-miner-2.0-0 (= ${binary:Version}),
+         libtracker-sparql-2.0-dev,
          libglib2.0-dev,
-         gir1.2-tracker-1.0 (= ${binary:Version})
+         gir1.2-tracker-2.0 (= ${binary:Version})
 Suggests: libtracker-miner-doc
 Description: tracker data miner library - development files
  This package contains the static libraries and header files needed to link
@@ -170,7 +170,7 @@ Description: tracker data miner library - API documentation
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-control-1.0-0
+Package: libtracker-control-2.0-0
 Architecture: any
 Multi-Arch: same
 Section: libs
@@ -185,15 +185,15 @@ Description: library to control/monitor tracker miners
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-control-1.0-dev
+Package: libtracker-control-2.0-dev
 Architecture: any
 Multi-Arch: same
 Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libtracker-control-1.0-0 (= ${binary:Version}),
+         libtracker-control-2.0-0 (= ${binary:Version}),
          libglib2.0-dev,
-         gir1.2-tracker-1.0 (= ${binary:Version})
+         gir1.2-tracker-2.0 (= ${binary:Version})
 Suggests: libtracker-control-doc
 Description: library to control/monitor tracker miners - development files
  This package contains the static libraries and header files needed to link
@@ -221,7 +221,7 @@ Description: library to control/monitor tracker miners - API documentation
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: gir1.2-tracker-1.0
+Package: gir1.2-tracker-2.0
 Section: introspection
 Architecture: any
 Multi-Arch: same
