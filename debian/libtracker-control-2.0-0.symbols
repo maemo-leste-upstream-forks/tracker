@@ -1,4 +1,5 @@
 libtracker-control-2.0.so.0 libtracker-control-2.0-0 #MINVER#
+* Build-Depends-Package: libtracker-control-2.0-dev
  tracker_miner_manager_error_quark@Base 0.17.4
  tracker_miner_manager_get_available@Base 0.17.4
  tracker_miner_manager_get_description@Base 0.17.4
