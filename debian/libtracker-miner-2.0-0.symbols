@@ -1,4 +1,4 @@
-libtracker-miner-1.0.so.0 libtracker-miner-1.0-0 #MINVER#
+libtracker-miner-2.0.so.0 libtracker-miner-2.0-0 #MINVER#
  tracker_data_provider_begin@Base 1.2.1
  tracker_data_provider_begin_async@Base 1.2.1
  tracker_data_provider_begin_finish@Base 1.2.1

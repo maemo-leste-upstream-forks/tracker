@@ -1,1 +1,1 @@
-libtracker-miner-1.0-dev: gir-missing-typelib-dependency usr/share/gir-1.0/TrackerMiner-1.0.gir gir1.2-trackerminer-1.0
+libtracker-miner-2.0-dev: gir-missing-typelib-dependency usr/share/gir-1.0/TrackerMiner-2.0.gir gir1.2-trackerminer-2.0

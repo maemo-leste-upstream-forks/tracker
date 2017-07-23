@@ -1,4 +1,4 @@
-libtracker-sparql-1.0.so.0 libtracker-sparql-1.0-0 #MINVER#
+libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
  tracker_namespace_manager_add_prefix@Base 1.9.1
  tracker_namespace_manager_expand_uri@Base 1.9.1
  tracker_namespace_manager_get_default@Base 1.9.1
