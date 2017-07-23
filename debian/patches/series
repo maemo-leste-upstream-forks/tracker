@@ -1,1 +1,2 @@
 Don-t-immediately-restart-tracker-extract-on-SIGSYS.patch
+libtracker-data-fix-format-security-issue.patch

@@ -1,0 +1,22 @@
+From: Jeremy Bicha <jbicha@ubuntu.com>
+Date: Fri, 21 Jul 2017 17:03:08 -0400
+Subject: libtracker-data: fix format-security issue
+
+https://bugzilla.gnome.org/show_bug.cgi?id=785245
+---
+ src/libtracker-data/tracker-db-interface-sqlite.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/libtracker-data/tracker-db-interface-sqlite.c b/src/libtracker-data/tracker-db-interface-sqlite.c
+index a001e2f..b4ab1d9 100644
+--- a/src/libtracker-data/tracker-db-interface-sqlite.c
++++ b/src/libtracker-data/tracker-db-interface-sqlite.c
+@@ -1897,7 +1897,7 @@ tracker_db_interface_sqlite_wal_checkpoint (TrackerDBInterface  *interface,
+ 		g_set_error (error,
+ 		             TRACKER_DB_INTERFACE_ERROR,
+ 		             TRACKER_DB_QUERY_ERROR,
+-		             sqlite3_errstr (return_val));
++		             "%s", sqlite3_errstr (return_val));
+ 		return FALSE;
+ 	}
+ 
