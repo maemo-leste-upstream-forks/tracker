@@ -1,3 +1,10 @@
+tracker (1.99.1-1) UNRELEASED; urgency=medium
+
+  * New upstream version 1.99.1
+  * Track unstable releases
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 23 Jul 2017 17:38:26 +0200
+
 tracker (1.12.1-1) unstable; urgency=medium
 
   * New upstream version 1.12.1
