@@ -5,25 +5,31 @@
       <sub name="Compiling applications" link="tracker-overview-compiling.html"/>
     </sub>
     <sub name="Reference" link="libtracker-miner-reference.html">
-      <sub name="Basics and foundations" link="ch02.html">
+      <sub name="Base abstract miner classes" link="ch02.html">
         <sub name="Enumerations" link="libtracker-miner-Enumerations.html"/>
-      </sub>
-      <sub name="Base abstract miner classes" link="ch03.html">
         <sub name="TrackerMiner" link="TrackerMiner.html"/>
         <sub name="TrackerMinerOnline" link="TrackerMinerOnline.html"/>
         <sub name="TrackerDataProvider" link="TrackerDataProvider.html"/>
-        <sub name="TrackerDecorator" link="TrackerDecorator.html"/>
         <sub name="TrackerIndexingTree" link="TrackerIndexingTree.html"/>
       </sub>
-      <sub name="Miner classes for file system" link="ch04.html">
+      <sub name="Miner classes for file system" link="ch03.html">
         <sub name="TrackerMinerFS" link="TrackerMinerFS.html"/>
         <sub name="TrackerFileDataProvider" link="libtracker-miner-TrackerFileDataProvider.html"/>
         <sub name="TrackerDecoratorFS" link="TrackerDecoratorFS.html"/>
       </sub>
-      <sub name="Utilities" link="ch05.html">
-        <sub name="TrackerThumbnailer" link="libtracker-miner-TrackerThumbnailer.html"/>
-        <sub name="tracker-media-art" link="libtracker-miner-tracker-media-art.html"/>
+      <sub name="DBus helpers" link="ch04.html">
+        <sub name="TrackerDecorator" link="TrackerDecorator.html"/>
+        <sub name="TrackerMinerProxy" link="TrackerMinerProxy.html"/>
       </sub>
+    </sub>
+    <sub name="Migrating from libtracker-miner 1.x to 2.0" link="tracker-migrating-1-to-2.html">
+      <sub name="TrackerMiner instances do not implement org.freedesktop.Tracker1.Miner" link="tracker-migrating-1-to-2.html#id-1.4.3"/>
+      <sub name="No TrackerEnumerator" link="ch05s02.html"/>
+      <sub name="No tracker_miner_fs_get_parent_urn()" link="ch05s03.html"/>
+      <sub name="No tracker_miner_fs_force_recheck()" link="ch05s04.html"/>
+      <sub name="No tracker_miner_fs_force_recheck() or tracker_miner_fs_force_mtime_checking()" link="ch05s05.html"/>
+      <sub name="No tracker_miner_fs_check_directory*()" link="ch05s06.html"/>
+      <sub name="No tracker_miner_fs_writeback_notify() and tracker_miner_fs_file_notify()" link="ch05s07.html"/>
     </sub>
     <sub name="Annotation Glossary" link="annotation-glossary.html"/>
   </chapters>
@@ -68,6 +74,64 @@
     <keyword type="function" name="tracker_data_provider_begin_finish ()" link="TrackerDataProvider.html#tracker-data-provider-begin-finish" since="1.2"/>
     <keyword type="struct" name="struct TrackerDataProviderIface" link="TrackerDataProvider.html#TrackerDataProviderIface"/>
     <keyword type="struct" name="TrackerDataProvider" link="TrackerDataProvider.html#TrackerDataProvider-struct"/>
+    <keyword type="function" name="tracker_indexing_tree_new ()" link="TrackerIndexingTree.html#tracker-indexing-tree-new" since="0.14.0"/>
+    <keyword type="function" name="tracker_indexing_tree_new_with_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-new-with-root" since="1.2.2"/>
+    <keyword type="function" name="tracker_indexing_tree_add ()" link="TrackerIndexingTree.html#tracker-indexing-tree-add"/>
+    <keyword type="function" name="tracker_indexing_tree_remove ()" link="TrackerIndexingTree.html#tracker-indexing-tree-remove"/>
+    <keyword type="function" name="tracker_indexing_tree_add_filter ()" link="TrackerIndexingTree.html#tracker-indexing-tree-add-filter"/>
+    <keyword type="function" name="tracker_indexing_tree_clear_filters ()" link="TrackerIndexingTree.html#tracker-indexing-tree-clear-filters"/>
+    <keyword type="function" name="tracker_indexing_tree_file_matches_filter ()" link="TrackerIndexingTree.html#tracker-indexing-tree-file-matches-filter"/>
+    <keyword type="function" name="tracker_indexing_tree_file_is_indexable ()" link="TrackerIndexingTree.html#tracker-indexing-tree-file-is-indexable"/>
+    <keyword type="function" name="tracker_indexing_tree_parent_is_indexable ()" link="TrackerIndexingTree.html#tracker-indexing-tree-parent-is-indexable"/>
+    <keyword type="function" name="tracker_indexing_tree_get_filter_hidden ()" link="TrackerIndexingTree.html#tracker-indexing-tree-get-filter-hidden" since="0.18."/>
+    <keyword type="function" name="tracker_indexing_tree_set_filter_hidden ()" link="TrackerIndexingTree.html#tracker-indexing-tree-set-filter-hidden" since="0.18."/>
+    <keyword type="function" name="tracker_indexing_tree_get_default_policy ()" link="TrackerIndexingTree.html#tracker-indexing-tree-get-default-policy" since="0.18."/>
+    <keyword type="function" name="tracker_indexing_tree_set_default_policy ()" link="TrackerIndexingTree.html#tracker-indexing-tree-set-default-policy" since="0.18."/>
+    <keyword type="function" name="tracker_indexing_tree_get_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-get-root"/>
+    <keyword type="function" name="tracker_indexing_tree_get_master_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-get-master-root" since="1.2."/>
+    <keyword type="function" name="tracker_indexing_tree_file_is_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-file-is-root" since="1.2."/>
+    <keyword type="function" name="tracker_indexing_tree_list_roots ()" link="TrackerIndexingTree.html#tracker-indexing-tree-list-roots"/>
+    <keyword type="function" name="tracker_indexing_tree_notify_update ()" link="TrackerIndexingTree.html#tracker-indexing-tree-notify-update" since="1.10"/>
+    <keyword type="struct" name="struct TrackerIndexingTree" link="TrackerIndexingTree.html#TrackerIndexingTree-struct"/>
+    <keyword type="struct" name="TrackerIndexingTreeClass" link="TrackerIndexingTree.html#TrackerIndexingTreeClass"/>
+    <keyword type="property" name="The “filter-hidden” property" link="TrackerIndexingTree.html#TrackerIndexingTree--filter-hidden"/>
+    <keyword type="property" name="The “root” property" link="TrackerIndexingTree.html#TrackerIndexingTree--root"/>
+    <keyword type="signal" name="The “child-updated” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-child-updated"/>
+    <keyword type="signal" name="The “directory-added” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-added"/>
+    <keyword type="signal" name="The “directory-removed” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-removed"/>
+    <keyword type="signal" name="The “directory-updated” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-updated"/>
+    <keyword type="function" name="tracker_miner_fs_error_quark ()" link="TrackerMinerFS.html#tracker-miner-fs-error-quark" since="1.2."/>
+    <keyword type="function" name="tracker_miner_fs_get_indexing_tree ()" link="TrackerMinerFS.html#tracker-miner-fs-get-indexing-tree"/>
+    <keyword type="function" name="tracker_miner_fs_get_data_provider ()" link="TrackerMinerFS.html#tracker-miner-fs-get-data-provider" since="1.2"/>
+    <keyword type="function" name="tracker_miner_fs_get_throttle ()" link="TrackerMinerFS.html#tracker-miner-fs-get-throttle" since="0.8"/>
+    <keyword type="function" name="tracker_miner_fs_set_throttle ()" link="TrackerMinerFS.html#tracker-miner-fs-set-throttle" since="0.8"/>
+    <keyword type="function" name="tracker_miner_fs_check_file ()" link="TrackerMinerFS.html#tracker-miner-fs-check-file" since="0.10"/>
+    <keyword type="function" name="tracker_miner_fs_notify_finish ()" link="TrackerMinerFS.html#tracker-miner-fs-notify-finish"/>
+    <keyword type="function" name="tracker_miner_fs_get_urn ()" link="TrackerMinerFS.html#tracker-miner-fs-get-urn" since="0.8"/>
+    <keyword type="function" name="tracker_miner_fs_query_urn ()" link="TrackerMinerFS.html#tracker-miner-fs-query-urn" since="0.10"/>
+    <keyword type="function" name="tracker_miner_fs_has_items_to_process ()" link="TrackerMinerFS.html#tracker-miner-fs-has-items-to-process" since="0.10"/>
+    <keyword type="struct" name="struct TrackerMinerFS" link="TrackerMinerFS.html#TrackerMinerFS-struct"/>
+    <keyword type="struct" name="TrackerMinerFSClass" link="TrackerMinerFS.html#TrackerMinerFSClass"/>
+    <keyword type="enum" name="enum TrackerMinerFSError" link="TrackerMinerFS.html#TrackerMinerFSError" since="1.2."/>
+    <keyword type="enum" name="enum TrackerMinerFSEventType" link="TrackerMinerFS.html#TrackerMinerFSEventType"/>
+    <keyword type="property" name="The “data-provider” property" link="TrackerMinerFS.html#TrackerMinerFS--data-provider"/>
+    <keyword type="property" name="The “processing-pool-ready-limit” property" link="TrackerMinerFS.html#TrackerMinerFS--processing-pool-ready-limit"/>
+    <keyword type="property" name="The “processing-pool-wait-limit” property" link="TrackerMinerFS.html#TrackerMinerFS--processing-pool-wait-limit"/>
+    <keyword type="property" name="The “root” property" link="TrackerMinerFS.html#TrackerMinerFS--root"/>
+    <keyword type="property" name="The “throttle” property" link="TrackerMinerFS.html#TrackerMinerFS--throttle"/>
+    <keyword type="signal" name="The “finished” signal" link="TrackerMinerFS.html#TrackerMinerFS-finished"/>
+    <keyword type="signal" name="The “finished-root” signal" link="TrackerMinerFS.html#TrackerMinerFS-finished-root"/>
+    <keyword type="signal" name="The “move-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-move-file"/>
+    <keyword type="signal" name="The “process-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-process-file"/>
+    <keyword type="signal" name="The “process-file-attributes” signal" link="TrackerMinerFS.html#TrackerMinerFS-process-file-attributes"/>
+    <keyword type="signal" name="The “remove-children” signal" link="TrackerMinerFS.html#TrackerMinerFS-remove-children"/>
+    <keyword type="signal" name="The “remove-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-remove-file"/>
+    <keyword type="function" name="tracker_file_data_provider_new ()" link="libtracker-miner-TrackerFileDataProvider.html#tracker-file-data-provider-new" since="1.2:"/>
+    <keyword type="struct" name="struct TrackerFileDataProviderClass" link="libtracker-miner-TrackerFileDataProvider.html#TrackerFileDataProviderClass"/>
+    <keyword type="struct" name="TrackerFileDataProvider" link="libtracker-miner-TrackerFileDataProvider.html#TrackerFileDataProvider"/>
+    <keyword type="function" name="tracker_decorator_fs_prepend_file ()" link="TrackerDecoratorFS.html#tracker-decorator-fs-prepend-file" since="1.2"/>
+    <keyword type="struct" name="struct TrackerDecoratorFS" link="TrackerDecoratorFS.html#TrackerDecoratorFS-struct"/>
+    <keyword type="struct" name="struct TrackerDecoratorFSClass" link="TrackerDecoratorFS.html#TrackerDecoratorFSClass"/>
     <keyword type="function" name="tracker_decorator_error_quark ()" link="TrackerDecorator.html#tracker-decorator-error-quark" since="0.18."/>
     <keyword type="function" name="tracker_decorator_get_data_source ()" link="TrackerDecorator.html#tracker-decorator-get-data-source" since="0.18."/>
     <keyword type="function" name="tracker_decorator_get_class_names ()" link="TrackerDecorator.html#tracker-decorator-get-class-names" since="0.18."/>
@@ -94,62 +158,12 @@
     <keyword type="property" name="The “priority-rdf-types” property" link="TrackerDecorator.html#TrackerDecorator--priority-rdf-types"/>
     <keyword type="signal" name="The “finished” signal" link="TrackerDecorator.html#TrackerDecorator-finished"/>
     <keyword type="signal" name="The “items-available” signal" link="TrackerDecorator.html#TrackerDecorator-items-available"/>
-    <keyword type="function" name="tracker_indexing_tree_new ()" link="TrackerIndexingTree.html#tracker-indexing-tree-new" since="0.14.0"/>
-    <keyword type="function" name="tracker_indexing_tree_new_with_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-new-with-root" since="1.2.2"/>
-    <keyword type="function" name="tracker_indexing_tree_add ()" link="TrackerIndexingTree.html#tracker-indexing-tree-add"/>
-    <keyword type="function" name="tracker_indexing_tree_remove ()" link="TrackerIndexingTree.html#tracker-indexing-tree-remove"/>
-    <keyword type="function" name="tracker_indexing_tree_add_filter ()" link="TrackerIndexingTree.html#tracker-indexing-tree-add-filter"/>
-    <keyword type="function" name="tracker_indexing_tree_clear_filters ()" link="TrackerIndexingTree.html#tracker-indexing-tree-clear-filters"/>
-    <keyword type="function" name="tracker_indexing_tree_file_matches_filter ()" link="TrackerIndexingTree.html#tracker-indexing-tree-file-matches-filter"/>
-    <keyword type="function" name="tracker_indexing_tree_file_is_indexable ()" link="TrackerIndexingTree.html#tracker-indexing-tree-file-is-indexable"/>
-    <keyword type="function" name="tracker_indexing_tree_parent_is_indexable ()" link="TrackerIndexingTree.html#tracker-indexing-tree-parent-is-indexable"/>
-    <keyword type="function" name="tracker_indexing_tree_get_filter_hidden ()" link="TrackerIndexingTree.html#tracker-indexing-tree-get-filter-hidden" since="0.18."/>
-    <keyword type="function" name="tracker_indexing_tree_set_filter_hidden ()" link="TrackerIndexingTree.html#tracker-indexing-tree-set-filter-hidden" since="0.18."/>
-    <keyword type="function" name="tracker_indexing_tree_get_default_policy ()" link="TrackerIndexingTree.html#tracker-indexing-tree-get-default-policy" since="0.18."/>
-    <keyword type="function" name="tracker_indexing_tree_set_default_policy ()" link="TrackerIndexingTree.html#tracker-indexing-tree-set-default-policy" since="0.18."/>
-    <keyword type="function" name="tracker_indexing_tree_get_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-get-root"/>
-    <keyword type="function" name="tracker_indexing_tree_get_master_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-get-master-root" since="1.2."/>
-    <keyword type="function" name="tracker_indexing_tree_file_is_root ()" link="TrackerIndexingTree.html#tracker-indexing-tree-file-is-root" since="1.2."/>
-    <keyword type="function" name="tracker_indexing_tree_list_roots ()" link="TrackerIndexingTree.html#tracker-indexing-tree-list-roots"/>
-    <keyword type="struct" name="struct TrackerIndexingTree" link="TrackerIndexingTree.html#TrackerIndexingTree-struct"/>
-    <keyword type="struct" name="TrackerIndexingTreeClass" link="TrackerIndexingTree.html#TrackerIndexingTreeClass"/>
-    <keyword type="property" name="The “filter-hidden” property" link="TrackerIndexingTree.html#TrackerIndexingTree--filter-hidden"/>
-    <keyword type="property" name="The “root” property" link="TrackerIndexingTree.html#TrackerIndexingTree--root"/>
-    <keyword type="signal" name="The “child-updated” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-child-updated"/>
-    <keyword type="signal" name="The “directory-added” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-added"/>
-    <keyword type="signal" name="The “directory-removed” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-removed"/>
-    <keyword type="signal" name="The “directory-updated” signal" link="TrackerIndexingTree.html#TrackerIndexingTree-directory-updated"/>
-    <keyword type="function" name="tracker_miner_fs_error_quark ()" link="TrackerMinerFS.html#tracker-miner-fs-error-quark" since="1.2."/>
-    <keyword type="function" name="tracker_miner_fs_get_indexing_tree ()" link="TrackerMinerFS.html#tracker-miner-fs-get-indexing-tree"/>
-    <keyword type="function" name="tracker_miner_fs_get_data_provider ()" link="TrackerMinerFS.html#tracker-miner-fs-get-data-provider" since="1.2"/>
-    <keyword type="function" name="tracker_miner_fs_get_throttle ()" link="TrackerMinerFS.html#tracker-miner-fs-get-throttle" since="0.8"/>
-    <keyword type="function" name="tracker_miner_fs_set_throttle ()" link="TrackerMinerFS.html#tracker-miner-fs-set-throttle" since="0.8"/>
-    <keyword type="function" name="tracker_miner_fs_check_file ()" link="TrackerMinerFS.html#tracker-miner-fs-check-file" since="0.10"/>
-    <keyword type="function" name="tracker_miner_fs_notify_finish ()" link="TrackerMinerFS.html#tracker-miner-fs-notify-finish"/>
-    <keyword type="function" name="tracker_miner_fs_get_urn ()" link="TrackerMinerFS.html#tracker-miner-fs-get-urn" since="0.8"/>
-    <keyword type="function" name="tracker_miner_fs_query_urn ()" link="TrackerMinerFS.html#tracker-miner-fs-query-urn" since="0.10"/>
-    <keyword type="function" name="tracker_miner_fs_has_items_to_process ()" link="TrackerMinerFS.html#tracker-miner-fs-has-items-to-process" since="0.10"/>
-    <keyword type="struct" name="struct TrackerMinerFS" link="TrackerMinerFS.html#TrackerMinerFS-struct"/>
-    <keyword type="struct" name="TrackerMinerFSClass" link="TrackerMinerFS.html#TrackerMinerFSClass"/>
-    <keyword type="enum" name="enum TrackerMinerFSError" link="TrackerMinerFS.html#TrackerMinerFSError" since="1.2."/>
-    <keyword type="property" name="The “data-provider” property" link="TrackerMinerFS.html#TrackerMinerFS--data-provider"/>
-    <keyword type="property" name="The “processing-pool-ready-limit” property" link="TrackerMinerFS.html#TrackerMinerFS--processing-pool-ready-limit"/>
-    <keyword type="property" name="The “processing-pool-wait-limit” property" link="TrackerMinerFS.html#TrackerMinerFS--processing-pool-wait-limit"/>
-    <keyword type="property" name="The “root” property" link="TrackerMinerFS.html#TrackerMinerFS--root"/>
-    <keyword type="property" name="The “throttle” property" link="TrackerMinerFS.html#TrackerMinerFS--throttle"/>
-    <keyword type="signal" name="The “finished” signal" link="TrackerMinerFS.html#TrackerMinerFS-finished"/>
-    <keyword type="signal" name="The “finished-root” signal" link="TrackerMinerFS.html#TrackerMinerFS-finished-root"/>
-    <keyword type="signal" name="The “move-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-move-file"/>
-    <keyword type="signal" name="The “process-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-process-file"/>
-    <keyword type="signal" name="The “process-file-attributes” signal" link="TrackerMinerFS.html#TrackerMinerFS-process-file-attributes"/>
-    <keyword type="signal" name="The “remove-children” signal" link="TrackerMinerFS.html#TrackerMinerFS-remove-children"/>
-    <keyword type="signal" name="The “remove-file” signal" link="TrackerMinerFS.html#TrackerMinerFS-remove-file"/>
-    <keyword type="function" name="tracker_file_data_provider_new ()" link="libtracker-miner-TrackerFileDataProvider.html#tracker-file-data-provider-new" since="1.2:"/>
-    <keyword type="struct" name="struct TrackerFileDataProviderClass" link="libtracker-miner-TrackerFileDataProvider.html#TrackerFileDataProviderClass"/>
-    <keyword type="struct" name="TrackerFileDataProvider" link="libtracker-miner-TrackerFileDataProvider.html#TrackerFileDataProvider"/>
-    <keyword type="function" name="tracker_decorator_fs_prepend_file ()" link="TrackerDecoratorFS.html#tracker-decorator-fs-prepend-file" since="1.2"/>
-    <keyword type="struct" name="struct TrackerDecoratorFS" link="TrackerDecoratorFS.html#TrackerDecoratorFS-struct"/>
-    <keyword type="struct" name="struct TrackerDecoratorFSClass" link="TrackerDecoratorFS.html#TrackerDecoratorFSClass"/>
+    <keyword type="function" name="tracker_miner_proxy_new ()" link="TrackerMinerProxy.html#tracker-miner-proxy-new"/>
+    <keyword type="struct" name="struct TrackerMinerProxy" link="TrackerMinerProxy.html#TrackerMinerProxy-struct"/>
+    <keyword type="struct" name="struct TrackerMinerProxyClass" link="TrackerMinerProxy.html#TrackerMinerProxyClass"/>
+    <keyword type="property" name="The “dbus-connection” property" link="TrackerMinerProxy.html#TrackerMinerProxy--dbus-connection"/>
+    <keyword type="property" name="The “dbus-path” property" link="TrackerMinerProxy.html#TrackerMinerProxy--dbus-path"/>
+    <keyword type="property" name="The “miner” property" link="TrackerMinerProxy.html#TrackerMinerProxy--miner"/>
     <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_NONE" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-NONE:CAPS"/>
     <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_RECURSE" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-RECURSE:CAPS"/>
     <keyword type="constant" name="TRACKER_DIRECTORY_FLAG_CHECK_MTIME" link="libtracker-miner-Enumerations.html#TRACKER-DIRECTORY-FLAG-CHECK-MTIME:CAPS"/>
@@ -175,9 +189,13 @@
     <keyword type="constant" name="TRACKER_MINER_ERROR_PAUSED" link="TrackerMiner.html#TRACKER-MINER-ERROR-PAUSED:CAPS"/>
     <keyword type="constant" name="TRACKER_MINER_ERROR_PAUSED_ALREADY" link="TrackerMiner.html#TRACKER-MINER-ERROR-PAUSED-ALREADY:CAPS"/>
     <keyword type="constant" name="TRACKER_MINER_ERROR_INVALID_COOKIE" link="TrackerMiner.html#TRACKER-MINER-ERROR-INVALID-COOKIE:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_FS_ERROR_INIT" link="TrackerMinerFS.html#TRACKER-MINER-FS-ERROR-INIT:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_FS_EVENT_CREATED" link="TrackerMinerFS.html#TRACKER-MINER-FS-EVENT-CREATED:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_FS_EVENT_UPDATED" link="TrackerMinerFS.html#TRACKER-MINER-FS-EVENT-UPDATED:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_FS_EVENT_DELETED" link="TrackerMinerFS.html#TRACKER-MINER-FS-EVENT-DELETED:CAPS"/>
+    <keyword type="constant" name="TRACKER_MINER_FS_EVENT_MOVED" link="TrackerMinerFS.html#TRACKER-MINER-FS-EVENT-MOVED:CAPS"/>
     <keyword type="constant" name="TRACKER_DECORATOR_ERROR_EMPTY" link="TrackerDecorator.html#TRACKER-DECORATOR-ERROR-EMPTY:CAPS"/>
     <keyword type="constant" name="TRACKER_DECORATOR_ERROR_PAUSED" link="TrackerDecorator.html#TRACKER-DECORATOR-ERROR-PAUSED:CAPS"/>
-    <keyword type="constant" name="TRACKER_MINER_FS_ERROR_INIT" link="TrackerMinerFS.html#TRACKER-MINER-FS-ERROR-INIT:CAPS"/>
     <keyword type="member" name="TrackerMinerClass.started" link="TrackerMiner.html#TrackerMinerClass.started"/>
     <keyword type="member" name="TrackerMinerClass.stopped" link="TrackerMiner.html#TrackerMinerClass.stopped"/>
     <keyword type="member" name="TrackerMinerClass.paused" link="TrackerMiner.html#TrackerMinerClass.paused"/>
@@ -190,9 +208,6 @@
     <keyword type="member" name="TrackerDataProviderIface.begin" link="TrackerDataProvider.html#TrackerDataProviderIface.begin"/>
     <keyword type="member" name="TrackerDataProviderIface.begin-async" link="TrackerDataProvider.html#TrackerDataProviderIface.begin-async"/>
     <keyword type="member" name="TrackerDataProviderIface.begin-finish" link="TrackerDataProvider.html#TrackerDataProviderIface.begin-finish"/>
-    <keyword type="member" name="TrackerDecoratorClass.items-available" link="TrackerDecorator.html#TrackerDecoratorClass.items-available"/>
-    <keyword type="member" name="TrackerDecoratorClass.finished" link="TrackerDecorator.html#TrackerDecoratorClass.finished"/>
-    <keyword type="member" name="TrackerDecoratorClass.padding" link="TrackerDecorator.html#TrackerDecoratorClass.padding"/>
     <keyword type="member" name="TrackerIndexingTreeClass.directory-added" link="TrackerIndexingTree.html#TrackerIndexingTreeClass.directory-added"/>
     <keyword type="member" name="TrackerIndexingTreeClass.directory-removed" link="TrackerIndexingTree.html#TrackerIndexingTreeClass.directory-removed"/>
     <keyword type="member" name="TrackerIndexingTreeClass.directory-updated" link="TrackerIndexingTree.html#TrackerIndexingTreeClass.directory-updated"/>
@@ -209,5 +224,8 @@
     <keyword type="member" name="TrackerMinerFSClass.filter-event" link="TrackerMinerFS.html#TrackerMinerFSClass.filter-event"/>
     <keyword type="member" name="TrackerMinerFSClass.padding" link="TrackerMinerFS.html#TrackerMinerFSClass.padding"/>
     <keyword type="member" name="TrackerDecoratorFSClass.padding" link="TrackerDecoratorFS.html#TrackerDecoratorFSClass.padding"/>
+    <keyword type="member" name="TrackerDecoratorClass.items-available" link="TrackerDecorator.html#TrackerDecoratorClass.items-available"/>
+    <keyword type="member" name="TrackerDecoratorClass.finished" link="TrackerDecorator.html#TrackerDecoratorClass.finished"/>
+    <keyword type="member" name="TrackerDecoratorClass.padding" link="TrackerDecorator.html#TrackerDecoratorClass.padding"/>
   </functions>
 </book>

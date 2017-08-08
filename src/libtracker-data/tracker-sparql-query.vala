@@ -347,6 +347,11 @@ public class Tracker.Sparql.Query : Object {
 		return false;
 	}
 
+	internal void optional (SparqlTokenType type) throws Sparql.Error {
+		if (current () == type)
+			next ();
+	}
+
 	internal Sparql.Error get_error (string msg) {
 		return new Sparql.Error.PARSE ("%d.%d: syntax error, %s".printf (tokens[index].begin.line, tokens[index].begin.column, msg));
 	}
@@ -498,7 +503,7 @@ public class Tracker.Sparql.Query : Object {
 
 			// semicolon is used to separate multiple operations in the current SPARQL Update draft
 			// keep it optional for now to reatin backward compatibility
-			accept (SparqlTokenType.SEMICOLON);
+			optional (SparqlTokenType.SEMICOLON);
 		}
 
 		if (blank) {
@@ -509,10 +514,6 @@ public class Tracker.Sparql.Query : Object {
 	}
 
 	DBStatement prepare_for_exec (DBInterface iface, string sql) throws DBInterfaceError, Sparql.Error, DateError {
-		if (iface == null) {
-			throw new DBInterfaceError.OPEN_ERROR ("Error opening database");
-		}
-
 		var stmt = iface.create_statement (no_cache ? DBStatementCacheType.NONE : DBStatementCacheType.SELECT, "%s", sql);
 
 		// set literals specified in query
@@ -578,7 +579,7 @@ public class Tracker.Sparql.Query : Object {
 
 		expect (SparqlTokenType.ASK);
 
-		accept (SparqlTokenType.WHERE);
+		optional (SparqlTokenType.WHERE);
 
 		context = pattern.translate_group_graph_pattern (pattern_sql);
 
@@ -903,7 +904,7 @@ public class Tracker.Sparql.Query : Object {
 
 				current_graph = old_graph;
 
-				accept (SparqlTokenType.DOT);
+				optional (SparqlTokenType.DOT);
 			} else {
 				current_subject = parse_construct_var_or_term (var_value_map, type, out is_null);
 

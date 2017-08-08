@@ -5,9 +5,9 @@
 <title>TrackerIndexingTree: Tracker Miner Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
-<link rel="up" href="ch03.html" title="Base abstract miner classes">
-<link rel="prev" href="TrackerDecorator.html" title="TrackerDecorator">
-<link rel="next" href="ch04.html" title="Miner classes for file system">
+<link rel="up" href="ch02.html" title="Base abstract miner classes">
+<link rel="prev" href="TrackerDataProvider.html" title="TrackerDataProvider">
+<link rel="next" href="ch03.html" title="Miner classes for file system">
 <meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -21,9 +21,9 @@
                   <a href="#TrackerIndexingTree.signals" class="shortcut">Signals</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="ch03.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="TrackerDecorator.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="ch04.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="TrackerDataProvider.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="ch03.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
 <a name="TrackerIndexingTree"></a><div class="titlepage"></div>
@@ -176,6 +176,14 @@
 </td>
 <td class="function_name">
 <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-list-roots" title="tracker_indexing_tree_list_roots ()">tracker_indexing_tree_list_roots</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-notify-update" title="tracker_indexing_tree_notify_update ()">tracker_indexing_tree_notify_update</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 </tbody>
@@ -911,6 +919,55 @@ freed. </p>
 <p><span class="annotation">[<acronym title="Free data container after the code is done."><span class="acronym">transfer container</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GFile]</span></p>
 </div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="tracker-indexing-tree-notify-update"></a><h3>tracker_indexing_tree_notify_update ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+tracker_indexing_tree_notify_update (<em class="parameter"><code><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> *tree</code></em>,
+                                     <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                     <em class="parameter"><code><span class="type">gboolean</span> recursive</code></em>);</pre>
+<p>Signals either <a class="link" href="TrackerIndexingTree.html#TrackerIndexingTree-directory-updated" title="The “directory-updated” signal"><span class="type">“directory-updated”</span></a> or
+<a class="link" href="TrackerIndexingTree.html#TrackerIndexingTree-child-updated" title="The “child-updated” signal"><span class="type">“child-updated”</span></a> on the given file and
+returns <span class="type">TRUE</span>. If <em class="parameter"><code>file</code></em>
+ is not indexed according to the
+<a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a>, <span class="type">FALSE</span> is returned.</p>
+<p>If <em class="parameter"><code>recursive</code></em>
+ is <span class="type">TRUE</span>, <a class="link" href="TrackerIndexingTree.html#TrackerIndexingTree-directory-updated" title="The “directory-updated” signal"><span class="type">“directory-updated”</span></a>
+will be emitted on the indexing roots that are contained in <em class="parameter"><code>file</code></em>
+.</p>
+<div class="refsect3">
+<a name="tracker-indexing-tree-notify-update.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>tree</p></td>
+<td class="parameter_description"><p>a <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>file</p></td>
+<td class="parameter_description"><p>a <span class="type">GFile</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>recursive</p></td>
+<td class="parameter_description"><p>Whether contained indexing roots are affected by the update</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="tracker-indexing-tree-notify-update.returns"></a><h4>Returns</h4>
+<p> <span class="type">TRUE</span> if a signal is emitted.</p>
+</div>
+<p class="since">Since: 1.10</p>
+</div>
 </div>
 <div class="refsect1">
 <a name="TrackerIndexingTree.other_details"></a><h2>Types and Values</h2>
@@ -1007,7 +1064,7 @@ user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerInd
 <p>The ::child-updated signal may be emitted to notify
 about possible changes on children of a root.</p>
 <p><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a> does not emit those by itself,
-those may be triggered through <code class="function">tracker_indexing_tree_notify_update()</code>.</p>
+those may be triggered through <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-notify-update" title="tracker_indexing_tree_notify_update ()"><code class="function">tracker_indexing_tree_notify_update()</code></a>.</p>
 <div class="refsect3">
 <a name="TrackerIndexingTree-child-updated.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1137,7 +1194,7 @@ user_function (<a class="link" href="TrackerIndexingTree.html" title="TrackerInd
 <p>The ::directory-updated signal is emitted on a root
 when either its indexing flags change (e.g. due to consecutive
 calls to <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-add" title="tracker_indexing_tree_add ()"><code class="function">tracker_indexing_tree_add()</code></a>), or anytime an update is
-requested through <code class="function">tracker_indexing_tree_notify_update()</code>.</p>
+requested through <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-notify-update" title="tracker_indexing_tree_notify_update ()"><code class="function">tracker_indexing_tree_notify_update()</code></a>.</p>
 <div class="refsect3">
 <a name="TrackerIndexingTree-directory-updated.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
