@@ -1,4 +1,242 @@
+2017-08-07  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 1.99.2
+
+	Distcheck fixes
+
+	libtracker-data: Avoid doubly creating resource triggers
+	This code is run on table updates, in which case the triggers already
+	correctly exist. Ensure the trigger creation won't fail if it already
+	exists.
+
+	docs: Add example description file
+	This was not added on git.
+
+	libtracker-sparql: Document further new API
+
+	docs: Ignore the right header file
+	Fixes some duplicate reference warnings when building libtracker-sparql
+	docs.
+
+	libtracker-miner: Add migration docs
+
+	libtracker-sparql: Add migration docs
+
+	libtracker-miner: Improve docs
+	Remove no longer existing methods, add the newer objects/methods
+	that were missing, and add some further docs here and there.
+
+	libtracker-sparql: Update docs
+	The newer methods were still missing from API docs, add them
+	in the respective sections.
+
+2017-08-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-fts: Adapt to incompatible change in sqlite 3.20
+	From that version on, we must use the brand new sqlite3_bind_pointer()
+	interface to access the fts5 interface pointer. Adapt to it without
+	giving up older versions.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785883
+
+2017-08-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	Merge branch 'wip/carlosg/resource-leak-fix'
+
+	libtracker-data: Perform trimming of unused resource URNs on shutdown
+	On shutdown it will now delete all elements in the Resource table that
+	are not contained too in the Graph table (thus are graph URNs) and have
+	a refcounting of 0 (meaning that they are not used in any class/property
+	table).
+
+	As the migration to refcounted Resource table doesn't result in graph
+	URNs being added to the Graph table, database cleanup won't be performed
+	until the Graph table has been populated (presumably by miners indexing
+	anything)
+
+	libtracker-data: Add Graph table
+	This new table will perform the accounting of those URNs used
+	as a graph on SPARQL updates. Those are kind of special in that
+	they are not referenced anywhere else, so we couldn't distinguish
+	between those and an entirely unused URN.
+
+	The creation of this new table has also been made to trigger
+	the recreation of all class tables, so the resource refcounting
+	changes in the previous commits become effective.
+
+	libtracker-data: Add resource element triggers
+	Those will control the Refcount column in the Resource table,
+	whenever a resource is added/removed from a resource or multivalued
+	property table, or whenever a single or multivalued property points
+	or stops pointing to a given resource, its refcount will be changed.
+
+	This adds automatic refcounting on elements, so we can tell those
+	with a refcount=0 are not referenced anywhere so thus can be dropped.
+
+	libtracker-data: Prevent ALTER TABLE from happening on new classes
+	This step should be only happening if the class is not new, despite
+	in_change being TRUE.
+
+	libtracker-data: Refactor Resource table creation
+	Instead of creating it just in time for the rdfs:Resource table,
+	create it in advance so we have a common hook for other essential
+	tables.
+
+	The "Available" column that we add to the main class is kind of
+	useless, but is preserved so older Tracker versions don't stumble
+	on a database created with a more modern Tracker.
+
+	We are also adding a "Refcount" column to the Resource table, which
+	will be used in the following commits.
+
+	libtracker-data: Use optional() to parse a few tokens
+	Fixes a bunch of "unchecked return value" warnings on coverity,
+	it's also clearer to read.
+
+	Spotted by Coverity (CID#: 1188417, 1188418, 1188428, 1452443,
+	1452445, 1452449)
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785863
+
+	libtracker-data: Add optional() method for tokens that need no retval checks
+	Also makes code clearer, as accept() implies you may react differently on
+	token availability.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785863
+
+2017-08-04  Mario Blättermann  <mario.blaettermann@gmail.com>
+
+	Update German translation
+
+2017-08-04  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	meson: Install ontologies and domain ontology rules
+
+2017-08-04  Balázs Meskó  <meskobalazs@fedoraproject.org>
+
+	Update Hungarian translation
+
+2017-08-04  Philip Withnall  <withnall@endlessm.com>
+
+	libtracker-data: Drop redundant error path
+	prepare_for_exec() defines iface as non-nullable, so Vala automatically
+	(and correctly) inserts a g_return_val_if_fail (iface != NULL) for us.
+	That makes this error path redundant and unreachable.
+
+	Spotted by Coverity (CID #1452447).
+
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785809
+
+	libtracker-miner: Add missing break in property switch
+	Spotted by Coverity (CID #1452446).
+
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785808
+
+2017-08-04  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	meson: Replace all source_root() and build_root() calls
+	These functions need to be avoided so that Tracker doesn't break when
+	included via subproject() into another Meson project.
+
+	meson: Fix tracker-parser-sha1.h generation when we're a subproject
+	I also added `-e` (fail on errors) to the script.
+
+	meson.build: Avoid using meson.source_root() to locate g-ir-merge
+	The meson.source_root() variable conflicts with a subprojects feature --
+	if Tracker is included as a subproject then source_root() will point to
+	the parent project and so we'll fail to find the g-ir-merge script.
+
+2017-08-03  Carlos Garnacho  <carlosg@gnome.org>
+
+	g-ir-merge: Use env to locate python3
+	Pointed out to fix build on FreeBSD, since python is not
+	in /usr/bin.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=782091
+
+	Remove all miners/extract/writeback
+	This is being split to its own package
+
+2017-08-03  Marek Cernocky  <marek_cernocky@conel.cz>
+
+	Updated Czech translation
+
+2017-07-28  Lucas Satabin  <lucas.satabin@gnieh.org>
+
+	rss: Add support for enclosures
+	Some feed (e.g. podcasts) use the `enclosure` element of the RSS feed
+	format. The ontology supports these element throught the
+	`mfo:enclosureList` relationship and `mfo:Enclosure` class.
+
+	Support for enclosures is simply added by looping over such elements if
+	any, and adding the relationships upon feed message insertion or update.
+	Enclosures are deleted when the `mfo:FeedMessage` that links to it is
+	deleted.
+
+	Also fixes a problem of double free when contributor list is not empty.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785454
+
+2017-07-25  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2017-07-24  Lubomir Rintel  <lkundrak@v3.sk>
+
+	libtracker-miner: port to libnm
+	It's the perferred NetworkManager's library for a couple of years now
+	already. Keep compatibility with the older one, since it's reasonably
+	similar.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=777178
+
+2017-07-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	meson: Add optional upower/hal deps on tracker-miner-fs
+	Otherwise those fail to compile due to the missing includes/cflags.
+
+	meson: Fix bash completion dir guessing
+	Use the right method to fetch a pkg-config variable.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785248
+
+	libtracker-data: Don't rely on spaces as separators on title collation
+	Skip non alphanumeric characters both at the beginning of titles, and after
+	the prefix match. Of course, require at least one such non alphanumeric
+	character after the prefix match, in order to avoid matching beginnings of
+	words.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785146
+
+2017-07-23  Jeremy Bicha  <jbicha@ubuntu.com>
+
+	libtracker-data: fix format-security issue
+	https://bugzilla.gnome.org/show_bug.cgi?id=785245
+
+	build: meson: Fix upower-glib check
+	https://bugzilla.gnome.org/show_bug.cgi?id=785247
+
+2017-07-23  Michael Biebl  <biebl@debian.org>
+
+	Remove leftover @LIBTRACKER_MINER_PC_REQUIRES@ from tracker-miner.pc.in
+	Follow-up for commit ac84484dfb5dea636e4b2e830d25901413fb970c.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785294
+
+2017-07-22  Kukuh Syafaat  <syafaatkukuh@gmail.com>
+
+	Update Indonesian translation
+
 2017-07-19  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-data: Use '|' as separator for title articles.
+	As suggested in https://bugzilla.gnome.org/show_bug.cgi?id=785146
+	and following https://bugzilla.gnome.org/show_bug.cgi?id=771348,
+	change the separator used for common articles.
+
+	Translators, apologies for the moving target.
 
 	Release 1.99.1
 

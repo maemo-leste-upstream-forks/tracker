@@ -1,4 +1,4 @@
-project('tracker', 'c', 'vala', 'cpp', version: '1.99.1')
+project('tracker', 'c', 'vala', 'cpp', version: '1.99.2')
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -53,12 +53,12 @@ libsoup = dependency('libsoup-2.4', version: '> 2.40', required: true)
 libtiff = dependency('libtiff-4', required: false)
 libxml2 = dependency('libxml-2.0', version: '> 2.6')
 libvorbis = dependency('vorbisfile', version: '> 0.22')
-network_manager = dependency('libnm-glib', version: '> 0.8', required: false)
+network_manager = dependency('libnm')
 poppler = dependency('poppler-glib', version: '> 0.16.0', required: false)
 sqlite = dependency('sqlite3', version: '>' + sqlite_required)
 taglib = dependency('taglib_c', version: '> 1.6', required: false)
 totem_plparser = dependency('totem-plparser', required: false)
-upower = dependency('libupower-glib', version: '> 0.9.0', required: false)
+upower = dependency('upower-glib', version: '> 0.9.0', required: false)
 zlib = dependency('zlib')
 
 libgif = cc.find_library('libgif', required: false)
@@ -322,7 +322,7 @@ install_bash_completion = false
 if get_option('bash_completion') == 'yes' or get_option('bash_completion') == 'auto'
   bash_completion_package = dependency('bash-completion', required: false)
   if bash_completion_package.found()
-    bash_completion_dir = bash_completion_package.get_variable('completionsdir')
+    bash_completion_dir = bash_completion_package.get_pkgconfig_variable('completionsdir')
   else
     bash_completion_dir = join_paths(get_option('prefix'), get_option('datadir'), 'bash-completion', 'completions')
   endif
@@ -420,6 +420,10 @@ have_tracker_preferences = true
 configinc = include_directories('./')
 srcinc = include_directories('src/')
 
+source_root = meson.current_source_dir()
+build_root = meson.current_build_dir()
+po_subdir = join_paths(source_root, 'po')
+
 tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-' + tracker_api_version)
 
 tracker_extract_modules_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-@0@/extract-modules'.format(tracker_api_version))
@@ -427,12 +431,13 @@ tracker_extract_modules_dir = join_paths(get_option('prefix'), get_option('libdi
 # the ontology is installed to the same location.
 tracker_extract_rules_dir = join_paths(get_option('prefix'), get_option('datadir'), 'tracker/extract-rules')
 tracker_miner_services_dir = join_paths(get_option('prefix'), get_option('datadir'), 'tracker/miners')
+tracker_ontologies_dir = join_paths(get_option('prefix'), get_option('datadir'), 'tracker/ontologies')
 tracker_writeback_modules_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-@0@/writeback-modules'.format(tracker_api_version))
 
 vapi_dir = join_paths(get_option('prefix'), get_option('datadir'), 'vala', 'vapi')
 
 g_ir_compiler = find_program('g-ir-compiler', gobject_introspection.get_pkgconfig_variable('g_ir_compiler'))
-g_ir_merge = find_program('g-ir-merge', join_paths(meson.source_root(), 'utils', 'g-ir-merge', 'g-ir-merge'))
+g_ir_merge = find_program('g-ir-merge', join_paths(meson.current_source_dir(), 'utils', 'g-ir-merge', 'g-ir-merge'))
 
 # You can use the gobject_introspection.get_pkgconfig_variable() to find these,
 # but then get_option('prefix') won't be honoured if it differs from the prefix
@@ -471,7 +476,7 @@ endif
 summary = [
   '\nBuild Configuration:',
   '    Prefix:                                 ' + get_option('prefix'),
-  '    Source code location:                   ' + meson.source_root(),
+  '    Source code location:                   ' + meson.current_source_dir(),
   '    Compiler:                               ' + cc.get_id(),
   '\nFeature Support:',
   '    Battery/mains power detection:          ' + battery_detection_library_name,

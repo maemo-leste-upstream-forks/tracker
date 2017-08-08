@@ -5,8 +5,8 @@
 <title>TrackerMinerFS: Tracker Miner Library Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
-<link rel="up" href="ch04.html" title="Miner classes for file system">
-<link rel="prev" href="ch04.html" title="Miner classes for file system">
+<link rel="up" href="ch03.html" title="Miner classes for file system">
+<link rel="prev" href="ch03.html" title="Miner classes for file system">
 <link rel="next" href="libtracker-miner-TrackerFileDataProvider.html" title="TrackerFileDataProvider">
 <meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -22,8 +22,8 @@
                   <a href="#TrackerMinerFS.signals" class="shortcut">Signals</a></span>
 </td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
-<td><a accesskey="u" href="ch04.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="ch04.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ch03.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="libtracker-miner-TrackerFileDataProvider.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="refentry">
@@ -233,6 +233,10 @@
 <tr>
 <td class="datatype_keyword">enum</td>
 <td class="function_name"><a class="link" href="TrackerMinerFS.html#TrackerMinerFSError" title="enum TrackerMinerFSError">TrackerMinerFSError</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="TrackerMinerFS.html#TrackerMinerFSEventType" title="enum TrackerMinerFSEventType">TrackerMinerFSEventType</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -814,6 +818,42 @@ message.</p>
 </table></div>
 </div>
 <p class="since">Since: 1.2.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TrackerMinerFSEventType"></a><h3>enum TrackerMinerFSEventType</h3>
+<div class="refsect3">
+<a name="TrackerMinerFSEventType.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-FS-EVENT-CREATED:CAPS"></a>TRACKER_MINER_FS_EVENT_CREATED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-FS-EVENT-UPDATED:CAPS"></a>TRACKER_MINER_FS_EVENT_UPDATED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-FS-EVENT-DELETED:CAPS"></a>TRACKER_MINER_FS_EVENT_DELETED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="TRACKER-MINER-FS-EVENT-MOVED:CAPS"></a>TRACKER_MINER_FS_EVENT_MOVED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 </div>
 <div class="refsect1">

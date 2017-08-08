@@ -27,7 +27,13 @@
 <p>
       The libtracker-miner library is the foundation for Tracker data miners,
       these miners will extract metadata and insert it in SPARQL form to
-      tracker-store, following the Nepomuk ontology.
+      a TrackerSparqlConnection.
+    </p>
+<p>
+      The abstract objects provided by this library implement the data indexing
+      logic necessary for different data and patterns. They merely provide the
+      guidelines, SPARQL updates are also possible without a libtracker-miner
+      object implementation.
     </p>
 <div class="toc">
 <p><b>Table of Contents</b></p>

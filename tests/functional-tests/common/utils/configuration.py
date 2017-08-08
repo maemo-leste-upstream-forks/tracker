@@ -79,7 +79,7 @@ EXEC_PREFIX = os.path.normpath (expandvars (RAW_EXEC_DIR))
 DATADIR = os.path.normpath (expandvars (RAW_DATA_DIR))
 BINDIR = os.path.normpath (expandvars (RAW_BINDIR))
 
-haveUpstart = ("#" == "")
+haveUpstart = ("@HAVE_UPSTART_TRUE@" == "")
 disableJournal = ("#" == "")
 
 TEST_TMP_DIR = os.path.join (os.environ["HOME"], "tracker-tests")

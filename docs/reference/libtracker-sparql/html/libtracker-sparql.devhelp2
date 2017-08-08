@@ -65,11 +65,20 @@
       <sub name="Accompanying metadata" link="accompanying-metadata.html"/>
       <sub name="Updating an ontology" link="updating-ontology.html"/>
     </sub>
+    <sub name="Isolating tracker-store clients" link="tracker-private-store.html">
+      <sub name="Defining a private domain ontology" link="private-daemons.html"/>
+      <sub name="Additional precautions and recommendations" link="recommendations.html"/>
+    </sub>
     <sub name="Examples" link="tracker-examples.html">
       <sub name="SPARQL query builder" link="tracker-examples-builder.html"/>
       <sub name="Querying the Store" link="tracker-examples-readonly.html"/>
       <sub name="Updating the Store" link="tracker-examples-writeonly.html"/>
       <sub name="Updating the Store with Blank Nodes" link="tracker-examples-writeonly-with-blank-nodes.html"/>
+    </sub>
+    <sub name="Migrating from libtracker-sparql 1.x to 2.0" link="tracker-migrating-1-to-2.html">
+      <sub name="Stricter SPARQL1.1" link="tracker-migrating-1-to-2.html#id-1.8.3"/>
+      <sub name="No getters for direct/bus SPARQL connections" link="ch18s02.html"/>
+      <sub name="TrackerSparqlBuilder is deprecated" link="ch18s03.html"/>
     </sub>
     <sub name="Annotation Glossary" link="annotation-glossary.html"/>
   </chapters>
@@ -156,6 +165,10 @@
     <keyword type="function" name="tracker_sparql_connection_get ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_get_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-async"/>
     <keyword type="function" name="tracker_sparql_connection_get_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_connection_local_new ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-local-new" since="2.0"/>
+    <keyword type="function" name="tracker_sparql_connection_local_new_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-local-new-async" since="2.0"/>
+    <keyword type="function" name="tracker_sparql_connection_local_new_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-local-new-finish"/>
+    <keyword type="function" name="tracker_sparql_connection_remote_new ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-remote-new" since="1.12"/>
     <keyword type="function" name="tracker_sparql_connection_query ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_query_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query-async"/>
     <keyword type="function" name="tracker_sparql_connection_query_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query-finish" since="0.10"/>
@@ -174,8 +187,11 @@
     <keyword type="function" name="tracker_sparql_connection_statistics_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-async" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_statistics_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-finish" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_get_namespace_manager ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-namespace-manager" since="2.0"/>
+    <keyword type="function" name="tracker_sparql_connection_set_domain ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-set-domain" since="2.0"/>
+    <keyword type="function" name="tracker_sparql_connection_get_domain ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-domain" since="2.0"/>
     <keyword type="enum" name="enum TrackerSparqlError" link="TrackerSparqlConnection.html#TrackerSparqlError"/>
     <keyword type="struct" name="struct TrackerSparqlConnection" link="TrackerSparqlConnection.html#TrackerSparqlConnection-struct"/>
+    <keyword type="enum" name="enum TrackerSparqlConnectionFlags" link="TrackerSparqlConnection.html#TrackerSparqlConnectionFlags"/>
     <keyword type="function" name="tracker_sparql_cursor_get_connection ()" link="TrackerSparqlCursor.html#tracker-sparql-cursor-get-connection" since="0.10"/>
     <keyword type="function" name="tracker_sparql_cursor_get_n_columns ()" link="TrackerSparqlCursor.html#tracker-sparql-cursor-get-n-columns" since="0.10"/>
     <keyword type="function" name="tracker_sparql_cursor_get_string ()" link="TrackerSparqlCursor.html#tracker-sparql-cursor-get-string" since="0.10"/>
@@ -210,6 +226,7 @@
     <keyword type="signal" name="The “events” signal" link="TrackerNotifier.html#TrackerNotifier-events"/>
     <keyword type="function" name="tracker_sparql_get_uuid_urn ()" link="libtracker-sparql-Utilities.html#tracker-sparql-get-uuid-urn" since="0.10"/>
     <keyword type="function" name="tracker_sparql_escape_string ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_escape_uri ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri" since="1.12"/>
     <keyword type="function" name="tracker_sparql_escape_uri_printf ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf" since="0.10"/>
     <keyword type="function" name="tracker_sparql_escape_uri_vprintf ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" since="0.10"/>
     <keyword type="function" name="tracker_check_version ()" link="libtracker-sparql-Version-Information.html#tracker-check-version" since="0.10"/>
@@ -283,6 +300,8 @@
     <keyword type="constant" name="TRACKER_SPARQL_ERROR_NO_SPACE" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-NO-SPACE:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_ERROR_INTERNAL" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-INTERNAL:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_ERROR_UNSUPPORTED" link="TrackerSparqlConnection.html#TRACKER-SPARQL-ERROR-UNSUPPORTED:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_CONNECTION_FLAGS_NONE" link="TrackerSparqlConnection.html#TRACKER-SPARQL-CONNECTION-FLAGS-NONE:CAPS"/>
+    <keyword type="constant" name="TRACKER_SPARQL_CONNECTION_FLAGS_READONLY" link="TrackerSparqlConnection.html#TRACKER-SPARQL-CONNECTION-FLAGS-READONLY:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_UNBOUND" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-UNBOUND:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_URI" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-URI:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_VALUE_TYPE_STRING" link="TrackerSparqlCursor.html#TRACKER-SPARQL-VALUE-TYPE-STRING:CAPS"/>
