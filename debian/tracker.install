@@ -1,25 +1,18 @@
 usr/bin/tracker
 
 usr/lib/systemd/user/tracker-store.service
-usr/lib/systemd/user/tracker-writeback.service
 
 usr/share/dbus-1/services/org.freedesktop.Tracker1.service
-usr/share/dbus-1/services/org.freedesktop.Tracker1.Writeback.service
 
 usr/share/tracker/tracker-miner.xml
 usr/share/tracker/tracker-statistics.xml
 usr/share/tracker/tracker-backup.xml
 usr/share/tracker/tracker-resources.xml
 usr/share/tracker/tracker-status.xml
-usr/share/tracker/tracker-writeback.xml
 
 usr/lib/tracker/tracker-store
-usr/lib/tracker/tracker-writeback
-
-usr/lib/*/tracker-2.0/writeback-modules/*.so
 
 usr/share/man/man1/tracker-store.1
-usr/share/man/man1/tracker-writeback.1
 usr/share/man/man1/tracker-info.1
 usr/share/man/man1/tracker-search.1
 usr/share/man/man1/tracker-sparql.1
