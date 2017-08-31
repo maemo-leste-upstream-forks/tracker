@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [1])
 m4_define([tracker_minor_version], [99])
-m4_define([tracker_micro_version], [2])
+m4_define([tracker_micro_version], [3])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -620,6 +620,13 @@ if test "x$have_tracker_fts" = "xyes"; then
       AC_DEFINE(HAVE_BUILTIN_FTS, [], [Defined if Sqlite has FTS5 compiled in])
    else
       have_builtin_fts5="no"
+
+      # Sqlite 3.20 broke compatibility of the fts5 module both ways, demand
+      # that it's builtin into sqlite from that version on.
+      PKG_CHECK_EXISTS([sqlite3 >= 3.20.0], sqlite_builtin_fts5_forced=yes, sqlite_builtin_fts5_forced=no)
+      if test "x$sqlite_builtin_fts5_forced" == "xyes"; then
+        AC_MSG_ERROR([sqlite3 >= 3.20.0 must be compiled with --enable-fts5])
+      fi
 
       # Make sure SQLite has extension loading enabled
       AX_SQLITE_AUTO_EXTENSION
