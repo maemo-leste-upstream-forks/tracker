@@ -29,7 +29,7 @@
       value in the store, both the general connection (with
       <code class="function"><a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()">tracker_sparql_connection_get</a></code>)
       or a specific direct-access connection (with
-      <code class="function">tracker_sparql_connection_get_direct</code>)
+      <code class="function"><a href="/usr/share/gtk-doc/html/libtracker-sparqlTrackerSparqlConnection.html#tracker-sparql-connection-get-direct">tracker_sparql_connection_get_direct</a></code>)
       may be acquired. Note that in the latter case, every non read-only operation will result
       in an error being thrown by the TrackerSparqlConnection.
     </p>
@@ -49,7 +49,7 @@
       <code class="function"><a class="link" href="TrackerSparqlCursor.html#tracker-sparql-cursor-next-finish" title="tracker_sparql_cursor_next_finish ()">tracker_sparql_cursor_next_finish</a></code>)
     </p>
 <p>
-      Once you end up with the query, remember to call <code class="function">g_object_unref</code>
+      Once you end up with the query, remember to call <code class="function"><a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref">g_object_unref</a></code>
       for the <span class="type"><a class="link" href="TrackerSparqlCursor.html#TrackerSparqlCursor-struct" title="struct TrackerSparqlCursor">TrackerSparqlCursor</a></span>. And the same applies to the
       <span class="type"><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="struct TrackerSparqlConnection">TrackerSparqlConnection</a></span> when no longer needed.
     </p>
@@ -72,7 +72,7 @@ int main (int argc, const char **argv)
    * to use a connection with only direct-access setup. The NULL
    * represents a possible GCancellable.
    */
-  connection = <code class="function">tracker_sparql_connection_get_direct</code> (NULL, &amp;error);
+  connection = <code class="function"><a href="/usr/share/gtk-doc/html/libtracker-sparqlTrackerSparqlConnection.html#tracker-sparql-connection-get-direct">tracker_sparql_connection_get_direct</a></code> (NULL, &amp;error);
   if (!connection) {
     g_printerr ("Couldn't obtain a direct connection to the Tracker store: %s",
                 error ? error-&gt;message : "unknown error");

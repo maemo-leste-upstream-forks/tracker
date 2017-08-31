@@ -4,6 +4,7 @@
 #include "config.h"
 
 #include "tracker-sparql-enum-types.h"
+
 /* enumerations from "tracker-notifier.h" */
 #include "tracker-notifier.h"
 GType
@@ -27,6 +28,7 @@ tracker_notifier_flags_get_type (void)
 
   return g_define_type_id__volatile;
 }
+
 GType
 tracker_notifier_event_type_get_type (void)
 {
@@ -47,6 +49,7 @@ tracker_notifier_event_type_get_type (void)
 
   return g_define_type_id__volatile;
 }
+
 
 
 /* Generated data ends here */

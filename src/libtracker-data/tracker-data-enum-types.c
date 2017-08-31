@@ -4,6 +4,7 @@
 #include <config.h>
 
 #include "tracker-data-enum-types.h"
+
 /* enumerations from "tracker-db-interface-sqlite.h" */
 #include "tracker-db-interface-sqlite.h"
 GType
@@ -25,6 +26,7 @@ tracker_db_interface_flags_get_type (void)
     
   return g_define_type_id__volatile;
 }
+
 
 
 /* Generated data ends here */

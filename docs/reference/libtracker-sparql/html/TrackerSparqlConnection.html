@@ -154,7 +154,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GPtrArray</span> *
+<a href="/usr/share/gtk-doc/html/glibglib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-array-finish" title="tracker_sparql_connection_update_array_finish ()">tracker_sparql_connection_update_array_finish</a> <span class="c_punctuation">()</span>
@@ -162,7 +162,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GVariant</span> *
+<a href="/usr/share/gtk-doc/html/glibglib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-blank" title="tracker_sparql_connection_update_blank ()">tracker_sparql_connection_update_blank</a> <span class="c_punctuation">()</span>
@@ -178,7 +178,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GVariant</span> *
+<a href="/usr/share/gtk-doc/html/glibglib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-blank-finish" title="tracker_sparql_connection_update_blank_finish ()">tracker_sparql_connection_update_blank_finish</a> <span class="c_punctuation">()</span>
@@ -250,7 +250,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-domain" title="tracker_sparql_connection_get_domain ()">tracker_sparql_connection_get_domain</a> <span class="c_punctuation">()</span>
@@ -284,7 +284,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerSparqlConnection.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
     <span class="lineart">╰──</span> TrackerSparqlConnection
 </pre>
 </div>
@@ -296,8 +296,8 @@
 <div class="refsect2">
 <a name="tracker-sparql-connection-get"></a><h3>tracker_sparql_connection_get ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *
-tracker_sparql_connection_get (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                               <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+tracker_sparql_connection_get (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                               <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>This function is used to give the caller a connection to Tracker they can
 use for future requests. The best backend available to connect to
 Tracker is returned. These backends include direct-access (for read-only
@@ -309,7 +309,7 @@ chosen based on their merits. If you try to force a backend for a query
 which it won't support (i.e. an update for a read-only backend), you will
 see critical warnings.</p>
 <p>When calling either <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()"><code class="function">tracker_sparql_connection_get()</code></a>,
-<code class="function">tracker_sparql_connection_get_direct()</code> or the asynchronous variants of
+<a href="/usr/share/gtk-doc/html/libtracker-sparqlTrackerSparqlConnection.html#tracker-sparql-connection-get-direct"><code class="function">tracker_sparql_connection_get_direct()</code></a> or the asynchronous variants of
 these functions, a mutex is used to protect the loading of backends
 against potential race conditions. For synchronous calls, this function
 will always block if a previous connection get method has been called.</p>
@@ -330,12 +330,12 @@ substantial while data is restored as best as possible.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -343,7 +343,7 @@ substantial while data is restored as best as possible.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-get.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <code class="function">g_object_unref()</code> on the
+<p> a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the
 object when no longer used.</p>
 </div>
 <p class="since">Since: 0.10</p>
@@ -352,16 +352,16 @@ object when no longer used.</p>
 <div class="refsect2">
 <a name="tracker-sparql-connection-get-async"></a><h3>tracker_sparql_connection_get_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-tracker_sparql_connection_get_async (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                     <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
-                                     <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
+tracker_sparql_connection_get_async (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-connection-get-finish"></a><h3>tracker_sparql_connection_get_finish ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *
-tracker_sparql_connection_get_finish (<em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
-                                      <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+tracker_sparql_connection_get_finish (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>This function is called from the callback provided for
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-async" title="tracker_sparql_connection_get_async ()"><code class="function">tracker_sparql_connection_get_async()</code></a> to return the connection requested
 or an error in cases of failure.</p>
@@ -376,12 +376,12 @@ or an error in cases of failure.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>_res_</p></td>
-<td class="parameter_description"><p>The <span class="type">GAsyncResult</span> from the callback used to return the <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a></p></td>
+<td class="parameter_description"><p>The <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> from the callback used to return the <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p>The error which occurred or <code class="literal">NULL</code></p></td>
+<td class="parameter_description"><p>The error which occurred or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -389,7 +389,7 @@ or an error in cases of failure.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-get-finish.returns"></a><h4>Returns</h4>
-<p> a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <code class="function">g_object_unref()</code> on the
+<p> a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the
 object when no longer used.</p>
 </div>
 <p class="since">Since: 0.10</p>
@@ -399,11 +399,11 @@ object when no longer used.</p>
 <a name="tracker-sparql-connection-local-new"></a><h3>tracker_sparql_connection_local_new ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *
 tracker_sparql_connection_local_new (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnectionFlags" title="enum TrackerSparqlConnectionFlags"><span class="type">TrackerSparqlConnectionFlags</span></a> flags</code></em>,
-                                     <em class="parameter"><code><span class="type">GFile</span> *store</code></em>,
-                                     <em class="parameter"><code><span class="type">GFile</span> *journal</code></em>,
-                                     <em class="parameter"><code><span class="type">GFile</span> *ontology</code></em>,
-                                     <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                     <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a> *store</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a> *journal</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a> *ontology</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                     <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <div class="refsect3">
 <a name="tracker-sparql-connection-local-new.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -425,22 +425,22 @@ tracker_sparql_connection_local_new (<em class="parameter"><code><a class="link"
 </tr>
 <tr>
 <td class="parameter_name"><p>journal</p></td>
-<td class="parameter_description"><p>Location for the operation journal, or <code class="literal">NULL</code></p></td>
+<td class="parameter_description"><p>Location for the operation journal, or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ontology</p></td>
-<td class="parameter_description"><p>Location of the ontology used for this connection, or <code class="literal">NULL</code></p></td>
+<td class="parameter_description"><p>Location of the ontology used for this connection, or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>A <span class="type">GCancellable</span></p></td>
+<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p>The error which occurred or <code class="literal">NULL</code></p></td>
+<td class="parameter_description"><p>The error which occurred or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -452,17 +452,17 @@ tracker_sparql_connection_local_new (<em class="parameter"><code><a class="link"
 <em class="parameter"><code>cache</code></em>
 /<em class="parameter"><code>journal</code></em>
 locations, and the ontology specified in the <em class="parameter"><code>ontology</code></em>
-directory. Call <code class="function">g_object_unref()</code> on the object when no longer used.</p>
+directory. Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the object when no longer used.</p>
 <p>This database connection is considered entirely private to the calling
 process, if multiple processes use the same journal/cache locations,
 the results are unpredictable.</p>
 <p>The <em class="parameter"><code>journal</code></em>
 is used to rebuild the database in case of data corruption,
-if <code class="literal">NULL</code> is provided, the same location than <em class="parameter"><code>store</code></em>
+if <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is provided, the same location than <em class="parameter"><code>store</code></em>
 will be assumed.</p>
 <p>The caller is entirely free to define an ontology or reuse Nepomuk for
 its purposes. For the former see the "Defining ontologies" section in
-this library docs. For the latter pass a <code class="literal">NULL</code> <em class="parameter"><code>ontology</code></em>
+this library docs. For the latter pass a <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> <em class="parameter"><code>ontology</code></em>
 .</p>
 <p>The <em class="parameter"><code>ontology</code></em>
 argument may be a resource:/// URI, a directory location
@@ -481,12 +481,12 @@ assumed to be entirely private to Tracker.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_local_new_async
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnectionFlags" title="enum TrackerSparqlConnectionFlags"><span class="type">TrackerSparqlConnectionFlags</span></a> flags</code></em>,
-                                <em class="parameter"><code><span class="type">GFile</span> *store</code></em>,
-                                <em class="parameter"><code><span class="type">GFile</span> *journal</code></em>,
-                                <em class="parameter"><code><span class="type">GFile</span> *ontology</code></em>,
-                                <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a> *store</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a> *journal</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a> *ontology</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <div class="refsect3">
 <a name="tracker-sparql-connection-local-new-async.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -508,22 +508,22 @@ tracker_sparql_connection_local_new_async
 </tr>
 <tr>
 <td class="parameter_name"><p>journal</p></td>
-<td class="parameter_description"><p>Location for the operation journal, or <code class="literal">NULL</code></p></td>
+<td class="parameter_description"><p>Location for the operation journal, or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ontology</p></td>
-<td class="parameter_description"><p>Location of the ontology used for this connection, or <code class="literal">NULL</code></p></td>
+<td class="parameter_description"><p>Location of the ontology used for this connection, or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>A <span class="type">GCancellable</span></p></td>
+<td class="parameter_description"><p>A <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>_callback_</p></td>
-<td class="parameter_description"><p>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+<td class="parameter_description"><p>user-defined <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
 asynchronous operation is finished.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -542,7 +542,7 @@ asynchronous operation is finished.</p></td>
 <em class="parameter"><code>cache</code></em>
 /<em class="parameter"><code>journal</code></em>
 locations, and the ontology specified in the <em class="parameter"><code>ontology</code></em>
-directory. Call <code class="function">g_object_unref()</code> on the object when no longer used.</p>
+directory. Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the object when no longer used.</p>
 <p>See <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-local-new" title="tracker_sparql_connection_local_new ()"><code class="function">tracker_sparql_connection_local_new()</code></a> for more details.</p>
 </div>
 <p class="since">Since: 2.0</p>
@@ -552,14 +552,14 @@ directory. Call <code class="function">g_object_unref()</code> on the object whe
 <a name="tracker-sparql-connection-local-new-finish"></a><h3>tracker_sparql_connection_local_new_finish ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *
 tracker_sparql_connection_local_new_finish
-                               (<em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
-                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                               (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-connection-remote-new"></a><h3>tracker_sparql_connection_remote_new ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *
-tracker_sparql_connection_remote_new (<em class="parameter"><code>const <span class="type">gchar</span> *uri_base</code></em>);</pre>
+tracker_sparql_connection_remote_new (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri_base</code></em>);</pre>
 <div class="refsect3">
 <a name="tracker-sparql-connection-remote-new.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -577,7 +577,7 @@ tracker_sparql_connection_remote_new (<em class="parameter"><code>const <span cl
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-remote-new.returns"></a><h4>Returns</h4>
-<p> a new remote <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <code class="function">g_object_unref()</code> on the
+<p> a new remote <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the
 object when no longer used.</p>
 </div>
 <p class="since">Since: 1.12</p>
@@ -587,9 +587,9 @@ object when no longer used.</p>
 <a name="tracker-sparql-connection-query"></a><h3>tracker_sparql_connection_query ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *
 tracker_sparql_connection_query (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                 <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
-                                 <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                 <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                 <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                 <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Executes a SPARQL query on. The API call is completely synchronous, so
 it may block.</p>
 <p>The <em class="parameter"><code>sparql</code></em>
@@ -617,12 +617,12 @@ otherwise SPARQL injection is possible.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -630,10 +630,10 @@ otherwise SPARQL injection is possible.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-query.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <span class="type">NULL</span> otherwise.
-On error, <span class="type">NULL</span> is returned and the <em class="parameter"><code>error</code></em>
+<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
+On error, <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em>
 is set accordingly.
-Call <code class="function">g_object_unref()</code> on the returned cursor when no longer needed.</p>
+Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer needed.</p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -642,10 +642,10 @@ Call <code class="function">g_object_unref()</code> on the returned cursor when 
 <a name="tracker-sparql-connection-query-async"></a><h3>tracker_sparql_connection_query_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_query_async (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                       <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
-                                       <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                       <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
-                                       <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
+                                       <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -653,8 +653,8 @@ tracker_sparql_connection_query_async (<em class="parameter"><code><a class="lin
 <pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *
 tracker_sparql_connection_query_finish
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
-                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes the asynchronous SPARQL query operation.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-query-finish.parameters"></a><h4>Parameters</h4>
@@ -672,12 +672,12 @@ tracker_sparql_connection_query_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>_res_</p></td>
-<td class="parameter_description"><p>a <span class="type">GAsyncResult</span> with the result of the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> with the result of the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -685,10 +685,10 @@ tracker_sparql_connection_query_finish
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-query-finish.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <span class="type">NULL</span> otherwise.
-On error, <span class="type">NULL</span> is returned and the <em class="parameter"><code>error</code></em>
+<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
+On error, <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em>
 is set accordingly.
-Call <code class="function">g_object_unref()</code> on the returned cursor when no longer needed.</p>
+Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer needed.</p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -697,10 +697,10 @@ Call <code class="function">g_object_unref()</code> on the returned cursor when 
 <a name="tracker-sparql-connection-update"></a><h3>tracker_sparql_connection_update ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_update (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                  <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
-                                  <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                  <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                  <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                  <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Executes a SPARQL update. The API call is completely
 synchronous, so it may block.</p>
 <p>The <em class="parameter"><code>sparql</code></em>
@@ -733,12 +733,12 @@ otherwise SPARQL injection is possible.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -752,11 +752,11 @@ otherwise SPARQL injection is possible.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_update_async
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
-                                <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
+                                <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <p>Executes asynchronously a SPARQL update.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-async.parameters"></a><h4>Parameters</h4>
@@ -784,12 +784,12 @@ tracker_sparql_connection_update_async
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>_callback_</p></td>
-<td class="parameter_description"><p>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+<td class="parameter_description"><p>user-defined <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
 asynchronous operation is finished.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -810,8 +810,8 @@ asynchronous operation is finished.</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_update_finish
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
-                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes the asynchronous SPARQL update operation.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-finish.parameters"></a><h4>Parameters</h4>
@@ -829,12 +829,12 @@ tracker_sparql_connection_update_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>_res_</p></td>
-<td class="parameter_description"><p>a <span class="type">GAsyncResult</span> with the result of the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> with the result of the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -848,12 +848,12 @@ tracker_sparql_connection_update_finish
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_update_array_async
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code><span class="type">gchar</span> **sparql</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **sparql</code></em>,
                                 <em class="parameter"><code><span class="type">int</span> sparql_length1</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
-                                <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <p>Executes asynchronously an array of SPARQL updates. Each update in the
 array is its own transaction. This means that update n+1 is not halted
 due to an error in update n.</p>
@@ -889,12 +889,12 @@ due to an error in update n.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>_callback_</p></td>
-<td class="parameter_description"><p>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+<td class="parameter_description"><p>user-defined <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
 asynchronous operation is finished.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -912,11 +912,11 @@ asynchronous operation is finished.</p></td>
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-connection-update-array-finish"></a><h3>tracker_sparql_connection_update_array_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">GPtrArray</span> *
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *
 tracker_sparql_connection_update_array_finish
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
-                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes the asynchronous SPARQL update_array operation.</p>
 <div class="example">
 <a name="id-1.3.6.7.16.5"></a><p class="title"><b>Example 1. </b></p>
@@ -949,20 +949,20 @@ tracker_sparql_connection_update_array_finish
 <span class="normal">                             </span><span class="usertype">GAsyncResult</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">result</span><span class="symbol">,</span>
 <span class="normal">                             </span><span class="usertype">gpointer</span><span class="normal">      user_data</span><span class="symbol">)</span>
 <span class="cbracket">{</span>
-<span class="normal">    </span><span class="usertype">GError</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">error </span><span class="symbol">=</span><span class="normal"> NULL</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="usertype">GError</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">error </span><span class="symbol">=</span><span class="normal"> <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS">NULL</a></span><span class="symbol">;</span>
 <span class="normal">    </span><span class="usertype">GPtrArray</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">errors</span><span class="symbol">;</span>
 <span class="normal">    </span><span class="usertype">guint</span><span class="normal"> i</span><span class="symbol">;</span>
 
 <span class="normal">    errors </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="TrackerSparqlConnection.html#tracker-sparql-connection-update-array-finish">tracker_sparql_connection_update_array_finish</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">connection</span><span class="symbol">,</span><span class="normal"> result</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">&amp;</span><span class="normal">error</span><span class="symbol">);</span>
-<span class="normal">    </span><span class="function">g_assert_no_error</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">error</span><span class="symbol">);</span>
+<span class="normal">    </span><span class="function"><a href="/usr/share/gtk-doc/html/glibglib-Testing.html#g-assert-no-error">g_assert_no_error</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">error</span><span class="symbol">);</span>
 
 <span class="normal">    </span><span class="keyword">for</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">i </span><span class="symbol">=</span><span class="normal"> </span><span class="number">0</span><span class="symbol">;</span><span class="normal"> i </span><span class="symbol">&lt;</span><span class="normal"> errors</span><span class="symbol">-&gt;</span><span class="normal">len</span><span class="symbol">;</span><span class="normal"> i</span><span class="symbol">++)</span><span class="normal"> </span><span class="cbracket">{</span>
-<span class="normal">        </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">GError</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">e </span><span class="symbol">=</span><span class="normal"> </span><span class="function">g_ptr_array_index</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">errors</span><span class="symbol">,</span><span class="normal"> i</span><span class="symbol">);</span>
+<span class="normal">        </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">GError</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">e </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="/usr/share/gtk-doc/html/glibglib-Pointer-Arrays.html#g-ptr-array-index">g_ptr_array_index</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">errors</span><span class="symbol">,</span><span class="normal"> i</span><span class="symbol">);</span>
 
 <span class="normal">        </span><span class="symbol">...</span>
 <span class="normal">    </span><span class="cbracket">}</span>
 
-<span class="normal">    </span><span class="function">g_ptr_array_unref</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">errors</span><span class="symbol">);</span>
+<span class="normal">    </span><span class="function"><a href="/usr/share/gtk-doc/html/glibglib-Pointer-Arrays.html#g-ptr-array-unref">g_ptr_array_unref</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">errors</span><span class="symbol">);</span>
 <span class="cbracket">}</span></pre></td>
       </tr>
     </tbody>
@@ -986,12 +986,12 @@ tracker_sparql_connection_update_array_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>_res_</p></td>
-<td class="parameter_description"><p>a <span class="type">GAsyncResult</span> with the result of the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> with the result of the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -999,7 +999,7 @@ tracker_sparql_connection_update_array_finish
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-array-finish.returns"></a><h4>Returns</h4>
-<p> a <span class="type">GPtrArray</span> of size <em class="parameter"><code>sparql_length1</code></em>
+<p> a <a href="/usr/share/gtk-doc/html/glibglib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> of size <em class="parameter"><code>sparql_length1</code></em>
 with elements that are
 either NULL or a GError instance. The returned array should be freed with
 g_ptr_array_unref when no longer used, not with g_ptr_array_free. When
@@ -1013,13 +1013,13 @@ you passed to tracker_sparql_connection_update_array_async.</p>
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-connection-update-blank"></a><h3>tracker_sparql_connection_update_blank ()</h3>
-<pre class="programlisting"><span class="returnvalue">GVariant</span> *
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *
 tracker_sparql_connection_update_blank
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
-                                <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Executes a SPARQL update and returns the URNs of the generated nodes,
 if any. The API call is completely synchronous, so it may block.</p>
 <p>The <em class="parameter"><code>sparql</code></em>
@@ -1052,12 +1052,12 @@ otherwise SPARQL injection is possible.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1065,8 +1065,8 @@ otherwise SPARQL injection is possible.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-blank.returns"></a><h4>Returns</h4>
-<p> a <span class="type">GVariant</span> with the generated URNs, which should be freed with
-<code class="function">g_variant_unref()</code> when no longer used.</p>
+<p> a <a href="/usr/share/gtk-doc/html/glibglib-GVariant.html#GVariant"><span class="type">GVariant</span></a> with the generated URNs, which should be freed with
+<a href="/usr/share/gtk-doc/html/glibglib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a> when no longer used.</p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -1076,11 +1076,11 @@ otherwise SPARQL injection is possible.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_update_blank_async
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
-                                <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
+                                <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <p>Executes asynchronously a SPARQL update.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-blank-async.parameters"></a><h4>Parameters</h4>
@@ -1108,12 +1108,12 @@ tracker_sparql_connection_update_blank_async
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>_callback_</p></td>
-<td class="parameter_description"><p>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+<td class="parameter_description"><p>user-defined <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
 asynchronous operation is finished.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -1131,11 +1131,11 @@ asynchronous operation is finished.</p></td>
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-connection-update-blank-finish"></a><h3>tracker_sparql_connection_update_blank_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">GVariant</span> *
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a> *
 tracker_sparql_connection_update_blank_finish
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
-                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes the asynchronous SPARQL update operation, and returns
 the URNs of the generated nodes, if any.</p>
 <div class="refsect3">
@@ -1154,12 +1154,12 @@ the URNs of the generated nodes, if any.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>_res_</p></td>
-<td class="parameter_description"><p>a <span class="type">GAsyncResult</span> with the result of the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> with the result of the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1167,8 +1167,8 @@ the URNs of the generated nodes, if any.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-blank-finish.returns"></a><h4>Returns</h4>
-<p> a <span class="type">GVariant</span> with the generated URNs, which should be freed with
-<code class="function">g_variant_unref()</code> when no longer used.</p>
+<p> a <a href="/usr/share/gtk-doc/html/glibglib-GVariant.html#GVariant"><span class="type">GVariant</span></a> with the generated URNs, which should be freed with
+<a href="/usr/share/gtk-doc/html/glibglib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a> when no longer used.</p>
 </div>
 <p class="since">Since: 0.10</p>
 </div>
@@ -1177,9 +1177,9 @@ the URNs of the generated nodes, if any.</p>
 <a name="tracker-sparql-connection-load"></a><h3>tracker_sparql_connection_load ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_load (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
-                                <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a> *file</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Loads a Turtle file (TTL) into the store. The API call is completely
 synchronous, so it may block.</p>
 <div class="refsect3">
@@ -1198,17 +1198,17 @@ synchronous, so it may block.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>file</p></td>
-<td class="parameter_description"><p>a <span class="type">GFile</span></p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1221,10 +1221,10 @@ synchronous, so it may block.</p>
 <a name="tracker-sparql-connection-load-async"></a><h3>tracker_sparql_connection_load_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_load_async (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                      <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
-                                      <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                      <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
-                                      <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a> *file</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <p>Loads, asynchronously, a Turtle file (TTL) into the store.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-load-async.parameters"></a><h4>Parameters</h4>
@@ -1242,17 +1242,17 @@ tracker_sparql_connection_load_async (<em class="parameter"><code><a class="link
 </tr>
 <tr>
 <td class="parameter_name"><p>file</p></td>
-<td class="parameter_description"><p>a <span class="type">GFile</span></p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGFile.html#GFile-struct"><span class="type">GFile</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>_callback_</p></td>
-<td class="parameter_description"><p>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+<td class="parameter_description"><p>user-defined <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
 asynchronous operation is finished.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -1272,8 +1272,8 @@ asynchronous operation is finished.</p></td>
 <a name="tracker-sparql-connection-load-finish"></a><h3>tracker_sparql_connection_load_finish ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_load_finish (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                       <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
-                                       <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
+                                       <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes the asynchronous load of the Turtle file.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-load-finish.parameters"></a><h4>Parameters</h4>
@@ -1291,12 +1291,12 @@ tracker_sparql_connection_load_finish (<em class="parameter"><code><a class="lin
 </tr>
 <tr>
 <td class="parameter_name"><p>_res_</p></td>
-<td class="parameter_description"><p>a <span class="type">GAsyncResult</span> with the result of the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> with the result of the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1309,8 +1309,8 @@ tracker_sparql_connection_load_finish (<em class="parameter"><code><a class="lin
 <a name="tracker-sparql-connection-statistics"></a><h3>tracker_sparql_connection_statistics ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *
 tracker_sparql_connection_statistics (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                      <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                      <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                      <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Retrieves the statistics from the Store. The API call is completely
 synchronous, so it may block.</p>
 <div class="refsect3">
@@ -1329,12 +1329,12 @@ synchronous, so it may block.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1342,8 +1342,8 @@ synchronous, so it may block.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <span class="type">NULL</span>
-on error. Call <code class="function">g_object_unref()</code> on the returned cursor when no longer
+<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>
+on error. Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer
 needed.</p>
 </div>
 <p class="since">Since: 0.10</p>
@@ -1354,9 +1354,9 @@ needed.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 tracker_sparql_connection_statistics_async
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <p>Retrieves, asynchronously, the statistics from the Store.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics-async.parameters"></a><h4>Parameters</h4>
@@ -1374,12 +1374,12 @@ tracker_sparql_connection_statistics_async
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>a <span class="type">GCancellable</span> used to cancel the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> used to cancel the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>_callback_</p></td>
-<td class="parameter_description"><p>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+<td class="parameter_description"><p>user-defined <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
 asynchronous operation is finished.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -1400,8 +1400,8 @@ asynchronous operation is finished.</p></td>
 <pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *
 tracker_sparql_connection_statistics_finish
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
-                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
+                                <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>Finishes the asynchronous retrieval of statistics from the Store.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics-finish.parameters"></a><h4>Parameters</h4>
@@ -1419,12 +1419,12 @@ tracker_sparql_connection_statistics_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>_res_</p></td>
-<td class="parameter_description"><p>a <span class="type">GAsyncResult</span> with the result of the operation</p></td>
+<td class="parameter_description"><p>a <a href="/usr/share/gtk-doc/html/gioGAsyncResult.html#GAsyncResult-struct"><span class="type">GAsyncResult</span></a> with the result of the operation</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p><span class="type">GError</span> for error reporting.</p></td>
+<td class="parameter_description"><p><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1432,8 +1432,8 @@ tracker_sparql_connection_statistics_finish
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics-finish.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <span class="type">NULL</span>
-on error. Call <code class="function">g_object_unref()</code> on the returned cursor when no longer
+<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>
+on error. Call <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer
 needed.</p>
 </div>
 <p class="since">Since: 0.10</p>
@@ -1475,7 +1475,7 @@ and must not be freed. </p>
 <div class="refsect2">
 <a name="tracker-sparql-connection-set-domain"></a><h3>tracker_sparql_connection_set_domain ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-tracker_sparql_connection_set_domain (<em class="parameter"><code>const <span class="type">gchar</span> *domain</code></em>);</pre>
+tracker_sparql_connection_set_domain (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain</code></em>);</pre>
 <p>Sets the domain (usually a DBus name or application ID) that
 will be used on on the connection obtained by
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()"><code class="function">tracker_sparql_connection_get()</code></a>. See the "Isolating tracker-store
@@ -1503,7 +1503,7 @@ could happen.</p>
 <hr>
 <div class="refsect2">
 <a name="tracker-sparql-connection-get-domain"></a><h3>tracker_sparql_connection_get_domain ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
 tracker_sparql_connection_get_domain (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets the domain (usually a DBus name or application ID) that
 will be used on on the connection obtained by
@@ -1511,7 +1511,7 @@ will be used on on the connection obtained by
 See <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-set-domain" title="tracker_sparql_connection_set_domain ()"><code class="function">tracker_sparql_connection_set_domain()</code></a> for more information.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-get-domain.returns"></a><h4>Returns</h4>
-<p> The domain string, or <code class="literal">NULL</code> if none is set. </p>
+<p> The domain string, or <a href="/usr/share/gtk-doc/html/glibglib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none is set. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 2.0</p>
