@@ -1,8 +1,16 @@
-tracker (1.99.2-1) UNRELEASED; urgency=medium
+tracker (1.99.2-1) experimental; urgency=medium
 
+  [ Jeremy Bicha ]
   * New upstream version 1.99.2
+  * Drop all patches, obsolete
+  * Drop stuff split to tracker-miners source
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 08 Aug 2017 15:35:01 -0400
+  [ Michael Biebl ]
+  * Drop more obsolete Build-Depends
+  * Switch to new dh_missing helper
+  * Switch to --fail-missing
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 31 Aug 2017 10:37:28 +0200
 
 tracker (1.99.1-1) experimental; urgency=medium
 
