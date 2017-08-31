@@ -28,7 +28,10 @@ override_dh_auto_configure:
 		--libexecdir=\$${prefix}/lib/tracker
 
 override_dh_missing:
-	dh_missing -X.la --list-missing
+	find debian/tmp -name '*.la' -print -delete
+	find debian/tmp -name libtracker-common.so -print -delete
+	find debian/tmp -name libtracker-data.so -print -delete
+	dh_missing --fail-missing
 
 # Enforce tight shlibs dependencies
 override_dh_makeshlibs:
