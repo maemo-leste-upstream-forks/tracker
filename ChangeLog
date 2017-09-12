@@ -1,3 +1,126 @@
+2017-09-12  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 2.0.0
+	Semantic versioning is now effective.
+
+2017-09-11  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-control: Add migration docs
+	https://bugzilla.gnome.org/show_bug.cgi?id=787246
+
+2017-09-10  Philip Withnall  <philip@tecnocode.co.uk>
+
+	libtracker-control: Add missing return to function precondition
+	A follow-up to commit 9a17961b. Spotted by Coverity (CID 1456542).
+
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=787246
+
+2017-09-10  Ask Hjorth Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
+2017-09-10  Anders Jonsson  <anders.jonsson@norsjovallen.se>
+
+	Update Swedish translation
+
+2017-09-10  Jordi Mas  <jmas@softcatala.org>
+
+	Fixes to Catalan translation
+
+2017-09-09  Inaki Larranaga Murgoitio  <dooteo@zundan.com>
+
+	Update Basque language
+
+2017-09-08  hanniedu  <hannie@ubuntu-nl.org>
+
+	Updated Dutch translation Master 3.26
+
+2017-09-06  Jordi Mas  <jmas@softcatala.org>
+
+	Update Catalan translation
+
+2017-09-04  Debarshi Ray  <debarshir@gnome.org>
+
+	libtracker-control: Let miner_manager_index_file accept a GCancellable
+	The Since tag was bumped because the method's signature has changed.
+	It is not backwards compatible with the one that was added in 0.10.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=787246
+
+2017-09-03  Rafael Fontenelle  <rafaelff@gnome.org>
+
+	Update Brazilian Portuguese translation
+
+2017-09-02  Dušan Kazik  <prescott66@gmail.com>
+
+	Update Slovak translation
+
+2017-09-02  Seong-ho Cho  <shcho@gnome.org>
+
+	Update Korean translation
+
+2017-09-01  Cheng-Chia Tseng  <pswo10680@gmail.com>
+
+	Update Chinese (Taiwan) translation
+
+2017-08-31  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Set up cancellable for TrackerDecorator internal ops
+	Those must be cancelled if the TrackerDecorator gets destroyed.
+
+	meson: Update root meson.build file
+	It still had some pre-split remnants.
+
+	docs: Remove unused manpages
+	These manpages persist on the tracker-miners module, they can be removed
+	from this repo.
+
+	tracker: Remove --all argument from "tracker status" subcommand
+	Make "tracker status --stat" offer info for all RDF classes right away,
+	instead of trying to figure out the "common" ones from the formats handled
+	by tracker extract modules/rules, which are not in this repo anymore.
+
+2017-08-31  Michael Biebl  <biebl@debian.org>
+
+	build: Drop obsolete _REQUIRED versions
+
+	build: Drop obsolete warning about seccomp
+	https://bugzilla.gnome.org/show_bug.cgi?id=787057
+
+2017-08-31  Jiri Grönroos  <jiri.gronroos@iki.fi>
+
+	Update Finnish translation
+
+2017-08-30  Jordi Mas  <jmas@softcatala.org>
+
+	Fixes to Catalan translation
+
+2017-08-28  Ask Hjorth Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
+2017-08-27  Rūdolfs Mazurs  <rudolfsm@src.gnome.org>
+
+	Update Latvian translation
+
+2017-08-25  Carlos Garnacho  <carlosg@gnome.org>
+
+	meson: Fix SQLite FTS5 check
+	Can't compile without main()
+
+2017-08-25  Milo Casagrande  <milo@ubuntu.com>
+
+	Update Italian translation
+
+2017-08-23  Fabio Tomat  <f.t.public@gmail.com>
+
+	Update Friulian translation
+
+2017-08-22  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
 2017-08-22  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 1.99.3

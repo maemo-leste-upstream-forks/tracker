@@ -62,13 +62,13 @@
 <tbody>
 <tr>
 <td class="property_type">
-<a href="/usr/share/gtk-doc/html/gioGDBusConnection.html#GDBusConnection-struct"><span class="type">GDBusConnection</span></a> *</td>
+<span class="type">GDBusConnection</span> *</td>
 <td class="property_name"><a class="link" href="TrackerMinerProxy.html#TrackerMinerProxy--dbus-connection" title="The “dbus-connection” property">dbus-connection</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
 <tr>
 <td class="property_type">
-<a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<span class="type">gchar</span> *</td>
 <td class="property_name"><a class="link" href="TrackerMinerProxy.html#TrackerMinerProxy--dbus-path" title="The “dbus-path” property">dbus-path</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
@@ -102,7 +102,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerMinerProxy.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobjectgobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+<pre class="screen">    GObject
     <span class="lineart">╰──</span> TrackerMinerProxy
 </pre>
 </div>
@@ -110,7 +110,7 @@
 <a name="TrackerMinerProxy.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 TrackerMinerProxy implements
- <a href="/usr/share/gtk-doc/html/gioGInitable.html#GInitable-struct">GInitable</a>.</p>
+ GInitable.</p>
 </div>
 <div class="refsect1">
 <a name="TrackerMinerProxy.includes"></a><h2>Includes</h2>
@@ -124,9 +124,9 @@ DBus interfaces for the given <a class="link" href="TrackerMiner.html" title="Tr
 miners as DBus services.</p>
 <p>This proxy allows the miner to be controlled through external means, such as
 <a href="../html/TrackerMinerManager.html#TrackerMinerManager-struct"><span class="type">TrackerMinerManager</span></a> in libtracker-control.</p>
-<p><a class="link" href="TrackerMinerProxy.html" title="TrackerMinerProxy"><span class="type">TrackerMinerProxy</span></a> implements the <a href="/usr/share/gtk-doc/html/gioGInitable.html#GInitable-struct"><span class="type">GInitable</span></a> interface, and thus all objects of
-types inheriting from <a class="link" href="TrackerMinerProxy.html" title="TrackerMinerProxy"><span class="type">TrackerMinerProxy</span></a> must be initialized with <a href="/usr/share/gtk-doc/html/gioGInitable.html#g-initable-init"><code class="function">g_initable_init()</code></a>
-just after creation (or directly created with <a href="/usr/share/gtk-doc/html/gioGInitable.html#g-initable-new"><code class="function">g_initable_new()</code></a>).</p>
+<p><a class="link" href="TrackerMinerProxy.html" title="TrackerMinerProxy"><span class="type">TrackerMinerProxy</span></a> implements the <span class="type">GInitable</span> interface, and thus all objects of
+types inheriting from <a class="link" href="TrackerMinerProxy.html" title="TrackerMinerProxy"><span class="type">TrackerMinerProxy</span></a> must be initialized with <code class="function">g_initable_init()</code>
+just after creation (or directly created with <code class="function">g_initable_new()</code>).</p>
 </div>
 <div class="refsect1">
 <a name="TrackerMinerProxy.functions_details"></a><h2>Functions</h2>
@@ -134,10 +134,10 @@ just after creation (or directly created with <a href="/usr/share/gtk-doc/html/g
 <a name="tracker-miner-proxy-new"></a><h3>tracker_miner_proxy_new ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerMinerProxy.html" title="TrackerMinerProxy"><span class="returnvalue">TrackerMinerProxy</span></a> *
 tracker_miner_proxy_new (<em class="parameter"><code><a class="link" href="TrackerMiner.html" title="TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>,
-                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGDBusConnection.html#GDBusConnection-struct"><span class="type">GDBusConnection</span></a> *connection</code></em>,
-                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *dbus_path</code></em>,
-                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gioGCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glibglib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">GDBusConnection</span> *connection</code></em>,
+                         <em class="parameter"><code>const <span class="type">gchar</span> *dbus_path</code></em>,
+                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 </div>
 </div>
 <div class="refsect1">
@@ -159,14 +159,14 @@ tracker_miner_proxy_new (<em class="parameter"><code><a class="link" href="Track
 <a name="TrackerMinerProxy.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="TrackerMinerProxy--dbus-connection"></a><h3>The <code class="literal">“dbus-connection”</code> property</h3>
-<pre class="programlisting">  “dbus-connection”          <a href="/usr/share/gtk-doc/html/gioGDBusConnection.html#GDBusConnection-struct"><span class="type">GDBusConnection</span></a> *</pre>
+<pre class="programlisting">  “dbus-connection”          <span class="type">GDBusConnection</span> *</pre>
 <p>DBus connection.</p>
 <p>Flags: Read / Write / Construct Only</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="TrackerMinerProxy--dbus-path"></a><h3>The <code class="literal">“dbus-path”</code> property</h3>
-<pre class="programlisting">  “dbus-path”                <a href="/usr/share/gtk-doc/html/glibglib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<pre class="programlisting">  “dbus-path”                <span class="type">gchar</span> *</pre>
 <p>DBus path for this miner.</p>
 <p>Flags: Read / Write / Construct Only</p>
 <p>Default value: NULL</p>

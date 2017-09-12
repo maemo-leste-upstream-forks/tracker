@@ -11,9 +11,9 @@ AC_PREREQ([2.64])
 # if any functions have been added, set TRACKER_INTERFACE_AGE to 0.
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
-m4_define([tracker_major_version], [1])
-m4_define([tracker_minor_version], [99])
-m4_define([tracker_micro_version], [3])
+m4_define([tracker_major_version], [2])
+m4_define([tracker_minor_version], [0])
+m4_define([tracker_micro_version], [0])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -209,31 +209,10 @@ PYTHON_REQUIRED=2.6
 # Library required versions
 DBUS_REQUIRED=1.3.1
 GLIB_REQUIRED=2.44.0
-GTK_REQUIRED=3.0.0
 LIBXML2_REQUIRED=2.6
 HAL_REQUIRED=0.5
 UPOWER_REQUIRED=0.9.0
-POPPLER_REQUIRED=0.16.0
-CAIRO_REQUIRED=1.0
 LIBICU_REQUIRED=4.8.1.1
-LIBJPEG_REQUIRED="any version"
-LIBGIF_REQUIRED="any version"
-LIBTIFF_REQUIRED="any version"
-LIBVORBIS_REQUIRED=0.22
-LIBFLAC_REQUIRED=1.2.1
-LIBEXIF_REQUIRED=0.6
-LIBGSF_REQUIRED=1.14.24
-LIBOSINFO_REQUIRED=0.2.9
-EXEMPI_REQUIRED=2.1.0
-EVO_REQUIRED=2.32.0
-EVO_SHELL_REQUIRED=2.32.0
-EDS_REQUIRED=2.32.0
-CAMEL_REQUIRED=2.32.0
-TAGLIB_REQUIRED=1.6
-LIBGRSS_REQUIRED=0.7
-GSTREAMER_REQUIRED=0.10.31
-GUPNP_DLNA_REQUIRED=0.9.4
-LIBPNG_REQUIRED=1.2
 JSON_GLIB_REQUIRED=1.0
 LIBSOUP_REQUIRED=2.40
 
@@ -1079,11 +1058,5 @@ WARNING:
         3.8.4.2:         https://mail.gnome.org/archives/tracker-list/2014-April/msg00001.html
 
 
-"
-fi
-
-if test "$have_libseccomp" = "no"; then
-echo "
-WARNING: libseccomp was not found, build will not be prevented, but this is a security flaw.
 "
 fi
