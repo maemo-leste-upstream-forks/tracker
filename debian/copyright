@@ -18,10 +18,6 @@ Files: src/gvdb/*
 Copyright: 2010 Codethink Limited
 License: LGPL-2.0+
 
-Files: debian/*
-Copyright: 2006-2014 Michael Biebl <biebl@debian.org>
-License: GPL-2.0+
-
 License: GPL-2.0+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
