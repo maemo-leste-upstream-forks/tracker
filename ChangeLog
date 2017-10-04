@@ -1,3 +1,135 @@
+2017-10-04  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 2.0.1
+
+2017-09-30  Piotr Drąg  <piotrdrag@gmail.com>
+
+	gschema: Fix gettext-domain
+
+2017-09-29  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Always fallback to URN query when queueing file
+	Tracker may end up with nfo:FileDataObject prior to handling monitor
+	events. Be it leftover data from previous bugs, explicit "tracker index"
+	calls, or data from some other application.
+
+	As we can't be really sure of the data consistence, always fallback to
+	a URN query so we don't break nie:url UNIQUE constraint (inverse functional
+	property in SPARQL parlance).
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=786132
+
+	libtracker-miner: Check directory updates before dropping mtime info
+	file_notifier_traverse_tree() has the side effect of deleting mtime data,
+	as it's presumably not needed anymore, except here. Check whether the
+	directory was updated before notifying of the files inside, so we can
+	thoroughly check for deleted content.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=786132
+
+	libtracker-miner: Use TrackerDecorator variable after checking cancellable
+	It may be actually destroyed if the decorator was cancelled.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=785701
+
+2017-09-29  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-sparql: Introspection fix for tracker_notifier_new()
+	The tracker_notifier_new() function allows NULL for 'classes'.
+
+2017-09-28  Sam Thursfield  <sam@afuera.me.uk>
+
+	meson: Fix hardcoded TRACKER_API_VERSION=1.0
+	This was causing .pc files with wrong dependencies to be generated when
+	building with Meson, and probably other issues.
+
+2017-09-28  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	meson: Fix misspelled keyword arg
+
+2017-09-27  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	meson: NetworkManager should be an optional dep
+
+2017-09-27  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+	Updated Slovenian translation
+
+2017-09-22  Sam Thursfield  <sam@afuera.me.uk>
+
+	libtracker-sparql: Fix introspection for Tracker.Notifier.new()
+	The 'classes' parameter wasn't annotated correctly.
+
+	meson: Fix all hardcoded references to 1.0
+	In some places I had hardcoded '1.0' instead of honouring
+	tracker_api_version variable. This is now fixed.
+
+	docs: Update path that contains API version to 2.0 in man page
+	We should maybe reword this to not include the API version, but I can't
+	see a simple way right now.
+
+2017-09-20  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+	Slovenian update ...
+
+	Updated Slovenian translation
+
+2017-09-16  Carlos Garnacho  <carlosg@gnome.org>
+
+	tests: Remove stray semicolon
+
+	libtracker-remote: Fix compiler warning
+	The return value of the hashtable contents are not variable, so using
+	"var" rightfully complains about const being passed to non-const.
+
+	libtracker-data: Fix compiler warning
+	Use hashtables with nullable integer return value the vala way, instead
+	of using lookup_extended(), which both looks out of place and produces
+	constness related warnings on gcc.
+
+	libtracker-data: Mark private methods explicitly as private
+	This makes it easier to spot the interactions when reading code.
+
+	libtracker-fts: Only let stop words go through on prefix queries
+	Commit 63e507865 made stop words go through when tokenizing FTS5 query
+	search terms, in order to still provide matches for incompletely typed
+	search terms that happen to match a stop word.
+
+	This however brought the side effect that searching for a stop word in
+	combination with other terms renders the latter ineffective. As the stop
+	word has no tokens in the FTS5 table to match with, the whole query brings
+	no results.
+
+	Since that commit, SQLite fixed FTS5_TOKENIZE_PREFIX to work as advertised,
+	so limit the bypass to prefix queries (e.g. "onto*"), since it only makes
+	sense there. Also, invert the way we look for stop words (i.e. always lookup
+	those in search terms as per config, and do the bypass once we know we deal
+	with a stop word) for the sake of readability.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=787452
+
+	tests: Fix compiler warnings
+	Remove an unused variable, and fix several implicit .begin() calls.
+
+	tracker-store: Fix compiler warnings
+	Use backup_save() function with correct non-NULL arguments,
+	avoid an implicit .begin(), and fix CCode annotations for
+	a vala function.
+
+	libtracker-direct: Fix compiler warning
+	Handle GLib.Error on async queries.
+
+	libtracker-data: Fix compiler warnings
+	Several unused variables.
+
+2017-09-14  İbrahim Aydın  <brhm.1995@hotmail.com>
+
+	Update Turkish translation
+
 2017-09-12  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 2.0.0

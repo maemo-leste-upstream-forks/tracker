@@ -1,4 +1,4 @@
-project('tracker', 'c', 'vala', version: '2.0.0')
+project('tracker', 'c', 'vala', version: '2.0.1')
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -28,7 +28,7 @@ icu_uc = dependency('icu-uc', version: '> 4.8.1.1', required: false)
 json_glib = dependency('json-glib-1.0', version: '>= 1.0', required: true)
 libsoup = dependency('libsoup-2.4', version: '> 2.40', required: true)
 libxml2 = dependency('libxml-2.0', version: '> 2.6')
-network_manager = dependency('libnm')
+network_manager = dependency('libnm', required: false)
 sqlite = dependency('sqlite3', version: '>' + sqlite_required)
 
 libmath = cc.find_library('m')
@@ -258,7 +258,7 @@ conf.set('includedir', join_paths(get_option('prefix'), get_option('includedir')
 conf.set('libdir', join_paths(get_option('prefix'), get_option('libdir')))
 conf.set('libexecdir', join_paths(get_option('prefix'), get_option('libexecdir')))
 conf.set('prefix', get_option('prefix'))
-conf.set('TRACKER_API_VERSION', '1.0')
+conf.set('TRACKER_API_VERSION', tracker_api_version)
 conf.set('VERSION', meson.project_version())
 
 configure_file(input: 'config.h.meson.in',

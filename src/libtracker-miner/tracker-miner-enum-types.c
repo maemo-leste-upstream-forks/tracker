@@ -4,7 +4,6 @@
 #include <config.h>
 
 #include "tracker-miner-enum-types.h"
-
 /* enumerations from "tracker-miner-enums.h" */
 #include "tracker-miner-enums.h"
 GType
@@ -33,7 +32,6 @@ tracker_directory_flags_get_type (void)
     
   return g_define_type_id__volatile;
 }
-
 GType
 tracker_filter_type_get_type (void)
 {
@@ -54,7 +52,6 @@ tracker_filter_type_get_type (void)
     
   return g_define_type_id__volatile;
 }
-
 GType
 tracker_filter_policy_get_type (void)
 {
@@ -74,7 +71,6 @@ tracker_filter_policy_get_type (void)
     
   return g_define_type_id__volatile;
 }
-
 GType
 tracker_network_type_get_type (void)
 {
@@ -98,7 +94,6 @@ tracker_network_type_get_type (void)
     
   return g_define_type_id__volatile;
 }
-
 
 
 /* Generated data ends here */
