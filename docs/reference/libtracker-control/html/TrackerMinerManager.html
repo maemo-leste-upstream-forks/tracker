@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Tracker control objects">
 <link rel="prev" href="ch01.html" title="Tracker control objects">
 <link rel="next" href="tracker-migrating-1-to-2.html" title="Migrating from libtracker-control 1.x to 2.0">
-<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.26 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -401,7 +401,7 @@ are miners which are running within a process.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-miner-manager-get-running.returns"></a><h4>Returns</h4>
-<p> a <span class="type">GSList</span> which
+<p>a <span class="type">GSList</span> which
 must be freed with <code class="function">g_slist_free()</code> and all contained data with <code class="function">g_free()</code>.
 Otherwise <code class="literal">NULL</code> is returned if there are no miners. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
@@ -433,7 +433,7 @@ the current time.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-miner-manager-get-available.returns"></a><h4>Returns</h4>
-<p> a <span class="type">GSList</span> which
+<p>a <span class="type">GSList</span> which
 must be freed with <code class="function">g_slist_free()</code> and all contained data with <code class="function">g_free()</code>.
 Otherwise <code class="literal">NULL</code> is returned if there are no miners. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
@@ -478,7 +478,7 @@ until all pause requests have been resumed.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cookie</p></td>
-<td class="parameter_description"><p> return location for the pause cookie ID. </p></td>
+<td class="parameter_description"><p>return location for the pause cookie ID. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -535,7 +535,7 @@ resume.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cookie</p></td>
-<td class="parameter_description"><p> return location for the pause cookie ID. </p></td>
+<td class="parameter_description"><p>return location for the pause cookie ID. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -717,17 +717,17 @@ and less than zero if it is not applicable.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>status</p></td>
-<td class="parameter_description"><p> return location for status. </p></td>
+<td class="parameter_description"><p>return location for status. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>progress</p></td>
-<td class="parameter_description"><p> return location for progress. </p></td>
+<td class="parameter_description"><p>return location for progress. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>remaining_time</p></td>
-<td class="parameter_description"><p> return location for remaining time. </p></td>
+<td class="parameter_description"><p>return location for remaining time. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -773,7 +773,7 @@ tracker_miner_manager_get_display_name
 </div>
 <div class="refsect3">
 <a name="tracker-miner-manager-get-display-name.returns"></a><h4>Returns</h4>
-<p> A string which should not be freed or <code class="literal">NULL</code>. </p>
+<p>A string which should not be freed or <code class="literal">NULL</code>. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 0.8</p>
@@ -810,7 +810,7 @@ tracker_miner_manager_get_description (<em class="parameter"><code><a class="lin
 </div>
 <div class="refsect3">
 <a name="tracker-miner-manager-get-description.returns"></a><h4>Returns</h4>
-<p> A string which should not be freed or <code class="literal">NULL</code> if none is specified. </p>
+<p>A string which should not be freed or <code class="literal">NULL</code> if none is specified. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 0.8</p>
@@ -844,13 +844,13 @@ the <em class="parameter"><code>mimetypes</code></em>
 </tr>
 <tr>
 <td class="parameter_name"><p>mimetypes</p></td>
-<td class="parameter_description"><p> an array of mimetypes (E.G. "text/plain"). All items
+<td class="parameter_description"><p>an array of mimetypes (E.G. "text/plain"). All items
 with a mimetype in that list will be reindexed. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for input. Default is transfer none."><span class="acronym">in</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p> return location for errors. </p></td>
+<td class="parameter_description"><p>return location for errors. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -895,12 +895,12 @@ tracker_miner_manager_index_file (<em class="parameter"><code><a class="link" hr
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> a <span class="type">GCancellable</span>, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>a <span class="type">GCancellable</span>, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p> return location for errors. </p></td>
+<td class="parameter_description"><p>return location for errors. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -948,12 +948,12 @@ to get the result.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> a <span class="type">GCancellable</span>, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>a <span class="type">GCancellable</span>, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>callback</p></td>
-<td class="parameter_description"><p> a <span class="type">GAsyncReadyCallback</span> to call when the request is satisfied. </p></td>
+<td class="parameter_description"><p>a <span class="type">GAsyncReadyCallback</span> to call when the request is satisfied. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="The callback is valid until first called."><span class="acronym">scope async</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -998,7 +998,7 @@ tracker_miner_manager_index_file_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p> return location for errors. </p></td>
+<td class="parameter_description"><p>return location for errors. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -1047,12 +1047,12 @@ operation closely to its own lifetime.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> a <span class="type">GCancellable</span>, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>a <span class="type">GCancellable</span>, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p> return location for errors. </p></td>
+<td class="parameter_description"><p>return location for errors. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -1104,12 +1104,12 @@ get the result of the operation.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p> a <span class="type">GCancellable</span>, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>a <span class="type">GCancellable</span>, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>callback</p></td>
-<td class="parameter_description"><p> a <span class="type">GAsyncReadyCallback</span> to call when the request is satisfied. </p></td>
+<td class="parameter_description"><p>a <span class="type">GAsyncReadyCallback</span> to call when the request is satisfied. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="The callback is valid until first called."><span class="acronym">scope async</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -1154,7 +1154,7 @@ tracker_miner_manager_index_file_for_process_finish
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p> return location for errors. </p></td>
+<td class="parameter_description"><p>return location for errors. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Out parameter, where caller must allocate storage."><span class="acronym">out callee-allocates</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -1518,6 +1518,6 @@ user_function (<a class="link" href="TrackerMinerManager.html" title="TrackerMin
 </div>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.25</div>
+<hr>Generated by GTK-Doc V1.26</div>
 </body>
 </html>
