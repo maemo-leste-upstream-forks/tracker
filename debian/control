@@ -23,7 +23,7 @@ Build-Depends: debhelper (>= 10.3),
                libjson-glib-dev (>= 1.0),
                libsoup2.4-dev (>= 2.40),
                dbus (>= 1.8) <!nocheck>,
-Standards-Version: 4.0.0
+Standards-Version: 4.1.1
 Vcs-Git: https://anonscm.debian.org/git/pkg-gnome/tracker.git
 Vcs-Browser: https://anonscm.debian.org/git/pkg-gnome/tracker.git
 Homepage: https://wiki.gnome.org/Projects/Tracker
