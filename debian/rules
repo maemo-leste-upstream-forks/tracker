@@ -5,7 +5,7 @@ include /usr/share/dpkg/architecture.mk
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed -Wl,-Bsymbolic
 
 %:
-	dh $@ --with gir
+	dh $@ --with gir,gnome
 
 autoreconf:
 	NOCONFIGURE=true gnome-autogen.sh
