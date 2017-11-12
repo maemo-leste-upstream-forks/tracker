@@ -1,7 +1,11 @@
 tracker (2.0.1-2) UNRELEASED; urgency=medium
 
+  [ Jeremy Bicha ]
   * Team upload
   * Bump Standards-Version to 4.1.1
+
+  [ Simon McVittie ]
+  * Add Provides to gir1.2-tracker-2.0 to reflect its contents
 
  -- Jeremy Bicha <jbicha@debian.org>  Wed, 04 Oct 2017 17:52:13 -0400
 
