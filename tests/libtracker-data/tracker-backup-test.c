@@ -149,7 +149,7 @@ test_backup_and_restore_helper (const gchar *db_location,
 	check_content_in_db (manager, 3, 1);
 
 	backup_location = g_build_filename (db_location, "backup", NULL);
-	g_mkdir (backup_location, 0777);
+	g_assert_cmpint (g_mkdir (backup_location, 0777), ==, 0);
 	backup_filename = g_build_filename (backup_location, "tracker.dump", NULL);
 	backup_file = g_file_new_for_path (backup_filename);
 	g_free (backup_filename);
@@ -267,7 +267,7 @@ main (int argc, char **argv)
 	setlocale (LC_COLLATE, "en_US.utf8");
 
 	current_dir = g_get_current_dir ();
-	tests_data_dir = g_build_path (G_DIR_SEPARATOR_S, current_dir, "test-data", NULL);
+	tests_data_dir = g_build_path (G_DIR_SEPARATOR_S, current_dir, "backup-test-data", NULL);
 	g_free (current_dir);
 
 	g_test_init (&argc, &argv, NULL);
@@ -276,6 +276,9 @@ main (int argc, char **argv)
 	g_test_add ("/libtracker-data/backup/save_and_restore", TestInfo, &tests[1], setup, test_backup_and_restore, teardown);
 
 	result = g_test_run ();
+
+	g_assert_cmpint (g_remove (tests_data_dir), ==, 0);
+	g_free (tests_data_dir);
 
 	return result;
 }
