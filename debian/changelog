@@ -1,4 +1,4 @@
-tracker (2.0.2-1) UNRELEASED; urgency=medium
+tracker (2.0.2-1) unstable; urgency=medium
 
   [ Jeremy Bicha ]
   * Bump Standards-Version to 4.1.1
@@ -10,7 +10,7 @@ tracker (2.0.2-1) UNRELEASED; urgency=medium
   * New upstream version 2.0.2
   * Update list of Uploaders via gnome-pkg-tools
 
- -- Michael Biebl <biebl@debian.org>  Wed, 15 Nov 2017 01:23:06 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 15 Nov 2017 01:34:18 +0100
 
 tracker (2.0.1-1) unstable; urgency=medium
 
