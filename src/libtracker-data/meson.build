@@ -60,6 +60,8 @@ libtracker_data = library('tracker-data',
     tracker_common_enum_header, tracker_common_parser_sha1_header,
     tracker_data_enums[0],
     tracker_data_enums[1],
+    tracker_gresources[0],
+    tracker_gresources[1],
     c_args: tracker_c_args,
     install: true,
     install_dir: tracker_internal_libs_dir,
@@ -76,3 +78,10 @@ tracker_data_dep = declare_dependency(
     include_directories: include_directories('.'),
     sources: enums[1],
 )
+
+custom_target('libtracker-data-settings-schema',
+    input: 'org.freedesktop.Tracker.DB.gschema.xml.in',
+    output: 'org.freedesktop.Tracker.DB.gschema.xml',
+    command: ['intltool-merge', '--quiet', '--xml-style', '--utf8', po_subdir, '@INPUT@', '@OUTPUT@'],
+    install: true,
+    install_dir: gsettings_schema_dir)

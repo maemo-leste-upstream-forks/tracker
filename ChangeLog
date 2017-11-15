@@ -1,3 +1,317 @@
+2017-11-14  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 2.0.2
+
+	libtracker-miner: Avoid triggering content filters on configured roots
+	Folders being configured as indexing roots should win over any filter
+	that might apply. The basename based filters correctly skip configured
+	roots already, so do the same with the directory content filter.
+
+	The practical side effect is that .git folders are now allowed on the
+	directories configured in tracker-miner-fs (homedir and XDG dirs most
+	usually). Tracker tries to stay out of source code trees which are a
+	source of pointless grinding, but there's legit usecases to have these
+	folders under git management:
+
+	- User setups to bring in essential files across machines
+	- Collections managed through git-annex
+
+	Those are worth handling, even if the question also applies to folders
+	found recursively and the .git heuristic proves limited.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=790284
+
+	tests: Add test for ignored content in configured folders
+	There's some extreme cases where content filters in one configured
+	root result on deletes that leak through nested configured roots.
+	Add a testcase to catch this situation.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=790284
+
+	libtracker-miner: Rename function to be more obvious
+	We don't add a "file", but a whole RootData that may be recursively
+	crawled. Also, make the crawl_directories_start() from this function,
+	since that's the next thing to do in every calling place.
+
+	libtracker-miner: Fix possible leak
+	If we hit some early return conditions, the RootData would be
+	leaked.
+
+	libtracker-miner: Pass parent to _insert_store_info()
+	As both places doing this iterate directories one by one, we
+	can optimize GFile interning by providing an already interned
+	common parent.
+
+	This eases the GNode lookups in TrackerFileSystem, as we already
+	know the most direct parent GNode the file should have.
+
+	libtracker-miner: Avoid interning file for monitoring purposes
+	It doesn't bring any gains to use interned files when adding
+	directories to the TrackerMonitor. Just use the GFile we get
+	and avoid interning the directory this soon.
+
+	libtracker-miner: Small simplification on TrackerFileSystem
+	The implementation catered for GFiles being used from multiple
+	TrackerFileSystem instances. This is clearly overkill as we most
+	often have one (one miner per process) and even if there's multiple
+	miners in the same process, the Gfile instances are not
+	interchangeable.
+
+	This can just go away, and we instead ensure to create a duplicate
+	of the GFile if it actually belongs to another TrackerFileSystem,
+	which again is extremely unlikely.
+
+	libtracker-direct: Remove stray print()
+
+	libtracker-miner: Remove TrackerSparqlBuilder sparql buffer tasks
+	Those have been unused for a long time. We now only pass sparql
+	around as strings.
+
+	libtracker-miner: Remove bulk sparql buffer operations
+	Those have been unused for quite some time now.
+
+	tests: Use tmp dir on tests
+
+	libtracker-miner: Always use interned files when emitting ::file-deleted
+	There were other places that didn't ensure that TrackerFileNotifier used
+	interned files when emitting ::file-* signals.
+
+	tests: Minor update to TrackerMonitor test
+	Due to how the file is created, we shall get an additional UPDATED
+	event that TrackerMonitor doesn't merge together anymore. This is
+	now merged together in the upper layers, so just acknowledge the
+	extra event in this test.
+
+	tests: Remove "blacklisting" TrackerMonitor tests
+	TrackerMonitor doesn't try to merge events anymore besides the obvious
+	[CREATED|UPDATED]* + CHANGES_DONE_HINT. These tests simply don't reflect
+	current TrackerMonitor behavior so were removed.
+
+	tests: Minor update to TrackerFileNotifier test
+	Because the way the file is created, we will get a create and an update
+	here. TrackerMonitor won't merge those together anymore, but
+	TrackerMinerFS will, so just acknowledge it's expected in this test.
+
+	libtracker-miner: Clean up TrackerMonitor
+	We used to implement our own caching and timeout mechanism on top
+	of GIO's, and our own "blacklisting" that would merge or transform
+	events depending on the previouly cached content.
+
+	This adds quite some extra latency in some cases on top of
+	GFileMonitor's rate (up to 2s), and even in some cases do produce
+	mistaken results (CREATE(a)+MOVE(a->b) != CREATE(b) if you are rewriting
+	a file, but how can TrackerMonitor know).
+
+	The code has been simplified in various fronts:
+	- (Almost) no event caching. Only CREATED/UPDATED events are possibly
+	  cached awaiting for the CHANGES_DONE_HINT that must follow them.
+	- No event manipulation nor merging. GFileMonitor does a good job at
+	  being truthful, and the upper layers do know better how to coalesce
+	  events into a more reduced set of equivalent tasks, since there's
+	  further info like file state in the database.
+	- The deprecated SEND_MOVED flag has been replaced by WATCH_MOVES. The
+	  MOVED_IN/MOVED_OUT/RENAMED events can be handled in a simpler way each
+	  than the deprecated MOVED event.
+
+	Overall this makes TrackerMonitor slightly more verbose (but still
+	consistent wrt sending a meaninful sequential set of changes), but more
+	reactive overall, since we now solely rely on GFileMonitor rate limits.
+
+	With this change, TrackerMinerFS is left as the only place that does
+	coalescing of events.
+
+	libtracker-miner: Disable monitoring when dealing with unknown monitors
+	We just can't do safe assumptions about its limits or behavior, seems
+	best to turn monitoring off altogether.
+
+	libtracker-miner: Remove FEN directory monitor handling branch
+	The code supporting Solaris file monitors went away from glib ~2y
+	ago.
+
+	libtracker-miner: Remove ifdef around useful feature
+	The mentioned bug got fixed ~6y ago, but the changes making
+	use of the feature for some reason got stuck under a define
+	that's never defined.
+
+	This is an useful feature, so rely on it without further ado.
+
+	libtracker-miner: Remove dead TrackerMonitor code
+	The PAUSE_ON_IO feature required someone to notice it and
+	modify tracker code to #define instead of #undef. I discovered
+	it before, and chose to remove it instead.
+
+	libtracker-miner: Fix content filter with default policy=deny
+	We deemed the directory as bad whenever any file didn't match the
+	filter, but files that don't match the filter should not trigger
+	it in one way or another.
+
+	libtracker-miner: Intern GFiles on TrackerMonitor::item-moved
+	The assumption is that TrackerFileNotifier emits files that are
+	currently interned in the TrackerFileSystem. This event handler
+	broke the assumption in a couple of places.
+
+	libtracker-miner: Remove double caching of file IRI
+	This is doubly cached in the TrackerFileSystem and as GObject qdata (and
+	obtained from the former in that case). Let's just rely on the former for
+	all.
+
+	libtracker*: Lower g_message()s to g_debug()
+	This is library code, so let's use g_debug() which obeys G_MESSAGES_DEBUG,
+	instead of g_message() which shall be printed unless there is an special
+	log handler that filters those out.
+	This code may run on 3rd party code, where we can't trust we'll have
+	a log handler that catches those from going to stdout.
+
+	libtracker-miner: Fix argument order
+	Despite the order implied here, the source/dest GFiles were emitted in
+	the inverse order. Funnily tracker-miners and everything else around
+	gets the order right, so it's really the header definition what is
+	backwards here.
+
+	libtracker-miner: Remove unused quarks
+
+	libtracker-miner: Refactor processing queues
+	Replace all 4 queues for the different create/update/delete/move
+	events with a single queue that contains generic QueueEvent
+	structs. The GList node of the last event is stored as GFile
+	qdata, in order to perform fast lookups when coalescing events.
+
+	queue_event_coalesce() will attempt to convert any two events
+	into less than that, it does rely on merging two events with
+	no related events in between, those should be coalesced (or
+	attempted to) when they arrive.
+
+	libtracker-miner: Remove reentry counter and failed task reinsertion
+	TrackerFileNotifier guarantees that parent files are emitted before any
+	children, the other usecase that this used to cover are explicit
+	tracker_miner_fs_check_file() calls which used to also index parent
+	directories, but it doesn't do that anymore since quite some time.
+
+	So the only remaining case where we could end up with a file whose parent
+	is neither being currently processed nor indexed is actual bugs. In that
+	case, the bug likely won't go away by trying harder, which leads to logging
+	for every child file, as they'll fail in cascade.
+
+	Let's be less stubborn here, warn (once!) about the missing file and ditch
+	all pending events happening on/inside it. People love filing bugs about
+	tracker logging stuff, so I don't think bugs will go unnoticed anyway.
+
+	libtracker-miner: Use g_clear_pointer
+	Seems quite fit to manage priv->current_index_root.
+
+	libtracker-miner: Simplify code a bit
+	We can steal data sooner in order to avoid unsetting the data in the early
+	return path.
+
+	libtracker-miner: Properly honor TRACKER_DIRECTORY_FLAG_CHECK_MTIME
+	TrackerFileNotifier actually triggered mtime checks more often than
+	necessary. All of the sparql queries can be skip, also storing the
+	filesystem mtimes (because no sparql mtimes will be queried to
+	compare with).
+
+	We just need setting up our TrackerFileSystem tree, and adding
+	directory monitors, so do this bare minimum.
+
+	libtracker-miner: Drop GFile array argument from directory content queries
+	We always perform those one directory at a time, so drop the array/len
+	arguments from directory content queries, and just pass a GFile around.
+
+	libtracker-miner: Drop generic depth handling from TrackerFileNotifier
+	We currently always process directories one by one, but we preserved the
+	variable depth handling. This can be simplified away.
+
+	libtracker-miner: Remove TrackerCrawler max_depth argument
+	It was always called with depth=1 (return just direct children of the
+	given folder), so make this the default. Admittedly, the "crawler" name
+	is a bit of an stretch now.
+
+	The TrackerCrawler tests have also been removed the recursive tests,
+	since that's not possible anymore.
+
+	libtracker-direct: Implement update_array_async()
+	This doesn't yield as many benefits as it does bring on the DBus backend,
+	but still worth implementing for consistence.
+
+	tests: Add tests for libtracker-miner's TrackerMinerFS
+	This object can now be tested without raising tracker-store instances
+	nor other DBus facilities. This is a first stab at a comprehensive
+	set of tests checking TrackerMinerFS behavior (API, startup, monitoring,
+	...).
+
+2017-10-31  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	meson: Remove options that are only relevant to tracker-miners
+	The tracker-miners now live in a separate repo.
+
+	meson: Remove erroneous reference to tracker-parser-sha1.h.in
+	This file doesn't exist, we generate the header file from scratch with a
+	script. Meson seems to have not raised an error in this situation in the
+	past, but with 0.43 the build fails.
+
+	meson: Fix use of nonexistant 'default' keyword
+	The correct keyword is 'value'.
+
+2017-10-19  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-common: Add tracker-seccomp from the libtracker-miners library
+	This module is only used in the tracker-miners repo. However, when
+	building this repo as a Meson subproject of tracker-miners.git, we
+	can only build one version of libtracker-common so we need to have
+	it present in our version.
+
+	meson: Don't install the nao-custom ontology
+	It's actually broken and doesn't get installed by the Autotools build.
+	The tracker-store refuses to start if this ontology is installed.
+
+2017-10-18  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	meson: Include the gresource ontology data in libtracker-data
+	Fixes an issue in tracker-store
+
+	meson: Install all GSettings schemas and enums
+	Some were missing altogether, and one was missing its enums which meant
+	it was rejected by the schema compiler.
+
+2017-10-12  Thomas Bechtold  <tbechtold@suse.com>
+
+	Correctly unref g_settings_schema
+	This fixes:
+
+	GLib-GObject-CRITICAL **: g_object_unref: assertion
+	'G_IS_OBJECT (object)' failed
+
+	when calling "tracker daemon"
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=788883
+
+2017-10-11  Thomas Bechtold  <tbechtold@suse.com>
+
+	tracker: Return correctly for {get,set}_log_verbosity
+	Every command switch should return properly. Otherwise the code
+	reaches g_warn_if_reached () and a warning is printed.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=788680
+
+2017-10-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	tests: Remove unused queries from tracker-sparql-test
+	Those were unused (the test would stop at the third query), and I couldn't
+	quite figure out why they were added or what they were specifically
+	testing.
+
+	tests: Check return values for g_chmod/stat/remove calls
+	Makes sense testing for those. Spotted by Coverity (CIDS: 1188421,
+	1188422, 1188423, 1188430, 1188431, 1188432, 1188433, 1188434, 1188435,
+	1298206, 1298207, 1298208, 1298209)
+
+	tests: Make libtracker-data tests use separate directories
+	Those may run in parallel, which is troublesome if all of them try to
+	remove the test directory after all tests are run.
+
+2017-10-05  Xavi Ivars  <xavi.ivars@gmail.com>
+
+	[l10n] Updated Catalan (Valencian) translation
+
 2017-10-04  Carlos Garnacho  <carlosg@gnome.org>
 
 	Release 2.0.1

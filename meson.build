@@ -1,4 +1,4 @@
-project('tracker', 'c', 'vala', version: '2.0.1')
+project('tracker', 'c', 'vala', version: '2.0.2')
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -129,40 +129,6 @@ if unicode_library_name == ''
   endif
 endif
 
-##########################################################################
-# Check for tracker-extract: icu or enca for detecting Cyrillic in MP3s
-#
-# By default, AUTO with this order of preference:
-#  1)  icu
-#  2)  enca
-##########################################################################
-
-charset_library_name = 'none'
-
-if have_libicu
-  if get_option('charset_detection') == 'auto' or get_option('charset_detection') == 'icu'
-    charset_library = declare_dependency(
-       dependencies: [icu_uc, icu_i18n]
-    )
-    charset_library_name = 'icu'
-  endif
-else
-  if get_option('charset_detection') == 'icu'
-    error('libicu requested for character set detection, but it was not found')
-  endif
-endif
-
-if charset_library_name == 'none' and get_option('charset_library') != 'none'
-  enca = dependency('enca', version: '>= 1.9', required: false)
-
-  if enca.found()
-    charset_library = enca
-    charset_library_name = 'enca'
-  elif get_option('enca') == 'yes'
-    error('enca support explicitly requested, but enca couldn\'t be found')
-  endif
-endif
-
 ####################################################################
 # D-Bus service files
 ####################################################################
@@ -227,9 +193,7 @@ conf.set('DISABLE_JOURNAL', get_option('journal') == false)
 conf.set10('HAVE_TRACKER_FTS', enable_fts)
 
 conf.set('HAVE_BUILTIN_FTS', sqlite3_has_builtin_fts5)
-conf.set('HAVE_ENCA', charset_library_name == 'enca')
 conf.set10('HAVE_LIBICU', unicode_library_name == 'icu')
-conf.set('HAVE_LIBICU_CHARSET_DETECTION', charset_library_name == 'icu')
 conf.set('HAVE_LIBSTEMMER', have_libstemmer)
 conf.set('HAVE_LIBUNISTRING', unicode_library_name == 'unistring')
 conf.set('HAVE_NETWORK_MANAGER', network_manager.found())
@@ -282,6 +246,8 @@ source_root = meson.current_source_dir()
 build_root = meson.current_build_dir()
 po_subdir = join_paths(source_root, 'po')
 
+gsettings_schema_dir = join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
+
 tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-' + tracker_api_version)
 
 # NOTE: We don't use ${TRACKER_API_VERSION} because other content like
@@ -290,6 +256,7 @@ tracker_ontologies_dir = join_paths(get_option('prefix'), get_option('datadir'),
 
 vapi_dir = join_paths(get_option('prefix'), get_option('datadir'), 'vala', 'vapi')
 
+glib_mkenums = find_program('glib-mkenums')
 g_ir_compiler = find_program('g-ir-compiler', gobject_introspection.get_pkgconfig_variable('g_ir_compiler'))
 g_ir_merge = find_program('g-ir-merge', join_paths(meson.current_source_dir(), 'utils', 'g-ir-merge', 'g-ir-merge'))
 
@@ -340,8 +307,6 @@ summary = [
      get_option('fts'), sqlite3_has_builtin_fts5),
   '    Build with Stemming support:            ' + have_libstemmer.to_string(),
   '    Bash completion support:                ' + bash_completion_dir,
-  '\nFrameworks / Options:',
-  '    Support Guaranteed Metadata             ' + get_option('guarantee_metadata').to_string(),
 ]
 
 message('\n'.join(summary))

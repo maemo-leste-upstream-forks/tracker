@@ -201,7 +201,7 @@ am__EXEEXT_1 = tracker-crawler-test$(EXEEXT) \
 	tracker-file-notifier-test$(EXEEXT) \
 	tracker-file-system-test$(EXEEXT) \
 	tracker-thumbnailer-test$(EXEEXT) \
-	tracker-monitor-test$(EXEEXT) \
+	tracker-miner-fs-test$(EXEEXT) tracker-monitor-test$(EXEEXT) \
 	tracker-priority-queue-test$(EXEEXT) \
 	tracker-task-pool-test$(EXEEXT) \
 	tracker-indexing-tree-test$(EXEEXT)
@@ -257,6 +257,14 @@ tracker_indexing_tree_test_OBJECTS =  \
 	$(am_tracker_indexing_tree_test_OBJECTS)
 tracker_indexing_tree_test_LDADD = $(LDADD)
 tracker_indexing_tree_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_miner_fs_test_OBJECTS = tracker-miner-fs-test.$(OBJEXT)
+tracker_miner_fs_test_OBJECTS = $(am_tracker_miner_fs_test_OBJECTS)
+tracker_miner_fs_test_LDADD = $(LDADD)
+tracker_miner_fs_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
@@ -350,6 +358,7 @@ SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_file_notifier_test_SOURCES) \
 	$(tracker_file_system_test_SOURCES) \
 	$(tracker_indexing_tree_test_SOURCES) \
+	$(tracker_miner_fs_test_SOURCES) \
 	$(tracker_monitor_test_SOURCES) \
 	$(tracker_priority_queue_test_SOURCES) \
 	$(tracker_task_pool_test_SOURCES) \
@@ -359,6 +368,7 @@ DIST_SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_file_notifier_test_SOURCES) \
 	$(tracker_file_system_test_SOURCES) \
 	$(tracker_indexing_tree_test_SOURCES) \
+	$(tracker_miner_fs_test_SOURCES) \
 	$(am__tracker_monitor_test_SOURCES_DIST) \
 	$(tracker_priority_queue_test_SOURCES) \
 	$(tracker_task_pool_test_SOURCES) \
@@ -896,6 +906,7 @@ test_programs = \
 	tracker-file-notifier-test		       \
 	tracker-file-system-test		       \
 	tracker-thumbnailer-test                       \
+	tracker-miner-fs-test			       \
 	tracker-monitor-test			       \
 	tracker-priority-queue-test		       \
 	tracker-task-pool-test			       \
@@ -951,6 +962,9 @@ tracker_thumbnailer_test_SOURCES = \
 	empty-gobject.c
 
 tracker_monitor_test_SOURCES = tracker-monitor-test.c $(am__append_14)
+tracker_miner_fs_test_SOURCES = \
+	tracker-miner-fs-test.c
+
 tracker_priority_queue_test_SOURCES = \
 	tracker-priority-queue-test.c
 
@@ -1157,6 +1171,10 @@ tracker-indexing-tree-test$(EXEEXT): $(tracker_indexing_tree_test_OBJECTS) $(tra
 	@rm -f tracker-indexing-tree-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_indexing_tree_test_OBJECTS) $(tracker_indexing_tree_test_LDADD) $(LIBS)
 
+tracker-miner-fs-test$(EXEEXT): $(tracker_miner_fs_test_OBJECTS) $(tracker_miner_fs_test_DEPENDENCIES) $(EXTRA_tracker_miner_fs_test_DEPENDENCIES) 
+	@rm -f tracker-miner-fs-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_miner_fs_test_OBJECTS) $(tracker_miner_fs_test_LDADD) $(LIBS)
+
 tracker-monitor-test$(EXEEXT): $(tracker_monitor_test_OBJECTS) $(tracker_monitor_test_DEPENDENCIES) $(EXTRA_tracker_monitor_test_DEPENDENCIES) 
 	@rm -f tracker-monitor-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_monitor_test_OBJECTS) $(tracker_monitor_test_LDADD) $(LIBS)
@@ -1223,6 +1241,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-notifier-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-system-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-indexing-tree-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-fs-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-mock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-monitor-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-monitor.Po@am__quote@
@@ -1573,6 +1592,13 @@ tracker-file-system-test.log: tracker-file-system-test$(EXEEXT)
 tracker-thumbnailer-test.log: tracker-thumbnailer-test$(EXEEXT)
 	@p='tracker-thumbnailer-test$(EXEEXT)'; \
 	b='tracker-thumbnailer-test'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+tracker-miner-fs-test.log: tracker-miner-fs-test$(EXEEXT)
+	@p='tracker-miner-fs-test$(EXEEXT)'; \
+	b='tracker-miner-fs-test'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
