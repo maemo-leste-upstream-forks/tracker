@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [2])
 m4_define([tracker_minor_version], [0])
-m4_define([tracker_micro_version], [2])
+m4_define([tracker_micro_version], [3])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -173,8 +173,8 @@ if test "x$have_statvfs" = "xyes" ; then
 fi
 
 # Check for defines we expect
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
-#include "stdio.h"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include "stdio.h"]], [[
 printf ("%s", __FUNCTION__);
    ]])],
    [have_function=yes],
@@ -210,7 +210,6 @@ PYTHON_REQUIRED=2.6
 DBUS_REQUIRED=1.3.1
 GLIB_REQUIRED=2.44.0
 LIBXML2_REQUIRED=2.6
-HAL_REQUIRED=0.5
 UPOWER_REQUIRED=0.9.0
 LIBICU_REQUIRED=4.8.1.1
 JSON_GLIB_REQUIRED=1.0
@@ -443,6 +442,9 @@ if test x$enable_functional_tests != "xno"; then
 fi
 
 AM_CONDITIONAL(DIST_FUNCTIONAL_TESTS, test "x$enable_functional_tests" != "xno")
+
+AC_SUBST(FUNCTIONAL_TESTS_ONTOLOGIES_DIR, "${datadir}/tracker-tests/test-ontologies")
+AC_SUBST(FUNCTIONAL_TESTS_TRACKER_STORE_PATH, "${libexecdir}/tracker-store")
 
 ####################################################################
 # Check for gtk-doc and docbook-tools
@@ -735,43 +737,6 @@ fi
 AM_CONDITIONAL(HAVE_UPOWER, test "x$have_upower" = "xyes")
 
 ##################################################################
-# Check for libtracker-common: hal for battery/power support (old)
-##################################################################
-
-AC_ARG_ENABLE(hal,
-              AS_HELP_STRING([--disable-hal],
-                             [disable HAL support for AC power detection [[default=auto]]]),
-              [enable_hal=$enableval],
-              [enable_hal=auto])
-
-if test "x$have_upower" != "xyes" && test "x$enable_hal" != "xno"; then
-   PKG_CHECK_MODULES(HAL,
-                     [dbus-1      >= $DBUS_REQUIRED
-                      hal         >= $HAL_REQUIRED],
-                     [have_hal=yes] ,
-                     [have_hal=no])
-
-   TRACKER_MINER_FS_CFLAGS="$TRACKER_MINER_FS_CFLAGS $HAL_CFLAGS"
-   TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS $HAL_LIBS"
-
-   if test "x$have_hal" = "xyes"; then
-      AC_DEFINE(HAVE_HAL, [], [Define if we have HAL])
-   fi
-else
-   have_hal="no  (disabled)"
-fi
-
-if test "x$enable_hal" = "xyes"; then
-   if test "x$have_upower" = "xyes"; then
-      AC_MSG_ERROR([Only one of UPower and HAL can be used.])
-   elif test "x$have_hal" != "xyes"; then
-      AC_MSG_ERROR([Could not find hal >= $HAL_REQUIRED.])
-   fi
-fi
-
-AM_CONDITIONAL(HAVE_HAL, test "x$have_hal" = "xyes")
-
-##################################################################
 # Check for libtracker-data and libtracker-fts: Unicode support
 #
 # By default, AUTO with this order of preference:
@@ -974,9 +939,9 @@ AC_CONFIG_FILES([
 	tests/libtracker-fts/prefix/Makefile
 	tests/libtracker-sparql/Makefile
 	tests/functional-tests/Makefile
+	tests/functional-tests/configuration.json
 	tests/functional-tests/ipc/Makefile
 	tests/functional-tests/common/Makefile
-	tests/functional-tests/common/utils/configuration.py
 	tests/functional-tests/common/utils/Makefile
 	tests/functional-tests/unittest2/Makefile
 	tests/functional-tests/test-ontologies/Makefile
@@ -992,7 +957,6 @@ AC_CONFIG_FILES([
 	tests/functional-tests/test-ontologies/superclass-remove/Makefile
 	tests/functional-tests/test-ontologies/property-promotion/Makefile
 	tests/functional-tests/test-ontologies/basic-future/Makefile
-	tests/functional-tests/test-apps-data/Makefile
 	tests/functional-tests/ttl/Makefile
 	tests/Makefile
 	tests/tracker-steroids/Makefile
@@ -1030,7 +994,6 @@ Build Configuration:
 
 Feature Support:
 
-	Support for HAL:                        $have_hal
 	Support for UPower:                     $have_upower
 	Support for network status detection:   $have_network_manager
 	Unicode support library:                $with_unicode_support

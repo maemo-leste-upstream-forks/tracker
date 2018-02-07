@@ -25,7 +25,6 @@ tracker_common_sources = [
   'tracker-locale.c',
   'tracker-parser-utils.c',
   'tracker-language.c',
-  'tracker-seccomp.c',
   enums[0], enums[1],
   tracker_common_parser_sha1_header,
 ]
@@ -38,6 +37,10 @@ endif
 
 # FIXME: need to link against -lkvm on OpenBSD, see configure.ac
 tracker_common_dependencies = [glib, gio, gio_unix, libmath]
+
+if have_libstemmer
+  tracker_common_dependencies += [libstemmer]
+endif
 
 libtracker_common = library('tracker-common',
   tracker_common_sources,

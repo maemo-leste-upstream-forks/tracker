@@ -1,7 +1,6 @@
 SUBDIRS = \
 	ipc \
 	common \
-	test-apps-data \
 	ttl \
 	unittest2 \
 	test-ontologies
@@ -9,6 +8,7 @@ SUBDIRS = \
 configdir = $(datadir)/tracker-tests
 
 config_DATA = \
+	configuration.json \
 	trackertest
 
 config_SCRIPTS = \
@@ -33,19 +33,7 @@ standard_tests += \
 	15-statistics.py \
 	16-collation.py \
 	17-ontology-changes.py  \
-	200-backup-restore.py \
-	300-miner-basic-ops.py \
-	301-miner-resource-removal.py
-if HAVE_TRACKER_FTS
-standard_tests += 310-fts-indexing.py
-endif
-standard_tests += \
-	400-extractor-metadata.py \
-	410-extractor-decorator.py \
-	500-writeback.py \
-	501-writeback-details.py \
-	600-applications-camera.py \
-	601-applications-sync.py
+	200-backup-restore.py
 
 slow_tests = \
 	10-sqlite-misused.py \
@@ -64,16 +52,19 @@ TEST_RUNNER = $(top_srcdir)/tests/functional-tests/test-runner.sh
 
 functional-test: ${standard_tests}
 	for test in ${standard_tests} ; do \
+		export TRACKER_FUNCTIONAL_TEST_CONFIG=$(top_builddir)/tests/functional-tests/configuration.json ; \
 		$(TEST_RUNNER) python $(top_srcdir)/tests/functional-tests/$$test; \
 	done
 
 functional-test-slow: ${slow_tests}
 	@for test in ${slow_tests} ; do \
+		export TRACKER_FUNCTIONAL_TEST_CONFIG=$(top_builddir)/tests/functional-tests/configuration.json \
 		$(TEST_RUNNER) python $(top_srcdir)/tests/functional-tests/$$test; \
 	done
 
 EXTRA_DIST = \
 	$(config_SCRIPTS) \
 	$(config_DATA) \
+	configuration.json.in \
 	test-runner.sh \
 	meson.build

@@ -90,7 +90,6 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 @HAVE_TRACKER_FTS_TRUE@am__append_1 = 03-fts-functions.py
-@HAVE_TRACKER_FTS_TRUE@am__append_2 = 310-fts-indexing.py
 subdir = tests/functional-tests
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
@@ -109,7 +108,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = configuration.json
 CONFIG_CLEAN_VPATH_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -196,7 +195,8 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = $(SUBDIRS)
-am__DIST_COMMON = $(srcdir)/Makefile.in
+am__DIST_COMMON = $(srcdir)/Makefile.in \
+	$(srcdir)/configuration.json.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -262,6 +262,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+FUNCTIONAL_TESTS_ONTOLOGIES_DIR = @FUNCTIONAL_TESTS_ONTOLOGIES_DIR@
+FUNCTIONAL_TESTS_TRACKER_STORE_PATH = @FUNCTIONAL_TESTS_TRACKER_STORE_PATH@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
@@ -282,8 +284,6 @@ GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
 GVDB_CFLAGS = @GVDB_CFLAGS@
 GVDB_LIBS = @GVDB_LIBS@
-HAL_CFLAGS = @HAL_CFLAGS@
-HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -458,13 +458,13 @@ top_srcdir = @top_srcdir@
 SUBDIRS = \
 	ipc \
 	common \
-	test-apps-data \
 	ttl \
 	unittest2 \
 	test-ontologies
 
 configdir = $(datadir)/tracker-tests
 config_DATA = \
+	configuration.json \
 	trackertest
 
 config_SCRIPTS = \
@@ -476,11 +476,7 @@ standard_tests = 01-insertion.py 02-sparql-bugs.py $(am__append_1) \
 	04-group-concat.py 05-coalesce.py 06-distance.py 07-graph.py \
 	08-unique-insertions.py 09-concurrent-query.py 14-signals.py \
 	15-statistics.py 16-collation.py 17-ontology-changes.py \
-	200-backup-restore.py 300-miner-basic-ops.py \
-	301-miner-resource-removal.py $(am__append_2) \
-	400-extractor-metadata.py 410-extractor-decorator.py \
-	500-writeback.py 501-writeback-details.py \
-	600-applications-camera.py 601-applications-sync.py
+	200-backup-restore.py
 slow_tests = \
 	10-sqlite-misused.py \
 	11-sqlite-batch-misused.py \
@@ -491,6 +487,7 @@ TEST_RUNNER = $(top_srcdir)/tests/functional-tests/test-runner.sh
 EXTRA_DIST = \
 	$(config_SCRIPTS) \
 	$(config_DATA) \
+	configuration.json.in \
 	test-runner.sh \
 	meson.build
 
@@ -526,6 +523,8 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+configuration.json: $(top_builddir)/config.status $(srcdir)/configuration.json.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 install-configSCRIPTS: $(config_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	@list='$(config_SCRIPTS)'; test -n "$(configdir)" || list=; \
@@ -876,11 +875,13 @@ ttl/gen-test-data.stamp:
 
 functional-test: ${standard_tests}
 	for test in ${standard_tests} ; do \
+		export TRACKER_FUNCTIONAL_TEST_CONFIG=$(top_builddir)/tests/functional-tests/configuration.json ; \
 		$(TEST_RUNNER) python $(top_srcdir)/tests/functional-tests/$$test; \
 	done
 
 functional-test-slow: ${slow_tests}
 	@for test in ${slow_tests} ; do \
+		export TRACKER_FUNCTIONAL_TEST_CONFIG=$(top_builddir)/tests/functional-tests/configuration.json \
 		$(TEST_RUNNER) python $(top_srcdir)/tests/functional-tests/$$test; \
 	done
 
