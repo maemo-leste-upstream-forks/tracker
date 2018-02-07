@@ -1,5 +1,6 @@
-tracker (2.0.2-2) UNRELEASED; urgency=medium
+tracker (2.0.3-1) UNRELEASED; urgency=medium
 
+  * New upstream release
   * Update Vcs fields for migration to https://salsa.debian.org/
   * Bump debhelper compat to 11
 
@@ -1410,7 +1411,7 @@ tracker (0.6.6-2) unstable; urgency=low
   * debian/patches/01-secure_tmpdir.patch
     - Use mktemp to create a secure tmpdir for the msword filter.
       Thanks to Jon Dowland for the patch. Closes: #473733
-  * Add symbols files for libtrackerclient0 and libtracker-gtk0. 
+  * Add symbols files for libtrackerclient0 and libtracker-gtk0.
   * debian/patches/02-static_keywords_reply.patch
     - Make _keywords_reply a static function to not export it in the public
       API.
@@ -1608,7 +1609,7 @@ tracker (0.6.1-1) unstable; urgency=low
 tracker (0.6.0-1) unstable; urgency=low
 
   * New upstream release.
-    - Uses XDG directories to store the settings, cache, database and log 
+    - Uses XDG directories to store the settings, cache, database and log
       files. Closes: #414860
     - Fixes the crash of the deskbar applet at session start. Closes: #434078 
     - Does not fall back to polling when the inotify limit is exceeded.
@@ -1617,7 +1618,7 @@ tracker (0.6.0-1) unstable; urgency=low
       application. This requires the xdg-utils package to be installed, which
       is a Recommends of tracker-search-tool. Closes: 415705
   * Removed debian/man/ as the man pages are now shipped upstream. 
-    Update tracker.manpages, tracker-search-tool.manpages and 
+    Update tracker.manpages, tracker-search-tool.manpages and
     tracker-utils.manpages accordingly.
   * Removed patches that were applied upstream or are now obsolete
     - debian/patches/20-trackerd_manpage.patch
@@ -1652,7 +1653,7 @@ tracker (0.6.0-1) unstable; urgency=low
 tracker (0.5.4-6) unstable; urgency=low
 
   * Rebuild against poppler 0.5.4. Closes: #427815
-  * Don't install htmless binary and man page anymore. 
+  * Don't install htmless binary and man page anymore.
     The html filter now uses w3m.
 
  -- Michael Biebl <biebl@debian.org>  Wed, 06 Jun 2007 22:39:00 +0200
@@ -1711,7 +1712,7 @@ tracker (0.5.4-1) unstable; urgency=low
   * debian/control:
     - Add Recommends: untex to tracker and Recommends: xdg-utils to
       tracker-search-tool.
-    - Add libmagic-dev as new build depencency.  
+    - Add libmagic-dev as new build dependency.
 
   [ Michael Biebl ]
   * Review Johan's work and upload to unstable.

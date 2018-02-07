@@ -9,7 +9,6 @@ Copyright: 2008-2011 Nokia <ivan.frade@nokia.com>
 License: GPL-2.0+
 
 Files: src/libtracker-*/*
-       src/tracker-extract/*
 Copyright: 2008-2011 Nokia <ivan.frade@nokia.com>
            2006 Jamie McCracken <jamiemcc@gnome.org>
 License: LGPL-2.1+
