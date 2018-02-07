@@ -1,10 +1,10 @@
-tracker (2.0.3-1) UNRELEASED; urgency=medium
+tracker (2.0.3-1) unstable; urgency=medium
 
   * New upstream release
   * Update Vcs fields for migration to https://salsa.debian.org/
   * Bump debhelper compat to 11
 
- -- Jeremy Bicha <jbicha@debian.org>  Sun, 21 Jan 2018 13:52:17 -0500
+ -- Jeremy Bicha <jbicha@debian.org>  Tue, 06 Feb 2018 19:46:58 -0500
 
 tracker (2.0.2-1) unstable; urgency=medium
 
