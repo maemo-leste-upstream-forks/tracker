@@ -19,9 +19,7 @@ import helpers
 TEST_ENV_DIRS =  { "XDG_DATA_HOME" : os.path.join (cfg.TEST_TMP_DIR, "data"),
                    "XDG_CACHE_HOME": os.path.join (cfg.TEST_TMP_DIR, "cache")}
 
-TEST_ENV_VARS = {  "LC_COLLATE": "en_GB.utf8",
-                   "DCONF_PROFILE": os.path.join (cfg.DATADIR, "tracker-tests",
-                                                  "trackertest") }
+TEST_ENV_VARS = {  "LC_COLLATE": "en_GB.utf8" }
 
 EXTRA_DIRS = [os.path.join (cfg.TEST_TMP_DIR, "data", "tracker"),
               os.path.join (cfg.TEST_TMP_DIR, "cache", "tracker")]
@@ -35,6 +33,7 @@ class UnableToBootException (Exception):
 class TrackerSystemAbstraction (object):
     def __init__(self, settings=None, ontodir=None):
         self.set_up_environment (settings=settings, ontodir=ontodir)
+        self.store = None
 
     def set_up_environment (self, settings=None, ontodir=None):
         """
@@ -140,43 +139,6 @@ class TrackerSystemAbstraction (object):
         assert self.store
         self.store.stop ()
 
-
-    def tracker_miner_fs_testing_start (self, confdir=None):
-        """
-        Stops any previous instance of the store and miner, calls set_up_environment,
-        and starts a new instance of the store and miner-fs
-        """
-        self.set_up_environment (confdir, None)
-
-        # Start also the store. DBus autoactivation ignores the env variables.
-        self.store = helpers.StoreHelper ()
-        self.store.start ()
-
-        self.extractor = helpers.ExtractorHelper ()
-        self.extractor.start ()
-
-        self.miner_fs = helpers.MinerFsHelper ()
-        self.miner_fs.start ()
-
-    def tracker_miner_fs_testing_stop (self):
-        """
-        Stops the extractor, miner-fs and store running
-        """
-        self.extractor.stop ()
-        self.miner_fs.stop ()
-        self.store.stop ()
-
-    def tracker_writeback_testing_start (self, confdir=None):
-        # Start the miner-fs (and store) and then the writeback process
-        self.tracker_miner_fs_testing_start (confdir)
-        self.writeback = helpers.WritebackHelper ()
-        self.writeback.start ()
-
-    def tracker_writeback_testing_stop (self):
-        # Tracker write must have been started before
-        self.writeback.stop ()
-        self.tracker_miner_fs_testing_stop ()
-
     def tracker_all_testing_start (self, confdir=None):
         # This will start all miner-fs, store and writeback
         self.tracker_writeback_testing_start (confdir)
@@ -189,27 +151,3 @@ class TrackerSystemAbstraction (object):
         if (os.path.exists (directory)):
             shutil.rmtree (directory)
         os.makedirs (directory)
-
-
-if __name__ == "__main__":
-    import gtk, glib, time
-
-    def destroy_the_world (a):
-        a.tracker_store_testing_stop ()
-        print "   stopped"
-        Gtk.main_quit()
-
-    print "-- Starting store --"
-    a = TrackerSystemAbstraction ()
-    a.tracker_store_testing_start ()
-    print "   started, waiting 5 sec. to stop it"
-    GLib.timeout_add_seconds (5, destroy_the_world, a)
-    Gtk.main ()
-
-    print "-- Starting miner-fs --"
-    b = TrackerMinerFsLifeCycle ()
-    b.start ()
-    print "  started, waiting 3 secs. to stop it"
-    time.sleep (3)
-    b.stop ()
-    print "  stopped"

@@ -1,4 +1,4 @@
-project('tracker', 'c', 'vala', version: '2.0.2')
+project('tracker', 'c', 'vala', version: '2.0.3')
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -28,10 +28,9 @@ icu_uc = dependency('icu-uc', version: '> 4.8.1.1', required: false)
 json_glib = dependency('json-glib-1.0', version: '>= 1.0', required: true)
 libsoup = dependency('libsoup-2.4', version: '> 2.40', required: true)
 libxml2 = dependency('libxml-2.0', version: '> 2.6')
-network_manager = dependency('libnm', required: false)
 sqlite = dependency('sqlite3', version: '>' + sqlite_required)
 
-libmath = cc.find_library('m')
+libmath = cc.find_library('m', required: false)
 
 # FIXME: here we work around a quirk todo with Meson and Vala: the 'uuid'
 # pkg-config component corresponds to 'libuuid.vapi', but Meson assumes that
@@ -48,14 +47,20 @@ add_project_arguments('-DTRACKER_COMPILATION', language: 'c')
 
 enable_fts = get_option('fts')
 
+have_network_manager = false
+if get_option('network_manager') != 'no'
+    network_manager = dependency('libnm', required: get_option('network_manager') == 'yes')
+    have_network_manager = network_manager.found()
+endif
+
 ##################################################################
 # Check for libtracker-common, make sure libstemmer exists
 ##################################################################
 
 have_libstemmer = false
 if get_option('stemmer') != 'no'
-    stemmer = cc.find_library('stemmer')
-    if stemmer.found()
+    libstemmer = cc.find_library('stemmer', required: false)
+    if libstemmer.found()
         have_libstemmer = true
     elif get_option('stemmer') == 'yes'
         error('stemmer support explicitly requested, but stemmer library couldn\'t be found')
@@ -117,7 +122,7 @@ elif get_option('unicode_support') == 'icu'
 endif
 
 if unicode_library_name == ''
-  libunistring = cc.find_library('libunistring', required: false)
+  libunistring = cc.find_library('unistring', required: false)
 
   if libunistring.found()
     unicode_library = libunistring
@@ -193,10 +198,10 @@ conf.set('DISABLE_JOURNAL', get_option('journal') == false)
 conf.set10('HAVE_TRACKER_FTS', enable_fts)
 
 conf.set('HAVE_BUILTIN_FTS', sqlite3_has_builtin_fts5)
-conf.set10('HAVE_LIBICU', unicode_library_name == 'icu')
+conf.set('HAVE_LIBICU', unicode_library_name == 'icu')
 conf.set('HAVE_LIBSTEMMER', have_libstemmer)
 conf.set('HAVE_LIBUNISTRING', unicode_library_name == 'unistring')
-conf.set('HAVE_NETWORK_MANAGER', network_manager.found())
+conf.set('HAVE_NETWORK_MANAGER', have_network_manager)
 
 conf.set('HAVE_GETLINE', cc.has_function('getline', prefix : '#include <stdio.h>'))
 conf.set('HAVE_POSIX_FADVISE', cc.has_function('posix_fadvise', prefix : '#include <fcntl.h>'))
@@ -218,12 +223,28 @@ conf.set('TRACKER_BINARY_AGE', 100 * tracker_minor_version + tracker_micro_versi
 
 # Config that goes in some other generated files (.desktop, .pc, etc)
 conf.set('exec_prefix', get_option('prefix'))
+conf.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
+conf.set('datadir', join_paths(get_option('prefix'), get_option('datadir')))
+conf.set('datarootdir', join_paths(get_option('prefix'), get_option('datadir')))
 conf.set('includedir', join_paths(get_option('prefix'), get_option('includedir')))
 conf.set('libdir', join_paths(get_option('prefix'), get_option('libdir')))
 conf.set('libexecdir', join_paths(get_option('prefix'), get_option('libexecdir')))
 conf.set('prefix', get_option('prefix'))
 conf.set('TRACKER_API_VERSION', tracker_api_version)
 conf.set('VERSION', meson.project_version())
+
+# Configure functional tests to run completely from source tree.
+conf.set('FUNCTIONAL_TESTS_ONTOLOGIES_DIR', join_paths(meson.current_source_dir(), 'tests', 'functional-tests', 'test-ontologies'))
+conf.set('FUNCTIONAL_TESTS_TRACKER_STORE_PATH', join_paths(meson.current_build_dir(), 'src', 'tracker-store', 'tracker-store'))
+
+# This is set in an awkward way for compatibility with Autoconf. Switch it
+# to a normal boolean once we get rid of the Autotools build system. It's
+# only used in tests/functional-tests/common/utils/configuration.py.in.
+if get_option('journal')
+    conf.set('DISABLE_JOURNAL_TRUE', 'true')
+else
+    conf.set('DISABLE_JOURNAL_TRUE', '')
+endif
 
 configure_file(input: 'config.h.meson.in',
                output: 'config.h',
@@ -300,7 +321,7 @@ summary = [
   '    Source code location:                   ' + meson.current_source_dir(),
   '    Compiler:                               ' + cc.get_id(),
   '\nFeature Support:',
-  '    Support for network status detection:   ' + network_manager.found().to_string(),
+  '    Support for network status detection:   ' + have_network_manager.to_string(),
   '    Unicode support library:                ' + unicode_library_name,
   '    Build with Journal support:             ' + get_option('journal').to_string(),
   '    Build with SQLite FTS support:          @0@ (built-in FTS: @1@)'.format(

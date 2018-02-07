@@ -7,12 +7,7 @@ utils_SCRIPTS =                                        \
 	expectedFailure.py                             \
 	helpers.py                                     \
 	storetest.py                                   \
-	minertest.py                                   \
-	applicationstest.py			       \
-	writebacktest.py			       \
 	options.py				       \
 	system.py
 
-EXTRA_DIST =                                           \
-	configuration.py.in                            \
-	$(utils_SCRIPTS)
+EXTRA_DIST = $(utils_SCRIPTS)

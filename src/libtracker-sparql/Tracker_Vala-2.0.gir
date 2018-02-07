@@ -9,7 +9,7 @@
 <c:include name="libtracker-sparql/tracker-notifier.h"/>
 <c:include name="libtracker-sparql/tracker-resource.h"/>
 <namespace name="Tracker_Vala" version="2.0" c:prefix="Tracker">
-	<attribute name="ccode.gir-version" value="1.0"/>
+	<attribute name="ccode.gir-version" value="2.0"/>
 	<attribute name="ccode.lower-case-cprefix" value="tracker_"/>
 	<attribute name="ccode.cprefix" value="Tracker"/>
 	<attribute name="ccode.gir-namespace" value="Tracker"/>
