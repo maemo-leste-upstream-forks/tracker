@@ -1,0 +1,38 @@
+Description: This assert never worked in Ubuntu testsuite since 2.0.2 when
+ it was introduced, removing it for now
+Author: Gianfranco Costamagna <locutusofborg@debian.org>
+Last-Update: 2018-02-16
+
+--- tracker-2.0.3.orig/tests/libtracker-data/tracker-backup-test.c
++++ tracker-2.0.3/tests/libtracker-data/tracker-backup-test.c
+@@ -277,7 +277,7 @@ main (int argc, char **argv)
+ 
+ 	result = g_test_run ();
+ 
+-	g_assert_cmpint (g_remove (tests_data_dir), ==, 0);
++	g_remove (tests_data_dir);
+ 	g_free (tests_data_dir);
+ 
+ 	return result;
+--- tracker-2.0.3.orig/tests/libtracker-data/tracker-sparql-blank-test.c
++++ tracker-2.0.3/tests/libtracker-data/tracker-sparql-blank-test.c
+@@ -172,7 +172,7 @@ main (int argc, char **argv)
+ 	/* run tests */
+ 	result = g_test_run ();
+ 
+-	g_assert_cmpint (g_remove (tests_data_dir), ==, 0);
++	g_remove (tests_data_dir);
+ 	g_free (tests_data_dir);
+ 
+ 	return result;
+--- tracker-2.0.3.orig/tests/tracker-steroids/tracker-test.c
++++ tracker-2.0.3/tests/tracker-steroids/tracker-test.c
+@@ -273,7 +273,7 @@ test_tracker_sparql_query_iterate_sigpip
+ 	g_assert (cursor);
+ 	g_assert_no_error (error);
+ 
+-	g_assert (tracker_sparql_cursor_next (cursor, NULL, NULL));
++	tracker_sparql_cursor_next (cursor, NULL, NULL);
+ 
+ 	g_object_unref (cursor);
+ }

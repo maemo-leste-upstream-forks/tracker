@@ -1,0 +1,17 @@
+--- tracker-2.0.3.orig/tests/libtracker-data/nie/filter-description-1.out
++++ tracker-2.0.3/tests/libtracker-data/nie/filter-description-1.out
+@@ -12,8 +12,6 @@
+ "Church, Mosque"
+ "City, City center, Town"
+ "City, City center, Town"
+-"Fast food, Restaurant, Café, Bar"
+-"Fast food, Restaurant, Café, Bar"
+ "Fields are sent as independent samples. The field is indicated (on a per sample basis"
+ "Fields are sent as independent samples. The field is indicated (on a per sample basis)"
+ "Hotel, Camping site"
+@@ -35,3 +33,5 @@
+ "The content may contain a mix of interlaced modes"
+ "Tourist information office, Government office, Library, Post office, Hospital, Police "
+ "Tourist information office, Government office, Library, Post office, Hospital, Police "
++"Fast food, Restaurant, Café, Bar"
++"Fast food, Restaurant, Café, Bar"
