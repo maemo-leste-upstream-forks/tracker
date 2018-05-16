@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 mkdir ${ADTTMP}/locale
 localedef -c -i en_US -f UTF-8 ${ADTTMP}/locale/en_US.utf8
@@ -7,4 +7,4 @@ LOCPATH=${ADTTMP}/locale \
     HOME=${ADTTMP} \
     LANG=en_US.utf8 \
     LC_ALL=en_US.utf8 \
-    xvfb-run -a dbus-run-session make -C tests check VERBOSE=1
+    xvfb-run -a dbus-run-session make -C tests check VERBOSE=1 2> >(grep -vE '^(Activating|Successfully activated)')>&2
