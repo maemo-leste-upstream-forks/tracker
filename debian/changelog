@@ -1,3 +1,9 @@
+tracker (2.1.2-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Tim Lunn <tim@feathertop.org>  Mon, 27 Aug 2018 12:54:38 +1000
+
 tracker (2.0.3-3) unstable; urgency=medium
 
   * debian/tests/unit-tests: whitelist messages dbus prints on stderr
