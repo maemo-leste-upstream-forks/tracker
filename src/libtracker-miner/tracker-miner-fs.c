@@ -140,7 +140,8 @@ static gboolean miner_fs_queues_status_trace_timeout_cb (gpointer data);
 #define TRACKER_MINER_FS_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_MINER_FS, TrackerMinerFSPrivate))
 
 typedef struct {
-	TrackerMinerFSEventType type;
+	guint16 type;
+	guint attributes_update : 1;
 	GFile *file;
 	GFile *dest_file;
 } QueueEvent;
@@ -176,7 +177,6 @@ struct _TrackerMinerFSPrivate {
 
 	/* File properties */
 	GQuark quark_recursive_removal;
-	GQuark quark_attribute_updated;
 
 	/* Properties */
 	gdouble throttle;
@@ -605,7 +605,6 @@ tracker_miner_fs_init (TrackerMinerFS *object)
 	                  G_CALLBACK (task_pool_limit_reached_notify_cb), object);
 
 	priv->quark_recursive_removal = g_quark_from_static_string ("tracker-recursive-removal");
-	priv->quark_attribute_updated = g_quark_from_static_string ("tracker-attribute-updated");
 
 	priv->roots_to_notify = g_hash_table_new_full (g_file_hash,
 	                                               (GEqualFunc) g_file_equal,
@@ -776,7 +775,8 @@ queue_event_coalesce (const QueueEvent  *first,
 	*replacement = NULL;
 
 	if (first->type == TRACKER_MINER_FS_EVENT_CREATED) {
-		if (second->type == TRACKER_MINER_FS_EVENT_UPDATED &&
+		if ((second->type == TRACKER_MINER_FS_EVENT_UPDATED ||
+		     second->type == TRACKER_MINER_FS_EVENT_CREATED) &&
 		    first->file == second->file) {
 			return QUEUE_ACTION_DELETE_SECOND;
 		} else if (second->type == TRACKER_MINER_FS_EVENT_MOVED &&
@@ -795,7 +795,10 @@ queue_event_coalesce (const QueueEvent  *first,
 	} else if (first->type == TRACKER_MINER_FS_EVENT_UPDATED) {
 		if (second->type == TRACKER_MINER_FS_EVENT_UPDATED &&
 		    first->file == second->file) {
-			return QUEUE_ACTION_DELETE_SECOND;
+			if (first->attributes_update && !second->attributes_update)
+				return QUEUE_ACTION_DELETE_FIRST;
+			else
+				return QUEUE_ACTION_DELETE_SECOND;
 		} else if (second->type == TRACKER_MINER_FS_EVENT_DELETED &&
 			   first->file == second->file) {
 			return QUEUE_ACTION_DELETE_FIRST;
@@ -877,6 +880,8 @@ fs_finalize (GObject *object)
 					(GFunc) queue_event_free,
 					NULL);
 	tracker_priority_queue_unref (priv->items);
+
+	g_object_unref (priv->root);
 
 	if (priv->indexing_tree) {
 		g_object_unref (priv->indexing_tree);
@@ -1323,16 +1328,11 @@ on_signal_gtask_complete (GObject      *source,
 		fs->priv->total_files_notified++;
 
 		if (ctxt->urn) {
-			gboolean attribute_update_only;
-
 			/* The SPARQL builder will already contain the necessary
 			 * DELETE statements for the properties being updated */
-			attribute_update_only = GPOINTER_TO_INT (g_object_steal_qdata (G_OBJECT (file), fs->priv->quark_attribute_updated));
-			g_debug ("Updating item '%s' with urn '%s'%s",
+			g_debug ("Updating item '%s' with urn '%s'",
 			         uri,
-			         ctxt->urn,
-			         attribute_update_only ? " (attributes only)" : "");
-
+			         ctxt->urn);
 		} else {
 			g_debug ("Creating new item '%s'", uri);
 		}
@@ -1392,13 +1392,13 @@ on_signal_gtask_complete (GObject      *source,
 static gboolean
 item_add_or_update (TrackerMinerFS *fs,
                     GFile          *file,
-                    gint            priority)
+                    gint            priority,
+                    gboolean        attributes_update)
 {
 	TrackerMinerFSPrivate *priv;
 	UpdateProcessingTaskContext *ctxt;
 	GCancellable *cancellable;
 	gboolean processing;
-	gboolean attribute_update_only;
 	TrackerTask *task;
 	const gchar *urn;
 	gchar *uri;
@@ -1427,11 +1427,9 @@ item_add_or_update (TrackerMinerFS *fs,
 	/* Call ::process-file to see if we handle this resource or not */
 	uri = g_file_get_uri (file);
 
-	attribute_update_only = GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (file), priv->quark_attribute_updated));
-
 	gtask = g_task_new (fs, ctxt->cancellable, on_signal_gtask_complete, file);
 
-	if (!attribute_update_only) {
+	if (!attributes_update) {
 		g_debug ("Processing file '%s'...", uri);
 		g_signal_emit (fs, signals[PROCESS_FILE], 0,
 		               file, gtask,
@@ -1448,8 +1446,7 @@ item_add_or_update (TrackerMinerFS *fs,
 
 		error = g_error_new (tracker_miner_fs_error_quark (),
 				     TRACKER_MINER_FS_ERROR_INIT,
-				     "TrackerMinerFS::%s returned FALSE",
-				     attribute_update_only ? "process-file-attributes" : "process-file");
+				     "TrackerMinerFS::process-file returned FALSE");
 		g_task_return_error (gtask, error);
 	} else {
 		fs->priv->total_files_processed++;
@@ -1465,10 +1462,10 @@ item_add_or_update (TrackerMinerFS *fs,
 static gboolean
 item_remove (TrackerMinerFS *fs,
              GFile          *file,
-             gboolean        only_children)
+             gboolean        only_children,
+             GString        *task_sparql)
 {
 	gchar *uri, *sparql;
-	TrackerTask *task;
 	guint signal_num;
 
 	uri = g_file_get_uri (file);
@@ -1480,23 +1477,16 @@ item_remove (TrackerMinerFS *fs,
 	                    fs->priv->quark_recursive_removal,
 	                    GINT_TO_POINTER (TRUE));
 
+	/* Call the implementation to generate a SPARQL update for the removal. */
 	signal_num = only_children ? REMOVE_CHILDREN : REMOVE_FILE;
 	g_signal_emit (fs, signals[signal_num], 0, file, &sparql);
 
-	if (sparql) {
-		task = tracker_sparql_task_new_take_sparql_str (file, sparql);
-		tracker_sparql_buffer_push (fs->priv->sparql_buffer,
-					    task,
-					    G_PRIORITY_DEFAULT,
-					    sparql_buffer_task_finished_cb,
-					    fs);
-		tracker_task_unref (task);
+	if (sparql && sparql[0] != '\0') {
+		g_string_append (task_sparql, sparql);
+		g_string_append_c (task_sparql, '\n');
 	}
 
-	if (!tracker_task_pool_limit_reached (TRACKER_TASK_POOL (fs->priv->sparql_buffer))) {
-		item_queue_handlers_set_up (fs);
-	}
-
+	g_free (sparql);
 	g_free (uri);
 
 	return TRUE;
@@ -1504,22 +1494,23 @@ item_remove (TrackerMinerFS *fs,
 
 static gboolean
 item_move (TrackerMinerFS *fs,
-           GFile          *file,
-           GFile          *source_file)
+           GFile          *dest_file,
+           GFile          *source_file,
+           GString        *dest_task_sparql,
+           GString        *source_task_sparql)
 {
 	gchar     *uri, *source_uri, *sparql;
 	GFileInfo *file_info;
-	TrackerTask *task;
 	const gchar *source_iri;
 	gboolean source_exists;
 	TrackerDirectoryFlags source_flags, flags;
 	gboolean recursive;
 
-	uri = g_file_get_uri (file);
+	uri = g_file_get_uri (dest_file);
 	source_uri = g_file_get_uri (source_file);
 
 	/* FIXME: Should check the _NO_STAT on TrackerDirectoryFlags first! */
-	file_info = g_file_query_info (file,
+	file_info = g_file_query_info (dest_file,
 	                               G_FILE_ATTRIBUTE_STANDARD_TYPE,
 	                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 	                               NULL, NULL);
@@ -1534,7 +1525,7 @@ item_move (TrackerMinerFS *fs,
 
 		if (source_exists) {
 			/* Destination file has gone away, ignore dest file and remove source if any */
-			retval = item_remove (fs, source_file, FALSE);
+			retval = item_remove (fs, source_file, FALSE, source_task_sparql);
 		} else {
 			/* Destination file went away, and source wasn't indexed either */
 			retval = TRUE;
@@ -1554,7 +1545,7 @@ item_move (TrackerMinerFS *fs,
 		g_debug ("Source file '%s' not yet in store, indexing '%s' "
 		         "from scratch", source_uri, uri);
 
-		retval = item_add_or_update (fs, file, G_PRIORITY_DEFAULT);
+		retval = item_add_or_update (fs, dest_file, G_PRIORITY_DEFAULT, FALSE);
 
 		g_free (source_uri);
 		g_free (uri);
@@ -1568,38 +1559,30 @@ item_move (TrackerMinerFS *fs,
 	         uri);
 
 	tracker_indexing_tree_get_root (fs->priv->indexing_tree, source_file, &source_flags);
-	tracker_indexing_tree_get_root (fs->priv->indexing_tree, file, &flags);
+	tracker_indexing_tree_get_root (fs->priv->indexing_tree, dest_file, &flags);
 	recursive = ((source_flags & TRACKER_DIRECTORY_FLAG_RECURSE) != 0 &&
 	             (flags & TRACKER_DIRECTORY_FLAG_RECURSE) != 0 &&
 	             g_file_info_get_file_type (file_info) == G_FILE_TYPE_DIRECTORY);
 
 	/* Delete destination item from store if any */
-	item_remove (fs, file, FALSE);
+	item_remove (fs, dest_file, FALSE, dest_task_sparql);
 
 	/* If the original location is recursive, but the destination location
 	 * is not, remove all children.
 	 */
 	if (!recursive &&
 	    (source_flags & TRACKER_DIRECTORY_FLAG_RECURSE) != 0)
-		item_remove (fs, source_file, TRUE);
+		item_remove (fs, source_file, TRUE, source_task_sparql);
 
-	g_signal_emit (fs, signals[MOVE_FILE], 0, file, source_file, recursive, &sparql);
+	g_signal_emit (fs, signals[MOVE_FILE], 0, dest_file, source_file, recursive, &sparql);
 
-	if (sparql) {
-		/* Add new task to processing pool */
-		task = tracker_sparql_task_new_take_sparql_str (file, sparql);
-		tracker_sparql_buffer_push (fs->priv->sparql_buffer,
-		                            task,
-		                            G_PRIORITY_DEFAULT,
-		                            sparql_buffer_task_finished_cb,
-		                            fs);
-		tracker_task_unref (task);
+	if (sparql && sparql[0] != '\0') {
+		/* This is treated as a task on dest_file */
+		g_string_append (dest_task_sparql, sparql);
+		g_string_append_c (dest_task_sparql, '\n');
 	}
 
-	if (!tracker_task_pool_limit_reached (TRACKER_TASK_POOL (fs->priv->sparql_buffer))) {
-		item_queue_handlers_set_up (fs);
-	}
-
+	g_free (sparql);
 	g_free (uri);
 	g_free (source_uri);
 	g_object_unref (file_info);
@@ -1642,8 +1625,9 @@ static gboolean
 item_queue_get_next_file (TrackerMinerFS           *fs,
                           GFile                   **file,
                           GFile                   **source_file,
-			  TrackerMinerFSEventType  *type,
-                          gint                     *priority_out)
+                          TrackerMinerFSEventType  *type,
+                          gint                     *priority_out,
+                          gboolean                 *attributes_update)
 {
 	QueueEvent *event;
 	gint priority;
@@ -1682,6 +1666,7 @@ item_queue_get_next_file (TrackerMinerFS           *fs,
 
 		*type = event->type;
 		*priority_out = priority;
+		*attributes_update = event->attributes_update;
 
 		queue_event_free (event);
 		tracker_priority_queue_pop (fs->priv->items, NULL);
@@ -1721,6 +1706,26 @@ item_queue_get_progress (TrackerMinerFS *fs,
 	return (gdouble) (items_total - items_to_process) / items_total;
 }
 
+/* Add a task to the processing pool to update stored information on 'file'.
+ *
+ * This function takes ownership of the 'sparql' string.
+ */
+static void
+push_task (TrackerMinerFS *fs,
+           GFile          *file,
+           gchar          *sparql)
+{
+	TrackerTask *task;
+
+	task = tracker_sparql_task_new_take_sparql_str (file, sparql);
+	tracker_sparql_buffer_push (fs->priv->sparql_buffer,
+	                            task,
+	                            G_PRIORITY_DEFAULT,
+	                            sparql_buffer_task_finished_cb,
+	                            fs);
+	tracker_task_unref (task);
+}
+
 static gboolean
 miner_handle_next_item (TrackerMinerFS *fs)
 {
@@ -1730,8 +1735,11 @@ miner_handle_next_item (TrackerMinerFS *fs)
 	GTimeVal time_now;
 	static GTimeVal time_last = { 0 };
 	gboolean keep_processing = TRUE;
+	gboolean attributes_update = FALSE;
 	TrackerMinerFSEventType type;
 	gint priority = 0;
+	GString *task_sparql = NULL;
+	GString *source_task_sparql = NULL;
 
 	if (fs->priv->timer_stopped) {
 		g_timer_start (fs->priv->timer);
@@ -1743,7 +1751,7 @@ miner_handle_next_item (TrackerMinerFS *fs)
 		return FALSE;
 	}
 
-	if (!item_queue_get_next_file (fs, &file, &source_file, &type, &priority)) {
+	if (!item_queue_get_next_file (fs, &file, &source_file, &type, &priority, &attributes_update)) {
 		/* We should flush the processing pool buffer here, because
 		 * if there was a previous task on the same file we want to
 		 * process now, we want it to get finished before we can go
@@ -1868,10 +1876,13 @@ miner_handle_next_item (TrackerMinerFS *fs)
 	/* Handle queues */
 	switch (type) {
 	case TRACKER_MINER_FS_EVENT_MOVED:
-		keep_processing = item_move (fs, file, source_file);
+		task_sparql = g_string_new ("");
+		source_task_sparql = g_string_new ("");
+		keep_processing = item_move (fs, file, source_file, task_sparql, source_task_sparql);
 		break;
 	case TRACKER_MINER_FS_EVENT_DELETED:
-		keep_processing = item_remove (fs, file, FALSE);
+		task_sparql = g_string_new ("");
+		keep_processing = item_remove (fs, file, FALSE, task_sparql);
 		break;
 	case TRACKER_MINER_FS_EVENT_CREATED:
 	case TRACKER_MINER_FS_EVENT_UPDATED:
@@ -1881,7 +1892,7 @@ miner_handle_next_item (TrackerMinerFS *fs)
 		    tracker_indexing_tree_file_is_root (fs->priv->indexing_tree, file) ||
 		    !tracker_indexing_tree_get_root (fs->priv->indexing_tree, file, NULL) ||
 		    tracker_file_notifier_get_file_iri (fs->priv->file_notifier, parent, TRUE)) {
-			keep_processing = item_add_or_update (fs, file, priority);
+			keep_processing = item_add_or_update (fs, file, priority, attributes_update);
 		} else {
 			gchar *uri;
 
@@ -1913,6 +1924,26 @@ miner_handle_next_item (TrackerMinerFS *fs)
 		break;
 	default:
 		g_assert_not_reached ();
+	}
+
+	if (source_task_sparql) {
+		if (source_task_sparql->len == 0) {
+			g_string_free (source_task_sparql, TRUE);
+		} else {
+			push_task (fs, source_file, g_string_free (source_task_sparql, FALSE));
+		}
+	}
+
+	if (task_sparql) {
+		if (task_sparql->len == 0) {
+			g_string_free (task_sparql, TRUE);
+		} else {
+			push_task (fs, file, g_string_free (task_sparql, FALSE));
+		}
+	}
+
+	if (!tracker_task_pool_limit_reached (TRACKER_TASK_POOL (fs->priv->sparql_buffer))) {
+		item_queue_handlers_set_up (fs);
 	}
 
 	if (file) {
@@ -2167,13 +2198,8 @@ file_notifier_file_updated (TrackerFileNotifier  *notifier,
 	    filter_event (fs, TRACKER_MINER_FS_EVENT_UPDATED, file, NULL))
 		return;
 
-	if (attributes_only) {
-		g_object_set_qdata (G_OBJECT (file),
-				    fs->priv->quark_attribute_updated,
-				    GINT_TO_POINTER (TRUE));
-	}
-
 	event = queue_event_new (TRACKER_MINER_FS_EVENT_UPDATED, file);
+	event->attributes_update = attributes_only;
 	miner_fs_queue_event (fs, event, miner_fs_get_queue_priority (fs, file));
 }
 

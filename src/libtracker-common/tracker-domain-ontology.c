@@ -297,7 +297,7 @@ tracker_domain_ontology_initable_init (GInitable     *initable,
 	TrackerDomainOntologyPrivate *priv;
 	GError *inner_error = NULL;
 	GKeyFile *key_file = NULL;
-	gchar *path;
+	gchar *path, *path_for_tests;
 
 	domain_ontology = TRACKER_DOMAIN_ONTOLOGY (initable);
 	priv = tracker_domain_ontology_get_instance_private (domain_ontology);
@@ -318,8 +318,14 @@ tracker_domain_ontology_initable_init (GInitable     *initable,
 
 		if (!g_file_test (path, G_FILE_TEST_IS_REGULAR)) {
 			/* This is only for uninstalled tests */
+			path_for_tests = g_strdup (g_getenv ("TRACKER_TEST_DOMAIN_ONTOLOGY_RULE"));
+
+			if (path_for_tests == NULL) {
+				g_error ("Unable to find default domain ontology rule %s", path);
+			}
+
 			g_free (path);
-			path = g_strdup (g_getenv ("TRACKER_TEST_DOMAIN_ONTOLOGY_RULE"));
+			path = path_for_tests;
 		}
 	}
 
@@ -372,16 +378,21 @@ tracker_domain_ontology_initable_init (GInitable     *initable,
 	if (!priv->ontology_location) {
 		gchar *ontology_path;
 
-		ontology_path = g_build_filename (SHAREDIR, "tracker", "ontologies",
-		                                  priv->ontology_name, NULL);
+		if (g_getenv ("TRACKER_DB_ONTOLOGIES_DIR") != NULL) {
+			/* Override for use only by testcases */
+			priv->ontology_location = g_file_new_for_path (g_getenv ("TRACKER_DB_ONTOLOGIES_DIR"));
+		} else {
+			ontology_path = g_build_filename (SHAREDIR, "tracker", "ontologies",
+			                                  priv->ontology_name, NULL);
 
-		if (!g_file_test (ontology_path, G_FILE_TEST_IS_DIR)) {
+			if (!g_file_test (ontology_path, G_FILE_TEST_IS_DIR)) {
+				g_error ("Unable to find ontologies in the configured location %s", ontology_path);
+			}
+
+			priv->ontology_location = g_file_new_for_path (ontology_path);
+
 			g_free (ontology_path);
-			ontology_path = g_strdup (g_getenv ("TRACKER_DB_ONTOLOGIES_DIR"));
 		}
-
-		priv->ontology_location = g_file_new_for_path (ontology_path);
-		g_free (ontology_path);
 	}
 
 end:

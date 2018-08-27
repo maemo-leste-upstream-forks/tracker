@@ -205,7 +205,7 @@ tracker_crc32_test_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_tracker_db_journal_OBJECTS = tracker-db-journal.$(OBJEXT)
+am_tracker_db_journal_OBJECTS = tracker-db-journal-test.$(OBJEXT)
 tracker_db_journal_OBJECTS = $(am_tracker_db_journal_OBJECTS)
 tracker_db_journal_LDADD = $(LDADD)
 tracker_db_journal_DEPENDENCIES =  \
@@ -901,7 +901,7 @@ tracker_ontology_SOURCES = tracker-ontology-test.c
 tracker_ontology_change_SOURCES = tracker-ontology-change-test.c
 tracker_backup_SOURCES = tracker-backup-test.c
 tracker_crc32_test_SOURCES = tracker-crc32-test.c
-tracker_db_journal_SOURCES = tracker-db-journal.c
+tracker_db_journal_SOURCES = tracker-db-journal-test.c
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -1133,7 +1133,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-backup-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crc32-test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-journal.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-journal-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ontology-change-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ontology-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sparql-blank-test.Po@am__quote@

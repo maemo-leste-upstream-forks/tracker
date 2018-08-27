@@ -115,7 +115,7 @@ test_miner_remove_children (TrackerMinerFS *miner,
 	                          "} WHERE {"
 	                          "  ?u nie:url ?url ."
 	                          "  FILTER (STRSTARTS (?url, '%s/'))"
-	                          "}", uri, uri);
+	                          "}", uri);
 	g_free (uri);
 
 	return sparql;
@@ -366,7 +366,7 @@ fixture_get_content (TrackerMinerFSTestFixture *fixture)
 	                         "     nie:url ?url ."
 	                         "  BIND (SUBSTR (?url, %d) AS ?path)"
 	                         "} ORDER BY ?path",
-	                         strlen (root_uri) + 2);
+	                         (int)strlen (root_uri) + 2);
 	g_free (root_uri);
 
 
@@ -882,7 +882,6 @@ test_content_filter_on_parent_root (TrackerMinerFSTestFixture *fixture,
 				    gconstpointer              data)
 {
 	TrackerIndexingTree *indexing_tree;
-	GError *error = NULL;
 
 	CREATE_FOLDER (fixture, "non-recursive");
 	CREATE_FOLDER (fixture, "non-recursive/recursive");
@@ -1949,7 +1948,7 @@ main (gint    argc,
 	ADD_TEST ("/indexing-tree/recursive-indexing",
 	          test_recursive_indexing);
 	ADD_TEST ("/indexing-tree/non-recursive-indexing",
-	          test_recursive_indexing);
+	          test_non_recursive_indexing);
 	/* FIXME: test other directory flags */
 	ADD_TEST ("/indexing-tree/separate-recursive-and-non-recursive",
 	          test_separate_recursive_and_non_recursive);
@@ -2010,7 +2009,7 @@ main (gint    argc,
 	ADD_TEST ("event-queue/create-and-delete",
 	          test_event_queue_create_and_delete);
 	ADD_TEST ("event-queue/create-and-move",
-	          test_event_queue_create_and_delete);
+	          test_event_queue_create_and_move);
 	ADD_TEST ("event-queue/update-and-update",
 	          test_event_queue_update_and_update);
 	ADD_TEST ("event-queue/update-and-delete",

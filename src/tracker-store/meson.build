@@ -16,16 +16,17 @@ tracker_store_sources = [
     'tracker-writeback.vapi',
     '../libtracker-common/libtracker-common.vapi',
     '../libtracker-data/libtracker-data.vapi',
+    '../libtracker-direct/tracker-direct.vapi',
 ]
 
-executable('tracker-store',
+tracker_store = executable('tracker-store',
     tracker_store_sources,
     c_args: tracker_c_args + [
         '-include', 'config.h'
     ],
     vala_args: [ '--pkg', 'posix' ],
     dependencies: [
-        tracker_common_dep, tracker_data_dep,
+        tracker_common_dep, tracker_data_dep, tracker_sparql_direct_dep,
         gio_unix
     ],
     install: true,
@@ -39,10 +40,10 @@ install_data(
     'tracker-status.xml',
     install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'tracker'))
 
-dbus_service_file = custom_target('tracker-store-dbus-service-file',
+dbus_service_file = configure_file(
     input: 'org.freedesktop.Tracker1.service.in',
     output: 'org.freedesktop.Tracker1.service',
-    command: ['intltool-merge', '--quiet', '--desktop-style', '--utf8', po_subdir, '@INPUT@', '@OUTPUT@'],
+    configuration: conf,
     install: true,
     install_dir: dbus_services_dir)
 
