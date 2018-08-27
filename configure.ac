@@ -12,8 +12,8 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [2])
-m4_define([tracker_minor_version], [0])
-m4_define([tracker_micro_version], [3])
+m4_define([tracker_minor_version], [1])
+m4_define([tracker_micro_version], [2])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -221,7 +221,8 @@ LIBSOUP_REQUIRED=2.40
 # 3.7.0 for WAL
 # 3.7.9 for FTS4 content= support
 # 3.7.15 for sqlite3_errstr() support
-SQLITE_REQUIRED=3.7.15
+# 3.8.3 for SQLITE_DETERMINISTIC
+SQLITE_REQUIRED=3.8.3
 
 # Needed to generate .gir files,
 # see http://live.gnome.org/GnomeGoals/AddGObjectIntrospectionSupport
@@ -295,8 +296,9 @@ LIBTRACKER_CONTROL_REQUIRED="glib-2.0        >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(LIBTRACKER_CONTROL, [$LIBTRACKER_CONTROL_REQUIRED])
 
 # Check requirements for libtracker-sparql
-LIBTRACKER_SPARQL_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                            gio-unix-2.0 >= $GLIB_REQUIRED
+LIBTRACKER_SPARQL_REQUIRED="glib-2.0      >= $GLIB_REQUIRED
+                            gio-unix-2.0  >= $GLIB_REQUIRED
+                            json-glib-1.0 >= $JSON_GLIB_REQUIRED
                             uuid"
 
 PKG_CHECK_MODULES(LIBTRACKER_SPARQL, [$LIBTRACKER_SPARQL_REQUIRED])
@@ -443,8 +445,8 @@ fi
 
 AM_CONDITIONAL(DIST_FUNCTIONAL_TESTS, test "x$enable_functional_tests" != "xno")
 
-AC_SUBST(FUNCTIONAL_TESTS_ONTOLOGIES_DIR, "${datadir}/tracker-tests/test-ontologies")
-AC_SUBST(FUNCTIONAL_TESTS_TRACKER_STORE_PATH, "${libexecdir}/tracker-store")
+AC_SUBST(FUNCTIONAL_TESTS_ONTOLOGIES_DIR, "@top_srcdir@/tests/functional-tests/test-ontologies")
+AC_SUBST(FUNCTIONAL_TESTS_TRACKER_STORE_PATH, "@top_builddir@/src/tracker-store/tracker-store")
 
 ####################################################################
 # Check for gtk-doc and docbook-tools

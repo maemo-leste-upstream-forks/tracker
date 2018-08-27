@@ -4,8 +4,9 @@ headers = ['tracker-control.h', 'tracker-miner-manager.h']
 
 libtracker_control = library('tracker-control-' + tracker_api_version,
     sources,
-    tracker_common_enum_header, tracker_common_parser_sha1_header,
+    tracker_common_enum_header,
     c_args: tracker_c_args,
+    soversion: soversion,
     install: true,
     install_rpath: tracker_internal_libs_dir,
     # This doesn't depend on tracker_common_dep because of

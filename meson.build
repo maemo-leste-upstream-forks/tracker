@@ -1,4 +1,4 @@
-project('tracker', 'c', 'vala', version: '2.0.3')
+project('tracker', 'c', 'vala', version: '2.1.2')
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -7,6 +7,11 @@ cc = meson.get_compiler('c')
 # This is the X.Y used in -llibtracker-FOO-X.Y
 tracker_api_version = '2.0'
 
+# This the .Z used in libtracker-sparql-2.0.so.Z
+# This version number is redundant, but it's needed for programs that build
+# with libtool to be able to link against our libraries.
+soversion = 0
+
 glib_required = '2.40.0'
 
 # 3.6.11 for sqlite_backup API
@@ -14,7 +19,9 @@ glib_required = '2.40.0'
 # 3.6.17 for shared cache mode with virtual tables
 # 3.7.0 for WAL
 # 3.7.9 for FTS4 content= support
-sqlite_required = '3.7.9'
+# 3.7.15 for sqlite3_errstr() support
+# 3.8.3 for SQLITE_DETERMINISTIC
+sqlite_required = '3.8.3'
 
 dbus = dependency('dbus-1', version: '> 1.3.1')
 gio = dependency('gio-2.0', version: '>' + glib_required)
@@ -87,12 +94,29 @@ if enable_fts
     }
   '''
 
-  sqlite3_has_builtin_fts5 = cc.compiles(sqlite3_builtin_fts5_test,
-    name: 'sqlite3 has builtin FTS5 module')
+  result = cc.run(sqlite3_builtin_fts5_test,
+    name: 'sqlite3 has builtin FTS5 module',
+    dependencies: sqlite)
 
-  if not sqlite3_has_builtin_fts5 and sqlite.version() >= '3.20.0'
-    error('sqlite3 >= 3.20.0 must be compiled with --enable-fts5')
+  if not result.compiled()
+    error('Failed to compile SQLite FTS test.')
   endif
+
+  if result.returncode() == 0
+    message('Using sqlite3 builtin FTS module')
+    sqlite3_has_builtin_fts5 = true
+  else
+    message('FTS support was enabled but SQLite doesn\'t have the FTS module built in')
+    if sqlite.version().version_compare('>= 3.20.0')
+      error('sqlite3 >= 3.20.0 must be compiled with --enable-fts5 in order to get FTS support.')
+    else
+      message('sqlite3 is older than version 3.20.0, using FTS module that is bundled with Tracker')
+      sqlite3_has_builtin_fts5 = false
+    endif
+  endif
+
+else
+  sqlite3_has_builtin_fts5 = false
 endif
 
 ##################################################################
@@ -295,6 +319,15 @@ endif
 
 subdir('examples')
 subdir('utils')
+
+test_c_args = tracker_c_args + [
+    '-DTOP_BUILDDIR="@0@"'.format(build_root),
+    '-DTOP_SRCDIR="@0@"'.format(source_root),
+]
+
+tracker_uninstalled_domain_rule = join_paths(meson.current_source_dir(), 'src', 'tracker-store', 'default.rule')
+tracker_uninstalled_nepomuk_ontologies_dir = join_paths(meson.current_source_dir(), 'src', 'ontologies', 'nepomuk')
+tracker_uninstalled_stop_words_dir = join_paths(meson.current_source_dir(), 'src', 'libtracker-common', 'stop-words')
 
 subdir('tests')
 

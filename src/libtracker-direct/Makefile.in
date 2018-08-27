@@ -115,8 +115,7 @@ am__DEPENDENCIES_1 =
 libtracker_direct_la_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libtracker_direct_la_OBJECTS = tracker-namespace.lo \
-	tracker-direct.lo
+am_libtracker_direct_la_OBJECTS = tracker-direct.lo
 libtracker_direct_la_OBJECTS = $(am_libtracker_direct_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -156,14 +155,6 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-VALACOMPILE = $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS)
-LTVALACOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(VALAC) $(AM_VALAFLAGS) \
-	$(VALAFLAGS)
-AM_V_VALAC = $(am__v_VALAC_@AM_V@)
-am__v_VALAC_ = $(am__v_VALAC_@AM_DEFAULT_V@)
-am__v_VALAC_0 = @echo "  VALAC   " $@;
-am__v_VALAC_1 = 
 SOURCES = $(libtracker_direct_la_SOURCES)
 DIST_SOURCES = $(libtracker_direct_la_SOURCES)
 am__can_run_installinfo = \
@@ -192,9 +183,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in \
-	$(srcdir)/libtracker_direct_la_vala.stamp \
-	$(top_srcdir)/build-aux/depcomp tracker-direct.c \
-	tracker-namespace.c
+	$(top_srcdir)/build-aux/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -429,17 +418,6 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LTLIBRARIES = libtracker-direct.la
-AM_VALAFLAGS = \
-	--includedir=libtracker-direct                 \
-	--header tracker-direct.h                      \
-	--vapi tracker-direct.vapi                     \
-	--pkg gio-2.0                                  \
-	$(BUILD_VALAFLAGS)                             \
-	$(top_srcdir)/src/libtracker-data/libtracker-data.vapi \
-	$(top_srcdir)/src/libtracker-data/tracker-sparql-query.vapi \
-	$(top_srcdir)/src/libtracker-common/libtracker-common.vapi \
-	$(top_srcdir)/src/libtracker-sparql/tracker-sparql-$(TRACKER_API_VERSION).vapi
-
 AM_CPPFLAGS = \
 	$(BUILD_VALACFLAGS)                            \
 	-I$(top_srcdir)/src                            \
@@ -448,8 +426,7 @@ AM_CPPFLAGS = \
 	$(LIBTRACKER_DIRECT_CFLAGS)
 
 libtracker_direct_la_SOURCES = \
-	tracker-namespace.vala                         \
-	tracker-direct.vala
+	tracker-direct.c
 
 libtracker_direct_la_LIBADD = \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
@@ -459,12 +436,8 @@ libtracker_direct_la_LIBADD = \
 noinst_HEADERS = \
 	tracker-direct.h
 
-BUILT_SOURCES = \
-	libtracker_direct_la_vala.stamp
-
-EXTRA_DIST = meson.build
-all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+EXTRA_DIST = meson.build tracker-direct.vapi
+all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -519,7 +492,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-direct.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-namespace.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -541,20 +513,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
-$(srcdir)/tracker-namespace.c: $(srcdir)/libtracker_direct_la_vala.stamp
-	@if test -f $@; then :; else rm -f $(srcdir)/libtracker_direct_la_vala.stamp; fi
-	@if test -f $@; then :; else \
-	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/libtracker_direct_la_vala.stamp; \
-	fi
-$(srcdir)/tracker-direct.c: $(srcdir)/libtracker_direct_la_vala.stamp
-	@if test -f $@; then :; else rm -f $(srcdir)/libtracker_direct_la_vala.stamp; fi
-	@if test -f $@; then :; else \
-	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/libtracker_direct_la_vala.stamp; \
-	fi
-$(srcdir)/libtracker_direct_la_vala.stamp: tracker-namespace.vala tracker-direct.vala
-	$(AM_V_at)rm -f $@ && echo stamp > $@-t
-	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C tracker-namespace.vala tracker-direct.vala
-	$(AM_V_at)mv -f $@-t $@
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -645,12 +603,10 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-am
+check: check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs:
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-am
+install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -680,12 +636,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-rm -f $(srcdir)/libtracker_direct_la_vala.stamp
-	-rm -f $(srcdir)/tracker-direct.c
-	-rm -f $(srcdir)/tracker-namespace.c
-	-rm -f tracker-direct.c
-	-rm -f tracker-namespace.c
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
@@ -757,7 +707,7 @@ ps-am:
 
 uninstall-am:
 
-.MAKE: all check install install-am install-strip
+.MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
 	clean-libtool clean-noinstLTLIBRARIES cscopelist-am ctags \

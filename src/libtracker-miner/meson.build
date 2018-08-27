@@ -6,6 +6,8 @@ miner_enums = gnome.mkenums('tracker-miner-enum-types',
     sources: 'tracker-miner-enums.h',
     c_template: 'tracker-miner-enum-types.c.template',
     h_template: 'tracker-miner-enum-types.h.template',
+    install_header: true,
+    install_dir: join_paths(get_option('includedir'), 'tracker-@0@'.format(tracker_api_version), 'libtracker-miner'),
 )
 
 private_sources = [
@@ -60,6 +62,7 @@ libtracker_miner = library(
     'tracker-miner-' + tracker_api_version,
     miner_enums[0], miner_enums[1], miner_sources,
     c_args: tracker_c_args,
+    soversion: soversion,
     install: true,
     install_rpath: tracker_internal_libs_dir,
     # This doesn't depend on tracker_common_dep because of
@@ -97,8 +100,3 @@ configure_file(
     install_dir: join_paths(get_option('prefix'), get_option('libdir'), 'pkgconfig'))
 
 install_headers(miner_headers, subdir: 'tracker-@0@/libtracker-miner'.format(tracker_api_version))
-
-# Work around https://github.com/mesonbuild/meson/issues/705
-meson.add_install_script('../install-generated-header.sh',
-    join_paths(meson.current_build_dir(), 'tracker-miner-enum-types.h'),
-    join_paths(get_option('prefix'), get_option('includedir'), 'tracker-@0@'.format(tracker_api_version), 'libtracker-miner'))

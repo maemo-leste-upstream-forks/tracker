@@ -34,7 +34,7 @@
 #include <glib/gstdio.h>
 
 #include <libtracker-common/tracker-common.h>
-#include <libtracker-common/tracker-parser-sha1.h>
+#include <libtracker-common/tracker-parser.h>
 
 #if HAVE_TRACKER_FTS
 #include <libtracker-fts/tracker-fts.h>
@@ -65,9 +65,14 @@
 #define TRACKER_DB_VERSION_FILE       "db-version.txt"
 #define TRACKER_DB_LOCALE_FILE        "db-locale.txt"
 
+#define TRACKER_VACUUM_CHECK_SIZE     ((goffset) 4 * 1024 * 1024 * 1024) /* 4GB */
+
 #define IN_USE_FILENAME               ".meta.isrunning"
 
-#define PARSER_SHA1_FILENAME          "parser-sha1.txt"
+#define PARSER_VERSION_FILENAME       "parser-version.txt"
+
+#define TOSTR(x) #x
+#define TRACKER_PARSER_VERSION_STRING TOSTR(TRACKER_PARSER_VERSION)
 
 typedef enum {
 	TRACKER_DB_VERSION_UNKNOWN, /* Unknown */
@@ -649,7 +654,6 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 	 * reindex) if reindexing is already needed.
 	 */
 	if (!need_reindex &&
-	    (flags & TRACKER_DB_MANAGER_READONLY) == 0 &&
 	    !g_file_test (db_manager->db.abs_filename, G_FILE_TEST_EXISTS)) {
 		if ((flags & TRACKER_DB_MANAGER_READONLY) == 0) {
 			g_info ("Could not find database file:'%s', reindex will be forced", db_manager->db.abs_filename);
@@ -1050,14 +1054,20 @@ tracker_db_manager_get_db_interface (TrackerDBManager *db_manager)
 		interface = tracker_db_manager_create_db_interface (db_manager,
 		                                                    TRUE, &internal_error);
 
-		if (internal_error) {
-			g_critical ("Error opening database: %s", internal_error->message);
-			g_error_free (internal_error);
-			g_async_queue_unlock (db_manager->interfaces);
-			return NULL;
+		if (interface) {
+			tracker_data_manager_init_fts (interface, FALSE);
+		} else {
+			if (g_async_queue_length_unlocked (db_manager->interfaces) == 0) {
+				g_critical ("Error opening database: %s", internal_error->message);
+				g_error_free (internal_error);
+				g_async_queue_unlock (db_manager->interfaces);
+				return NULL;
+			} else {
+				g_error_free (internal_error);
+				/* Fetch the first interface back. Oh well */
+				interface = g_async_queue_try_pop_unlocked (db_manager->interfaces);
+			}
 		}
-
-		tracker_data_manager_init_fts (interface, FALSE);
 	}
 
 	g_async_queue_push_unlocked (db_manager->interfaces, interface);
@@ -1097,7 +1107,8 @@ tracker_db_manager_get_writable_db_interface (TrackerDBManager *db_manager)
 TrackerDBInterface *
 tracker_db_manager_get_wal_db_interface (TrackerDBManager *db_manager)
 {
-	if (db_manager->db.wal_iface == NULL) {
+	if (db_manager->db.wal_iface == NULL &&
+	    (db_manager->flags & TRACKER_DB_MANAGER_READONLY) == 0) {
 		db_manager->db.wal_iface = init_writable_db_interface (db_manager);
 	}
 
@@ -1119,10 +1130,10 @@ tracker_db_manager_has_enough_space (TrackerDBManager *db_manager)
 }
 
 inline static gchar *
-get_parser_sha1_filename (TrackerDBManager *db_manager)
+get_parser_version_filename (TrackerDBManager *db_manager)
 {
 	return g_build_filename (db_manager->data_dir,
-	                         PARSER_SHA1_FILENAME,
+	                         PARSER_VERSION_FILENAME,
 	                         NULL);
 }
 
@@ -1130,14 +1141,14 @@ get_parser_sha1_filename (TrackerDBManager *db_manager)
 gboolean
 tracker_db_manager_get_tokenizer_changed (TrackerDBManager *db_manager)
 {
-	gchar *filename, *sha1;
+	gchar *filename, *version;
 	gboolean changed = TRUE;
 
-	filename = get_parser_sha1_filename (db_manager);
+	filename = get_parser_version_filename (db_manager);
 
-	if (g_file_get_contents (filename, &sha1, NULL, NULL)) {
-		changed = strcmp (sha1, TRACKER_PARSER_SHA1) != 0;
-		g_free (sha1);
+	if (g_file_get_contents (filename, &version, NULL, NULL)) {
+		changed = strcmp (version, TRACKER_PARSER_VERSION_STRING) != 0;
+		g_free (version);
 	}
 
 	g_free (filename);
@@ -1151,9 +1162,9 @@ tracker_db_manager_tokenizer_update (TrackerDBManager *db_manager)
 	GError *error = NULL;
 	gchar *filename;
 
-	filename = get_parser_sha1_filename (db_manager);
+	filename = get_parser_version_filename (db_manager);
 
-	if (!g_file_set_contents (filename, TRACKER_PARSER_SHA1, -1, &error)) {
+	if (!g_file_set_contents (filename, TRACKER_PARSER_VERSION_STRING, -1, &error)) {
 		g_warning ("The file '%s' could not be rewritten by Tracker and "
 		           "should be deleted manually. Not doing so will result "
 		           "in Tracker rebuilding its FTS tokens on every startup. "
@@ -1162,4 +1173,16 @@ tracker_db_manager_tokenizer_update (TrackerDBManager *db_manager)
 	}
 
 	g_free (filename);
+}
+
+void
+tracker_db_manager_check_perform_vacuum (TrackerDBManager *db_manager)
+{
+	TrackerDBInterface *iface;
+
+	if (tracker_file_get_size (db_manager->db.abs_filename) < TRACKER_VACUUM_CHECK_SIZE)
+		return;
+
+	iface = tracker_db_manager_get_writable_db_interface (db_manager);
+	tracker_db_interface_execute_query (iface, NULL, "VACUUM");
 }

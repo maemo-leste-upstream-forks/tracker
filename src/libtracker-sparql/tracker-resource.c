@@ -18,6 +18,7 @@
  */
 
 #include <glib.h>
+#include <json-glib/json-glib.h>
 
 #include <string.h>
 
@@ -1358,7 +1359,7 @@ variable_name_for_property (const char *property) {
 }
 
 static void
-generate_sparql_delete_pattern (TrackerResource     *resource,
+generate_sparql_delete_queries (TrackerResource     *resource,
                                 GHashTable          *overwrite_flags,
                                 GenerateSparqlData  *data)
 {
@@ -1366,37 +1367,32 @@ generate_sparql_delete_pattern (TrackerResource     *resource,
 	GHashTableIter iter;
 	const char *property;
 	const GValue *value;
-	gboolean had_property;
 
-	if (data->graph_id) {
-		g_string_append_printf (data->string, "GRAPH <%s> {\n", data->graph_id);
-	}
-
-	g_string_append (data->string, "  ");
-	generate_turtle_uri_value (priv->identifier, data->string, data->namespaces, NULL);
-	g_string_append (data->string, "\n    ");
-
-	had_property = FALSE;
 	g_hash_table_iter_init (&iter, priv->properties);
 	while (g_hash_table_iter_next (&iter, (gpointer *)&property, (gpointer *)&value)) {
 		/* Whether to generate the DELETE is based on whether set_value was ever
 		* called for this property. That's tracked in the overwrite_flags hash table.
 		*/
 		if (g_hash_table_lookup (overwrite_flags, property)) {
-			if (had_property) {
-				g_string_append (data->string, " ;\n    ");
+			char *variable_name = variable_name_for_property (property);
+
+			g_string_append (data->string, "DELETE WHERE {\n");
+
+			if (data->graph_id) {
+				g_string_append_printf (data->string, "GRAPH <%s> {\n", data->graph_id);
 			}
 
-			char *variable_name = variable_name_for_property (property);
-			g_string_append_printf (data->string, "  %s ?%s", property, variable_name);
+			g_string_append (data->string, "  ");
+			generate_turtle_uri_value (priv->identifier, data->string, data->namespaces, NULL);
+			g_string_append_printf (data->string, " %s ?%s }", property, variable_name);
 			g_free (variable_name);
 
-			had_property = TRUE;
-		}
-	}
+			if (data->graph_id) {
+				g_string_append (data->string, " }");
+			}
 
-	if (data->graph_id) {
-		g_string_append (data->string, " }");
+			g_string_append (data->string, "\n");
+		}
 	}
 }
 
@@ -1406,14 +1402,8 @@ generate_sparql_deletes (TrackerResource    *resource,
 {
 	TrackerResourcePrivate *priv = GET_PRIVATE (resource);
 
-	if (! is_blank_node (priv->identifier)) {
-		if (g_hash_table_size (priv->overwrite) > 0) {
-			g_string_append (data->string, "DELETE {\n");
-			generate_sparql_delete_pattern (resource, priv->overwrite, data);
-			g_string_append (data->string, "\n}\nWHERE {\n");
-			generate_sparql_delete_pattern (resource, priv->overwrite, data);
-			g_string_append (data->string, "\n}\n");
-		}
+	if (! is_blank_node (priv->identifier) && g_hash_table_size (priv->overwrite) > 0) {
+		generate_sparql_delete_queries (resource, priv->overwrite, data);
 	}
 
 	/* Now emit any sub-resources. */
@@ -1541,4 +1531,178 @@ tracker_resource_print_sparql_update (TrackerResource         *resource,
 	context.done_list = NULL;
 
 	return g_string_free (context.string, FALSE);
+}
+
+typedef struct {
+	TrackerNamespaceManager *all_namespaces, *our_namespaces;
+	JsonBuilder *builder;
+	GList *done_list;
+} GenerateJsonldData;
+
+static void generate_jsonld_foreach (gpointer key, gpointer value_ptr, gpointer user_data);
+
+static void
+tracker_resource_generate_jsonld (TrackerResource    *self,
+                                  GenerateJsonldData *data)
+{
+	TrackerResourcePrivate *priv = GET_PRIVATE (self);
+	JsonBuilder *builder = data->builder;
+
+	/* The JSON-LD spec says it is "important that nodes have an identifier", but
+	 * doesn't mandate one. I think it's better to omit the ID for blank nodes
+	 * (where the caller passed NULL as an identifier) than to emit something
+	 * SPARQL-specific like '_:123'.
+	 */
+	if (strncmp (priv->identifier, "_:", 2) != 0) {
+		json_builder_set_member_name (builder, "@id");
+		json_builder_add_string_value (builder, priv->identifier);
+	}
+
+	g_hash_table_foreach (priv->properties, generate_jsonld_foreach, data);
+};
+
+static void
+generate_jsonld_value (const GValue       *value,
+                       GenerateJsonldData *data)
+{
+	JsonNode *node;
+
+	if (G_VALUE_HOLDS (value, TRACKER_TYPE_RESOURCE)) {
+		TrackerResource *resource;
+
+		resource = TRACKER_RESOURCE (g_value_get_object (value));
+
+		if (g_list_find_custom (data->done_list, resource, (GCompareFunc) tracker_resource_compare) == NULL) {
+			json_builder_begin_object (data->builder);
+
+			tracker_resource_generate_jsonld (resource, data);
+
+			json_builder_end_object (data->builder);
+
+			data->done_list = g_list_prepend (data->done_list, resource);
+		} else {
+			json_builder_add_string_value (data->builder, tracker_resource_get_identifier(resource));
+		}
+	} else if (G_VALUE_HOLDS (value, TRACKER_TYPE_URI)) {
+		/* URIs can be treated the same as strings in JSON-LD provided the @context
+		 * sets the type of that property correctly. However, json_node_set_value()
+		 * will reject a GValue holding TRACKER_TYPE_URI, so we have to extract the
+		 * string manually here.
+		 */
+		const char *uri = g_value_get_string (value);
+		maybe_intern_prefix_of_compact_uri (data->all_namespaces, data->our_namespaces, uri);
+		node = json_node_new (JSON_NODE_VALUE);
+		json_node_set_string (node, uri);
+		json_builder_add_value (data->builder, node);
+	} else {
+		node = json_node_new (JSON_NODE_VALUE);
+		json_node_set_value (node, value);
+		json_builder_add_value (data->builder, node);
+	}
+}
+
+static void
+generate_jsonld_foreach (gpointer key,
+                         gpointer value_ptr,
+                         gpointer user_data)
+{
+	const char *property = key;
+	const GValue *value = value_ptr;
+	GenerateJsonldData *data = user_data;
+	JsonBuilder *builder = data->builder;
+
+	if (strcmp (property, "rdf:type") == 0) {
+		property = "@type";
+	} else {
+		maybe_intern_prefix_of_compact_uri (data->all_namespaces, data->our_namespaces, property);
+	}
+
+	json_builder_set_member_name (builder, property);
+
+	if (G_VALUE_HOLDS (value, G_TYPE_PTR_ARRAY)) {
+		json_builder_begin_array (builder);
+		g_ptr_array_foreach (g_value_get_boxed (value), (GFunc) generate_jsonld_value, data);
+		json_builder_end_array (builder);
+	} else {
+		generate_jsonld_value (value, data);
+	}
+}
+
+static void
+generate_jsonld_namespace_mapping_foreach (gpointer key,
+                                           gpointer value,
+                                           gpointer user_data)
+{
+	GenerateJsonldData *data = user_data;
+
+	json_builder_set_member_name (data->builder, key);
+	json_builder_add_string_value (data->builder, value);
+}
+
+
+/**
+ * tracker_resource_print_jsonld:
+ * @self: a #TrackerResource
+ * @namespaces: (allow-none): a set of prefixed URLs, or %NULL to use the
+ *     default set
+ *
+ * Serialize all the information in @resource as a JSON-LD document.
+ *
+ * See <http://www.jsonld.org/> for more information on the JSON-LD
+ * serialization format.
+ *
+ * The @namespaces object is used to expand any compact URI values. In most
+ * cases you should pass %NULL, which means the set of namespaces returned by
+ * tracker_namespace_manager_get_default() will be used. This defines the
+ * usual prefixes for all of the ontologies that Tracker ships with by default.
+ *
+ * Returns: a newly-allocated string containing JSON-LD data.
+ *
+ * Since: 2.0.5
+ */
+char *
+tracker_resource_print_jsonld (TrackerResource         *self,
+                               TrackerNamespaceManager *namespaces)
+{
+	GenerateJsonldData context;
+	JsonNode *json_root_node;
+	JsonGenerator *generator;
+	char *result;
+
+	if (namespaces == NULL) {
+		namespaces = tracker_namespace_manager_get_default ();
+	}
+
+	context.all_namespaces = namespaces;
+	context.our_namespaces = tracker_namespace_manager_new ();
+	context.builder = json_builder_new ();
+	context.done_list = NULL;
+
+	maybe_intern_prefix_of_compact_uri (context.all_namespaces, context.our_namespaces, tracker_resource_get_identifier (self));
+
+	json_builder_begin_object (context.builder);
+
+	tracker_resource_generate_jsonld (self, &context);
+
+	json_builder_set_member_name (context.builder, "@context");
+	json_builder_begin_object (context.builder);
+	tracker_namespace_manager_foreach (context.our_namespaces, generate_jsonld_namespace_mapping_foreach, &context);
+	json_builder_end_object (context.builder);
+
+	json_builder_end_object (context.builder);
+
+	json_root_node = json_builder_get_root (context.builder);
+
+	generator = json_generator_new ();
+	json_generator_set_root (generator, json_root_node);
+	json_generator_set_pretty (generator, TRUE);
+
+	result = json_generator_to_data (generator, NULL);
+
+	g_list_free (context.done_list);
+	json_node_free (json_root_node);
+	g_object_unref (context.builder);
+	g_object_unref (generator);
+
+	return result;
 }

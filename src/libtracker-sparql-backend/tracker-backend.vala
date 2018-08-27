@@ -196,7 +196,7 @@ class Tracker.Sparql.Backend : Connection {
 
 			try {
 				direct = create_readonly_direct ();
-			} catch (Error e) {
+			} catch (GLib.Error e) {
 				warning ("Falling back to bus backend, the direct backend failed to initialize: " + e.message);
 			}
 
@@ -287,7 +287,7 @@ class Tracker.Sparql.Backend : Connection {
 		Connection result = null;
 		var context = MainContext.get_thread_default ();
 
-		g_io_scheduler_push_job (job => {
+		IOSchedulerJob.push (job => {
 			try {
 				result = get (cancellable);
 			} catch (IOError e_io) {
@@ -308,7 +308,7 @@ class Tracker.Sparql.Backend : Connection {
 			source.attach (context);
 
 			return false;
-		});
+		}, GLib.Priority.DEFAULT);
 		yield;
 
 		if (sparql_error != null) {

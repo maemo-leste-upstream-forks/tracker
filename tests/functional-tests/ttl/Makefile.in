@@ -441,6 +441,7 @@ DISTCLEANFILES = \
 	$(ttl_DATA)                                    \
 	source-data.pkl
 
+EXTRA_DIST = meson.build
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
