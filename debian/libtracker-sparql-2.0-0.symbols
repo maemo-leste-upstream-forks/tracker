@@ -2,6 +2,7 @@ libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
 * Build-Depends-Package: libtracker-sparql-2.0-dev
  tracker_namespace_manager_add_prefix@Base 1.9.1
  tracker_namespace_manager_expand_uri@Base 1.9.1
+ tracker_namespace_manager_foreach@Base 2.1.2
  tracker_namespace_manager_get_default@Base 1.9.1
  tracker_namespace_manager_get_type@Base 1.9.1
  tracker_namespace_manager_has_prefix@Base 1.9.1
@@ -39,6 +40,7 @@ libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
  tracker_resource_get_values@Base 1.9.1
  tracker_resource_identifier_compare_func@Base 1.9.1
  tracker_resource_new@Base 1.9.1
+ tracker_resource_print_jsonld@Base 2.1.2
  tracker_resource_print_sparql_update@Base 1.9.1
  tracker_resource_print_turtle@Base 1.9.1
  tracker_resource_set_boolean@Base 1.9.1
