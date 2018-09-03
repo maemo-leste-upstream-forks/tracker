@@ -807,11 +807,11 @@ tracker_main_main (gchar** args,
 	TrackerDataManager* _tmp67_;
 	gboolean _tmp68_;
 	gboolean _tmp70_;
-	TrackerDataManager* _tmp76_;
-	TrackerConfig* _tmp77_;
-	gulong _tmp78_;
-	gint _tmp79_;
-	gsize _tmp80_;
+	TrackerDataManager* _tmp78_;
+	TrackerConfig* _tmp79_;
+	gulong _tmp80_;
+	gint _tmp81_;
+	gsize _tmp82_;
 	GError * _inner_error_ = NULL;
 #line 184 "tracker-main.vala"
 	setlocale (LC_ALL, "");
@@ -1059,7 +1059,7 @@ tracker_main_main (gchar** args,
 #line 243 "tracker-main.vala"
 	_tmp32_ = domain_ontology_config;
 #line 243 "tracker-main.vala"
-	_tmp33_ = tracker_domain_ontology_get_domain (_tmp32_, NULL);
+	_tmp33_ = tracker_domain_ontology_get_domain (_tmp32_, "Tracker1");
 #line 243 "tracker-main.vala"
 	_g_free0 (tracker_main_domain);
 #line 243 "tracker-main.vala"
@@ -1341,7 +1341,7 @@ tracker_main_main (gchar** args,
 #line 1338 "tracker-main.c"
 		GMainLoop* _tmp71_;
 		const gchar* _tmp72_;
-		GMainLoop* _tmp75_;
+		GMainLoop* _tmp77_;
 #line 320 "tracker-main.vala"
 		_tmp71_ = g_main_loop_new (NULL, FALSE);
 #line 320 "tracker-main.vala"
@@ -1349,27 +1349,35 @@ tracker_main_main (gchar** args,
 #line 320 "tracker-main.vala"
 		tracker_main_main_loop = _tmp71_;
 #line 322 "tracker-main.vala"
-		_tmp72_ = tracker_main_domain;
+		_tmp72_ = tracker_main_domain_ontology;
 #line 322 "tracker-main.vala"
 		if (_tmp72_ != NULL) {
 #line 1352 "tracker-main.c"
-			const gchar* _tmp73_;
-			GMainLoop* _tmp74_;
+			TrackerDomainOntology* _tmp73_;
+			gchar* _tmp74_;
+			gchar* _tmp75_;
+			GMainLoop* _tmp76_;
 #line 323 "tracker-main.vala"
-			_tmp73_ = tracker_main_domain_ontology;
+			_tmp73_ = domain_ontology_config;
 #line 323 "tracker-main.vala"
-			_tmp74_ = tracker_main_main_loop;
+			_tmp74_ = tracker_domain_ontology_get_domain (_tmp73_, NULL);
 #line 323 "tracker-main.vala"
-			tracker_dbus_watch_domain (_tmp73_, _tmp74_);
-#line 1361 "tracker-main.c"
+			_tmp75_ = _tmp74_;
+#line 323 "tracker-main.vala"
+			_tmp76_ = tracker_main_main_loop;
+#line 323 "tracker-main.vala"
+			tracker_dbus_watch_domain (_tmp75_, _tmp76_);
+#line 323 "tracker-main.vala"
+			_g_free0 (_tmp75_);
+#line 1369 "tracker-main.c"
 		}
 #line 325 "tracker-main.vala"
 		tracker_main_initialize_signal_handler ();
 #line 327 "tracker-main.vala"
-		_tmp75_ = tracker_main_main_loop;
+		_tmp77_ = tracker_main_main_loop;
 #line 327 "tracker-main.vala"
-		g_main_loop_run (_tmp75_);
-#line 1369 "tracker-main.c"
+		g_main_loop_run (_tmp77_);
+#line 1377 "tracker-main.c"
 	}
 #line 333 "tracker-main.vala"
 	g_message ("Shutdown started");
@@ -1384,9 +1392,9 @@ tracker_main_main (gchar** args,
 #line 343 "tracker-main.vala"
 	tracker_events_shutdown ();
 #line 345 "tracker-main.vala"
-	_tmp76_ = tracker_main_data_manager;
+	_tmp78_ = tracker_main_data_manager;
 #line 345 "tracker-main.vala"
-	tracker_data_manager_shutdown (_tmp76_);
+	tracker_data_manager_shutdown (_tmp78_);
 #line 346 "tracker-main.vala"
 	_g_object_unref0 (tracker_main_data_manager);
 #line 346 "tracker-main.vala"
@@ -1396,21 +1404,21 @@ tracker_main_main (gchar** args,
 #line 348 "tracker-main.vala"
 	tracker_log_shutdown ();
 #line 350 "tracker-main.vala"
-	_tmp77_ = config;
+	_tmp79_ = config;
 #line 350 "tracker-main.vala"
-	_tmp78_ = config_verbosity_id;
+	_tmp80_ = config_verbosity_id;
 #line 350 "tracker-main.vala"
-	g_signal_handler_disconnect ((GObject*) _tmp77_, _tmp78_);
+	g_signal_handler_disconnect ((GObject*) _tmp79_, _tmp80_);
 #line 351 "tracker-main.vala"
 	_g_object_unref0 (config);
 #line 351 "tracker-main.vala"
 	config = NULL;
 #line 354 "tracker-main.vala"
-	_tmp79_ = chunk_size_mb;
+	_tmp81_ = chunk_size_mb;
 #line 354 "tracker-main.vala"
-	_tmp80_ = chunk_size;
+	_tmp82_ = chunk_size;
 #line 354 "tracker-main.vala"
-	tracker_db_journal_set_rotating (_tmp79_ != -1, _tmp80_, NULL);
+	tracker_db_journal_set_rotating (_tmp81_ != -1, _tmp82_, NULL);
 #line 356 "tracker-main.vala"
 	g_print ("\nOK\n\n");
 #line 358 "tracker-main.vala"
@@ -1435,7 +1443,7 @@ tracker_main_main (gchar** args,
 	_g_object_unref0 (config);
 #line 362 "tracker-main.vala"
 	return result;
-#line 1435 "tracker-main.c"
+#line 1443 "tracker-main.c"
 }
 
 
@@ -1445,7 +1453,7 @@ main (int argc,
 {
 #line 183 "tracker-main.vala"
 	return tracker_main_main (argv, argc);
-#line 1445 "tracker-main.c"
+#line 1453 "tracker-main.c"
 }
 
 
@@ -1457,7 +1465,7 @@ tracker_main_construct (GType object_type)
 	self = (TrackerMain*) g_type_create_instance (object_type);
 #line 21 "tracker-main.vala"
 	return self;
-#line 1457 "tracker-main.c"
+#line 1465 "tracker-main.c"
 }
 
 
@@ -1466,7 +1474,7 @@ tracker_main_new (void)
 {
 #line 21 "tracker-main.vala"
 	return tracker_main_construct (TRACKER_TYPE_MAIN);
-#line 1466 "tracker-main.c"
+#line 1474 "tracker-main.c"
 }
 
 
@@ -1475,7 +1483,7 @@ tracker_value_main_init (GValue* value)
 {
 #line 21 "tracker-main.vala"
 	value->data[0].v_pointer = NULL;
-#line 1475 "tracker-main.c"
+#line 1483 "tracker-main.c"
 }
 
 
@@ -1486,7 +1494,7 @@ tracker_value_main_free_value (GValue* value)
 	if (value->data[0].v_pointer) {
 #line 21 "tracker-main.vala"
 		tracker_main_unref (value->data[0].v_pointer);
-#line 1486 "tracker-main.c"
+#line 1494 "tracker-main.c"
 	}
 }
 
@@ -1499,11 +1507,11 @@ tracker_value_main_copy_value (const GValue* src_value,
 	if (src_value->data[0].v_pointer) {
 #line 21 "tracker-main.vala"
 		dest_value->data[0].v_pointer = tracker_main_ref (src_value->data[0].v_pointer);
-#line 1499 "tracker-main.c"
+#line 1507 "tracker-main.c"
 	} else {
 #line 21 "tracker-main.vala"
 		dest_value->data[0].v_pointer = NULL;
-#line 1503 "tracker-main.c"
+#line 1511 "tracker-main.c"
 	}
 }
 
@@ -1513,7 +1521,7 @@ tracker_value_main_peek_pointer (const GValue* value)
 {
 #line 21 "tracker-main.vala"
 	return value->data[0].v_pointer;
-#line 1513 "tracker-main.c"
+#line 1521 "tracker-main.c"
 }
 
 
@@ -1525,30 +1533,30 @@ tracker_value_main_collect_value (GValue* value,
 {
 #line 21 "tracker-main.vala"
 	if (collect_values[0].v_pointer) {
-#line 1525 "tracker-main.c"
+#line 1533 "tracker-main.c"
 		TrackerMain * object;
 		object = collect_values[0].v_pointer;
 #line 21 "tracker-main.vala"
 		if (object->parent_instance.g_class == NULL) {
 #line 21 "tracker-main.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 1532 "tracker-main.c"
+#line 1540 "tracker-main.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
 #line 21 "tracker-main.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 1536 "tracker-main.c"
+#line 1544 "tracker-main.c"
 		}
 #line 21 "tracker-main.vala"
 		value->data[0].v_pointer = tracker_main_ref (object);
-#line 1540 "tracker-main.c"
+#line 1548 "tracker-main.c"
 	} else {
 #line 21 "tracker-main.vala"
 		value->data[0].v_pointer = NULL;
-#line 1544 "tracker-main.c"
+#line 1552 "tracker-main.c"
 	}
 #line 21 "tracker-main.vala"
 	return NULL;
-#line 1548 "tracker-main.c"
+#line 1556 "tracker-main.c"
 }
 
 
@@ -1564,25 +1572,25 @@ tracker_value_main_lcopy_value (const GValue* value,
 	if (!object_p) {
 #line 21 "tracker-main.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-#line 1564 "tracker-main.c"
+#line 1572 "tracker-main.c"
 	}
 #line 21 "tracker-main.vala"
 	if (!value->data[0].v_pointer) {
 #line 21 "tracker-main.vala"
 		*object_p = NULL;
-#line 1570 "tracker-main.c"
+#line 1578 "tracker-main.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
 #line 21 "tracker-main.vala"
 		*object_p = value->data[0].v_pointer;
-#line 1574 "tracker-main.c"
+#line 1582 "tracker-main.c"
 	} else {
 #line 21 "tracker-main.vala"
 		*object_p = tracker_main_ref (value->data[0].v_pointer);
-#line 1578 "tracker-main.c"
+#line 1586 "tracker-main.c"
 	}
 #line 21 "tracker-main.vala"
 	return NULL;
-#line 1582 "tracker-main.c"
+#line 1590 "tracker-main.c"
 }
 
 
@@ -1602,7 +1610,7 @@ tracker_param_spec_main (const gchar* name,
 	G_PARAM_SPEC (spec)->value_type = object_type;
 #line 21 "tracker-main.vala"
 	return G_PARAM_SPEC (spec);
-#line 1602 "tracker-main.c"
+#line 1610 "tracker-main.c"
 }
 
 
@@ -1613,7 +1621,7 @@ tracker_value_get_main (const GValue* value)
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_MAIN), NULL);
 #line 21 "tracker-main.vala"
 	return value->data[0].v_pointer;
-#line 1613 "tracker-main.c"
+#line 1621 "tracker-main.c"
 }
 
 
@@ -1636,17 +1644,17 @@ tracker_value_set_main (GValue* value,
 		value->data[0].v_pointer = v_object;
 #line 21 "tracker-main.vala"
 		tracker_main_ref (value->data[0].v_pointer);
-#line 1636 "tracker-main.c"
+#line 1644 "tracker-main.c"
 	} else {
 #line 21 "tracker-main.vala"
 		value->data[0].v_pointer = NULL;
-#line 1640 "tracker-main.c"
+#line 1648 "tracker-main.c"
 	}
 #line 21 "tracker-main.vala"
 	if (old) {
 #line 21 "tracker-main.vala"
 		tracker_main_unref (old);
-#line 1646 "tracker-main.c"
+#line 1654 "tracker-main.c"
 	}
 }
 
@@ -1668,17 +1676,17 @@ tracker_value_take_main (GValue* value,
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
 #line 21 "tracker-main.vala"
 		value->data[0].v_pointer = v_object;
-#line 1668 "tracker-main.c"
+#line 1676 "tracker-main.c"
 	} else {
 #line 21 "tracker-main.vala"
 		value->data[0].v_pointer = NULL;
-#line 1672 "tracker-main.c"
+#line 1680 "tracker-main.c"
 	}
 #line 21 "tracker-main.vala"
 	if (old) {
 #line 21 "tracker-main.vala"
 		tracker_main_unref (old);
-#line 1678 "tracker-main.c"
+#line 1686 "tracker-main.c"
 	}
 }
 
@@ -1690,7 +1698,7 @@ tracker_main_class_init (TrackerMainClass * klass)
 	tracker_main_parent_class = g_type_class_peek_parent (klass);
 #line 21 "tracker-main.vala"
 	((TrackerMainClass *) klass)->finalize = tracker_main_finalize;
-#line 1690 "tracker-main.c"
+#line 1698 "tracker-main.c"
 }
 
 
@@ -1699,7 +1707,7 @@ tracker_main_instance_init (TrackerMain * self)
 {
 #line 21 "tracker-main.vala"
 	self->ref_count = 1;
-#line 1699 "tracker-main.c"
+#line 1707 "tracker-main.c"
 }
 
 
@@ -1711,7 +1719,7 @@ tracker_main_finalize (TrackerMain * obj)
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TRACKER_TYPE_MAIN, TrackerMain);
 #line 21 "tracker-main.vala"
 	g_signal_handlers_destroy (self);
-#line 1711 "tracker-main.c"
+#line 1719 "tracker-main.c"
 }
 
 
@@ -1740,7 +1748,7 @@ tracker_main_ref (gpointer instance)
 	g_atomic_int_inc (&self->ref_count);
 #line 21 "tracker-main.vala"
 	return instance;
-#line 1740 "tracker-main.c"
+#line 1748 "tracker-main.c"
 }
 
 
@@ -1755,7 +1763,7 @@ tracker_main_unref (gpointer instance)
 		TRACKER_MAIN_GET_CLASS (self)->finalize (self);
 #line 21 "tracker-main.vala"
 		g_type_free_instance ((GTypeInstance *) self);
-#line 1755 "tracker-main.c"
+#line 1763 "tracker-main.c"
 	}
 }
 

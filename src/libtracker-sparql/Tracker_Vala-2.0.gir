@@ -9,10 +9,6 @@
 <c:include name="libtracker-sparql/tracker-notifier.h"/>
 <c:include name="libtracker-sparql/tracker-resource.h"/>
 <namespace name="Tracker_Vala" version="2.0" c:prefix="Tracker">
-	<attribute name="ccode.gir-version" value="2.0"/>
-	<attribute name="ccode.lower-case-cprefix" value="tracker_"/>
-	<attribute name="ccode.cprefix" value="Tracker"/>
-	<attribute name="ccode.gir-namespace" value="Tracker"/>
 	<enumeration name="SparqlConnectionFlags" c:type="TrackerSparqlConnectionFlags" glib:type-name="TrackerSparqlConnectionFlags" glib:get-type="tracker_sparql_connection_flags_get_type">
 		<member name="none" c:identifier="TRACKER_SPARQL_CONNECTION_FLAGS_NONE" value="0"/>
 		<member name="readonly" c:identifier="TRACKER_SPARQL_CONNECTION_FLAGS_READONLY" value="(null)"/>
@@ -54,10 +50,7 @@
 				<type name="Tracker.SparqlBuilder" c:type="TrackerSparqlBuilder*"/>
 			</return-value>
 		</constructor>
-		<method name="insert_open" c:identifier="tracker_sparql_builder_insert_open" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="insert_open" c:identifier="tracker_sparql_builder_insert_open" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -67,10 +60,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="insert_silent_open" c:identifier="tracker_sparql_builder_insert_silent_open" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="insert_silent_open" c:identifier="tracker_sparql_builder_insert_silent_open" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -80,18 +70,12 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="insert_close" c:identifier="tracker_sparql_builder_insert_close" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="insert_close" c:identifier="tracker_sparql_builder_insert_close" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
 		</method>
-		<method name="delete_open" c:identifier="tracker_sparql_builder_delete_open" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="delete_open" c:identifier="tracker_sparql_builder_delete_open" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -101,18 +85,12 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="delete_close" c:identifier="tracker_sparql_builder_delete_close" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="delete_close" c:identifier="tracker_sparql_builder_delete_close" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
 		</method>
-		<method name="graph_open" c:identifier="tracker_sparql_builder_graph_open" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="graph_open" c:identifier="tracker_sparql_builder_graph_open" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -122,34 +100,22 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="graph_close" c:identifier="tracker_sparql_builder_graph_close" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="graph_close" c:identifier="tracker_sparql_builder_graph_close" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
 		</method>
-		<method name="where_open" c:identifier="tracker_sparql_builder_where_open" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="where_open" c:identifier="tracker_sparql_builder_where_open" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
 		</method>
-		<method name="where_close" c:identifier="tracker_sparql_builder_where_close" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="where_close" c:identifier="tracker_sparql_builder_where_close" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
 		</method>
-		<method name="subject_variable" c:identifier="tracker_sparql_builder_subject_variable" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="subject_variable" c:identifier="tracker_sparql_builder_subject_variable" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -159,10 +125,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_variable" c:identifier="tracker_sparql_builder_object_variable" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_variable" c:identifier="tracker_sparql_builder_object_variable" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -172,10 +135,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="subject_iri" c:identifier="tracker_sparql_builder_subject_iri" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="subject_iri" c:identifier="tracker_sparql_builder_subject_iri" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -185,10 +145,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="subject" c:identifier="tracker_sparql_builder_subject" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="subject" c:identifier="tracker_sparql_builder_subject" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -198,10 +155,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="predicate_iri" c:identifier="tracker_sparql_builder_predicate_iri" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="predicate_iri" c:identifier="tracker_sparql_builder_predicate_iri" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -211,10 +165,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="predicate" c:identifier="tracker_sparql_builder_predicate" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="predicate" c:identifier="tracker_sparql_builder_predicate" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -224,10 +175,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_iri" c:identifier="tracker_sparql_builder_object_iri" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_iri" c:identifier="tracker_sparql_builder_object_iri" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -237,10 +185,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object" c:identifier="tracker_sparql_builder_object" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object" c:identifier="tracker_sparql_builder_object" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -250,10 +195,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_string" c:identifier="tracker_sparql_builder_object_string" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_string" c:identifier="tracker_sparql_builder_object_string" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -263,10 +205,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_unvalidated" c:identifier="tracker_sparql_builder_object_unvalidated" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_unvalidated" c:identifier="tracker_sparql_builder_object_unvalidated" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -276,10 +215,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_boolean" c:identifier="tracker_sparql_builder_object_boolean" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_boolean" c:identifier="tracker_sparql_builder_object_boolean" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -289,10 +225,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_int64" c:identifier="tracker_sparql_builder_object_int64" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_int64" c:identifier="tracker_sparql_builder_object_int64" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -302,10 +235,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_date" c:identifier="tracker_sparql_builder_object_date" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_date" c:identifier="tracker_sparql_builder_object_date" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -315,10 +245,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_double" c:identifier="tracker_sparql_builder_object_double" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_double" c:identifier="tracker_sparql_builder_object_double" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -328,26 +255,17 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="object_blank_open" c:identifier="tracker_sparql_builder_object_blank_open" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_blank_open" c:identifier="tracker_sparql_builder_object_blank_open" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
 		</method>
-		<method name="object_blank_close" c:identifier="tracker_sparql_builder_object_blank_close" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="object_blank_close" c:identifier="tracker_sparql_builder_object_blank_close" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
 		</method>
-		<method name="prepend" c:identifier="tracker_sparql_builder_prepend" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="prepend" c:identifier="tracker_sparql_builder_prepend" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -357,10 +275,7 @@
 				</parameter>
 			</parameters>
 		</method>
-		<method name="append" c:identifier="tracker_sparql_builder_append" deprecated="Use Tracker.Resource" deprecated-version="2.0">
-			<attribute name="version.replacement" value="Tracker.Resource"/>
-			<attribute name="version.deprecated" value="true"/>
-			<attribute name="version.deprecated-since" value="2.0"/>
+		<method name="append" c:identifier="tracker_sparql_builder_append" deprecated="1" deprecated-version="2.0">
 			<return-value transfer-ownership="full">
 				<type name="none"/>
 			</return-value>
@@ -1071,7 +986,7 @@
 		<field name="parent_class">
 			<type name="GObject.ObjectClass" c:type="GObjectClass"/>
 		</field>
-				<field name="query">
+		<field name="query">
 			<callback name="query" c:type="query" throws="1">
 				<return-value transfer-ownership="full">
 					<type name="Tracker.SparqlCursor" c:type="TrackerSparqlCursor*"/>
@@ -1089,7 +1004,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="query_async">
+		<field name="query_async">
 			<callback name="query_async" c:type="query_async">
 				<return-value transfer-ownership="none">
 					<type name="none"/>
@@ -1128,7 +1043,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="update">
+		<field name="update">
 			<callback name="update" c:type="update" throws="1">
 				<return-value transfer-ownership="full">
 					<type name="none"/>
@@ -1149,7 +1064,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="update_async">
+		<field name="update_async">
 			<callback name="update_async" c:type="update_async">
 				<return-value transfer-ownership="none">
 					<type name="none"/>
@@ -1191,7 +1106,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="update_array_async">
+		<field name="update_array_async">
 			<callback name="update_array_async" c:type="update_array_async">
 				<return-value transfer-ownership="none">
 					<type name="none"/>
@@ -1240,7 +1155,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="update_blank">
+		<field name="update_blank">
 			<callback name="update_blank" c:type="update_blank" throws="1">
 				<return-value transfer-ownership="full" allow-none="1">
 					<type name="GLib.Variant" c:type="GVariant*"/>
@@ -1261,7 +1176,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="update_blank_async">
+		<field name="update_blank_async">
 			<callback name="update_blank_async" c:type="update_blank_async">
 				<return-value transfer-ownership="none">
 					<type name="none"/>
@@ -1303,7 +1218,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="load">
+		<field name="load">
 			<callback name="load" c:type="load" throws="1">
 				<return-value transfer-ownership="full">
 					<type name="none"/>
@@ -1321,7 +1236,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="load_async">
+		<field name="load_async">
 			<callback name="load_async" c:type="load_async">
 				<return-value transfer-ownership="none">
 					<type name="none"/>
@@ -1360,7 +1275,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="statistics">
+		<field name="statistics">
 			<callback name="statistics" c:type="statistics" throws="1">
 				<return-value transfer-ownership="full" allow-none="1">
 					<type name="Tracker.SparqlCursor" c:type="TrackerSparqlCursor*"/>
@@ -1375,7 +1290,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="statistics_async">
+		<field name="statistics_async">
 			<callback name="statistics_async" c:type="statistics_async">
 				<return-value transfer-ownership="none">
 					<type name="none"/>
@@ -1411,7 +1326,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="get_namespace_manager">
+		<field name="get_namespace_manager">
 			<callback name="get_namespace_manager" c:type="get_namespace_manager">
 				<return-value transfer-ownership="full" allow-none="1">
 					<type name="Tracker.NamespaceManager" c:type="TrackerNamespaceManager*"/>
@@ -1706,7 +1621,7 @@
 		<field name="parent_class">
 			<type name="GObject.ObjectClass" c:type="GObjectClass"/>
 		</field>
-				<field name="get_value_type">
+		<field name="get_value_type">
 			<callback name="get_value_type" c:type="get_value_type">
 				<return-value transfer-ownership="full">
 					<type name="Tracker.SparqlValueType" c:type="TrackerSparqlValueType"/>
@@ -1721,7 +1636,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="get_variable_name">
+		<field name="get_variable_name">
 			<callback name="get_variable_name" c:type="get_variable_name">
 				<return-value transfer-ownership="none" allow-none="1">
 					<type name="utf8" c:type="const gchar*"/>
@@ -1736,7 +1651,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="get_string">
+		<field name="get_string">
 			<callback name="get_string" c:type="get_string">
 				<return-value transfer-ownership="none" allow-none="1">
 					<type name="utf8" c:type="const gchar*"/>
@@ -1754,7 +1669,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="next">
+		<field name="next">
 			<callback name="next" c:type="next" throws="1">
 				<return-value transfer-ownership="full">
 					<type name="gboolean" c:type="gboolean"/>
@@ -1769,7 +1684,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="next_async">
+		<field name="next_async">
 			<callback name="next_async" c:type="next_async">
 				<return-value transfer-ownership="none">
 					<type name="none"/>
@@ -1805,7 +1720,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="rewind">
+		<field name="rewind">
 			<callback name="rewind" c:type="rewind">
 				<return-value transfer-ownership="full">
 					<type name="none"/>
@@ -1817,7 +1732,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="close">
+		<field name="close">
 			<callback name="close" c:type="close">
 				<return-value transfer-ownership="full">
 					<type name="none"/>
@@ -1829,7 +1744,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="get_integer">
+		<field name="get_integer">
 			<callback name="get_integer" c:type="get_integer">
 				<return-value transfer-ownership="full">
 					<type name="gint64" c:type="gint64"/>
@@ -1844,7 +1759,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="get_double">
+		<field name="get_double">
 			<callback name="get_double" c:type="get_double">
 				<return-value transfer-ownership="full">
 					<type name="gdouble" c:type="gdouble"/>
@@ -1859,7 +1774,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="get_boolean">
+		<field name="get_boolean">
 			<callback name="get_boolean" c:type="get_boolean">
 				<return-value transfer-ownership="full">
 					<type name="gboolean" c:type="gboolean"/>
@@ -1874,7 +1789,7 @@
 				</parameters>
 			</callback>
 		</field>
-				<field name="is_bound">
+		<field name="is_bound">
 			<callback name="is_bound" c:type="is_bound">
 				<return-value transfer-ownership="full">
 					<type name="gboolean" c:type="gboolean"/>
@@ -1891,6 +1806,32 @@
 		</field>
 	</record>
 	<record name="SparqlCursorPrivate" c:type="TrackerSparqlCursorPrivate" disguised="1"/>
+	<function name="sparql_escape_uri_vprintf" c:identifier="tracker_sparql_escape_uri_vprintf" introspectable="0">
+		<return-value transfer-ownership="full">
+			<type name="utf8" c:type="gchar*"/>
+		</return-value>
+		<parameters>
+			<parameter name="format" transfer-ownership="none">
+				<type name="utf8" c:type="const gchar*"/>
+			</parameter>
+			<parameter name="args" transfer-ownership="none">
+				<type name="va_list" c:type="va_list"/>
+			</parameter>
+		</parameters>
+	</function>
+	<function name="sparql_escape_uri_printf" c:identifier="tracker_sparql_escape_uri_printf" introspectable="0">
+		<return-value transfer-ownership="full">
+			<type name="utf8" c:type="gchar*"/>
+		</return-value>
+		<parameters>
+			<parameter name="format" transfer-ownership="none">
+				<type name="utf8" c:type="const gchar*"/>
+			</parameter>
+			<parameter name="..." transfer-ownership="none">
+				<varargs/>
+			</parameter>
+		</parameters>
+	</function>
 	<function name="sparql_escape_uri" c:identifier="tracker_sparql_escape_uri">
 		<return-value transfer-ownership="full">
 			<type name="utf8" c:type="gchar*"/>
