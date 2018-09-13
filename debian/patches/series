@@ -1,4 +1,3 @@
 disable-miner-fs-test.patch
 drop-assert.patch
 test.patch
-git-fix-build-with-format-security.patch
