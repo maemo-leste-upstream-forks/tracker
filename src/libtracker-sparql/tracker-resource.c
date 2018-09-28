@@ -988,30 +988,33 @@ typedef struct {
 	GList *done_list;
 } GenerateTurtleData;
 
-void generate_turtle (TrackerResource *resource, GenerateTurtleData *data);
+static void generate_turtle (TrackerResource *resource, GenerateTurtleData *data);
 
-gboolean
+static gboolean
 is_blank_node (const char *uri_or_curie_or_blank)
 {
 	return (strncmp(uri_or_curie_or_blank, "_:", 2) == 0);
 }
 
-gboolean
+static gboolean
 is_builtin_class (const gchar             *uri_or_curie,
                   TrackerNamespaceManager *namespaces)
 {
 	gchar *prefix = NULL;
+	gboolean has_prefix;
 
 	prefix = g_uri_parse_scheme (uri_or_curie);
 
-	if (prefix &&
-	    tracker_namespace_manager_has_prefix (namespaces, prefix))
+	if (!prefix)
 		return TRUE;
 
-	return FALSE;
+	has_prefix = tracker_namespace_manager_has_prefix (namespaces, prefix);
+	g_free (prefix);
+
+	return has_prefix;
 }
 
-void
+static void
 generate_nested_turtle_resource (TrackerResource    *resource,
                                  GenerateTurtleData *data)
 {
@@ -1029,7 +1032,7 @@ generate_nested_turtle_resource (TrackerResource    *resource,
 	}
 }
 
-void
+static void
 generate_turtle_resources_foreach (gpointer key,
                                    gpointer value_ptr,
                                    gpointer user_data)
@@ -1180,7 +1183,7 @@ generate_turtle_property (const char              *property,
 	}
 }
 
-void
+static void
 generate_turtle (TrackerResource    *resource,
                  GenerateTurtleData *data)
 {
