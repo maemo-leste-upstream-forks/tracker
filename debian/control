@@ -38,10 +38,22 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          shared-mime-info,
+         tracker-common (= ${source:Version}),
          libglib2.0-bin,
          default-dbus-session-bus | dbus-session-bus
 Recommends: tracker-miner-fs
 Description: metadata database, indexer and search tool
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: tracker-common
+Section: misc
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}
+Recommends: tracker
+Description: metadata database, indexer and search tool (support files)
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
@@ -52,7 +64,8 @@ Multi-Arch: same
 Section: libs
 Pre-Depends: ${misc:Pre-Depends},
 Depends: ${shlibs:Depends},
-         ${misc:Depends}
+         ${misc:Depends},
+         tracker-common (= ${source:Version})
 Description: metadata database, indexer and search tool - library
  This package contains a library to perform SPARQL queries and updates in the
  Tracker store.

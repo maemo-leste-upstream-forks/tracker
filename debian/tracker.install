@@ -24,10 +24,5 @@ usr/share/man/man1/tracker-status.1
 usr/share/man/man1/tracker-index.1
 
 usr/share/bash-completion/
-usr/share/glib-2.0/schemas/
-usr/share/locale/
-usr/share/tracker/ontologies/
-usr/share/tracker/stop-words/
-usr/share/tracker/domain-ontologies/
 
 etc/xdg/autostart/tracker-store.desktop
