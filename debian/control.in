@@ -48,6 +48,8 @@ Section: misc
 Architecture: all
 Multi-Arch: foreign
 Depends: ${misc:Depends}
+Breaks: tracker (<< 2.1.5-1~)
+Replaces: tracker (<< 2.1.5-1~)
 Recommends: tracker
 Description: metadata database, indexer and search tool (support files)
  Tracker is an advanced framework for first class objects with associated
