@@ -52,6 +52,8 @@ Breaks: tracker (<< 2.1.5-1~)
 Replaces: tracker (<< 2.1.5-1~)
 Recommends: tracker
 Description: metadata database, indexer and search tool (support files)
+ This package contains common files required by the tracker libraries
+ .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
