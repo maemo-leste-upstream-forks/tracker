@@ -1,9 +1,16 @@
-Description: This is a new test that fails in Debian/Ubuntu, disabling it for now
-Author: Gianfranco Costamagna <locutusofborg@debian.org>
-Last-Update: 2018-02-15
+From: Gianfranco Costamagna <locutusofborg@debian.org>
+Date: Mon, 12 Nov 2018 17:17:28 -0500
+Subject: This is a new test that fails in Debian/Ubuntu, disabling it for now
 
---- tracker-2.0.3.orig/tests/libtracker-miner/Makefile.am
-+++ tracker-2.0.3/tests/libtracker-miner/Makefile.am
+Last-Update: 2018-02-15
+---
+ tests/libtracker-miner/Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tests/libtracker-miner/Makefile.am b/tests/libtracker-miner/Makefile.am
+index 184c8e1..862e1a4 100644
+--- a/tests/libtracker-miner/Makefile.am
++++ b/tests/libtracker-miner/Makefile.am
 @@ -20,7 +20,6 @@ test_programs = \
  	tracker-file-notifier-test		       \
  	tracker-file-system-test		       \

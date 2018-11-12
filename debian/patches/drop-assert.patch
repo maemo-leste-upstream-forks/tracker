@@ -1,10 +1,19 @@
-Description: This assert never worked in Ubuntu testsuite since 2.0.2 when
- it was introduced, removing it for now
-Author: Gianfranco Costamagna <locutusofborg@debian.org>
-Last-Update: 2018-02-16
+From: Gianfranco Costamagna <locutusofborg@debian.org>
+Date: Mon, 12 Nov 2018 17:17:28 -0500
+Subject: This assert never worked in Ubuntu testsuite since 2.0.2 when
 
---- tracker-2.0.3.orig/tests/libtracker-data/tracker-backup-test.c
-+++ tracker-2.0.3/tests/libtracker-data/tracker-backup-test.c
+it was introduced, removing it for now
+Last-Update: 2018-02-16
+---
+ tests/libtracker-data/tracker-backup-test.c       | 2 +-
+ tests/libtracker-data/tracker-sparql-blank-test.c | 2 +-
+ tests/tracker-steroids/tracker-test.c             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tests/libtracker-data/tracker-backup-test.c b/tests/libtracker-data/tracker-backup-test.c
+index 67522e6..811d5ab 100644
+--- a/tests/libtracker-data/tracker-backup-test.c
++++ b/tests/libtracker-data/tracker-backup-test.c
 @@ -277,7 +277,7 @@ main (int argc, char **argv)
  
  	result = g_test_run ();
@@ -14,9 +23,11 @@ Last-Update: 2018-02-16
  	g_free (tests_data_dir);
  
  	return result;
---- tracker-2.0.3.orig/tests/libtracker-data/tracker-sparql-blank-test.c
-+++ tracker-2.0.3/tests/libtracker-data/tracker-sparql-blank-test.c
-@@ -172,7 +172,7 @@ main (int argc, char **argv)
+diff --git a/tests/libtracker-data/tracker-sparql-blank-test.c b/tests/libtracker-data/tracker-sparql-blank-test.c
+index 68912e3..f8d36ad 100644
+--- a/tests/libtracker-data/tracker-sparql-blank-test.c
++++ b/tests/libtracker-data/tracker-sparql-blank-test.c
+@@ -170,7 +170,7 @@ main (int argc, char **argv)
  	/* run tests */
  	result = g_test_run ();
  
@@ -25,9 +36,11 @@ Last-Update: 2018-02-16
  	g_free (tests_data_dir);
  
  	return result;
---- tracker-2.0.3.orig/tests/tracker-steroids/tracker-test.c
-+++ tracker-2.0.3/tests/tracker-steroids/tracker-test.c
-@@ -273,7 +273,7 @@ test_tracker_sparql_query_iterate_sigpip
+diff --git a/tests/tracker-steroids/tracker-test.c b/tests/tracker-steroids/tracker-test.c
+index a0afb20..ce46472 100644
+--- a/tests/tracker-steroids/tracker-test.c
++++ b/tests/tracker-steroids/tracker-test.c
+@@ -285,7 +285,7 @@ test_tracker_sparql_query_iterate_sigpipe (DataFixture  *fixture,
  	g_assert (cursor);
  	g_assert_no_error (error);
  
