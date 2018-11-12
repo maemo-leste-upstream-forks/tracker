@@ -4,8 +4,7 @@
     <sub name="Overview" link="overview.html"/>
     <sub name="Ontology" link="ontology.html">
       <sub name="Nepomuk Information Element (NIE): Top classes in the ontology. Almost everything else is subclass of these." link="nie-ontology.html">
-        <sub name="Overview" link="nie-ontology.html#nie-explanation"/>
-        <sub name="NIE Ontology Classes" link="nie-classes.html">
+        <sub name="NIE Ontology Classes" link="nie-ontology.html#nie-classes">
           <sub name="nie:DataObject" link="nie-DataObject.html"/>
           <sub name="nie:DataSource" link="nie-DataSource.html"/>
           <sub name="nie:InformationElement" link="nie-InformationElement.html"/>
@@ -75,8 +74,7 @@
         </sub>
       </sub>
       <sub name="Nepomuk Contacts Ontology (NCO): All about contacts. Rough equivalent of the VCARD standard." link="nco-ontology.html">
-        <sub name="Overview" link="nco-ontology.html#nco-explanation"/>
-        <sub name="NCO Ontology Classes" link="nco-classes.html">
+        <sub name="NCO Ontology Classes" link="nco-ontology.html#nco-classes">
           <sub name="nco:IMAccount" link="nco-IMAccount.html"/>
           <sub name="nco:PcsNumber" link="nco-PcsNumber.html"/>
           <sub name="nco:PersonContact" link="nco-PersonContact.html"/>
@@ -112,8 +110,7 @@
         </sub>
       </sub>
       <sub name="Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls" link="nmo-ontology.html">
-        <sub name="Overview" link="nmo-ontology.html#nmo-explanation"/>
-        <sub name="NMO Ontology Classes" link="nmo-classes.html">
+        <sub name="NMO Ontology Classes" link="nmo-ontology.html#nmo-classes">
           <sub name="nmo:IMMessage" link="nmo-IMMessage.html"/>
           <sub name="nmo:Email" link="nmo-Email.html"/>
           <sub name="nmo:PermanentChannel" link="nmo-PermanentChannel.html"/>
@@ -204,8 +201,7 @@
         </sub>
       </sub>
       <sub name="Nepomuk MultiMedia (NMM): Description of multimedia objects like Music, Video and Images" link="nmm-ontology.html">
-        <sub name="Overview" link="nmm-ontology.html#nmm-explanation"/>
-        <sub name="NMM Ontology Classes" link="nmm-classes.html">
+        <sub name="NMM Ontology Classes" link="nmm-ontology.html#nmm-classes">
           <sub name="nmm:Artist" link="nmm-Artist.html"/>
           <sub name="nmm:Flash" link="nmm-Flash.html"/>
           <sub name="nmm:AnalogRadio" link="nmm-AnalogRadio.html"/>
@@ -236,8 +232,7 @@
         </sub>
       </sub>
       <sub name="Maemo Location Ontology (MLO): Deprecated ontology for location and landmarks. Please check SLO" link="mlo-ontology.html">
-        <sub name="Overview" link="mlo-ontology.html#mlo-explanation"/>
-        <sub name="MLO Ontology Classes" link="mlo-classes.html">
+        <sub name="MLO Ontology Classes" link="mlo-ontology.html#mlo-classes">
           <sub name="mlo:GeoLocation" link="mlo-GeoLocation.html"/>
           <sub name="mlo:PointOfInterest" link="mlo-PointOfInterest.html"/>
           <sub name="mlo:LandmarkCategory" link="mlo-LandmarkCategory.html"/>
@@ -250,8 +245,7 @@
         </sub>
       </sub>
       <sub name="Maemo Feeds Ontology (MFO): Model for feeds and alike online streams" link="mfo-ontology.html">
-        <sub name="Overview" link="mfo-ontology.html#mfo-explanation"/>
-        <sub name="MFO Ontology Classes" link="mfo-classes.html">
+        <sub name="MFO Ontology Classes" link="mfo-ontology.html#mfo-classes">
           <sub name="mfo:FeedElement" link="mfo-FeedElement.html"/>
           <sub name="mfo:Action" link="mfo-Action.html"/>
           <sub name="mfo:FeedSettings" link="mfo-FeedSettings.html"/>

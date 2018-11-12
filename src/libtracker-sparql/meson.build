@@ -77,6 +77,8 @@ libtracker_sparql_intermediate_c = static_library('tracker-sparql-intermediate-c
     dependencies: [tracker_common_dep, json_glib],
 )
 
+sparqlinc = [include_directories('.'), meson.current_build_dir()]
+
 tracker_sparql_intermediate_dep = declare_dependency(
     link_with: [libtracker_sparql_intermediate_c, libtracker_sparql_intermediate_vala],
     sources: tracker_sparql_generated_header,
@@ -98,7 +100,7 @@ install_headers(
     subdir: 'tracker-@0@/libtracker-sparql'.format(tracker_api_version))
 
 # FIXME: we can't depend properly on the generated .vapi to do this.
-custom_target('tracker-sparql-' + tracker_api_version + '.vapi',
+tracker_sparql_vapi = custom_target('tracker-sparql-' + tracker_api_version + '.vapi',
     #input: 'tracker-sparql-intermediate-vala.vapi',
     output: 'tracker-sparql-' + tracker_api_version + '.vapi',
     command: [

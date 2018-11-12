@@ -6,12 +6,11 @@ generated = custom_target('base-ontology-doc-generated',
     output: 'gen-doc.stamp',
     command: [ttl2sgml,
               '-d', join_paths(source_root, 'src/ontologies/'),
-              '-o', join_paths(meson.current_build_dir(), 'xml/')],
+              '-o', join_paths(meson.current_build_dir(), 'xml/'),
+              '-e', meson.current_source_dir()],
     depends: ttl2sgml,
-    # FIXME: this shouldn't be necessary, but currently the 'dependencies'
-    # parameter to gnome.gtkdoc() doesn't actually trigger building of custom
-    # targets.
-    build_always: true
+    depend_files: base_ontology,
+    build_by_default: true,
 )
 
 example_files = [
@@ -28,8 +27,10 @@ example_files = [
 ]
 
 gnome.gtkdoc('libtracker-sparql',
-    src_dir: join_paths(meson.current_source_dir(), '..', '..', '..', 'src', 'libtracker-sparql'),
+    src_dir: sparqlinc,
     main_sgml: 'libtracker-sparql-docs.sgml',
     content_files: ['overview.sgml', 'examples.sgml', 'ontologies.sgml', 'private-store.xml', 'migrating-1to2.xml', example_files],
-    dependencies: generated,
+    dependencies: tracker_sparql_dep,
+    gobject_typesfile: 'libtracker-sparql.types',
+    fixxref_args: fixxref_args,
     install: true)
