@@ -628,8 +628,9 @@ BUILT_SOURCES = \
 	$(vapi_DATA)
 
 EXTRA_DIST = tracker-miner-enum-types.c.template \
-	tracker-miner-enum-types.h.template tracker-miner.vapi \
-	tracker-miner.deps $(config_DATA) meson.build
+	tracker-miner-enum-types.h.template tracker-miner-2.map \
+	tracker-miner.vapi tracker-miner.deps $(config_DATA) \
+	meson.build
 INTROSPECTION_GIRS = $(am__append_3)
 INTROSPECTION_SCANNER_ARGS = \
 	-I $(top_srcdir)/src \

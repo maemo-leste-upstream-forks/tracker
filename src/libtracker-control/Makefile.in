@@ -514,6 +514,7 @@ BUILT_SOURCES = \
 	$(vapi_DATA)
 
 EXTRA_DIST = \
+	tracker-control-2.map                          \
 	tracker-control.vapi                           \
 	tracker-control.deps                           \
 	meson.build

@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="ontology.html" title="Part II. Ontology">
 <link rel="prev" href="scal-EventStatus.html" title="scal:EventStatus">
-<link rel="next" href="nmm-classes.html" title="NMM Ontology Classes">
+<link rel="next" href="nmm-Artist.html" title="nmm:Artist">
 <meta name="generator" content="GTK-Doc V1.29 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -17,14 +17,13 @@
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ontology.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
 <td><a accesskey="p" href="scal-EventStatus.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="nmm-classes.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="nmm-Artist.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="nmm-ontology"></a>Nepomuk MultiMedia (NMM): Description of multimedia objects like Music, Video and Images</h2></div></div></div>
 <div class="toc"><dl class="toc">
-<dt><span class="section"><a href="nmm-ontology.html#nmm-explanation">Overview</a></span></dt>
-<dt><span class="section"><a href="nmm-classes.html">NMM Ontology Classes</a></span></dt>
+<dt><span class="section"><a href="nmm-ontology.html#nmm-classes">NMM Ontology Classes</a></span></dt>
 <dd><dl>
 <dt>
 <span class="refentrytitle"><a href="nmm-Artist.html">nmm:Artist</a></span><span class="refpurpose"></span>
@@ -87,30 +86,8 @@
 <dd><p>Not available</p></dd>
 <dt><span class="term">ChangeLog:</span></dt>
 <dd><p><a class="ulink" href="http://git.gnome.org/cgit/tracker/log/src/ontologies/38-nmm.ontology" target="_top">Tracker changes</a></p></dd>
-<div class="section">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="nmm-explanation"></a>Overview</h2></div></div></div>
-<div class="sect2">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id-1.3.8.6.2"></a>Introduction</h3></div></div></div>
-<p>This ontology extends NIE (Nepomuk Information Element ontology) and NFO (Nepomuk File Ontology) into the domains of multimedia, including Images, Videos, Music and Radio, and includes a couple of properties to support uPnP sharing.</p>
-<p>This ontology replaces/complements NID3 and NEXIF. Those ontologies are a direct map of the respective metadata standards, which makes very difficult to map cleanly other standards (like gstreamer metadata, mp4, ogg, and so on). Besides, those ontologies contain a lot of very low level technical information that is useless to the average user of the desktop.</p>
-<p>Our approach in NMM is to keep the minimum properties that make sense for the user, and are present in all (or almost all) specific metadata formats. A profesional photographer (or musician) who needs more fine-grained details for its documents, is free to add also nID3 information or other extensions to the ontology.</p>
-</div>
-<div class="sect2">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id-1.3.8.6.3"></a>Images domain</h3></div></div></div>
-<p>The core of images in NMM ontology is the class <a class="link" href="nmm-Photo.html" title="nmm:Photo">nmm:Photo.</a> It is (through a long hierarchy) a <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a>, an interpretation of some bytes. It has properties to store the basic information (camera, metering mode, white balance, flash), and inherits from <a class="link" href="nfo-Image.html" title="nfo:Image">nfo:Image</a> orientation (nfo:orientation) and resolution (nfo:verticalResolution and nfo:horizontalResolution).</p>
-<p>Note that for tags, nie:keywords (from nie:InformationElement) can be used, or the NAO ontology.</p>
-</div>
-<div class="sect2">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id-1.3.8.6.4"></a>Radio domain</h3></div></div></div>
-<p>NMM includes classes and properties to represent analog and digital radio stations. There is a class <a class="link" href="nmm-RadioStation.html" title="nmm:RadioStation">nmm:RadioStation</a> on the <a class="link" href="nie-InformationElement.html" title="nie:InformationElement">nie:InformationElement</a> side of the ontology, representing what the user sees about that station (genre via PTY codes, icon, plus title inherited from nie:InformationElement)</p>
-<p>A <a class="link" href="nmm-RadioStation.html" title="nmm:RadioStation">nmm:RadioStation</a> can have one or more nmm:carrier properties representing the different frequencies (or links when it is digitial) it can be tuned. This property links the station with <a class="link" href="nfo-MediaStream.html" title="nfo:MediaStream">nfo:MediaStream</a>, but usually it will point to one of the subclasses: <a class="link" href="nmm-DigitalRadio.html" title="nmm:DigitalRadio">nmm:DigitalRadio</a> (if digital) or <a class="link" href="nmm-AnalogRadio.html" title="nmm:AnalogRadio">nmm:AnalogRadio</a> (if analog). An analog station has properties as modulation and frequency, while the digial station has streaming bitrate, encoding or protocol.</p>
-<p>Note that nfo:MediaStream refers to a flux of bytes/data, and it is on the <a class="link" href="nie-DataObject.html" title="nie:DataObject">nie:DataObject</a> side of the ontology</p>
-</div>
-</div>
+<div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="nmm-classes"></a>NMM Ontology Classes</h2></div></div></div></div>
 </div>
 <div class="footer">
 <hr>Generated by GTK-Doc V1.29</div>
