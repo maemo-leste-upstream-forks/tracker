@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: @GNOME_TEAM@
 Build-Depends: debhelper (>= 11),
+               meson,
                pkg-config,
                intltool (>= 0.40.0),
-               gnome-common,
                gnome-pkg-tools,
                libglib2.0-dev (>= 2.44.0),
                libsqlite3-dev (>= 3.8.3),
