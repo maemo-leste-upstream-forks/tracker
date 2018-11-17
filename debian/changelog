@@ -1,3 +1,13 @@
+tracker (2.1.6-2) unstable; urgency=low
+
+  * Build with meson
+  * Cherry-pick build-Restore-right-soversion-to-libraries.patch
+  * Use -c4 for dpkg-gensymbols
+  * Build-Depend on bash-completion & libdbus-1-dev
+  * Adjust rules for missing symlinks for some libraries with meson
+
+ -- Jeremy Bicha <jbicha@debian.org>  Sat, 17 Nov 2018 13:28:33 -0500
+
 tracker (2.1.6-1) unstable; urgency=medium
 
   * New upstream release
