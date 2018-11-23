@@ -3,3 +3,4 @@ drop-assert.patch
 test.patch
 libtracker-miners-common-Make-g_error-a-soft-error.patch
 build-Restore-right-soversion-to-libraries.patch
+functional-tests-Require-Bash-for-test-runner.patch
