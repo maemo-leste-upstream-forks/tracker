@@ -7,4 +7,4 @@ LOCPATH=${ADTTMP}/locale \
     HOME=${ADTTMP} \
     LANG=en_US.utf8 \
     LC_ALL=en_US.utf8 \
-    xvfb-run -a dbus-run-session dh_auto_test 2> >(grep -vE '^(Activating|Successfully activated)')>&2
+    dbus-run-session -- dh_auto_test 2> >(grep -vE '^(Activating|Successfully activated)')>&2
