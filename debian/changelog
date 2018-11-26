@@ -1,3 +1,12 @@
+tracker (2.1.6-3) unstable; urgency=medium
+
+  * Cherry-pick functional-tests-Require-Bash-for-test-runner.patch
+  * Update autopkgtests for meson build
+  * autopkgtest: Depend on dbus-x11, gir1.2-glib-2.0 & python-gi
+  * autopkgtest: Don't use xvfb
+
+ -- Jeremy Bicha <jbicha@debian.org>  Mon, 26 Nov 2018 05:53:39 -0500
+
 tracker (2.1.6-2) unstable; urgency=low
 
   * Build with meson
