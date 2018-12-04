@@ -1,3 +1,10 @@
+tracker (2.1.6-4) unstable; urgency=medium
+
+  * Build with autotools again instead of meson because of autopkgtest
+    regressions seen when built with meson. See bug 915551
+
+ -- Jeremy Bicha <jbicha@debian.org>  Tue, 04 Dec 2018 13:04:08 -0500
+
 tracker (2.1.6-3) unstable; urgency=medium
 
   * Cherry-pick functional-tests-Require-Bash-for-test-runner.patch
