@@ -1,3 +1,10 @@
+tracker (2.1.6-5) unstable; urgency=medium
+
+  * Add -Wl,-O1 to our LDFLAGS
+  * Bump Standards-Version to 4.3.0
+
+ -- Jeremy Bicha <jbicha@debian.org>  Thu, 27 Dec 2018 17:57:39 -0500
+
 tracker (2.1.6-4) unstable; urgency=medium
 
   * Build with autotools again instead of meson because of autopkgtest
