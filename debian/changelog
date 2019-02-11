@@ -1,4 +1,4 @@
-tracker (2.1.7-1) UNRELEASED; urgency=medium
+tracker (2.1.7-1) unstable; urgency=medium
 
   * New upstream release
     + Fix build order with libtracker-sparql generated headers
@@ -11,7 +11,7 @@ tracker (2.1.7-1) UNRELEASED; urgency=medium
     invalid assumption that iterating a hash table will give you items out in
     the same order you put them in. That stopped being true with GLib 2.59.
 
- -- Iain Lane <laney@debian.org>  Mon, 11 Feb 2019 15:57:58 +0000
+ -- Iain Lane <laney@debian.org>  Mon, 11 Feb 2019 16:42:50 +0000
 
 tracker (2.1.6-5) unstable; urgency=medium
 
