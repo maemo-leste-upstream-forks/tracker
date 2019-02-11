@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerMinerFS: Tracker Miner Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch03.html" title="Miner classes for file system">
 <link rel="prev" href="ch03.html" title="Miner classes for file system">
@@ -37,7 +37,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="TrackerMinerFS.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -127,7 +127,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerMinerFS.properties"></a><h2>Properties</h2>
-<div class="informaltable"><table class="informaltable" border="0">
+<div class="informaltable"><table border="0">
 <colgroup>
 <col width="150px" class="properties_type">
 <col width="300px" class="properties_name">
@@ -166,7 +166,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerMinerFS.signals"></a><h2>Signals</h2>
-<div class="informaltable"><table class="informaltable" border="0">
+<div class="informaltable"><table border="0">
 <colgroup>
 <col width="150px" class="signals_return">
 <col width="300px" class="signals_name">
@@ -216,7 +216,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerMinerFS.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -277,9 +277,9 @@ data provider.</p>
         <td class="listing_lines" align="right"><pre>1
 2
 3</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="function"><a href="https://developer.gnome.org/gobject/unstable/gobject-Type-Information.html#G-DEFINE-TYPE-WITH-CODE:CAPS">G_DEFINE_TYPE_WITH_CODE</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">MyMinerFiles</span><span class="symbol">,</span><span class="normal"> my_miner_files</span><span class="symbol">,</span><span class="normal"> TRACKER_TYPE_MINER_FS</span><span class="symbol">,</span>
-<span class="normal">                         </span><span class="function"><a href="https://developer.gnome.org/gobject/unstable/gobject-Type-Information.html#G-IMPLEMENT-INTERFACE:CAPS">G_IMPLEMENT_INTERFACE</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">G_TYPE_INITABLE</span><span class="symbol">,</span>
-<span class="normal">                                                my_miner_files_initable_iface_init</span><span class="symbol">))</span></pre></td>
+        <td class="listing_code"><pre class="programlisting">G_DEFINE_TYPE_WITH_CODE (MyMinerFiles, my_miner_files, TRACKER_TYPE_MINER_FS,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                my_miner_files_initable_iface_init))</pre></td>
       </tr>
     </tbody>
   </table>
@@ -290,7 +290,7 @@ data provider.</p>
 arguments we want. In this case, the 'root' is a <a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct"><span class="type">GFile</span></a> pointing to
 a root URI location (for example 'file:///') and 'data_provider' is a
 <a class="link" href="TrackerDataProvider.html" title="TrackerDataProvider"><span class="type">TrackerDataProvider</span></a> used to enumerate 'root' and return children it
-finds. If 'data_provider' is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> (the default), then a
+finds. If 'data_provider' is <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> (the default), then a
 <a class="link" href="libtracker-miner-TrackerFileDataProvider.html#TrackerFileDataProvider" title="TrackerFileDataProvider"><span class="type">TrackerFileDataProvider</span></a> is created automatically.</p>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
@@ -307,15 +307,15 @@ finds. If 'data_provider' is <a href="https://developer.gnome.org/glib/unstable/
 9
 10</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="comment">// Note that only 'name' is mandatory</span>
-<span class="normal">miner </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="https://developer.gnome.org/gio/unstable/GInitable.html#g-initable-new">g_initable_new</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">MY_TYPE_MINER_FILES</span><span class="symbol">,</span>
-<span class="normal">                        <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></span><span class="symbol">,</span>
-<span class="normal">                        error</span><span class="symbol">,</span>
-<span class="normal">                        </span><span class="string">"name"</span><span class="symbol">,</span><span class="normal"> </span><span class="string">"MyMinerFiles"</span><span class="symbol">,</span>
-<span class="normal">                        </span><span class="string">"root"</span><span class="symbol">,</span><span class="normal"> root</span><span class="symbol">,</span>
-<span class="normal">                        </span><span class="string">"data-provider"</span><span class="symbol">,</span><span class="normal"> data_provider</span><span class="symbol">,</span>
-<span class="normal">                        </span><span class="string">"processing-pool-wait-limit"</span><span class="symbol">,</span><span class="normal"> </span><span class="number">10</span><span class="symbol">,</span>
-<span class="normal">                        </span><span class="string">"processing-pool-ready-limit"</span><span class="symbol">,</span><span class="normal"> </span><span class="number">100</span><span class="symbol">,</span>
-<span class="normal">                        <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></span><span class="symbol">);</span></pre></td>
+miner = g_initable_new (MY_TYPE_MINER_FILES,
+                        <span class="number">NULL</span>,
+                        error,
+                        <span class="number">&quot;name&quot;</span>, <span class="number">&quot;MyMinerFiles&quot;</span>,
+                        <span class="number">&quot;root&quot;</span>, root,
+                        <span class="number">&quot;data-provider&quot;</span>, data_provider,
+                        <span class="number">&quot;processing-pool-wait-limit&quot;</span>, <span class="number">10</span>,
+                        <span class="number">&quot;processing-pool-ready-limit&quot;</span>, <span class="number">100</span>,
+                        <span class="number">NULL</span>);</pre></td>
       </tr>
     </tbody>
   </table>
@@ -347,7 +347,7 @@ what files/directories are indexed by <em class="parameter"><code>fs</code></em>
 </p>
 <div class="refsect3">
 <a name="tracker-miner-fs-get-indexing-tree.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -376,7 +376,7 @@ tracker_miner_fs_get_data_provider (<em class="parameter"><code><a class="link" 
 to supply <a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct"><span class="type">GFile</span></a> and <a href="https://developer.gnome.org/gio/unstable/GFileInfo.html#GFileInfo-struct"><span class="type">GFileInfo</span></a> content to Tracker.</p>
 <div class="refsect3">
 <a name="tracker-miner-fs-get-data-provider.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -405,7 +405,7 @@ tracker_miner_fs_get_throttle (<em class="parameter"><code><a class="link" href=
 <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-set-throttle" title="tracker_miner_fs_set_throttle ()"><code class="function">tracker_miner_fs_set_throttle()</code></a> for more details.</p>
 <div class="refsect3">
 <a name="tracker-miner-fs-get-throttle.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -438,7 +438,7 @@ operations at full speed, 1.0 is the slowest value. With a value of
 the next batch of queued items to be processed.</p>
 <div class="refsect3">
 <a name="tracker-miner-fs-set-throttle.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -474,7 +474,7 @@ crawling directories of <a class="link" href="TrackerMinerFS.html" title="Tracke
 <code class="function">tracker_miner_fs_directory_add()</code>.</p>
 <div class="refsect3">
 <a name="tracker-miner-fs-check-file.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -526,7 +526,7 @@ particular.</p>
 signals</p>
 <div class="refsect3">
 <a name="tracker-miner-fs-notify-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -545,13 +545,13 @@ signals</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>sparql</p></td>
-<td class="parameter_description"><p>Resulting sparql for the given operation, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if
+<td class="parameter_description"><p>Resulting sparql for the given operation, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> if
 there is an error. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> with the error that happened during processing, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
+<td class="parameter_description"><p>a <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> with the error that happened during processing, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -569,10 +569,10 @@ the URN for a <a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile
 <p>If <em class="parameter"><code>file</code></em>
  is not being currently processed by <em class="parameter"><code>fs</code></em>
 , or doesn't
-exist in the store yet, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.</p>
+exist in the store yet, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.</p>
 <div class="refsect3">
 <a name="tracker-miner-fs-get-urn.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -596,7 +596,7 @@ exist in the store yet, <a href="https://developer.gnome.org/glib/unstable/glib-
 <a name="tracker-miner-fs-get-urn.returns"></a><h4>Returns</h4>
 <p>The URN containing the data associated to <em class="parameter"><code>file</code></em>
 ,
-or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
+or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 0.8</p>
@@ -610,10 +610,10 @@ tracker_miner_fs_query_urn (<em class="parameter"><code><a class="link" href="Tr
 <p>If the item exists in the store, this function retrieves
 the URN of the given <a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct"><span class="type">GFile</span></a></p>
 <p>If <em class="parameter"><code>file</code></em>
- doesn't exist in the store yet, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.</p>
+ doesn't exist in the store yet, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.</p>
 <div class="refsect3">
 <a name="tracker-miner-fs-query-urn.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -637,7 +637,7 @@ the URN of the given <a href="https://developer.gnome.org/gio/unstable/GFile.htm
 <a name="tracker-miner-fs-query-urn.returns"></a><h4>Returns</h4>
 <p>A newly allocated string with the URN containing the data associated
 to <em class="parameter"><code>file</code></em>
-, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
+, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 0.10</p>
@@ -654,7 +654,7 @@ queues is more than 0. This includes items deleted, created,
 updated, moved or being written back.</p>
 <div class="refsect3">
 <a name="tracker-miner-fs-has-items-to-process.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -729,7 +729,7 @@ queues, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standa
 in the deriving class in order to actually extract data.</p>
 <div class="refsect3">
 <a name="TrackerMinerFSClass.members"></a><h4>Members</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -800,7 +800,7 @@ have been processed.</p></td>
 the <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> type and other APIs available with this class.</p>
 <div class="refsect3">
 <a name="TrackerMinerFSError.members"></a><h4>Members</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -824,7 +824,7 @@ message.</p>
 <a name="TrackerMinerFSEventType"></a><h3>enum TrackerMinerFSEventType</h3>
 <div class="refsect3">
 <a name="TrackerMinerFSEventType.members"></a><h4>Members</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -916,7 +916,7 @@ user_function (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"
 all pending processing.</p>
 <div class="refsect3">
 <a name="TrackerMinerFS-finished.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -981,7 +981,7 @@ but this gives some indication that a location is
 processed.</p>
 <div class="refsect3">
 <a name="TrackerMinerFS-finished-root.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1044,7 +1044,7 @@ processing has finished on <em class="parameter"><code>file</code></em>
 the SPARQL updates and continue processing other files.</p>
 <div class="refsect3">
 <a name="TrackerMinerFS-process-file.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1112,7 +1112,7 @@ processing has finished on <em class="parameter"><code>file</code></em>
 the SPARQL updates and continue processing other files.</p>
 <div class="refsect3">
 <a name="TrackerMinerFS-process-file-attributes.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1191,7 +1191,7 @@ its default behavior, which is deleting all triples that correspond
 to the affected URIs.</p>
 <div class="refsect3">
 <a name="TrackerMinerFS-remove-file.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
