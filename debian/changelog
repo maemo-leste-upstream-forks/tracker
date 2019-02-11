@@ -4,8 +4,14 @@ tracker (2.1.7-1) UNRELEASED; urgency=medium
     + Fix build order with libtracker-sparql generated headers
     + Fix ontology update with SQLite 3.25
     + Fix build with Vala 0.43
+  * tracker-monitor-Prevent-stack-smashing.patch: Backport. This bug was
+    triggering GCC's stack smashing protection stuff because tracker wasn't
+    properly round tripping an int through a pointer.
+  * …-Don-t-rely-on-hash-table-iteration-order-.patch: Backport. This fixes an
+    invalid assumption that iterating a hash table will give you items out in
+    the same order you put them in. That stopped being true with GLib 2.59.
 
- -- Iain Lane <laney@debian.org>  Mon, 11 Feb 2019 13:17:35 +0000
+ -- Iain Lane <laney@debian.org>  Mon, 11 Feb 2019 15:57:58 +0000
 
 tracker (2.1.6-5) unstable; urgency=medium
 
