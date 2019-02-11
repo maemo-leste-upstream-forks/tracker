@@ -16,7 +16,7 @@ used by libtool, we need to give the libraries a 'version' as well.
  4 files changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 6ab3995..51eb868 100644
+index 7d61fe1..6e20256 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -15,7 +15,8 @@ tracker_interface_age = 0

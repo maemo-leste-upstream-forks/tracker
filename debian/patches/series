@@ -1,3 +1,4 @@
+tracker-monitor-Prevent-stack-smashing.patch
 disable-miner-fs-test.patch
 drop-assert.patch
 test.patch
