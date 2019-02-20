@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerIndexingTree: Tracker Miner Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch02.html" title="Base abstract miner classes">
 <link rel="prev" href="TrackerDataProvider.html" title="TrackerDataProvider">
@@ -36,7 +36,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="TrackerIndexingTree.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -191,7 +191,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerIndexingTree.properties"></a><h2>Properties</h2>
-<div class="informaltable"><table border="0">
+<div class="informaltable"><table class="informaltable" border="0">
 <colgroup>
 <col width="150px" class="properties_type">
 <col width="300px" class="properties_name">
@@ -214,7 +214,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerIndexingTree.signals"></a><h2>Signals</h2>
-<div class="informaltable"><table border="0">
+<div class="informaltable"><table class="informaltable" border="0">
 <colgroup>
 <col width="150px" class="signals_return">
 <col width="300px" class="signals_name">
@@ -246,7 +246,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerIndexingTree.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -293,13 +293,13 @@ tracker_indexing_tree_new (<em class="parameter"><code><span class="type">void</
 <pre class="programlisting"><a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="returnvalue">TrackerIndexingTree</span></a> *
 tracker_indexing_tree_new_with_root (<em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct"><span class="type">GFile</span></a> *root</code></em>);</pre>
 <p>If <em class="parameter"><code>root</code></em>
- is <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>, the default value is 'file:///'. Using <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+ is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, the default value is 'file:///'. Using <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 here is the equivalent to calling <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-new" title="tracker_indexing_tree_new ()"><code class="function">tracker_indexing_tree_new()</code></a> which
 takes no <em class="parameter"><code>root</code></em>
  argument.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-new-with-root.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -329,7 +329,7 @@ tracker_indexing_tree_add (<em class="parameter"><code><a class="link" href="Tra
 given configuration flags.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-add.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -367,7 +367,7 @@ only directories previously added with <a class="link" href="TrackerIndexingTree
 can be effectively removed.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-remove.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -398,7 +398,7 @@ tracker_indexing_tree_add_filter (<em class="parameter"><code><a class="link" hr
 <p>Adds a new filter for basenames.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-add-filter.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -433,7 +433,7 @@ tracker_indexing_tree_clear_filters (<em class="parameter"><code><a class="link"
 <p>Clears all filters of a given type.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-clear-filters.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -466,7 +466,7 @@ tracker_indexing_tree_file_matches_filter
  matches any filter of the given filter type.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-file-matches-filter.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -514,7 +514,7 @@ parameters given through <a class="link" href="TrackerIndexingTree.html#tracker-
 file system.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-file-is-indexable.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -557,7 +557,7 @@ tracker_indexing_tree_parent_is_indexable
  should be indexed based on its contents.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-parent-is-indexable.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -600,7 +600,7 @@ tracker_indexing_tree_get_filter_hidden
 setting, see <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-set-filter-hidden" title="tracker_indexing_tree_set_filter_hidden ()"><code class="function">tracker_indexing_tree_set_filter_hidden()</code></a>.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-get-filter-hidden.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -637,7 +637,7 @@ To ignore hidden files, <em class="parameter"><code>filter_hidden</code></em>
 <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-set-filter-hidden.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -675,7 +675,7 @@ policies to be returned, for example, the default policy for files
 (<a class="link" href="libtracker-miner-Enumerations.html#TRACKER-FILTER-FILE:CAPS"><span class="type">TRACKER_FILTER_FILE</span></a>).</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-get-default-policy.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -721,7 +721,7 @@ or directory and there are some other options too.</p>
 using this function.</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-set-default-policy.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -757,14 +757,14 @@ tracker_indexing_tree_get_root (<em class="parameter"><code><a class="link" href
                                 <em class="parameter"><code><a class="link" href="libtracker-miner-Enumerations.html#TrackerDirectoryFlags" title="enum TrackerDirectoryFlags"><span class="type">TrackerDirectoryFlags</span></a> *directory_flags</code></em>);</pre>
 <p>Returns the <a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct"><span class="type">GFile</span></a> that was previously added through <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-add" title="tracker_indexing_tree_add ()"><code class="function">tracker_indexing_tree_add()</code></a>
 and would equal or contain <em class="parameter"><code>file</code></em>
-, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> if none applies.</p>
-<p>If the return value is non-<a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>, <em class="parameter"><code>directory_flags</code></em>
+, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none applies.</p>
+<p>If the return value is non-<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, <em class="parameter"><code>directory_flags</code></em>
  would contain the
 <a class="link" href="libtracker-miner-Enumerations.html#TrackerDirectoryFlags" title="enum TrackerDirectoryFlags"><span class="type">TrackerDirectoryFlags</span></a> applying to <em class="parameter"><code>file</code></em>
 .</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-get-root.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -792,7 +792,7 @@ and would equal or contain <em class="parameter"><code>file</code></em>
 <div class="refsect3">
 <a name="tracker-indexing-tree-get-root.returns"></a><h4>Returns</h4>
 <p>the effective parent in <em class="parameter"><code>tree</code></em>
-, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
+, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
@@ -810,7 +810,7 @@ indexing locations. For example, if
 used, so you can not mix <code class="filename">http</code> and
 <code class="filename">file</code> roots in <em class="parameter"><code>tree</code></em>
 .</p>
-<p>The return value should <span class="emphasis"><em>NEVER</em></span> be <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. In
+<p>The return value should <span class="emphasis"><em>NEVER</em></span> be <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. In
 cases where no root is given, we fallback to
 <code class="filename">file:///</code>.</p>
 <p>Roots explained:</p>
@@ -825,7 +825,7 @@ master root.</p></li>
 </ul></div>
 <div class="refsect3">
 <a name="tracker-indexing-tree-get-master-root.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -841,7 +841,7 @@ master root.</p></li>
 <div class="refsect3">
 <a name="tracker-indexing-tree-get-master-root.returns"></a><h4>Returns</h4>
 <p>the effective root for all locations, or
-<a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> on error. The root is owned by <em class="parameter"><code>tree</code></em>
+<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on error. The root is owned by <em class="parameter"><code>tree</code></em>
 and should not be freed.
 It can be referenced using <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-ref"><code class="function">g_object_ref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
@@ -860,7 +860,7 @@ the root of the <em class="parameter"><code>tree</code></em>
 .</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-file-is-root.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -896,7 +896,7 @@ tracker_indexing_tree_list_roots (<em class="parameter"><code><a class="link" hr
 </p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-list-roots.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -937,7 +937,7 @@ will be emitted on the indexing roots that are contained in <em class="parameter
 .</p>
 <div class="refsect3">
 <a name="tracker-indexing-tree-notify-update.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -998,7 +998,7 @@ will be emitted on the indexing roots that are contained in <em class="parameter
 <p>Class for the <a class="link" href="TrackerIndexingTree.html" title="TrackerIndexingTree"><span class="type">TrackerIndexingTree</span></a>.</p>
 <div class="refsect3">
 <a name="TrackerIndexingTreeClass.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">
@@ -1067,7 +1067,7 @@ about possible changes on children of a root.</p>
 those may be triggered through <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-notify-update" title="tracker_indexing_tree_notify_update ()"><code class="function">tracker_indexing_tree_notify_update()</code></a>.</p>
 <div class="refsect3">
 <a name="TrackerIndexingTree-child-updated.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1114,7 +1114,7 @@ signalled when the <a class="link" href="TrackerIndexingTree.html#tracker-indexi
 called.</p>
 <div class="refsect3">
 <a name="TrackerIndexingTree-directory-added.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1156,7 +1156,7 @@ signalled when the <a class="link" href="TrackerIndexingTree.html#tracker-indexi
 called.</p>
 <div class="refsect3">
 <a name="TrackerIndexingTree-directory-removed.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1197,7 +1197,7 @@ calls to <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-ad
 requested through <a class="link" href="TrackerIndexingTree.html#tracker-indexing-tree-notify-update" title="tracker_indexing_tree_notify_update ()"><code class="function">tracker_indexing_tree_notify_update()</code></a>.</p>
 <div class="refsect3">
 <a name="TrackerIndexingTree-directory-updated.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">

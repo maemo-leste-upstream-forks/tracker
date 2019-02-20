@@ -22,21 +22,21 @@
       </sub>
       <sub name="XML schema (XSD): Basic types definitions (int, double,...)" link="xsd-ontology.html">
         <sub name="XSD Ontology Classes" link="xsd-ontology.html#xsd-classes">
-          <sub name="xsd:integer" link="xsd-integer.html"/>
-          <sub name="xsd:boolean" link="xsd-boolean.html"/>
-          <sub name="xsd:string" link="xsd-string.html"/>
-          <sub name="xsd:double" link="xsd-double.html"/>
           <sub name="xsd:date" link="xsd-date.html"/>
           <sub name="xsd:dateTime" link="xsd-dateTime.html"/>
+          <sub name="xsd:string" link="xsd-string.html"/>
+          <sub name="xsd:integer" link="xsd-integer.html"/>
+          <sub name="xsd:double" link="xsd-double.html"/>
+          <sub name="xsd:boolean" link="xsd-boolean.html"/>
         </sub>
       </sub>
       <sub name="Resource Description Framework (RDF): Core RDF classes to keep the internal consistency of the ontology" link="rdf-ontology.html">
         <sub name="RDF Ontology Classes" link="rdf-ontology.html#rdf-classes">
-          <sub name="rdfs:Class" link="rdfs-Class.html"/>
-          <sub name="rdfs:Literal" link="rdfs-Literal.html"/>
-          <sub name="rdfs:Resource" link="rdfs-Resource.html"/>
           <sub name="tracker:Namespace" link="tracker-Namespace.html"/>
           <sub name="tracker:Ontology" link="tracker-Ontology.html"/>
+          <sub name="rdfs:Literal" link="rdfs-Literal.html"/>
+          <sub name="rdfs:Resource" link="rdfs-Resource.html"/>
+          <sub name="rdfs:Class" link="rdfs-Class.html"/>
           <sub name="rdf:Property" link="rdf-Property.html"/>
         </sub>
       </sub>
@@ -236,9 +236,7 @@
     <keyword type="variable" name="tracker_micro_version" link="libtracker-sparql-Version-Information.html#tracker-micro-version"/>
     <keyword type="variable" name="tracker_binary_age" link="libtracker-sparql-Version-Information.html#tracker-binary-age"/>
     <keyword type="variable" name="tracker_interface_age" link="libtracker-sparql-Version-Information.html#tracker-interface-age"/>
-    <keyword type="property" name="The “tracker:notify” property" link="rdfs-Class.html#rdfs-Class.tracker-notify"/>
-    <keyword type="property" name="The “tracker:domainIndex” property" link="rdfs-Class.html#rdfs-Class.tracker-domainIndex"/>
-    <keyword type="property" name="The “rdfs:subClassOf” property" link="rdfs-Class.html#rdfs-Class.rdfs-subClassOf"/>
+    <keyword type="property" name="The “tracker:prefix” property" link="tracker-Namespace.html#tracker-Namespace.tracker-prefix"/>
     <keyword type="property" name="The “nao:isRelated” property" link="rdfs-Resource.html#rdfs-Resource.nao-isRelated"/>
     <keyword type="property" name="The “nao:lastModified” property" link="rdfs-Resource.html#rdfs-Resource.nao-lastModified"/>
     <keyword type="property" name="The “nao:deprecated” property" link="rdfs-Resource.html#rdfs-Resource.nao-deprecated"/>
@@ -266,7 +264,9 @@
     <keyword type="property" name="The “rdfs:label” property" link="rdfs-Resource.html#rdfs-Resource.rdfs-label"/>
     <keyword type="property" name="The “rdfs:comment” property" link="rdfs-Resource.html#rdfs-Resource.rdfs-comment"/>
     <keyword type="property" name="The “rdf:type” property" link="rdfs-Resource.html#rdfs-Resource.rdf-type"/>
-    <keyword type="property" name="The “tracker:prefix” property" link="tracker-Namespace.html#tracker-Namespace.tracker-prefix"/>
+    <keyword type="property" name="The “tracker:notify” property" link="rdfs-Class.html#rdfs-Class.tracker-notify"/>
+    <keyword type="property" name="The “tracker:domainIndex” property" link="rdfs-Class.html#rdfs-Class.tracker-domainIndex"/>
+    <keyword type="property" name="The “rdfs:subClassOf” property" link="rdfs-Class.html#rdfs-Class.rdfs-subClassOf"/>
     <keyword type="property" name="The “nrl:maxCardinality” property" link="rdf-Property.html#rdf-Property.nrl-maxCardinality"/>
     <keyword type="property" name="The “tracker:forceJournal” property" link="rdf-Property.html#rdf-Property.tracker-forceJournal"/>
     <keyword type="property" name="The “tracker:writeback” property" link="rdf-Property.html#rdf-Property.tracker-writeback"/>

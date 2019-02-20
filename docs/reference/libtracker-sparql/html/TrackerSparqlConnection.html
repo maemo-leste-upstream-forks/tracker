@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerSparqlConnection: Tracker SPARQL Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder">
@@ -34,7 +34,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="TrackerSparqlConnection.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -261,7 +261,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerSparqlConnection.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -321,7 +321,7 @@ the journal needs to be replayed in such an event, the delay may be
 substantial while data is restored as best as possible.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-get.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -367,7 +367,7 @@ tracker_sparql_connection_get_finish (<em class="parameter"><code><a href="https
 or an error in cases of failure.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-get-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -381,7 +381,7 @@ or an error in cases of failure.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p>The error which occurred or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
+<td class="parameter_description"><p>The error which occurred or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -406,7 +406,7 @@ tracker_sparql_connection_local_new (<em class="parameter"><code><a class="link"
                                      <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <div class="refsect3">
 <a name="tracker-sparql-connection-local-new.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -425,12 +425,12 @@ tracker_sparql_connection_local_new (<em class="parameter"><code><a class="link"
 </tr>
 <tr>
 <td class="parameter_name"><p>journal</p></td>
-<td class="parameter_description"><p>Location for the operation journal, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
+<td class="parameter_description"><p>Location for the operation journal, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ontology</p></td>
-<td class="parameter_description"><p>Location of the ontology used for this connection, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
+<td class="parameter_description"><p>Location of the ontology used for this connection, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -440,7 +440,7 @@ tracker_sparql_connection_local_new (<em class="parameter"><code><a class="link"
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p>The error which occurred or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
+<td class="parameter_description"><p>The error which occurred or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -458,11 +458,11 @@ process, if multiple processes use the same journal/cache locations,
 the results are unpredictable.</p>
 <p>The <em class="parameter"><code>journal</code></em>
 is used to rebuild the database in case of data corruption,
-if <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> is provided, the same location than <em class="parameter"><code>store</code></em>
+if <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is provided, the same location than <em class="parameter"><code>store</code></em>
 will be assumed.</p>
 <p>The caller is entirely free to define an ontology or reuse Nepomuk for
 its purposes. For the former see the "Defining ontologies" section in
-this library docs. For the latter pass a <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> <em class="parameter"><code>ontology</code></em>
+this library docs. For the latter pass a <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> <em class="parameter"><code>ontology</code></em>
 .</p>
 <p>The <em class="parameter"><code>ontology</code></em>
 argument may be a resource:/// URI, a directory location
@@ -489,7 +489,7 @@ tracker_sparql_connection_local_new_async
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <div class="refsect3">
 <a name="tracker-sparql-connection-local-new-async.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -508,12 +508,12 @@ tracker_sparql_connection_local_new_async
 </tr>
 <tr>
 <td class="parameter_name"><p>journal</p></td>
-<td class="parameter_description"><p>Location for the operation journal, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
+<td class="parameter_description"><p>Location for the operation journal, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>ontology</p></td>
-<td class="parameter_description"><p>Location of the ontology used for this connection, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
+<td class="parameter_description"><p>Location of the ontology used for this connection, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -562,7 +562,7 @@ tracker_sparql_connection_local_new_finish
 tracker_sparql_connection_remote_new (<em class="parameter"><code>const <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri_base</code></em>);</pre>
 <div class="refsect3">
 <a name="tracker-sparql-connection-remote-new.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -598,7 +598,7 @@ its parts correctly escaped using <a class="link" href="libtracker-sparql-Utilit
 otherwise SPARQL injection is possible.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-query.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -630,8 +630,8 @@ otherwise SPARQL injection is possible.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-query.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
-On error, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em>
+<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
+On error, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em>
 is set accordingly.
 Call <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer needed.</p>
 </div>
@@ -658,7 +658,7 @@ tracker_sparql_connection_query_finish
 <p>Finishes the asynchronous SPARQL query operation.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-query-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -685,8 +685,8 @@ tracker_sparql_connection_query_finish
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-query-finish.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
-On error, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em>
+<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
+On error, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em>
 is set accordingly.
 Call <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer needed.</p>
 </div>
@@ -709,7 +709,7 @@ its parts correctly escaped using <a class="link" href="libtracker-sparql-Utilit
 otherwise SPARQL injection is possible.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -760,7 +760,7 @@ tracker_sparql_connection_update_async
 <p>Executes asynchronously a SPARQL update.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-async.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -815,7 +815,7 @@ tracker_sparql_connection_update_finish
 <p>Finishes the asynchronous SPARQL update operation.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -849,7 +849,7 @@ tracker_sparql_connection_update_finish
 tracker_sparql_connection_update_array_async
                                (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **sparql</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> sparql_length1</code></em>,
+                                <em class="parameter"><code><span class="type">int</span> sparql_length1</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                 <em class="parameter"><code><a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
@@ -859,7 +859,7 @@ array is its own transaction. This means that update n+1 is not halted
 due to an error in update n.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-array-async.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -944,26 +944,26 @@ tracker_sparql_connection_update_array_finish
 18
 19
 20</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="type">static</span> <span class="type">void</span>
-async_update_array_callback (GObject      *source_object,
-                             GAsyncResult *result,
-                             gpointer      user_data)
-{
-    GError *error = <span class="number">NULL</span>;
-    GPtrArray *errors;
-    guint i;
+        <td class="listing_code"><pre class="programlisting"><span class="keyword">static</span><span class="normal"> </span><span class="type">void</span>
+<span class="function">async_update_array_callback</span><span class="normal"> </span><span class="symbol">(</span><span class="usertype">GObject</span><span class="normal">      </span><span class="symbol">*</span><span class="normal">source_object</span><span class="symbol">,</span>
+<span class="normal">                             </span><span class="usertype">GAsyncResult</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">result</span><span class="symbol">,</span>
+<span class="normal">                             </span><span class="usertype">gpointer</span><span class="normal">      user_data</span><span class="symbol">)</span>
+<span class="cbracket">{</span>
+<span class="normal">    </span><span class="usertype">GError</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">error </span><span class="symbol">=</span><span class="normal"> <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></span><span class="symbol">;</span>
+<span class="normal">    </span><span class="usertype">GPtrArray</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">errors</span><span class="symbol">;</span>
+<span class="normal">    </span><span class="usertype">guint</span><span class="normal"> i</span><span class="symbol">;</span>
 
-    errors = tracker_sparql_connection_update_array_finish (connection, result, &amp;error);
-    g_assert_no_error (error);
+<span class="normal">    errors </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="TrackerSparqlConnection.html#tracker-sparql-connection-update-array-finish">tracker_sparql_connection_update_array_finish</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">connection</span><span class="symbol">,</span><span class="normal"> result</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">&amp;</span><span class="normal">error</span><span class="symbol">);</span>
+<span class="normal">    </span><span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Testing.html#g-assert-no-error">g_assert_no_error</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">error</span><span class="symbol">);</span>
 
-    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; errors-&gt;len; i++) {
-        <span class="type">const</span> GError *e = g_ptr_array_index (errors, i);
+<span class="normal">    </span><span class="keyword">for</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">i </span><span class="symbol">=</span><span class="normal"> </span><span class="number">0</span><span class="symbol">;</span><span class="normal"> i </span><span class="symbol">&lt;</span><span class="normal"> errors</span><span class="symbol">-&gt;</span><span class="normal">len</span><span class="symbol">;</span><span class="normal"> i</span><span class="symbol">++)</span><span class="normal"> </span><span class="cbracket">{</span>
+<span class="normal">        </span><span class="keyword">const</span><span class="normal"> </span><span class="usertype">GError</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">e </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Pointer-Arrays.html#g-ptr-array-index">g_ptr_array_index</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">errors</span><span class="symbol">,</span><span class="normal"> i</span><span class="symbol">);</span>
 
-        ...
-    }
+<span class="normal">        </span><span class="symbol">...</span>
+<span class="normal">    </span><span class="cbracket">}</span>
 
-    g_ptr_array_unref (errors);
-}</pre></td>
+<span class="normal">    </span><span class="function"><a href="https://developer.gnome.org/glib/unstable/glib-Pointer-Arrays.html#g-ptr-array-unref">g_ptr_array_unref</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">errors</span><span class="symbol">);</span>
+<span class="cbracket">}</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -972,7 +972,7 @@ async_update_array_callback (GObject      *source_object,
 </div>
 <br class="example-break"><div class="refsect3">
 <a name="tracker-sparql-connection-update-array-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1028,7 +1028,7 @@ its parts correctly escaped using <a class="link" href="libtracker-sparql-Utilit
 otherwise SPARQL injection is possible.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-blank.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1084,7 +1084,7 @@ tracker_sparql_connection_update_blank_async
 <p>Executes asynchronously a SPARQL update.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-blank-async.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1140,7 +1140,7 @@ tracker_sparql_connection_update_blank_finish
 the URNs of the generated nodes, if any.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-update-blank-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1184,7 +1184,7 @@ tracker_sparql_connection_load (<em class="parameter"><code><a class="link" href
 synchronous, so it may block.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-load.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1228,7 +1228,7 @@ tracker_sparql_connection_load_async (<em class="parameter"><code><a class="link
 <p>Loads, asynchronously, a Turtle file (TTL) into the store.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-load-async.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1277,7 +1277,7 @@ tracker_sparql_connection_load_finish (<em class="parameter"><code><a class="lin
 <p>Finishes the asynchronous load of the Turtle file.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-load-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1315,7 +1315,7 @@ tracker_sparql_connection_statistics (<em class="parameter"><code><a class="link
 synchronous, so it may block.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1342,7 +1342,7 @@ synchronous, so it may block.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a>
+<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>
 on error. Call <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer
 needed.</p>
 </div>
@@ -1360,7 +1360,7 @@ tracker_sparql_connection_statistics_async
 <p>Retrieves, asynchronously, the statistics from the Store.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics-async.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1405,7 +1405,7 @@ tracker_sparql_connection_statistics_finish
 <p>Finishes the asynchronous retrieval of statistics from the Store.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1432,7 +1432,7 @@ tracker_sparql_connection_statistics_finish
 </div>
 <div class="refsect3">
 <a name="tracker-sparql-connection-statistics-finish.returns"></a><h4>Returns</h4>
-<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a>
+<p> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>
 on error. Call <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer
 needed.</p>
 </div>
@@ -1449,7 +1449,7 @@ prefixes in the ontology of <em class="parameter"><code>self</code></em>
 .</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-get-namespace-manager.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1484,7 +1484,7 @@ clients" section in the docs for this library.</p>
 calls happen.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-set-domain.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -1510,7 +1510,7 @@ will be used on on the connection obtained by
 See <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-set-domain" title="tracker_sparql_connection_set_domain ()"><code class="function">tracker_sparql_connection_set_domain()</code></a> for more information.</p>
 <div class="refsect3">
 <a name="tracker-sparql-connection-get-domain.returns"></a><h4>Returns</h4>
-<p>The domain string, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> if none is set. </p>
+<p>The domain string, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none is set. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 2.0</p>
@@ -1522,7 +1522,7 @@ See <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection
 <a name="TrackerSparqlError"></a><h3>enum TrackerSparqlError</h3>
 <div class="refsect3">
 <a name="TrackerSparqlError.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -1586,7 +1586,7 @@ non-direct requests.</p>
 <a name="TrackerSparqlConnectionFlags"></a><h3>enum TrackerSparqlConnectionFlags</h3>
 <div class="refsect3">
 <a name="TrackerSparqlConnectionFlags.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">

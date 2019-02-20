@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerNotifier: Tracker SPARQL Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor">
@@ -37,7 +37,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="TrackerNotifier.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -93,7 +93,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerNotifier.properties"></a><h2>Properties</h2>
-<div class="informaltable"><table border="0">
+<div class="informaltable"><table class="informaltable" border="0">
 <colgroup>
 <col width="150px" class="properties_type">
 <col width="300px" class="properties_name">
@@ -115,7 +115,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerNotifier.signals"></a><h2>Signals</h2>
-<div class="informaltable"><table border="0">
+<div class="informaltable"><table class="informaltable" border="0">
 <colgroup>
 <col width="150px" class="signals_return">
 <col width="300px" class="signals_name">
@@ -130,7 +130,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerNotifier.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -208,12 +208,12 @@ The expected way to retrieving metadata is a query of the form:</p>
 4
 5
 6</pre></td>
-        <td class="listing_code"><pre class="programlisting">SELECT ?urn …
-WHERE {
-  ?urn a rdfs:Resource .
-  …
-  FILTER (tracker:id(?urn) = …)
-}</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="normal">SELECT </span><span class="symbol">?</span><span class="normal">urn …</span>
+<span class="normal">WHERE </span><span class="cbracket">{</span>
+<span class="normal">  </span><span class="symbol">?</span><span class="normal">urn </span><span class="usertype">a</span><span class="normal"> rdfs</span><span class="symbol">:</span><span class="normal">Resource </span><span class="symbol">.</span>
+<span class="normal">  …</span>
+<span class="normal">  </span><span class="function">FILTER</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">tracker</span><span class="symbol">:</span><span class="function">id</span><span class="symbol">(?</span><span class="normal">urn</span><span class="symbol">)</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> …</span><span class="symbol">)</span>
+<span class="cbracket">}</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -230,7 +230,7 @@ be obtained for every element and situation, most notably during
 <a name="trackernotifier-caveats"></a><h3>Known caveats</h3>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>If a resource is deleted, the <a class="link" href="TrackerNotifier.html#TRACKER-NOTIFIER-EVENT-DELETE:CAPS"><code class="literal">TRACKER_NOTIFIER_EVENT_DELETE</code></a> event
-emitted will have a <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> location, even if the notifier was created
+emitted will have a <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> location, even if the notifier was created
 with the <a class="link" href="TrackerNotifier.html#TRACKER-NOTIFIER-FLAG-QUERY-LOCATION:CAPS"><code class="literal">TRACKER_NOTIFIER_FLAG_QUERY_LOCATION</code></a> flag enabled. At the
 time of notifying, the resource does not exist anymore, so no
 meatadata can be retrieved.</p></li>
@@ -261,7 +261,7 @@ tracker_notifier_new (<em class="parameter"><code>const <a href="https://develop
 TrackerNotifier::events signal.</p>
 <div class="refsect3">
 <a name="tracker-notifier-new.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -271,7 +271,7 @@ TrackerNotifier::events signal.</p>
 <tr>
 <td class="parameter_name"><p>classes</p></td>
 <td class="parameter_description"><p>Array of RDF classes to
-receive notifications from, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> for all. </p></td>
+receive notifications from, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for all. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> zero-terminated=1][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -294,7 +294,7 @@ receive notifications from, or <a href="/usr/share/gtk-doc/html/liboil/liboil-li
 </div>
 <div class="refsect3">
 <a name="tracker-notifier-new.returns"></a><h4>Returns</h4>
-<p>a newly created <a class="link" href="TrackerNotifier.html" title="TrackerNotifier"><span class="type">TrackerNotifier</span></a>, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> on error. </p>
+<p>a newly created <a class="link" href="TrackerNotifier.html" title="TrackerNotifier"><span class="type">TrackerNotifier</span></a>, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on error. </p>
 <p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 1.12</p>
@@ -307,7 +307,7 @@ tracker_notifier_event_get_event_type (<em class="parameter"><code><a class="lin
 <p>Returns the event type.</p>
 <div class="refsect3">
 <a name="tracker-notifier-event-get-event-type.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -334,7 +334,7 @@ tracker_notifier_event_get_id (<em class="parameter"><code><a class="link" href=
 <p>Returns the tracker:id of the element being notified upon.</p>
 <div class="refsect3">
 <a name="tracker-notifier-event-get-id.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -368,7 +368,7 @@ RDF type the notifier is subscribed to.</p>
 are explicitly marked with the tracker:notify property in their ontology.</p>
 <div class="refsect3">
 <a name="tracker-notifier-event-get-type.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -398,7 +398,7 @@ notifier has the flag <a class="link" href="TrackerNotifier.html#TRACKER-NOTIFIE
 notified upon, typically of the form "urn:uuid:...".</p>
 <div class="refsect3">
 <a name="tracker-notifier-event-get-urn.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -427,7 +427,7 @@ has the flag <a class="link" href="TrackerNotifier.html#TRACKER-NOTIFIER-FLAG-QU
 be obtained at the time of emission.</p>
 <div class="refsect3">
 <a name="tracker-notifier-event-get-location.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -442,7 +442,7 @@ be obtained at the time of emission.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-notifier-event-get-location.returns"></a><h4>Returns</h4>
-<p>The element location, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
+<p>The element location, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
 <p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
 </div>
 <p class="since">Since: 1.12</p>
@@ -455,7 +455,7 @@ be obtained at the time of emission.</p>
 <p>Flags affecting <a class="link" href="TrackerNotifier.html" title="TrackerNotifier"><span class="type">TrackerNotifier</span></a> behavior.</p>
 <div class="refsect3">
 <a name="TrackerNotifierFlags.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -522,7 +522,7 @@ be obtained at the time of emission.</p>
 <p>Notifier event types.</p>
 <div class="refsect3">
 <a name="TrackerNotifierEventType.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="enum_members_name">
 <col class="enum_members_description">
@@ -587,7 +587,7 @@ user_function (<a class="link" href="TrackerNotifier.html" title="TrackerNotifie
 <p>Notifies of changes in the Tracker database.</p>
 <div class="refsect3">
 <a name="TrackerNotifier-events.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
