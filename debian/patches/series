@@ -1,5 +1,4 @@
 tracker-monitor-Prevent-stack-smashing.patch
-libtracker-data-Don-t-rely-on-hash-table-iteration-order-.patch
 disable-miner-fs-test.patch
 drop-assert.patch
 test.patch
