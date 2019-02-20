@@ -1,5 +1,5 @@
 {
-    "PREFIX": "/usr",
+    "PREFIX": "/home/carlos/Build/gnome",
     "RAW_EXEC_PREFIX": "${prefix}",
     "RAW_DATAROOT_DIR": "${prefix}/share",
     "TEST_ONTOLOGIES_DIR": "@top_srcdir@/tests/functional-tests/test-ontologies",

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerDataProvider: Tracker Miner Library Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch02.html" title="Base abstract miner classes">
 <link rel="prev" href="TrackerMinerOnline.html" title="TrackerMinerOnline">
@@ -35,7 +35,7 @@
 </tr></table></div>
 <div class="refsect1">
 <a name="TrackerDataProvider.functions"></a><h2>Functions</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="functions_return">
 <col class="functions_name">
@@ -70,7 +70,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerDataProvider.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
@@ -89,7 +89,7 @@
 </div>
 <div class="refsect1">
 <a name="TrackerDataProvider.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/GTypeModule.html">GInterface</a>
+<pre class="screen">    <a href="/home/carlos/Build/gnome/share/gtk-doc/html/gobject/GTypeModule.html">GInterface</a>
     <span class="lineart">╰──</span> TrackerDataProvider
 </pre>
 </div>
@@ -144,7 +144,7 @@ G_FILE_ATTRIBUTE_STANDARD_NAME. See <a href="https://developer.gnome.org/gio/uns
 more details.</p>
 <div class="refsect3">
 <a name="tracker-data-provider-begin.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -173,12 +173,12 @@ more details.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>optional <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> object, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. </p></td>
+<td class="parameter_description"><p>optional <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> object, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p>location to store the error occurring, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore</p></td>
+<td class="parameter_description"><p>location to store the error occurring, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to ignore</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -186,7 +186,7 @@ more details.</p>
 </div>
 <div class="refsect3">
 <a name="tracker-data-provider-begin.returns"></a><h4>Returns</h4>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GFileEnumerator.html#GFileEnumerator-struct"><span class="type">GFileEnumerator</span></a> or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure.
+<p>a <a href="https://developer.gnome.org/gio/unstable/GFileEnumerator.html#GFileEnumerator-struct"><span class="type">GFileEnumerator</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure.
 This must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -222,7 +222,7 @@ value) will be executed before an outstanding request with lower
 priority. Default priority is <a href="https://developer.gnome.org/glib/unstable/glib-The-Main-Event-Loop.html#G-PRIORITY-DEFAULT:CAPS"><code class="literal">G_PRIORITY_DEFAULT</code></a>.</p>
 <div class="refsect3">
 <a name="tracker-data-provider-begin-async.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -256,7 +256,7 @@ priority. Default priority is <a href="https://developer.gnome.org/glib/unstable
 </tr>
 <tr>
 <td class="parameter_name"><p>cancellable</p></td>
-<td class="parameter_description"><p>optional <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> object, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> to
+<td class="parameter_description"><p>optional <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct"><span class="type">GCancellable</span></a> object, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to
 ignore. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
@@ -287,7 +287,7 @@ tracker_data_provider_begin_finish (<em class="parameter"><code><a class="link" 
 <a class="link" href="TrackerDataProvider.html#tracker-data-provider-begin-async" title="tracker_data_provider_begin_async ()"><code class="function">tracker_data_provider_begin_async()</code></a>.</p>
 <div class="refsect3">
 <a name="tracker-data-provider-begin-finish.parameters"></a><h4>Parameters</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
 <col class="parameters_description">
@@ -306,7 +306,7 @@ tracker_data_provider_begin_finish (<em class="parameter"><code><a class="link" 
 </tr>
 <tr>
 <td class="parameter_name"><p>error</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> location to store the error occurring, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td class="parameter_description"><p>a <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> location to store the error occurring, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 to ignore.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -315,7 +315,7 @@ to ignore.</p></td>
 </div>
 <div class="refsect3">
 <a name="tracker-data-provider-begin-finish.returns"></a><h4>Returns</h4>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GFileEnumerator.html#GFileEnumerator-struct"><span class="type">GFileEnumerator</span></a> or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure.
+<p>a <a href="https://developer.gnome.org/gio/unstable/GFileEnumerator.html#GFileEnumerator-struct"><span class="type">GFileEnumerator</span></a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure.
 This must be freed with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>. </p>
 <p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -354,7 +354,7 @@ This must be freed with <a href="https://developer.gnome.org/gobject/unstable/go
 <p>Virtual methods left to implement.</p>
 <div class="refsect3">
 <a name="TrackerDataProviderIface.members"></a><h4>Members</h4>
-<div class="informaltable"><table width="100%" border="0">
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
 <colgroup>
 <col width="300px" class="struct_members_name">
 <col class="struct_members_description">

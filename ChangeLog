@@ -1,3 +1,29 @@
+2019-02-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	Release 2.1.8
+
+2019-02-18  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-data: Update FTS if base tables were altered
+	That will issue an update of all tables, so the FTS view might be
+	affected. This is not caught by ontology change tests, as this
+	is a situation that can only happen when migrating from 1.x databases
+	ATM.
+
+	(cherry-picked from 70758fc059e91936e88d5264b195ac291e995144)
+
+2019-02-17  Carlos Garnacho  <carlosg@gnome.org>
+
+	Merge branch 'hashtable-ordering-2.1' into tracker-2.1
+
+2019-02-11  Iain Lane  <iainl@gnome.org>
+
+	libtracker-data: Don't rely on hash table iteration order being stable
+	This is the same problem that was fixed by
+	c58f7aa419e2c3a69fa7fe583a1fd5e0b9bd0839 on master. Instead of relying
+	on hash table iteration being stable, pass the GVariantBuilder down and
+	add directly to it in the right order.
+
 2019-02-06  Jürg Billeter  <j@bitron.ch>
 
 	Release 2.1.7

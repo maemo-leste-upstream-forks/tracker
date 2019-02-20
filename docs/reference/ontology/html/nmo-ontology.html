@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls: Tracker Ontology Reference Manual</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="ontology.html" title="Part II. Ontology">
-<link rel="prev" href="nco-Contact.html" title="nco:Contact">
-<link rel="next" href="nmo-IMMessage.html" title="nmo:IMMessage">
+<link rel="prev" href="nco-FaxNumber.html" title="nco:FaxNumber">
+<link rel="next" href="nmo-PermanentChannel.html" title="nmo:PermanentChannel">
 <meta name="generator" content="GTK-Doc V1.29 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -16,8 +16,8 @@
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="ontology.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="nco-Contact.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="nmo-IMMessage.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="nco-FaxNumber.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="nmo-PermanentChannel.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
@@ -26,40 +26,7 @@
 <dt><span class="section"><a href="nmo-ontology.html#nmo-classes">NMO Ontology Classes</a></span></dt>
 <dd><dl>
 <dt>
-<span class="refentrytitle"><a href="nmo-IMMessage.html">nmo:IMMessage</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-Email.html">nmo:Email</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
 <span class="refentrytitle"><a href="nmo-PermanentChannel.html">nmo:PermanentChannel</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-Attachment.html">nmo:Attachment</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-MMSMessage.html">nmo:MMSMessage</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-MimePart.html">nmo:MimePart</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-VOIPCall.html">nmo:VOIPCall</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-Call.html">nmo:Call</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-MessageHeader.html">nmo:MessageHeader</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-Multipart.html">nmo:Multipart</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-Message.html">nmo:Message</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
-<span class="refentrytitle"><a href="nmo-MailAccount.html">nmo:MailAccount</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="nmo-TransientChannel.html">nmo:TransientChannel</a></span><span class="refpurpose"></span>
@@ -68,28 +35,61 @@
 <span class="refentrytitle"><a href="nmo-Conversation.html">nmo:Conversation</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="nmo-CommunicationChannel.html">nmo:CommunicationChannel</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
 <span class="refentrytitle"><a href="nmo-PhoneMessageFolder.html">nmo:PhoneMessageFolder</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="nmo-MailboxDataObject.html">nmo:MailboxDataObject</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="nmo-SMSMessage.html">nmo:SMSMessage</a></span><span class="refpurpose"></span>
-</dt>
-<dt>
 <span class="refentrytitle"><a href="nmo-PhoneMessage.html">nmo:PhoneMessage</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
-<span class="refentrytitle"><a href="nmo-ReportReadStatus.html">nmo:ReportReadStatus</a></span><span class="refpurpose"></span>
+<span class="refentrytitle"><a href="nmo-CommunicationChannel.html">nmo:CommunicationChannel</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-MimePart.html">nmo:MimePart</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-Call.html">nmo:Call</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-Message.html">nmo:Message</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-VOIPCall.html">nmo:VOIPCall</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-IMMessage.html">nmo:IMMessage</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
 <span class="refentrytitle"><a href="nmo-MailFolder.html">nmo:MailFolder</a></span><span class="refpurpose"></span>
 </dt>
 <dt>
+<span class="refentrytitle"><a href="nmo-Attachment.html">nmo:Attachment</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-MessageHeader.html">nmo:MessageHeader</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-ReportReadStatus.html">nmo:ReportReadStatus</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-SMSMessage.html">nmo:SMSMessage</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-MailAccount.html">nmo:MailAccount</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-MMSMessage.html">nmo:MMSMessage</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
 <span class="refentrytitle"><a href="nmo-DeliveryStatus.html">nmo:DeliveryStatus</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-Email.html">nmo:Email</a></span><span class="refpurpose"></span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="nmo-Multipart.html">nmo:Multipart</a></span><span class="refpurpose"></span>
 </dt>
 </dl></dd>
 </dl></div>
