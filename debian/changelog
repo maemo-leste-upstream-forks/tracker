@@ -1,3 +1,9 @@
+tracker (2.1.8-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@debian.org>  Wed, 20 Feb 2019 17:50:43 -0500
+
 tracker (2.1.7-1) unstable; urgency=medium
 
   * New upstream release
