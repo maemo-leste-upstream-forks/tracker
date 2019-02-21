@@ -34,7 +34,8 @@ G_BEGIN_DECLS
 #define TRACKER_TITLE_COLLATION_NAME "TRACKER_TITLE"
 
 typedef void (*TrackerDBWalCallback) (TrackerDBInterface *iface,
-                                      gint                n_pages);
+                                      gint                n_pages,
+                                      gpointer            user_data);
 
 typedef enum {
 	TRACKER_DB_INTERFACE_READONLY  = 1 << 0,
@@ -52,11 +53,13 @@ void                tracker_db_interface_sqlite_fts_init               (TrackerD
                                                                         gboolean                  create);
 void                tracker_db_interface_sqlite_reset_collator         (TrackerDBInterface       *interface);
 void                tracker_db_interface_sqlite_wal_hook               (TrackerDBInterface       *interface,
-                                                                        TrackerDBWalCallback      callback);
+                                                                        TrackerDBWalCallback      callback,
+                                                                        gpointer                  user_data);
 gboolean            tracker_db_interface_sqlite_wal_checkpoint         (TrackerDBInterface       *interface,
                                                                         gboolean                  blocking,
                                                                         GError                  **error);
-
+gboolean            tracker_db_interface_init_vtabs                    (TrackerDBInterface       *interface,
+                                                                        TrackerOntologies        *ontologies);
 
 #if HAVE_TRACKER_FTS
 void                tracker_db_interface_sqlite_fts_delete_table       (TrackerDBInterface       *interface);

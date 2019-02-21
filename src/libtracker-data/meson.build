@@ -3,9 +3,6 @@
 # libtracker-sparql-query.
 libtracker_data_vala = static_library('tracker-sparql-query',
     'tracker-vala-namespace.vala',
-    'tracker-sparql-query.vala',
-    'tracker-sparql-expression.vala',
-    'tracker-sparql-pattern.vala',
     'tracker-sparql-scanner.vala',
     'tracker-turtle-reader.vala',
     '../libtracker-common/libtracker-common.vapi',
@@ -58,6 +55,12 @@ libtracker_data = library('tracker-data',
     'tracker-ontology.c',
     'tracker-ontologies.c',
     'tracker-property.c',
+    'tracker-string-builder.c',
+    'tracker-sparql-parser.c',
+    'tracker-sparql-types.c',
+    'tracker-sparql.c',
+    'tracker-uuid.c',
+    'tracker-vtab-triples.c',
     tracker_common_enum_header,
     tracker_data_enums[0],
     tracker_data_enums[1],
@@ -83,10 +86,3 @@ tracker_data_dep = declare_dependency(
     include_directories: include_directories('.'),
     sources: enums[1],
 )
-
-custom_target('libtracker-data-settings-schema',
-    input: 'org.freedesktop.Tracker.DB.gschema.xml.in',
-    output: 'org.freedesktop.Tracker.DB.gschema.xml',
-    command: ['intltool-merge', '--quiet', '--xml-style', '--utf8', po_subdir, '@INPUT@', '@OUTPUT@'],
-    install: true,
-    install_dir: gsettings_schema_dir)

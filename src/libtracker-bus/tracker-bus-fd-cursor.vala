@@ -27,11 +27,13 @@ class Tracker.Bus.FDCursor : Tracker.Sparql.Cursor {
 	internal int* types;
 	internal char* data;
 	internal string[] variable_names;
+	internal bool cursor_finished;
 
 	public FDCursor (char* buffer, ulong buffer_size, string[] variable_names) {
 		this.buffer = buffer;
 		this.buffer_size = buffer_size;
 		this.variable_names = variable_names;
+		this.cursor_finished = true;
 		_n_columns = variable_names.length;
 	}
 
@@ -63,8 +65,13 @@ class Tracker.Bus.FDCursor : Tracker.Sparql.Cursor {
 	}
 
 	public override unowned string? get_string (int column, out long length = null)
-	requires (column < n_columns && data != null) {
+	requires (cursor_finished == false) {
 		unowned string str = null;
+
+		if (column >= n_columns) {
+			length = 0;
+			return null;
+		}
 
 		// return null instead of empty string for unbound values
 		if (types[column] == Sparql.ValueType.UNBOUND) {
@@ -91,6 +98,8 @@ class Tracker.Bus.FDCursor : Tracker.Sparql.Cursor {
 		}
 
 		if (buffer_index >= buffer_size) {
+			cursor_finished = true;
+			data = null;
 			return false;
 		}
 
@@ -113,6 +122,7 @@ class Tracker.Bus.FDCursor : Tracker.Sparql.Cursor {
 		last_offset = buffer_read_int ();
 
 		data = buffer + buffer_index;
+		cursor_finished = false;
 
 		buffer_index += last_offset + 1;
 
@@ -127,5 +137,6 @@ class Tracker.Bus.FDCursor : Tracker.Sparql.Cursor {
 	public override void rewind () {
 		buffer_index = 0;
 		data = buffer;
+		cursor_finished = false;
 	}
 }

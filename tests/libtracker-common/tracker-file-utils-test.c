@@ -131,14 +131,14 @@ test_path_list_filter_duplicates_with_exceptions ()
 static void
 test_path_evaluate_name (void)
 {
-	gchar *result, *expected;
+	gchar *result, *expected, *pwd, *home;
 
-	const gchar *home = g_getenv ("HOME");
-	const gchar *pwd = g_getenv ("PWD");
 
 	const gchar *test = "/one/two";
 	gchar *parent_dir;
 
+	home = g_strdup (g_getenv ("HOME"));
+	pwd = g_get_current_dir ();
 	g_setenv ("TEST_TRACKER_DIR", test, TRUE);
 
 
@@ -165,6 +165,7 @@ test_path_evaluate_name (void)
 
 	result = tracker_path_evaluate_name ("just-a-filename");
 	g_assert_cmpstr (result, ==, "just-a-filename");
+	g_free (result);
 
 	result = tracker_path_evaluate_name ("$HOME/all/dir/");
 	expected = g_build_path (G_DIR_SEPARATOR_S, home, "/all/dir", NULL);
@@ -200,22 +201,28 @@ test_path_evaluate_name (void)
 
 	result = tracker_path_evaluate_name ("");
 	g_assert (!result);
+	g_free (result);
 
 	result = tracker_path_evaluate_name (NULL);
 	g_assert (!result);
-
+	g_free (result);
 
         g_setenv ("HOME", "", TRUE);
         result = tracker_path_evaluate_name ("~/but-no-home.txt");
         g_assert (!result);
+        g_free (result);
         g_setenv ("HOME", home, TRUE);
 
         result = tracker_path_evaluate_name ("$UNDEFINED/something");
         g_assert_cmpstr (result, ==, "/something");
+        g_free (result);
 
 	result = tracker_path_evaluate_name (tracker_test_helpers_get_nonutf8 ());
 	g_assert_cmpstr (result, ==, tracker_test_helpers_get_nonutf8 ());
+	g_free (result);
 
+	g_free (home);
+	g_free (pwd);
 	g_unsetenv ("TEST_TRACKER_DIR");
 }
 
@@ -368,33 +375,6 @@ test_file_system_has_enough_space ()
 }
 
 static void
-test_file_exists_and_writable ()
-{
-        const gchar *path = "./test-dir-remove-afterwards";
-
-        if (g_file_test (path, G_FILE_TEST_EXISTS)) {
-		g_assert_cmpint (g_remove (path), ==, 0);
-        }
-
-        /* This should create the directory with write access*/
-        g_assert (tracker_path_has_write_access_or_was_created (path));
-        g_assert (g_file_test (path, G_FILE_TEST_EXISTS));
-
-        /* This time exists and has write access */
-        g_assert (tracker_path_has_write_access_or_was_created (path));
-
-        g_assert_cmpint (chmod (path, S_IRUSR & S_IRGRP), ==, 0);
-
-        /* Exists but is not writable */
-        g_assert (!tracker_path_has_write_access_or_was_created (path));
-
-        /* Doesn't exist and cannot be created */
-        g_assert (!tracker_path_has_write_access_or_was_created ("/var/log/tracker-test"));
-
-        g_assert_cmpint (g_remove (path), ==, 0);
-}
-
-static void
 test_file_utils_is_hidden ()
 {
         GFile *f;
@@ -460,8 +440,6 @@ main (int argc, char **argv)
                          test_file_system_get_remaining_space_percentage);
         g_test_add_func ("/libtracker-common/file-utils/has_enough_space",
                          test_file_system_has_enough_space);
-        g_test_add_func ("/libtracker-common/file-utils/has_write_access_or_was_created",
-                         test_file_exists_and_writable);
         g_test_add_func ("/libtracker-common/file-utils/is_hidden",
                          test_file_utils_is_hidden);
         g_test_add_func ("/libtracker-common/file-utils/cmp",

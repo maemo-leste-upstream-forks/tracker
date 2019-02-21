@@ -1,8 +1,0 @@
-{
-    "PREFIX": "/home/carlos/Build/gnome",
-    "RAW_EXEC_PREFIX": "${prefix}",
-    "RAW_DATAROOT_DIR": "${prefix}/share",
-    "TEST_ONTOLOGIES_DIR": "@top_srcdir@/tests/functional-tests/test-ontologies",
-    "TRACKER_STORE_PATH": "@top_builddir@/src/tracker-store/tracker-store",
-    "disableJournal": "#"
-}

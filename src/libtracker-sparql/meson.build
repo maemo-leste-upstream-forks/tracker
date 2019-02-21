@@ -18,6 +18,7 @@ libtracker_sparql_intermediate_vala = static_library('tracker-sparql-intermediat
     'tracker-builder.vala',
     'tracker-connection.vala',
     'tracker-cursor.vala',
+    'tracker-statement.vala',
     'tracker-utils.vala',
     vala_header: 'tracker-generated-no-checks.h',
     c_args: tracker_c_args,
@@ -113,9 +114,8 @@ tracker_sparql_vapi = custom_target('tracker-sparql-' + tracker_api_version + '.
     install: true,
     install_dir: vapi_dir)
 
-configure_file(
-    input: 'tracker-sparql.deps',
-    output: 'tracker-sparql-' + tracker_api_version + '.deps',
-    configuration: configuration_data(), # No changes here, just a rename
-    install: true,
-    install_dir: vapi_dir)
+install_data(
+    'tracker-sparql.deps',
+    rename: ['tracker-sparql-' + tracker_api_version + '.deps'],
+    install_dir: vapi_dir,
+)

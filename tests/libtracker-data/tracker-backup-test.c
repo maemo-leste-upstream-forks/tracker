@@ -216,6 +216,8 @@ test_backup_and_restore_helper (const gchar *db_location,
 
 	g_assert_cmpint (backup_calls, ==, 1);
 
+	g_free (data_prefix);
+	g_object_unref (data_location);
 	g_object_unref (manager);
 }
 
@@ -267,8 +269,10 @@ main (int argc, char **argv)
 	setlocale (LC_COLLATE, "en_US.utf8");
 
 	current_dir = g_get_current_dir ();
-	tests_data_dir = g_build_path (G_DIR_SEPARATOR_S, current_dir, "backup-test-data", NULL);
+	tests_data_dir = g_build_filename (current_dir, "backup-test-data-XXXXXX", NULL);
 	g_free (current_dir);
+
+	g_mkdtemp (tests_data_dir);
 
 	g_test_init (&argc, &argv, NULL);
 

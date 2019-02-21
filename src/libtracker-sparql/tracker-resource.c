@@ -17,12 +17,13 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include "config.h"
+
 #include <glib.h>
 #include <json-glib/json-glib.h>
 
 #include <string.h>
 
-#include "config.h"
 #include <tracker-uri.h>
 #include <tracker-resource.h>
 #include <tracker-ontologies.h>
@@ -1518,7 +1519,7 @@ tracker_resource_print_sparql_update (TrackerResource         *resource,
 	context.done_list = NULL;
 
 	/* Finally insert the data */
-	g_string_append (context.string, "INSERT {\n");
+	g_string_append (context.string, "INSERT DATA {\n");
 	if (graph_id) {
 		g_string_append_printf (context.string, "GRAPH <%s> {\n", graph_id);
 	}
