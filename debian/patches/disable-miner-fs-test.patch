@@ -2,20 +2,20 @@ From: Gianfranco Costamagna <locutusofborg@debian.org>
 Date: Mon, 12 Nov 2018 17:17:28 -0500
 Subject: This is a new test that fails in Debian/Ubuntu, disabling it for now
 
-Last-Update: 2018-02-15
 ---
- tests/libtracker-miner/Makefile.am | 1 -
- 1 file changed, 1 deletion(-)
+ tests/libtracker-miner/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/libtracker-miner/Makefile.am b/tests/libtracker-miner/Makefile.am
-index 184c8e1..862e1a4 100644
---- a/tests/libtracker-miner/Makefile.am
-+++ b/tests/libtracker-miner/Makefile.am
-@@ -20,7 +20,6 @@ test_programs = \
- 	tracker-file-notifier-test		       \
- 	tracker-file-system-test		       \
- 	tracker-thumbnailer-test                       \
--	tracker-miner-fs-test			       \
- 	tracker-monitor-test			       \
- 	tracker-priority-queue-test		       \
- 	tracker-task-pool-test			       \
+diff --git a/tests/libtracker-miner/meson.build b/tests/libtracker-miner/meson.build
+index c0b055c..a0cc97b 100644
+--- a/tests/libtracker-miner/meson.build
++++ b/tests/libtracker-miner/meson.build
+@@ -10,7 +10,7 @@ libtracker_miner_tests = [
+ ]
+ 
+ libtracker_miner_slow_tests = [
+-    'miner-fs',
++#    'miner-fs',
+     'monitor',
+ ]
+ 

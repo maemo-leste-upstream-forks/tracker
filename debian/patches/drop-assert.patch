@@ -11,10 +11,10 @@ Last-Update: 2018-02-16
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tests/libtracker-data/tracker-backup-test.c b/tests/libtracker-data/tracker-backup-test.c
-index 67522e6..811d5ab 100644
+index dd3a9d9..d6b8dcc 100644
 --- a/tests/libtracker-data/tracker-backup-test.c
 +++ b/tests/libtracker-data/tracker-backup-test.c
-@@ -277,7 +277,7 @@ main (int argc, char **argv)
+@@ -281,7 +281,7 @@ main (int argc, char **argv)
  
  	result = g_test_run ();
  
