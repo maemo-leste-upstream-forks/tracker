@@ -95,6 +95,7 @@ libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
  tracker_sparql_connection_flags_get_type@Base 1.99.1
  tracker_sparql_connection_get@Base 0.10.0
  tracker_sparql_connection_get_async@Base 0.10.0
+ tracker_sparql_connection_get_dbus_connection@Base 2.2.0
  tracker_sparql_connection_get_domain@Base 1.99.1
  tracker_sparql_connection_get_finish@Base 0.10.0
  tracker_sparql_connection_get_namespace_manager@Base 1.99.1
@@ -108,7 +109,9 @@ libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
  tracker_sparql_connection_query@Base 0.10.0
  tracker_sparql_connection_query_async@Base 0.10.0
  tracker_sparql_connection_query_finish@Base 0.10.0
+ tracker_sparql_connection_query_statement@Base 2.2.0
  tracker_sparql_connection_remote_new@Base 1.12.0
+ tracker_sparql_connection_set_dbus_connection@Base 2.2.0
  tracker_sparql_connection_set_domain@Base 1.99.1
  tracker_sparql_connection_statistics@Base 0.10.0
  tracker_sparql_connection_statistics_async@Base 0.10.0
@@ -144,4 +147,17 @@ libtracker-sparql-2.0.so.0 libtracker-sparql-2.0-0 #MINVER#
  tracker_sparql_escape_uri_printf@Base 0.10.0
  tracker_sparql_escape_uri_vprintf@Base 0.10.0
  tracker_sparql_get_uuid_urn@Base 0.10.0
+ tracker_sparql_statement_bind_boolean@Base 2.2.0
+ tracker_sparql_statement_bind_double@Base 2.2.0
+ tracker_sparql_statement_bind_int@Base 2.2.0
+ tracker_sparql_statement_bind_string@Base 2.2.0
+ tracker_sparql_statement_construct@Base 2.2.0
+ tracker_sparql_statement_execute@Base 2.2.0
+ tracker_sparql_statement_execute_async@Base 2.2.0
+ tracker_sparql_statement_execute_finish@Base 2.2.0
+ tracker_sparql_statement_get_connection@Base 2.2.0
+ tracker_sparql_statement_get_sparql@Base 2.2.0
+ tracker_sparql_statement_get_type@Base 2.2.0
+ tracker_sparql_statement_set_connection@Base 2.2.0
+ tracker_sparql_statement_set_sparql@Base 2.2.0
  tracker_sparql_value_type_get_type@Base 0.10.0
