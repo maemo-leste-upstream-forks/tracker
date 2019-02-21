@@ -48,6 +48,7 @@
 #include "tracker-property.h"
 #include "tracker-sparql-query.h"
 #include "tracker-data-query.h"
+#include "tracker-sparql-parser.h"
 
 #define RDF_PROPERTY                    TRACKER_PREFIX_RDF "Property"
 #define RDF_TYPE                        TRACKER_PREFIX_RDF "type"
@@ -4208,6 +4209,9 @@ tracker_data_manager_initable_init (GInitable     *initable,
 		return FALSE;
 	}
 
+	tracker_db_manager_set_vtab_user_data (manager->db_manager,
+					       manager->ontologies);
+
 	manager->first_time_index = is_first_time_index;
 
 	tracker_data_manager_update_status (manager, "Initializing data manager");
@@ -4801,6 +4805,9 @@ tracker_data_manager_initable_init (GInitable     *initable,
 		}
 	}
 
+	tracker_db_manager_set_vtab_user_data (manager->db_manager,
+					       manager->ontologies);
+
 skip_ontology_check:
 
 #ifndef DISABLE_JOURNAL
@@ -5005,6 +5012,7 @@ tracker_data_manager_finalize (GObject *object)
 
 	g_clear_object (&manager->ontologies);
 	g_clear_object (&manager->data_update);
+	g_free (manager->status);
 
 	G_OBJECT_CLASS (tracker_data_manager_parent_class)->finalize (object);
 }
@@ -5087,12 +5095,6 @@ TrackerDBInterface *
 tracker_data_manager_get_writable_db_interface (TrackerDataManager *manager)
 {
 	return tracker_db_manager_get_writable_db_interface (manager->db_manager);
-}
-
-TrackerDBInterface *
-tracker_data_manager_get_wal_db_interface (TrackerDataManager *manager)
-{
-	return tracker_db_manager_get_wal_db_interface (manager->db_manager);
 }
 
 TrackerData *

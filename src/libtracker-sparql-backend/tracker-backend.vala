@@ -19,6 +19,7 @@
 
 static string domain_name = null;
 static Tracker.DomainOntology domain_ontology = null;
+static DBusConnection global_dbus_connection = null;
 
 class Tracker.Sparql.Backend : Connection {
 	bool initialized;
@@ -77,6 +78,16 @@ class Tracker.Sparql.Backend : Connection {
 			return yield direct.query_async (sparql, cancellable);
 		} else {
 			return yield bus.query_async (sparql, cancellable);
+		}
+	}
+
+	public override Statement? query_statement (string sparql, Cancellable? cancellable = null) throws Sparql.Error {
+		debug ("%s(): '%s'", GLib.Log.METHOD, sparql);
+		if (direct != null) {
+			return direct.query_statement (sparql, cancellable);
+		} else {
+			warning ("Interface 'query_statement' not implemented on dbus interface");
+			return null;
 		}
 	}
 
@@ -192,12 +203,22 @@ class Tracker.Sparql.Backend : Connection {
 
 		switch (backend) {
 		case Backend.AUTO:
-			bus = new Tracker.Bus.Connection (domain_ontology.get_domain ("Tracker1"));
+			bool direct_failed = false;
 
 			try {
 				direct = create_readonly_direct ();
-			} catch (GLib.Error e) {
-				warning ("Falling back to bus backend, the direct backend failed to initialize: " + e.message);
+			} catch (DBInterfaceError e) {
+				direct_failed = true;
+			}
+
+			bus = new Tracker.Bus.Connection (domain_ontology.get_domain ("Tracker1"), global_dbus_connection, direct_failed);
+
+			if (direct_failed) {
+				try {
+					direct = create_readonly_direct ();
+				} catch (DBInterfaceError e) {
+					warning ("Falling back to bus backend, the direct backend failed to initialize: " + e.message);
+				}
 			}
 
 			break;
@@ -207,7 +228,7 @@ class Tracker.Sparql.Backend : Connection {
 			break;
 
 		case Backend.BUS:
-			bus = new Tracker.Bus.Connection (domain_ontology.get_domain ("Tracker1"));
+			bus = new Tracker.Bus.Connection (domain_ontology.get_domain ("Tracker1"), global_dbus_connection, false);
 			break;
 
 		default:
@@ -357,4 +378,12 @@ public static void tracker_sparql_connection_set_domain (string? domain) {
 
 public static string? tracker_sparql_connection_get_domain () {
 	return domain_name;
+}
+
+public static void tracker_sparql_connection_set_dbus_connection (DBusConnection dbus_connection) {
+	global_dbus_connection = dbus_connection;
+}
+
+public static DBusConnection? tracker_sparql_connection_get_dbus_connection () {
+	return global_dbus_connection;
 }

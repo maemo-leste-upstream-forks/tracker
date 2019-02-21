@@ -71,8 +71,9 @@
 
 #define PARSER_VERSION_FILENAME       "parser-version.txt"
 
-#define TOSTR(x) #x
-#define TRACKER_PARSER_VERSION_STRING TOSTR(TRACKER_PARSER_VERSION)
+#define TOSTRING1(x) #x
+#define TOSTRING(x) TOSTRING1(x)
+#define TRACKER_PARSER_VERSION_STRING TOSTRING(TRACKER_PARSER_VERSION)
 
 typedef enum {
 	TRACKER_DB_VERSION_UNKNOWN, /* Unknown */
@@ -139,9 +140,12 @@ struct _TrackerDBManager {
 	guint s_cache_size;
 	guint u_cache_size;
 
+	gpointer vtab_data;
+
 	GWeakRef iface_data;
 
 	GAsyncQueue *interfaces;
+	GThread *wal_thread;
 };
 
 static gboolean            db_exec_no_reply                        (TrackerDBInterface   *iface,
@@ -151,6 +155,8 @@ static TrackerDBInterface *tracker_db_manager_create_db_interface   (TrackerDBMa
                                                                      gboolean             readonly,
                                                                      GError             **error);
 static void                db_remove_locale_file                    (TrackerDBManager    *db_manager);
+
+static TrackerDBInterface * init_writable_db_interface              (TrackerDBManager *db_manager);
 
 static gboolean
 db_exec_no_reply (TrackerDBInterface *iface,
@@ -505,6 +511,7 @@ db_recreate_all (TrackerDBManager  *db_manager,
 	}
 
 	g_clear_object (&db_manager->db.iface);
+	g_clear_object (&db_manager->db.wal_iface);
 
 	locale = tracker_locale_get (TRACKER_LOCALE_COLLATE);
 	/* Initialize locale file */
@@ -549,6 +556,7 @@ perform_recreate (TrackerDBManager  *db_manager,
 	}
 
 	g_clear_object (&db_manager->db.iface);
+	g_clear_object (&db_manager->db.wal_iface);
 
 	if (!tracker_file_system_has_enough_space (db_manager->data_dir, TRACKER_DB_MIN_REQUIRED_SPACE, TRUE)) {
 		g_set_error (error,
@@ -913,15 +921,28 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 void
 tracker_db_manager_free (TrackerDBManager *db_manager)
 {
+	gboolean readonly = (db_manager->flags & TRACKER_DB_MANAGER_READONLY) != 0;
+
 	g_async_queue_unref (db_manager->interfaces);
 	g_free (db_manager->db.abs_filename);
-	g_clear_object (&db_manager->db.iface);
+
+	if (db_manager->wal_thread)
+		g_thread_join (db_manager->wal_thread);
+
+	g_clear_object (&db_manager->db.wal_iface);
+
+	if (db_manager->db.iface) {
+		if (!readonly)
+			tracker_db_interface_sqlite_wal_checkpoint (db_manager->db.iface, TRUE, NULL);
+		g_object_unref (db_manager->db.iface);
+	}
+
 	g_weak_ref_clear (&db_manager->iface_data);
 
 	g_free (db_manager->data_dir);
 	g_free (db_manager->user_data_dir);
 
-	if ((db_manager->flags & TRACKER_DB_MANAGER_READONLY) == 0) {
+	if (!readonly) {
 		/* do not delete in-use file for read-only mode (direct access) */
 		g_unlink (db_manager->in_use_filename);
 	}
@@ -990,6 +1011,8 @@ tracker_db_manager_create_db_interface (TrackerDBManager  *db_manager,
 	tracker_db_interface_set_user_data (connection,
 	                                    g_weak_ref_get (&db_manager->iface_data),
 	                                    g_object_unref);
+
+	tracker_db_interface_init_vtabs (connection, db_manager->vtab_data);
 
 	db_set_params (connection,
 	               db_manager->db.cache_size,
@@ -1078,6 +1101,63 @@ tracker_db_manager_get_db_interface (TrackerDBManager *db_manager)
 	return interface;
 }
 
+static void
+wal_checkpoint (TrackerDBInterface *iface,
+                gboolean            blocking)
+{
+	GError *error = NULL;
+
+	g_debug ("Checkpointing database...");
+
+	tracker_db_interface_sqlite_wal_checkpoint (iface, blocking,
+	                                            blocking ? &error : NULL);
+
+	if (error) {
+		g_warning ("Error in %s WAL checkpoint: %s",
+			   blocking ? "blocking" : "deferred",
+			   error->message);
+		g_error_free (error);
+	}
+
+	g_debug ("Checkpointing complete");
+}
+
+static gpointer
+wal_checkpoint_thread (gpointer data)
+{
+	TrackerDBManager *db_manager = data;
+
+	if (!db_manager->db.wal_iface)
+		db_manager->db.wal_iface = init_writable_db_interface (db_manager);
+
+	wal_checkpoint (db_manager->db.wal_iface, FALSE);
+
+	return NULL;
+}
+
+static void
+wal_hook (TrackerDBInterface *iface,
+          gint                n_pages,
+          gpointer            user_data)
+{
+	TrackerDBManager *db_manager = user_data;
+
+	/* Ensure there is only one WAL checkpoint at a time */
+	if (db_manager->wal_thread)
+		g_thread_join (db_manager->wal_thread);
+
+	if (n_pages >= 10000) {
+		/* Do immediate checkpointing (blocking updates) to
+		 * prevent excessive WAL file growth.
+		 */
+		wal_checkpoint (iface, TRUE);
+	} else {
+		/* Defer non-blocking checkpoint to thread */
+		db_manager->wal_thread = g_thread_try_new ("wal-checkpoint", wal_checkpoint_thread,
+							   db_manager, NULL);
+	}
+}
+
 static TrackerDBInterface *
 init_writable_db_interface (TrackerDBManager *db_manager)
 {
@@ -1101,20 +1181,15 @@ tracker_db_manager_get_writable_db_interface (TrackerDBManager *db_manager)
 {
 	if (db_manager->db.iface == NULL) {
 		db_manager->db.iface = init_writable_db_interface (db_manager);
+
+		if (db_manager->db.iface &&
+		    (db_manager->flags & TRACKER_DB_MANAGER_READONLY) == 0) {
+			tracker_db_interface_sqlite_wal_hook (db_manager->db.iface,
+			                                      wal_hook, db_manager);
+		}
 	}
 
 	return db_manager->db.iface;
-}
-
-TrackerDBInterface *
-tracker_db_manager_get_wal_db_interface (TrackerDBManager *db_manager)
-{
-	if (db_manager->db.wal_iface == NULL &&
-	    (db_manager->flags & TRACKER_DB_MANAGER_READONLY) == 0) {
-		db_manager->db.wal_iface = init_writable_db_interface (db_manager);
-	}
-
-	return db_manager->db.wal_iface;
 }
 
 /**
@@ -1187,4 +1262,11 @@ tracker_db_manager_check_perform_vacuum (TrackerDBManager *db_manager)
 
 	iface = tracker_db_manager_get_writable_db_interface (db_manager);
 	tracker_db_interface_execute_query (iface, NULL, "VACUUM");
+}
+
+void
+tracker_db_manager_set_vtab_user_data (TrackerDBManager *db_manager,
+                                       gpointer          user_data)
+{
+	db_manager->vtab_data = user_data;
 }

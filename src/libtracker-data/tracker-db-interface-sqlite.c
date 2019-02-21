@@ -47,6 +47,7 @@
 #include <unicode/uregex.h>
 #include <unicode/ustring.h>
 #include <unicode/ucol.h>
+#include <unicode/unorm2.h>
 #endif
 
 #include "tracker-collation.h"
@@ -54,6 +55,8 @@
 #include "tracker-db-interface-sqlite.h"
 #include "tracker-db-manager.h"
 #include "tracker-data-enum-types.h"
+#include "tracker-uuid.h"
+#include "tracker-vtab-triples.h"
 
 typedef struct {
 	TrackerDBStatement *head;
@@ -95,6 +98,7 @@ struct TrackerDBInterface {
 
 	/* Wal */
 	TrackerDBWalCallback wal_hook;
+	gpointer wal_hook_data;
 
 	/* User data */
 	gpointer user_data;
@@ -507,11 +511,11 @@ function_sparql_regex (sqlite3_context *context,
                        sqlite3_value   *argv[])
 {
 	gboolean ret;
-	const gchar *text, *pattern, *flags;
+	const gchar *text, *pattern, *flags = "";
 	GRegexCompileFlags regex_flags;
 	GRegex *regex;
 
-	if (argc != 3) {
+	if (argc != 2 && argc != 3) {
 		sqlite3_result_error (context, "Invalid argument count", -1);
 		return;
 	}
@@ -519,7 +523,9 @@ function_sparql_regex (sqlite3_context *context,
 	regex = sqlite3_get_auxdata (context, 1);
 
 	text = (gchar *)sqlite3_value_text (argv[0]);
-	flags = (gchar *)sqlite3_value_text (argv[2]);
+
+	if (argc == 3)
+		flags = (gchar *)sqlite3_value_text (argv[2]);
 
 	if (regex == NULL) {
 		gchar *err_str;
@@ -1024,7 +1030,7 @@ function_sparql_case_fold (sqlite3_context *context,
 static gunichar2 *
 normalize_string (const gunichar2    *string,
                   gsize               string_len, /* In gunichar2s */
-                  UNormalizationMode  mode,
+                  const UNormalizer2 *normalizer,
                   gsize              *len_out,    /* In gunichar2s */
                   UErrorCode         *status)
 {
@@ -1034,14 +1040,14 @@ normalize_string (const gunichar2    *string,
 	nOutput = (string_len * 2) + 1;
 	zOutput = g_new0 (gunichar2, nOutput);
 
-	nOutput = unorm_normalize (string, string_len, mode, 0, zOutput, nOutput, status);
+	nOutput = unorm2_normalize (normalizer, string, string_len, zOutput, nOutput, status);
 
 	if (*status == U_BUFFER_OVERFLOW_ERROR) {
 		/* Try again after allocating enough space for the normalization */
 		*status = U_ZERO_ERROR;
 		zOutput = g_renew (gunichar2, zOutput, nOutput);
 		memset (zOutput, 0, nOutput * sizeof (gunichar2));
-		nOutput = unorm_normalize (string, string_len, mode, 0, zOutput, nOutput, status);
+		nOutput = unorm2_normalize (normalizer, string, string_len, zOutput, nOutput, status);
 	}
 
 	if (!U_SUCCESS (*status)) {
@@ -1062,10 +1068,10 @@ function_sparql_normalize (sqlite3_context *context,
 {
 	const gchar *nfstr;
 	const uint16_t *zInput;
-	uint16_t *zOutput;
+	uint16_t *zOutput = NULL;
 	int nInput;
 	gsize nOutput;
-	UNormalizationMode nf;
+	const UNormalizer2 *normalizer;
 	UErrorCode status = U_ZERO_ERROR;
 
 	if (argc != 2) {
@@ -1081,20 +1087,22 @@ function_sparql_normalize (sqlite3_context *context,
 
 	nfstr = (gchar *)sqlite3_value_text (argv[1]);
 	if (g_ascii_strcasecmp (nfstr, "nfc") == 0)
-		nf = UNORM_NFC;
+		normalizer = unorm2_getNFCInstance (&status);
 	else if (g_ascii_strcasecmp (nfstr, "nfd") == 0)
-		nf = UNORM_NFD;
+		normalizer = unorm2_getNFDInstance (&status);
 	else if (g_ascii_strcasecmp (nfstr, "nfkc") == 0)
-		nf = UNORM_NFKC;
+		normalizer = unorm2_getNFKCInstance (&status);
 	else if (g_ascii_strcasecmp (nfstr, "nfkd") == 0)
-		nf = UNORM_NFKD;
+		normalizer = unorm2_getNFKDInstance (&status);
 	else {
 		sqlite3_result_error (context, "Invalid normalization specified", -1);
 		return;
 	}
 
-	nInput = sqlite3_value_bytes16 (argv[0]);
-	zOutput = normalize_string (zInput, nInput / 2, nf, &nOutput, &status);
+	if (U_SUCCESS (status)) {
+		nInput = sqlite3_value_bytes16 (argv[0]);
+		zOutput = normalize_string (zInput, nInput / 2, normalizer, &nOutput, &status);
+	}
 
 	if (!U_SUCCESS (status)) {
 		char zBuf[128];
@@ -1114,9 +1122,10 @@ function_sparql_unaccent (sqlite3_context *context,
                           sqlite3_value   *argv[])
 {
 	const uint16_t *zInput;
-	uint16_t *zOutput;
+	uint16_t *zOutput = NULL;
 	int nInput;
 	gsize nOutput;
+	const UNormalizer2 *normalizer;
 	UErrorCode status = U_ZERO_ERROR;
 
 	g_assert (argc == 1);
@@ -1127,8 +1136,12 @@ function_sparql_unaccent (sqlite3_context *context,
 		return;
 	}
 
-	nInput = sqlite3_value_bytes16 (argv[0]);
-	zOutput = normalize_string (zInput, nInput / 2, UNORM_NFKD, &nOutput, &status);
+	normalizer = unorm2_getNFKDInstance (&status);
+
+	if (U_SUCCESS (status)) {
+		nInput = sqlite3_value_bytes16 (argv[0]);
+		zOutput = normalize_string (zInput, nInput / 2, normalizer, &nOutput, &status);
+	}
 
 	if (!U_SUCCESS (status)) {
 		char zBuf[128];
@@ -1314,6 +1327,10 @@ function_sparql_checksum (sqlite3_context *context,
 		checksum = G_CHECKSUM_SHA1;
 	else if (g_ascii_strcasecmp (checksumstr, "sha256") == 0)
 		checksum = G_CHECKSUM_SHA256;
+#if GLIB_CHECK_VERSION (2, 51, 0)
+	else if (g_ascii_strcasecmp (checksumstr, "sha384") == 0)
+		checksum = G_CHECKSUM_SHA384;
+#endif
 	else if (g_ascii_strcasecmp (checksumstr, "sha512") == 0)
 		checksum = G_CHECKSUM_SHA512;
 	else {
@@ -1349,6 +1366,50 @@ stmt_step (sqlite3_stmt *stmt)
 	}
 
 	return result;
+}
+
+static void
+function_sparql_uuid (sqlite3_context *context,
+                      int              argc,
+                      sqlite3_value   *argv[])
+{
+	gchar *uuid = NULL;
+	sqlite3_stmt *stmt;
+	sqlite3 *db;
+	gint result;
+
+	if (argc > 1) {
+		sqlite3_result_error (context, "Invalid argument count", -1);
+		return;
+	}
+
+	db = sqlite3_context_db_handle (context);
+
+	result = sqlite3_prepare_v2 (db, "SELECT ID FROM Resource WHERE Uri=?",
+				     -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+		sqlite3_result_error (context, sqlite3_errstr (result), -1);
+		return;
+	}
+
+	do {
+		g_clear_pointer (&uuid, g_free);
+		uuid = tracker_generate_uuid ();
+
+		sqlite3_reset (stmt);
+		sqlite3_bind_text (stmt, 1, uuid, -1, SQLITE_TRANSIENT);
+		result = stmt_step (stmt);
+	} while (result == SQLITE_ROW);
+
+	sqlite3_finalize (stmt);
+
+	if (result != SQLITE_DONE) {
+		sqlite3_result_error (context, sqlite3_errstr (result), -1);
+		g_free (uuid);
+		return;
+	}
+
+	sqlite3_result_text (context, uuid, -1, g_free);
 }
 
 static int
@@ -1387,7 +1448,7 @@ initialize_functions (TrackerDBInterface *db_interface)
 		{ "SparqlEncodeForUri", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
 		  function_sparql_encode_for_uri },
 		/* Strings */
-		{ "SparqlRegex", 3, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		{ "SparqlRegex", -1, SQLITE_ANY | SQLITE_DETERMINISTIC,
 		  function_sparql_regex },
 		{ "SparqlStringJoin", -1, SQLITE_ANY | SQLITE_DETERMINISTIC,
 		  function_sparql_string_join },
@@ -1415,6 +1476,8 @@ initialize_functions (TrackerDBInterface *db_interface)
 		{ "SparqlFloor", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
 		  function_sparql_floor },
 		{ "SparqlRand", 0, SQLITE_ANY, function_sparql_rand },
+		/* UUID */
+		{ "SparqlUUID", 0, SQLITE_ANY, function_sparql_uuid },
 	};
 
 	for (i = 0; i < G_N_ELEMENTS (functions); i++) {
@@ -1640,6 +1703,7 @@ tracker_db_interface_sqlite_fts_init (TrackerDBInterface  *db_interface,
 			                        fts_columns[i]);
 		}
 
+		g_free (db_interface->fts_properties);
 		db_interface->fts_properties = g_string_free (fts_properties,
 		                                              FALSE);
 		g_strfreev (fts_columns);
@@ -1878,15 +1942,17 @@ wal_hook (gpointer     user_data,
 {
 	TrackerDBInterface *iface = user_data;
 
-	iface->wal_hook (iface, n_pages);
+	iface->wal_hook (iface, n_pages, iface->wal_hook_data);
 	return SQLITE_OK;
 }
 
 void
 tracker_db_interface_sqlite_wal_hook (TrackerDBInterface   *interface,
-                                      TrackerDBWalCallback  callback)
+                                      TrackerDBWalCallback  callback,
+                                      gpointer              user_data)
 {
 	interface->wal_hook = callback;
+	interface->wal_hook_data = user_data;
 	sqlite3_wal_hook (interface->db, wal_hook, interface);
 }
 
@@ -2202,6 +2268,7 @@ tracker_db_interface_create_statement (TrackerDBInterface           *db_interfac
 		                                                 error);
 		if (!sqlite_stmt) {
 			tracker_db_interface_unlock (db_interface);
+			g_free (full_query);
 			return NULL;
 		}
 
@@ -2657,6 +2724,49 @@ tracker_db_statement_bind_text (TrackerDBStatement *stmt,
 }
 
 void
+tracker_db_statement_bind_value (TrackerDBStatement *stmt,
+				 int                 index,
+				 const GValue       *value)
+{
+	GType type;
+
+	g_return_if_fail (TRACKER_IS_DB_STATEMENT (stmt));
+
+	g_assert (!stmt->stmt_is_used);
+
+	tracker_db_interface_lock (stmt->db_interface);
+
+	type = G_VALUE_TYPE (value);
+
+	if (type == G_TYPE_INT) {
+		sqlite3_bind_int64 (stmt->stmt, index + 1, g_value_get_int (value));
+	} else if (type == G_TYPE_INT64) {
+		sqlite3_bind_int64 (stmt->stmt, index + 1, g_value_get_int64 (value));
+	} else if (type == G_TYPE_DOUBLE) {
+		sqlite3_bind_double (stmt->stmt, index + 1, g_value_get_double (value));
+	} else if (type == G_TYPE_FLOAT) {
+		sqlite3_bind_double (stmt->stmt, index + 1, g_value_get_float (value));
+	} else if (type == G_TYPE_STRING) {
+		sqlite3_bind_text (stmt->stmt, index + 1,
+				   g_value_get_string (value), -1, SQLITE_TRANSIENT);
+	} else {
+		GValue dest = G_VALUE_INIT;
+
+		g_value_init (&dest, G_TYPE_STRING);
+
+		if (g_value_transform (value, &dest)) {
+			sqlite3_bind_text (stmt->stmt, index + 1,
+					   g_value_get_string (&dest), -1, SQLITE_TRANSIENT);
+			g_value_unset (&dest);
+		} else {
+			g_assert_not_reached ();
+		}
+	}
+
+	tracker_db_interface_unlock (stmt->db_interface);
+}
+
+void
 tracker_db_cursor_rewind (TrackerDBCursor *cursor)
 {
 	TrackerDBInterface *iface;
@@ -2974,4 +3084,12 @@ gboolean
 tracker_db_interface_get_is_used (TrackerDBInterface *db_interface)
 {
 	return g_atomic_int_get (&db_interface->n_active_cursors) > 0;
+}
+
+gboolean
+tracker_db_interface_init_vtabs (TrackerDBInterface *db_interface,
+                                 TrackerOntologies  *ontologies)
+{
+	tracker_vtab_triples_init (db_interface->db, ontologies);
+	return TRUE;
 }

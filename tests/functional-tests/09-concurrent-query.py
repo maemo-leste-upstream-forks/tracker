@@ -29,7 +29,7 @@ import signal
 from gi.repository import GObject
 
 from common.utils import configuration as cfg
-import unittest2 as ut
+import unittest as ut
 #import unittest as ut
 from common.utils.storetest import CommonTrackerStoreTest as CommonTrackerStoreTest
 
@@ -81,7 +81,7 @@ class TestConcurrentQuery (CommonTrackerStoreTest):
                 result_handler=self.update_cb,
                 error_handler=self.error_handler)
 
-        # Safeguard of 50 seconds. The last reply should quit the loop
+        # Safeguard of 60 seconds. The last reply should quit the loop
         GObject.timeout_add_seconds (60, self.timeout_cb)
         self.main_loop.run ()
         

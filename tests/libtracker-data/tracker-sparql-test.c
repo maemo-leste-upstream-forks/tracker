@@ -63,6 +63,9 @@ const TestInfo tests[] = {
 	{ "algebra/var-scope-join-1", "algebra/var-scope-join-1", FALSE },
 	{ "anon/query", "anon/data", FALSE },
 	{ "anon/query-2", "anon/data", FALSE },
+	{ "anon/query-3", "anon/data", FALSE },
+	{ "anon/query-4", "anon/data", FALSE },
+	{ "anon/query-5", "anon/data", FALSE },
 	{ "ask/ask-1", "ask/data", FALSE },
 	{ "basic/base-prefix-3", "basic/data-1", FALSE },
 	{ "basic/compare-cast", "basic/data-1", FALSE },
@@ -70,6 +73,12 @@ const TestInfo tests[] = {
 	{ "basic/predicate-variable-2", "basic/data-1", FALSE },
 	{ "basic/predicate-variable-3", "basic/data-1", FALSE },
 	{ "basic/predicate-variable-4", "basic/data-1", FALSE },
+	{ "basic/urn-in-as", "basic/data-1", FALSE },
+	{ "bnode/query-1", "bnode/data", FALSE },
+	{ "bnode/query-2", "bnode/data", FALSE },
+	{ "bnode/query-3", "bnode/data", FALSE },
+	{ "bnode/query-4", "bnode/data", FALSE },
+	{ "bnode/query-5", "bnode/data", FALSE },
 	{ "bnode-coreference/query", "bnode-coreference/data", FALSE },
 	{ "bound/bound1", "bound/data", FALSE },
 	{ "datetime/delete-1", "datetime/data-3", FALSE },
@@ -102,6 +111,7 @@ const TestInfo tests[] = {
 	{ "functions/functions-xpath-12", "functions/data-4", FALSE },
 	{ "functions/functions-xpath-13", "functions/data-4", FALSE },
 	{ "functions/functions-xpath-14", "functions/data-4", FALSE },
+	{ "functions/functions-coalesce-1", "functions/data-1", FALSE },
 	{ "graph/graph-1", "graph/data-1", FALSE },
 	{ "graph/graph-2", "graph/data-2", FALSE },
 	{ "graph/graph-3", "graph/data-3", FALSE },
@@ -119,6 +129,7 @@ const TestInfo tests[] = {
 	{ "sort/query-sort-6", "sort/data-sort-4", FALSE },
 	{ "sort/query-sort-7", "sort/data-sort-1", FALSE },
 	{ "sort/query-sort-8", "sort/data-sort-5", FALSE },
+	{ "sort/query-sort-9", "sort/data-sort-5", FALSE },
 	{ "subqueries/subqueries-1", "subqueries/data-1", FALSE },
 	{ "subqueries/subqueries-union-1", "subqueries/data-1", FALSE },
 	{ "subqueries/subqueries-union-2", "subqueries/data-1", FALSE },
@@ -138,6 +149,26 @@ const TestInfo tests[] = {
 	{ "bind/bind2", "bind/data", FALSE },
 	{ "bind/bind3", "bind/data", FALSE },
 	{ "bind/bind4", "bind/data", FALSE },
+	/* Property paths */
+	{ "property-paths/inverse-path-1", "property-paths/data", FALSE },
+	{ "property-paths/inverse-path-2", "property-paths/data", FALSE },
+	{ "property-paths/sequence-path-1", "property-paths/data", FALSE },
+	{ "property-paths/sequence-path-2", "property-paths/data", FALSE },
+	{ "property-paths/sequence-path-3", "property-paths/data", FALSE },
+	{ "property-paths/optional-path-1", "property-paths/data", FALSE },
+	{ "property-paths/recursive-path-1", "property-paths/data", FALSE },
+	{ "property-paths/recursive-path-2", "property-paths/data", FALSE },
+	{ "property-paths/alternative-path-1", "property-paths/data", FALSE },
+	{ "property-paths/alternative-path-2", "property-paths/data", FALSE },
+	{ "property-paths/mixed-inverse-and-sequence-1", "property-paths/data", FALSE },
+	{ "property-paths/mixed-inverse-and-sequence-2", "property-paths/data", FALSE },
+	{ "property-paths/mixed-inverse-and-sequence-3", "property-paths/data", FALSE },
+	{ "property-paths/mixed-recursive-and-sequence-1", "property-paths/data", FALSE },
+	{ "property-paths/mixed-recursive-and-alternative-1", "property-paths/data", FALSE },
+	{ "property-paths/mixed-recursive-and-alternative-2", "property-paths/data", FALSE },
+	{ "property-paths/mixed-recursive-and-inverse-1", "property-paths/data", FALSE },
+	{ "property-paths/mixed-recursive-and-inverse-2", "property-paths/data", FALSE },
+	{ "property-paths/mixed-recursive-and-inverse-3", "property-paths/data", FALSE },
 	/* Update tests */
 	{ "update/insert-data-query-1", "update/insert-data-1", FALSE, FALSE },
 	{ "update/insert-data-query-2", "update/insert-data-2", FALSE, TRUE },
@@ -155,28 +186,19 @@ const TestInfo tests[] = {
 	{ NULL }
 };
 
-static int
-strstr_i (const char *a, const char *b)
-{
-	return strstr (b, a) == NULL ? 1 : 0;
-}
-
 static void
 check_result (TrackerDBCursor *cursor,
               const TestInfo *test_info,
               const gchar *results_filename,
               GError *error)
 {
-	int (*comparer) (const char *a, const char *b);
 	GString *test_results;
 	gchar *results;
 	GError *nerror = NULL;
 
 	if (test_info->expect_query_error) {
-		comparer = strstr_i;
 		g_assert (error != NULL);
 	} else {
-		comparer = strcmp;
 		g_assert_no_error (error);
 	}
 
@@ -209,13 +231,15 @@ check_result (TrackerDBCursor *cursor,
 			g_string_append (test_results, "\n");
 		}
 	} else if (test_info->expect_query_error) {
-		g_string_append (test_results, error->message);
-		g_clear_error (&error);
-
-		g_strchomp(results);
+		g_assert (error != NULL && error->domain == TRACKER_SPARQL_ERROR);
+		g_string_free (test_results, TRUE);
+		g_free (results);
+		return;
 	}
 
-	if (comparer (results, test_results->str)) {
+	g_assert_no_error (error);
+
+	if (strcmp (results, test_results->str) != 0) {
 		/* print result difference */
 		gchar *quoted_results;
 		gchar *command_line;
@@ -349,6 +373,8 @@ test_sparql_query (TestInfo      *test_info,
 	g_free (results_filename);
 	g_object_unref (test_schemas);
 	g_object_unref (data_location);
+
+	tracker_data_manager_shutdown (manager);
 	g_object_unref (manager);
 }
 

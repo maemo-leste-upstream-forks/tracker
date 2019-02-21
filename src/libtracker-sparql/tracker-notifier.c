@@ -704,7 +704,9 @@ tracker_notifier_initable_init (GInitable     *initable,
 	tracker_notifier_cache_id (notifier, "nie:dataSource");
 	tracker_notifier_cache_id (notifier, "tracker:extractor-data-source");
 
-	priv->dbus_connection = g_bus_get_sync (G_BUS_TYPE_SESSION, cancellable, error);
+	priv->dbus_connection = tracker_sparql_connection_get_dbus_connection ();
+	if (!priv->dbus_connection)
+		priv->dbus_connection = g_bus_get_sync (G_BUS_TYPE_SESSION, cancellable, error);
 	if (!priv->dbus_connection)
 		return FALSE;
 
@@ -790,11 +792,16 @@ tracker_notifier_finalize (GObject *object)
 
 	priv = tracker_notifier_get_instance_private (TRACKER_NOTIFIER (object));
 
-	g_dbus_connection_signal_unsubscribe (priv->dbus_connection,
-	                                      priv->graph_updated_signal_id);
+	if (priv->dbus_connection) {
+		g_dbus_connection_signal_unsubscribe (priv->dbus_connection,
+		                                      priv->graph_updated_signal_id);
 
-	g_object_unref (priv->dbus_connection);
-	g_object_unref (priv->connection);
+		g_object_unref (priv->dbus_connection);
+	}
+
+	if (priv->connection)
+		g_object_unref (priv->connection);
+
 	g_hash_table_unref (priv->cached_ids);
 	g_hash_table_unref (priv->cached_events);
 	g_strfreev (priv->expanded_classes);

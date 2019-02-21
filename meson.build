@@ -1,4 +1,6 @@
-project('tracker', 'c', 'vala', version: '2.1.8')
+project('tracker', 'c', 'vala',
+        version: '2.2.0',
+        meson_version: '>=0.47')
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -15,12 +17,13 @@ tracker_interface_age = 0
 tracker_binary_age = 100 * tracker_minor_version + tracker_micro_version - tracker_interface_age
 
 # This the .Z used in libtracker-sparql-2.0.so.Z
-soversion = '0.@0@.@1@'.format(tracker_binary_age - tracker_interface_age, tracker_interface_age)
+soversion = '0'
+libversion = '@0@.@1@.@2@'.format(soversion, tracker_binary_age - tracker_interface_age, tracker_interface_age)
 
 libdir = join_paths(get_option('prefix'), get_option('libdir'))
 datadir = join_paths(get_option('prefix'), get_option('datadir'))
 
-glib_required = '2.40.0'
+glib_required = '2.46.0'
 
 # 3.6.11 for sqlite_backup API
 # 3.6.16 to fix test failures
@@ -55,32 +58,30 @@ libmath = cc.find_library('m', required: false)
 # to the Vala commandline, but still works as expected for C code.
 uuid = cc.find_library('uuid')
 
+add_project_arguments('-Wformat', '-Wformat-security', language: 'c')
+
 # There are various gchar vs. unsigned char warnings that occur in extract
 # modules, it's not worth adding casts everywhere so we disable the warning.
 add_project_arguments('-Wno-pointer-sign', language: 'c')
-add_project_arguments('-DTRACKER_COMPILATION', language: 'c')
+
+add_project_arguments('-DTRACKER_COMPILATION',
+                      '-DG_LOG_DOMAIN="Tracker"',
+                      language: 'c')
+add_project_arguments(['-D', 'TRACKER_COMPILATION'],
+                      ['-D', 'G_LOG_DOMAIN="Tracker"'],
+                      language: 'vala')
 
 enable_fts = get_option('fts')
 
-have_network_manager = false
-if get_option('network_manager') != 'no'
-    network_manager = dependency('libnm', required: get_option('network_manager') == 'yes')
-    have_network_manager = network_manager.found()
-endif
+network_manager = dependency('libnm', required: get_option('network_manager'))
+have_network_manager = network_manager.found()
 
 ##################################################################
 # Check for libtracker-common, make sure libstemmer exists
 ##################################################################
 
-have_libstemmer = false
-if get_option('stemmer') != 'no'
-    libstemmer = cc.find_library('stemmer', required: false)
-    if libstemmer.found()
-        have_libstemmer = true
-    elif get_option('stemmer') == 'yes'
-        error('stemmer support explicitly requested, but stemmer library couldn\'t be found')
-    endif
-endif
+libstemmer = cc.find_library('stemmer', required: get_option('stemmer'))
+have_libstemmer = libstemmer.found()
 
 ##################################################################
 # Check for tracker-fts, allow disabling FTS support
@@ -265,6 +266,9 @@ conf.set('libexecdir', join_paths(get_option('prefix'), get_option('libexecdir')
 conf.set('prefix', get_option('prefix'))
 conf.set('TRACKER_API_VERSION', tracker_api_version)
 conf.set('VERSION', meson.project_version())
+conf.set('tracker_store', join_paths ('${libexecdir}', 'tracker-store'))
+conf.set('ontologies_dir', join_paths ('${datadir}', 'tracker', 'ontologies'))
+conf.set('domain_ontologies_dir', join_paths('${datadir}', 'tracker', 'domain-ontologies'))
 
 # Configure functional tests to run completely from source tree.
 conf.set('FUNCTIONAL_TESTS_ONTOLOGIES_DIR', join_paths(meson.current_source_dir(), 'tests', 'functional-tests', 'test-ontologies'))
@@ -320,11 +324,8 @@ typelib_dir = gobject_introspection.get_pkgconfig_variable('typelibdir',
                                                            define_variable:  [ 'libdir', libdir ])
 
 subdir('src')
-
-if get_option('docs')
-  subdir('docs')
-endif
-
+subdir('data')
+subdir('docs')
 subdir('examples')
 subdir('utils')
 

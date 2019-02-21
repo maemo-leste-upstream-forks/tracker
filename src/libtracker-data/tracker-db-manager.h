@@ -62,7 +62,6 @@ void                tracker_db_manager_optimize               (TrackerDBManager 
 const gchar *       tracker_db_manager_get_file               (TrackerDBManager      *db_manager);
 TrackerDBInterface *tracker_db_manager_get_db_interface       (TrackerDBManager      *db_manager);
 TrackerDBInterface *tracker_db_manager_get_writable_db_interface (TrackerDBManager   *db_manager);
-TrackerDBInterface *tracker_db_manager_get_wal_db_interface   (TrackerDBManager      *db_manager);
 
 void                tracker_db_manager_ensure_locations       (TrackerDBManager      *db_manager,
 							       GFile                 *cache_location,
@@ -95,6 +94,9 @@ gboolean            tracker_db_manager_get_tokenizer_changed  (TrackerDBManager 
 void                tracker_db_manager_tokenizer_update       (TrackerDBManager      *db_manager);
 
 void                tracker_db_manager_check_perform_vacuum   (TrackerDBManager      *db_manager);
+
+void                tracker_db_manager_set_vtab_user_data     (TrackerDBManager      *db_manager,
+                                                               gpointer               user_data);
 
 G_END_DECLS
 
