@@ -3,6 +3,15 @@
 mkdir ${ADTTMP}/locale
 localedef -c -i en_US -f UTF-8 ${ADTTMP}/locale/en_US.utf8
 
+dh_auto_configure -- \
+    -Dunicode_support=unistring \
+    -Dfts=true \
+    -Dstemmer=enabled \
+    -Dfunctional_tests=true \
+    -Dnetwork_manager=disabled \
+    -Dsystemd_user_services=/usr/lib/systemd/user \
+    --libexecdir=/usr/lib/tracker
+
 LOCPATH=${ADTTMP}/locale \
     HOME=${ADTTMP} \
     LANG=en_US.utf8 \

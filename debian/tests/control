@@ -1,3 +1,2 @@
 Tests: unit-tests
 Depends: @, @builddeps@, dbus-x11, gir1.2-glib-2.0, python-gi, locales
-Restrictions: build-needed
