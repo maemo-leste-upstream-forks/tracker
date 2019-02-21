@@ -8,7 +8,7 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,--as-needed -Wl,-Bsymbolic
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		-Dunicode_support=unistring \
+		-Dunicode_support=icu \
 		-Dfts=true \
 		-Dstemmer=enabled \
 		-Ddocs=true \

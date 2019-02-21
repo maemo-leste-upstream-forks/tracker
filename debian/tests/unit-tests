@@ -4,7 +4,7 @@ mkdir ${ADTTMP}/locale
 localedef -c -i en_US -f UTF-8 ${ADTTMP}/locale/en_US.utf8
 
 dh_auto_configure -- \
-    -Dunicode_support=unistring \
+    -Dunicode_support=icu \
     -Dfts=true \
     -Dstemmer=enabled \
     -Dfunctional_tests=true \
