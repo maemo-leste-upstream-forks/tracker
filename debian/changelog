@@ -1,8 +1,10 @@
-tracker (2.1.8-1) UNRELEASED; urgency=medium
+tracker (2.1.8-1) unstable; urgency=medium
 
   * New upstream release
+  * Drop libtracker-data-Don-t-rely-on-hash-table-iteration-order-.patch:
+    - Applied in new release
 
- -- Jeremy Bicha <jbicha@debian.org>  Wed, 20 Feb 2019 17:50:43 -0500
+ -- Jeremy Bicha <jbicha@debian.org>  Wed, 20 Feb 2019 20:26:33 -0500
 
 tracker (2.1.7-1) unstable; urgency=medium
 
