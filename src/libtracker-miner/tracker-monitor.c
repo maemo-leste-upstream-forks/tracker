@@ -314,7 +314,6 @@ tracker_monitor_finalize (GObject *object)
 
 	g_hash_table_unref (priv->cached_events);
 	g_hash_table_unref (priv->monitors);
-	g_clear_object (&priv->tree);
 
 	G_OBJECT_CLASS (tracker_monitor_parent_class)->finalize (object);
 }
@@ -638,6 +637,11 @@ cache_event (TrackerMonitor    *monitor,
 	TrackerMonitorPrivate *priv;
 
 	priv = tracker_monitor_get_instance_private (monitor);
+
+	if (g_hash_table_lookup_extended (priv->cached_events, file,
+	                                  NULL, NULL))
+		return;
+
 	g_hash_table_insert (priv->cached_events,
 	                     g_object_ref (file),
 	                     GUINT_TO_POINTER (event_type));
@@ -655,6 +659,7 @@ monitor_event_cb (GFileMonitor      *file_monitor,
 	gchar *other_file_uri;
 	gboolean is_directory = FALSE;
 	TrackerMonitorPrivate *priv;
+	gpointer value;
 
 	monitor = user_data;
 	priv = tracker_monitor_get_instance_private (monitor);
@@ -670,17 +675,6 @@ monitor_event_cb (GFileMonitor      *file_monitor,
 	if (!other_file) {
 		is_directory = check_is_directory (monitor, file);
 
-		/* Avoid non-indexable-files */
-		if (priv->tree &&
-		    !tracker_indexing_tree_file_is_indexable (priv->tree,
-		                                              file,
-		                                              (is_directory ?
-		                                               G_FILE_TYPE_DIRECTORY :
-		                                               G_FILE_TYPE_REGULAR))) {
-			g_free (file_uri);
-			return;
-		}
-
 		other_file_uri = NULL;
 		g_debug ("Received monitor event:%d (%s) for %s:'%s'",
 		         event_type,
@@ -695,24 +689,6 @@ monitor_event_cb (GFileMonitor      *file_monitor,
 			is_directory = check_is_directory (monitor, file);
 		}
 
-		/* Avoid doing anything of both
-		 * file/other_file are non-indexable
-		 */
-		if (priv->tree &&
-		    !tracker_indexing_tree_file_is_indexable (priv->tree,
-		                                              file,
-		                                              (is_directory ?
-		                                               G_FILE_TYPE_DIRECTORY :
-		                                               G_FILE_TYPE_REGULAR)) &&
-		    !tracker_indexing_tree_file_is_indexable (priv->tree,
-		                                              other_file,
-		                                              (is_directory ?
-		                                               G_FILE_TYPE_DIRECTORY :
-		                                               G_FILE_TYPE_REGULAR))) {
-			g_free (file_uri);
-			return;
-		}
-
 		other_file_uri = g_file_get_uri (other_file);
 		g_debug ("Received monitor event:%d (%s) for files '%s'->'%s'",
 		         event_type,
@@ -724,7 +700,7 @@ monitor_event_cb (GFileMonitor      *file_monitor,
 	switch (event_type) {
 	case G_FILE_MONITOR_EVENT_CREATED:
 	case G_FILE_MONITOR_EVENT_CHANGED:
-		if (priv->use_changed_event) {
+		if (!priv->use_changed_event) {
 			cache_event (monitor, file, event_type);
 		} else {
 			emit_signal_for_event (monitor, event_type,
@@ -732,6 +708,18 @@ monitor_event_cb (GFileMonitor      *file_monitor,
 		}
 		break;
 	case G_FILE_MONITOR_EVENT_DELETED:
+		if (g_hash_table_lookup_extended (priv->cached_events,
+		                                  file, NULL, &value) &&
+		    GPOINTER_TO_UINT (value) == G_FILE_MONITOR_EVENT_CREATED) {
+			/* Consume both the cached CREATED event and this one */
+			g_hash_table_remove (priv->cached_events, file);
+			break;
+		}
+
+		/* In any case, cached events are stale */
+		g_hash_table_remove (priv->cached_events, file);
+
+		/* Fall through */
 	case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
 		emit_signal_for_event (monitor, event_type,
 		                       is_directory, file, NULL);
@@ -840,39 +828,6 @@ tracker_monitor_get_enabled (TrackerMonitor *monitor)
 	priv = tracker_monitor_get_instance_private (monitor);
 
 	return priv->enabled;
-}
-
-TrackerIndexingTree *
-tracker_monitor_get_indexing_tree (TrackerMonitor *monitor)
-{
-	TrackerMonitorPrivate *priv;
-
-	g_return_val_if_fail (TRACKER_IS_MONITOR (monitor), NULL);
-
-	priv = tracker_monitor_get_instance_private (monitor);
-
-	return priv->tree;
-}
-
-void
-tracker_monitor_set_indexing_tree (TrackerMonitor      *monitor,
-                                   TrackerIndexingTree *tree)
-{
-	TrackerMonitorPrivate *priv;
-
-	g_return_if_fail (TRACKER_IS_MONITOR (monitor));
-	g_return_if_fail (!tree || TRACKER_IS_INDEXING_TREE (tree));
-
-	priv = tracker_monitor_get_instance_private (monitor);
-
-	if (priv->tree) {
-		g_object_unref (priv->tree);
-		priv->tree = NULL;
-	}
-
-	if (tree) {
-		priv->tree = g_object_ref (tree);
-	}
 }
 
 void

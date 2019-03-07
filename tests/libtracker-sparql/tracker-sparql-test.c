@@ -36,11 +36,7 @@ ESCAPE_TEST_DATA test_data []  = {
 	{ NULL, NULL }
 };
 
-/* Used for the cursor_next_async test */
-static TrackerSparqlConnection *connection;
 static GMainLoop *main_loop;
-
-#if HAVE_TRACKER_FTS
 
 #define N_QUERIES 3
 
@@ -57,8 +53,6 @@ static const gchar *queries[N_QUERIES] = {
 	/* #3 */
 	"SELECT ?p WHERE { ?p tracker:fulltextIndexed true }",
 };
-
-#endif /* HAVE_TRACKER_FTS */
 
 static void
 test_tracker_sparql_escape_string (void)
@@ -83,15 +77,15 @@ test_tracker_sparql_escape_uri_vprintf (void)
 	g_free (result);
 }
 
-#if HAVE_TRACKER_FTS
-
-static void test_tracker_sparql_cursor_next_async_query (gint query);
+static void test_tracker_sparql_cursor_next_async_query (TrackerSparqlConnection *connection,
+                                                         gint                     query);
 
 static void
 test_tracker_sparql_cursor_next_async_cb (GObject      *source,
                                           GAsyncResult *result,
                                           gpointer      user_data)
 {
+	TrackerSparqlConnection *connection;
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
 	gboolean success;
@@ -116,6 +110,7 @@ test_tracker_sparql_cursor_next_async_cb (GObject      *source,
 
 	cursor = TRACKER_SPARQL_CURSOR (source);
 	g_assert (cursor != NULL);
+	connection = tracker_sparql_cursor_get_connection (cursor);
 
 	g_print ("  %d: %s\n",
 	         query,
@@ -128,7 +123,8 @@ test_tracker_sparql_cursor_next_async_cb (GObject      *source,
 		g_print ("Finished %d\n", finished);
 
 		if (finished == 1 || finished == 2) {
-			test_tracker_sparql_cursor_next_async_query (finished);
+			test_tracker_sparql_cursor_next_async_query (connection,
+			                                             finished);
 		} else if (finished == 3) {
 			g_main_loop_quit (main_loop);
 		}
@@ -154,7 +150,8 @@ test_tracker_sparql_cursor_next_async_cb (GObject      *source,
 }
 
 static void
-test_tracker_sparql_cursor_next_async_query (gint query)
+test_tracker_sparql_cursor_next_async_query (TrackerSparqlConnection *connection,
+                                             gint                     query)
 {
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
@@ -181,7 +178,10 @@ test_tracker_sparql_cursor_next_async_query (gint query)
 static void
 test_tracker_sparql_cursor_next_async (void)
 {
+	TrackerSparqlConnection *connection;
 	GError *error = NULL;
+
+	main_loop = g_main_loop_new (NULL, TRUE);
 
 	/* So, the idea here:
 	 * 1. Test async cursor_next() call.
@@ -189,16 +189,13 @@ test_tracker_sparql_cursor_next_async (void)
 	 * 3. Handle multiple async queries + async cursor_next() calls.
 	 */
 
-	if (G_UNLIKELY (connection == NULL)) {
-		connection = tracker_sparql_connection_get (NULL, &error);
-		g_assert_no_error (error);
-		g_assert (connection != NULL);
-	}
+	connection = tracker_sparql_connection_get (NULL, &error);
+	g_assert_no_error (error);
+	g_assert (connection != NULL);
 
-	test_tracker_sparql_cursor_next_async_query (0);
+	test_tracker_sparql_cursor_next_async_query (connection, 0);
+	g_main_loop_run (main_loop);
 }
-
-#endif /* HAVE_TRACKER_FTS */
 
 static void
 test_tracker_sparql_connection_locking_sync (void)
@@ -286,6 +283,8 @@ test_tracker_sparql_nb237150_cb (GObject      *source_object,
 static void
 test_tracker_sparql_nb237150_subprocess (void)
 {
+	main_loop = g_main_loop_new (NULL, TRUE);
+
 	g_print ("\n");
 	g_print ("Calling #1 - tracker_sparql_connection_get_async()\n");
 	tracker_sparql_connection_get_async (NULL, test_tracker_sparql_nb237150_cb, GINT_TO_POINTER(1));
@@ -294,6 +293,7 @@ test_tracker_sparql_nb237150_subprocess (void)
 	tracker_sparql_connection_get_async (NULL, test_tracker_sparql_nb237150_cb, GINT_TO_POINTER(2));
 
 	g_print ("Calling both finished\n");
+	g_main_loop_run (main_loop);
 }
 
 static void
@@ -365,11 +365,6 @@ main (gint argc, gchar **argv)
 
 	g_test_init (&argc, &argv, NULL);
 
-#if HAVE_TRACKER_FTS
-	main_loop = g_main_loop_new (NULL, FALSE);
-	g_assert (main_loop != NULL);
-#endif
-
 	/* NOTE: this first test must come BEFORE any others because
 	 * connections are cached by libtracker-sparql.
 	 */
@@ -387,21 +382,10 @@ main (gint argc, gchar **argv)
 	                 test_tracker_sparql_connection_locking_sync);
 	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_connection_locking_async",
 	                 test_tracker_sparql_connection_locking_async);
-
-#if HAVE_TRACKER_FTS
 	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_cursor_next_async",
 	                 test_tracker_sparql_cursor_next_async);
-#endif
 
 	result = g_test_run ();
-
-#if HAVE_TRACKER_FTS
-	g_main_loop_run (main_loop);
-
-	if (connection) {
-		g_object_unref (connection);
-	}
-#endif
 
 	return result;
 }

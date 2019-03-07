@@ -3954,6 +3954,7 @@ static void
 load_ontologies_gvdb (TrackerDataManager  *manager,
                       GError             **error)
 {
+	TrackerOntologies *ontologies;
 	gchar *filename;
 	GFile *child;
 
@@ -3961,8 +3962,12 @@ load_ontologies_gvdb (TrackerDataManager  *manager,
 	filename = g_file_get_path (child);
 	g_object_unref (child);
 
-	g_object_unref (manager->ontologies);
-	manager->ontologies = tracker_ontologies_load_gvdb (filename, error);
+	ontologies = tracker_ontologies_load_gvdb (filename, error);
+
+	if (ontologies != NULL) {
+		g_object_unref (manager->ontologies);
+		manager->ontologies = ontologies;
+	}
 
 	g_free (filename);
 }
@@ -4416,8 +4421,6 @@ tracker_data_manager_initable_init (GInitable     *initable,
 			check_ontology = FALSE;
 
 			if (gvdb_error) {
-				g_critical ("Error loading ontology cache: %s",
-				            gvdb_error->message);
 				g_clear_error (&gvdb_error);
 
 				/* fall back to loading ontology from database into memory */
