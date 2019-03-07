@@ -1,8 +1,19 @@
 tracker (2.2.0-1) UNRELEASED; urgency=medium
 
   * New upstream release
+  * Build with meson
+  * Bump minimum libglib2.0-dev to 2.46
+  * debian/libtracker-sparql-2.0-0.symbols: Add new symbols
+  * Drop patches applied in new release:
+    - tracker-monitor-Prevent-stack-smashing.patch
+    - build-Restore-right-soversion-to-libraries.patch
+    - functional-tests-Require-Bash-for-test-runner.patch
+  * autopkgtest: Don't do a full build
+  * Use ICU to provide Unicode support instead of libunistring
+    - since the collation test fails with libunistring. See tracker#59
+  * Drop test.patch: no longer needed after switch to ICU
 
- -- Jeremy Bicha <jbicha@debian.org>  Wed, 20 Feb 2019 20:32:29 -0500
+ -- Jeremy Bicha <jbicha@debian.org>  Thu, 07 Mar 2019 04:49:26 -0500
 
 tracker (2.1.8-1) unstable; urgency=medium
 
