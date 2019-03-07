@@ -1369,8 +1369,9 @@ convert_expression_to_string (TrackerSparql       *sparql,
 	switch (type) {
 	case TRACKER_PROPERTY_TYPE_STRING:
 	case TRACKER_PROPERTY_TYPE_INTEGER:
-		/* Nothing to convert. Do not use CAST to convert integers to
-		 * strings as this breaks use of index when sorting by variable
+	case TRACKER_PROPERTY_TYPE_DOUBLE:
+		/* Nothing to convert. Do not use CAST to convert integer/double to
+		 * to string as this breaks use of index when sorting by variable
 		 * introduced in select expression
 		 */
 		break;
@@ -2612,8 +2613,31 @@ get_solution_for_pattern (TrackerSparql      *sparql,
 
 	while (tracker_db_cursor_iter_next (cursor, NULL, NULL)) {
 		for (i = 0; i < n_cols; i++) {
-			const gchar *str = tracker_db_cursor_get_string (cursor, i, NULL);
-			tracker_solution_add_value (solution, str);
+			GValue value = G_VALUE_INIT;
+
+			tracker_db_cursor_get_value (cursor, i, &value);
+
+			if (G_VALUE_TYPE (&value) == G_TYPE_STRING) {
+				tracker_solution_add_value (solution,
+				                            g_value_get_string (&value));
+			} else if (G_VALUE_TYPE (&value) == G_TYPE_INT64) {
+				gchar *str;
+				str = g_strdup_printf ("%" G_GINT64_FORMAT,
+				                       g_value_get_int64 (&value));
+				tracker_solution_add_value (solution, str);
+				g_free (str);
+			} else if (G_VALUE_TYPE (&value) == G_TYPE_DOUBLE) {
+				gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
+				g_ascii_dtostr (buf, sizeof (buf),
+				                g_value_get_double (&value));
+				tracker_solution_add_value (solution, buf);
+			} else if (G_VALUE_TYPE (&value) == G_TYPE_INVALID) {
+				tracker_solution_add_value (solution, NULL);
+			} else {
+				g_assert_not_reached ();
+			}
+
+			g_value_unset (&value);
 		}
 	}
 
@@ -3203,16 +3227,25 @@ translate_Bind (TrackerSparql  *sparql,
 	TrackerVariable *variable;
 	TrackerBinding *binding;
 	TrackerPropertyType type;
+	gboolean is_empty;
 
 	/* Bind ::= 'BIND' '(' Expression 'AS' Var ')'
 	 */
 	_expect (sparql, RULE_TYPE_LITERAL, LITERAL_BIND);
 	_expect (sparql, RULE_TYPE_LITERAL, LITERAL_OPEN_PARENS);
 
-	str = _prepend_placeholder (sparql);
-	old = tracker_sparql_swap_builder (sparql, str);
+	is_empty = tracker_string_builder_is_empty (sparql->current_state.sql);
 
-	_append_string (sparql, "SELECT *, ");
+	if (!is_empty) {
+		str = _prepend_placeholder (sparql);
+		old = tracker_sparql_swap_builder (sparql, str);
+	}
+
+	_append_string (sparql, "SELECT ");
+
+	if (!is_empty)
+		_append_string (sparql, "*, ");
+
 	_call_rule (sparql, NAMED_RULE_Expression, error);
 	type = sparql->current_state.expression_type;
 
@@ -3224,15 +3257,18 @@ translate_Bind (TrackerSparql  *sparql,
 	if (tracker_variable_has_bindings (variable))
 		_raise (PARSE, "Expected undefined variable", "BIND");
 
-	_append_string_printf (sparql, "AS %s FROM (",
+	_append_string_printf (sparql, "AS %s ",
 			       tracker_variable_get_sql_expression (variable));
 
 	binding = tracker_variable_binding_new (variable, NULL, NULL);
 	tracker_binding_set_data_type (binding, type);
 	tracker_variable_set_sample_binding (variable, TRACKER_VARIABLE_BINDING (binding));
 
-	tracker_sparql_swap_builder (sparql, old);
-	_append_string (sparql, ") ");
+	if (!is_empty) {
+		_append_string (sparql, "FROM (");
+		tracker_sparql_swap_builder (sparql, old);
+		_append_string (sparql, ") ");
+	}
 
 	_expect (sparql, RULE_TYPE_LITERAL, LITERAL_CLOSE_PARENS);
 

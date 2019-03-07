@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
 #
@@ -20,14 +20,9 @@
 """
 Test tracker:coalesce function in Sparql. Only uses the Store
 """
-import unittest
-import random
-
-
-from common.utils import configuration as cfg
 import unittest as ut
-#import unittest as ut
 from common.utils.storetest import CommonTrackerStoreTest as CommonTrackerStoreTest
+
 
 class TestCoalesce (CommonTrackerStoreTest):
     """
@@ -35,7 +30,7 @@ class TestCoalesce (CommonTrackerStoreTest):
     with different combinations (first NULL, none NULL, all NULL...)
     """
 
-    def setUp (self):
+    def setUp(self):
         self.resource_uri = "contact://test_group_concat"
 
         #
@@ -47,17 +42,15 @@ class TestCoalesce (CommonTrackerStoreTest):
                       nco:nameFamily \"family name\" .
          }
         """ % (self.resource_uri)
-        self.tracker.update (insert)
+        self.tracker.update(insert)
 
-    def tearDown (self):
+    def tearDown(self):
         delete = """
         DELETE { <%s> a rdfs:Resource. }
         """ % (self.resource_uri)
-        self.tracker.update (delete)
+        self.tracker.update(delete)
 
-
-        
-    def test_coalesce_first_fine (self):
+    def test_coalesce_first_fine(self):
         """
         setUp: Insert a contact with only some text properties set
         1. TEST: run a query with coalesce with the valid value in first position
@@ -73,13 +66,12 @@ class TestCoalesce (CommonTrackerStoreTest):
            OPTIONAL { ?c nco:note ?note }
            FILTER (?c != nco:default-contact-me && ?c != nco:default-contact-emergency)
         }
-        """ 
-        results = self.tracker.query (query)
-        assert len (results) == 1
+        """
+        results = self.tracker.query(query)
+        assert len(results) == 1
         assert results[0][0] == "full name"
 
-
-    def test_coalesce_second_fine (self):
+    def test_coalesce_second_fine(self):
         """
         setUp: Insert a contact with only some text properties set
         1. TEST: run a query with coalesce. First property NULL, second fine
@@ -95,13 +87,12 @@ class TestCoalesce (CommonTrackerStoreTest):
            OPTIONAL { ?c nco:note ?note }
            FILTER (?c != nco:default-contact-me && ?c != nco:default-contact-emergency)
         }
-        """ 
-        results = self.tracker.query (query)
-        assert len (results) == 1
+        """
+        results = self.tracker.query(query)
+        assert len(results) == 1
         assert results[0][0] == "family name"
 
-
-    def test_coalesce_none_fine_default (self):
+    def test_coalesce_none_fine_default(self):
         """
         setUp: Insert a contact with only some text properties set
         1. TEST: run a query with coalesce. all variables NULL, return default value
@@ -117,11 +108,11 @@ class TestCoalesce (CommonTrackerStoreTest):
            OPTIONAL { ?c nco:note ?note }
            FILTER (?c != nco:default-contact-me && ?c != nco:default-contact-emergency)
         }
-        """ 
-        results = self.tracker.query (query)
-        assert len (results) == 1
+        """
+        results = self.tracker.query(query)
+        assert len(results) == 1
         assert results[0][0] == "test_coalesce"
-        
+
 
 if __name__ == '__main__':
     ut.main()
