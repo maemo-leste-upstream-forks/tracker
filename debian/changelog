@@ -1,4 +1,4 @@
-tracker (2.2.0-1) UNRELEASED; urgency=medium
+tracker (2.2.1-1) UNRELEASED; urgency=medium
 
   * New upstream release
   * Build with meson
@@ -13,7 +13,7 @@ tracker (2.2.0-1) UNRELEASED; urgency=medium
     - since the collation test fails with libunistring. See tracker#59
   * Drop test.patch: no longer needed after switch to ICU
 
- -- Jeremy Bicha <jbicha@debian.org>  Thu, 07 Mar 2019 04:49:26 -0500
+ -- Jeremy Bicha <jbicha@debian.org>  Thu, 07 Mar 2019 04:50:22 -0500
 
 tracker (2.1.8-1) unstable; urgency=medium
 
