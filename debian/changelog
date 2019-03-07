@@ -1,4 +1,4 @@
-tracker (2.2.1-1) UNRELEASED; urgency=medium
+tracker (2.2.1-1) experimental; urgency=medium
 
   * New upstream release
   * Build with meson
@@ -8,12 +8,12 @@ tracker (2.2.1-1) UNRELEASED; urgency=medium
     - tracker-monitor-Prevent-stack-smashing.patch
     - build-Restore-right-soversion-to-libraries.patch
     - functional-tests-Require-Bash-for-test-runner.patch
-  * autopkgtest: Don't do a full build
+  * autopkgtest: Drop build-needed restriction
   * Use ICU to provide Unicode support instead of libunistring
     - since the collation test fails with libunistring. See tracker#59
   * Drop test.patch: no longer needed after switch to ICU
 
- -- Jeremy Bicha <jbicha@debian.org>  Thu, 07 Mar 2019 04:50:22 -0500
+ -- Jeremy Bicha <jbicha@debian.org>  Thu, 07 Mar 2019 05:04:11 -0500
 
 tracker (2.1.8-1) unstable; urgency=medium
 
