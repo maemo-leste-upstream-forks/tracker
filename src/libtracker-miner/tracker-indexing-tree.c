@@ -276,7 +276,7 @@ tracker_indexing_tree_class_init (TrackerIndexingTreeClass *klass)
 	 * signalled when the tracker_indexing_tree_add() API is
 	 * called.
 	 *
-	 * Since: 0.14.0
+	 * Since: 0.14
 	 **/
 	signals[DIRECTORY_ADDED] =
 		g_signal_new ("directory-added",
@@ -299,7 +299,7 @@ tracker_indexing_tree_class_init (TrackerIndexingTreeClass *klass)
 	 * signalled when the tracker_indexing_tree_remove() API is
 	 * called.
 	 *
-	 * Since: 0.14.0
+	 * Since: 0.14
 	 **/
 	signals[DIRECTORY_REMOVED] =
 		g_signal_new ("directory-removed",
@@ -321,7 +321,7 @@ tracker_indexing_tree_class_init (TrackerIndexingTreeClass *klass)
 	 * calls to tracker_indexing_tree_add()), or anytime an update is
 	 * requested through tracker_indexing_tree_notify_update().
 	 *
-	 * Since: 0.14.0
+	 * Since: 0.14
 	 **/
 	signals[DIRECTORY_UPDATED] =
 		g_signal_new ("directory-updated",
@@ -378,7 +378,7 @@ tracker_indexing_tree_init (TrackerIndexingTree *tree)
  *
  * Returns: a newly allocated #TrackerIndexingTree
  *
- * Since: 0.14.0
+ * Since: 0.14
  **/
 TrackerIndexingTree *
 tracker_indexing_tree_new (void)
@@ -748,7 +748,9 @@ tracker_indexing_tree_file_matches_filter (TrackerIndexingTree *tree,
 {
 	TrackerIndexingTreePrivate *priv;
 	GList *filters;
-	gchar *basename;
+	gchar *basename, *str, *reverse;
+	gboolean match = FALSE;
+	gint len;
 
 	g_return_val_if_fail (TRACKER_IS_INDEXING_TREE (tree), FALSE);
 	g_return_val_if_fail (G_IS_FILE (file), FALSE);
@@ -756,6 +758,10 @@ tracker_indexing_tree_file_matches_filter (TrackerIndexingTree *tree,
 	priv = tree->priv;
 	filters = priv->filter_patterns;
 	basename = g_file_get_basename (file);
+
+	str = g_utf8_make_valid (basename, -1);
+	len = strlen (str);
+	reverse = g_utf8_strreverse (str, len);
 
 	while (filters) {
 		PatternData *data = filters->data;
@@ -768,18 +774,21 @@ tracker_indexing_tree_file_matches_filter (TrackerIndexingTree *tree,
 		if (data->file &&
 		    (g_file_equal (file, data->file) ||
 		     g_file_has_prefix (file, data->file))) {
-			g_free (basename);
-			return TRUE;
+			match = TRUE;
+			break;
 		}
 
-		if (g_pattern_match_string (data->pattern, basename)) {
-			g_free (basename);
-			return TRUE;
+		if (g_pattern_match (data->pattern, len, str, reverse)) {
+			match = TRUE;
+			break;
 		}
 	}
 
 	g_free (basename);
-	return FALSE;
+	g_free (str);
+	g_free (reverse);
+
+	return match;
 }
 
 static gboolean
@@ -948,7 +957,7 @@ tracker_indexing_tree_parent_is_indexable (TrackerIndexingTree *tree,
  *
  * Returns: %FALSE if hidden files are indexed, otherwise %TRUE.
  *
- * Since: 0.18.
+ * Since: 0.18
  **/
 gboolean
 tracker_indexing_tree_get_filter_hidden (TrackerIndexingTree *tree)
@@ -975,7 +984,7 @@ tracker_indexing_tree_get_filter_hidden (TrackerIndexingTree *tree)
  * To ignore hidden files, @filter_hidden should be %TRUE, otherwise
  * %FALSE.
  *
- * Since: 0.18.
+ * Since: 0.18
  **/
 void
 tracker_indexing_tree_set_filter_hidden (TrackerIndexingTree *tree,
@@ -1004,7 +1013,7 @@ tracker_indexing_tree_set_filter_hidden (TrackerIndexingTree *tree,
  * For example, you can (by default), disable indexing all directories
  * using this function.
  *
- * Since: 0.18.
+ * Since: 0.18
  **/
 void
 tracker_indexing_tree_set_default_policy (TrackerIndexingTree *tree,
@@ -1032,9 +1041,9 @@ tracker_indexing_tree_set_default_policy (TrackerIndexingTree *tree,
  * (#TRACKER_FILTER_FILE).
  *
  * Returns: Either #TRACKER_FILTER_POLICY_DENY or
- * #TRACKER_FILTER_POLICY_ALLOW.
+ * #TRACKER_FILTER_POLICY_ACCEPT.
  *
- * Since: 0.18.
+ * Since: 0.18
  **/
 TrackerFilterPolicy
 tracker_indexing_tree_get_default_policy (TrackerIndexingTree *tree,
@@ -1137,7 +1146,7 @@ tracker_indexing_tree_get_root (TrackerIndexingTree   *tree,
  * %NULL on error. The root is owned by @tree and should not be freed.
  * It can be referenced using g_object_ref().
  *
- * Since: 1.2.
+ * Since: 1.2
  **/
 GFile *
 tracker_indexing_tree_get_master_root (TrackerIndexingTree *tree)
@@ -1161,7 +1170,7 @@ tracker_indexing_tree_get_master_root (TrackerIndexingTree *tree)
  *
  * Returns: %TRUE if @file matches the URL canonically, otherwise %FALSE.
  *
- * Since: 1.2.
+ * Since: 1.2
  **/
 gboolean
 tracker_indexing_tree_file_is_root (TrackerIndexingTree *tree,

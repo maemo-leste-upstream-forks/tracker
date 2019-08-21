@@ -1,5 +1,5 @@
 project('tracker', 'c', 'vala',
-        version: '2.2.1',
+        version: '2.2.99.0',
         meson_version: '>=0.47')
 
 gnome = import('gnome')
@@ -270,6 +270,7 @@ conf.set('TRACKER_INTERFACE_AGE', 0)
 conf.set('TRACKER_BINARY_AGE', 100 * tracker_minor_version + tracker_micro_version)
 
 # Config that goes in some other generated files (.desktop, .pc, etc)
+conf.set('abs_top_builddir', meson.current_build_dir())
 conf.set('exec_prefix', get_option('prefix'))
 conf.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
 conf.set('datadir', datadir)
@@ -318,9 +319,10 @@ source_root = meson.current_source_dir()
 build_root = meson.current_build_dir()
 po_subdir = join_paths(source_root, 'po')
 
-gsettings_schema_dir = join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
+gsettings_schema_dir = join_paths(get_option('prefix'), get_option('datadir'), 'glib-2.0', 'schemas')
 
 tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-' + tracker_api_version)
+tracker_install_rpath = ':'.join([tracker_internal_libs_dir, libdir])
 
 # NOTE: We don't use ${TRACKER_API_VERSION} because other content like
 # the ontology is installed to the same location.
@@ -328,9 +330,11 @@ tracker_ontologies_dir = join_paths(get_option('prefix'), get_option('datadir'),
 
 vapi_dir = join_paths(get_option('prefix'), get_option('datadir'), 'vala', 'vapi')
 
+glib_compile_schemas = find_program('glib-compile-schemas')
 glib_mkenums = find_program('glib-mkenums')
 g_ir_compiler = find_program('g-ir-compiler', gobject_introspection.get_pkgconfig_variable('g_ir_compiler'))
 g_ir_merge = find_program('g-ir-merge', join_paths(meson.current_source_dir(), 'utils', 'g-ir-merge', 'g-ir-merge'))
+dbus_run_session = find_program('dbus-run-session')
 
 gir_dir = gobject_introspection.get_pkgconfig_variable('girdir',
                                                        define_variable:  [ 'datadir', datadir ])
@@ -370,6 +374,8 @@ elif sqlite.version().version_compare('3.8.4.2')
   # See https://mail.gnome.org/archives/tracker-list/2014-April/msg00001.html
   sqlite_safe = false
 endif
+
+meson.add_install_script('meson_integration_commands.sh', glib_compile_schemas.path(), gsettings_schema_dir)
 
 summary = [
   '\nBuild Configuration:',

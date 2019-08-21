@@ -32,11 +32,8 @@ libtracker_sparql_intermediate_vala = static_library('tracker-sparql-intermediat
         '--target-glib', glib_required,
         libtracker_sparql_c_vapi
     ],
-    # This doesn't depend on tracker_common_dep because of
-    # https://github.com/mesonbuild/meson/issues/671
-    dependencies: [glib, gio] + tracker_sparql_intermediate_dependencies,
+    dependencies: [tracker_common_dep] + tracker_sparql_intermediate_dependencies,
     include_directories: [commoninc, configinc, srcinc],
-    link_with: [libtracker_common],
 )
 
 # We must postprocess the generated Vala header to have only-include-once guards
@@ -76,6 +73,7 @@ libtracker_sparql_intermediate_c = static_library('tracker-sparql-intermediate-c
     enums_c, enums_h,
     libtracker_sparql_c_sources,
     dependencies: [tracker_common_dep, json_glib],
+    link_with: libtracker_sparql_intermediate_vala,
 )
 
 sparqlinc = [include_directories('.'), meson.current_build_dir()]
