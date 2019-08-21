@@ -3954,7 +3954,6 @@ static void
 load_ontologies_gvdb (TrackerDataManager  *manager,
                       GError             **error)
 {
-	TrackerOntologies *ontologies;
 	gchar *filename;
 	GFile *child;
 
@@ -3962,13 +3961,7 @@ load_ontologies_gvdb (TrackerDataManager  *manager,
 	filename = g_file_get_path (child);
 	g_object_unref (child);
 
-	ontologies = tracker_ontologies_load_gvdb (filename, error);
-
-	if (ontologies != NULL) {
-		g_object_unref (manager->ontologies);
-		manager->ontologies = ontologies;
-	}
-
+	tracker_ontologies_load_gvdb (manager->ontologies, filename, error);
 	g_free (filename);
 }
 
@@ -4157,6 +4150,32 @@ update_ontology_last_modified (TrackerDataManager  *manager,
 }
 
 static gboolean
+check_db_consistency (TrackerDBInterface *iface)
+{
+	TrackerDBStatement *stmt;
+	TrackerDBCursor *cursor = NULL;
+	gboolean is_inconsistent = FALSE;
+
+	stmt = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_SELECT, NULL,
+						      "SELECT ID FROM \"rdfs:Resource\" "
+						      "EXCEPT "
+	                                              "SELECT ID FROM Resource "
+	                                              "LIMIT 1");
+
+	if (stmt) {
+		cursor = tracker_db_statement_start_cursor (stmt, NULL);
+		g_object_unref (stmt);
+	}
+
+	if (cursor) {
+		is_inconsistent = tracker_db_cursor_iter_next (cursor, NULL, NULL);
+		g_object_unref (cursor);
+	}
+
+	return !is_inconsistent;
+}
+
+static gboolean
 tracker_data_manager_initable_init (GInitable     *initable,
                                     GCancellable  *cancellable,
                                     GError       **error)
@@ -4208,20 +4227,28 @@ tracker_data_manager_initable_init (GInitable     *initable,
 	                                              manager->update_cache_size,
 	                                              busy_callback, manager, "",
 	                                              G_OBJECT (manager),
+						      manager->ontologies,
 	                                              &internal_error);
 	if (!manager->db_manager) {
 		g_propagate_error (error, internal_error);
 		return FALSE;
 	}
 
-	tracker_db_manager_set_vtab_user_data (manager->db_manager,
-					       manager->ontologies);
-
 	manager->first_time_index = is_first_time_index;
 
 	tracker_data_manager_update_status (manager, "Initializing data manager");
 
 	iface = tracker_db_manager_get_writable_db_interface (manager->db_manager);
+
+	if (!read_only && !check_db_consistency (iface)) {
+		g_set_error (error,
+		             TRACKER_DATA_ONTOLOGY_ERROR,
+		             TRACKER_DATA_UNSUPPORTED_LOCATION,
+			     "Database is inconsistent, reindexing from scratch");
+
+		tracker_db_manager_remove_all (manager->db_manager);
+		return FALSE;
+	}
 
 #ifndef DISABLE_JOURNAL
 	if (manager->journal_check && is_first_time_index) {
@@ -4807,9 +4834,6 @@ tracker_data_manager_initable_init (GInitable     *initable,
 			}
 		}
 	}
-
-	tracker_db_manager_set_vtab_user_data (manager->db_manager,
-					       manager->ontologies);
 
 skip_ontology_check:
 

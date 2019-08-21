@@ -21,6 +21,7 @@ tracker_store_sources = [
 
 tracker_store = executable('tracker-store',
     tracker_store_sources,
+    tracker_sparql_vapi,
     c_args: tracker_c_args + [
         '-include', 'config.h'
     ],
@@ -30,7 +31,7 @@ tracker_store = executable('tracker-store',
     ],
     install: true,
     install_dir: join_paths(get_option('prefix'), get_option('libexecdir')),
-    install_rpath: tracker_internal_libs_dir)
+    install_rpath: tracker_install_rpath)
 
 install_data(
     'tracker-backup.xml',

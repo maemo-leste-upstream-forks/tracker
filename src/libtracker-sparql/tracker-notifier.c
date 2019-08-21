@@ -729,7 +729,7 @@ tracker_notifier_initable_init (GInitable     *initable,
 		                                    G_DBUS_SIGNAL_FLAGS_NONE,
 		                                    graph_updated_cb,
 		                                    initable, NULL);
-	g_object_unref (domain_ontology);
+	tracker_domain_ontology_unref (domain_ontology);
 	g_free (dbus_name);
 
 	return TRUE;
@@ -950,7 +950,7 @@ tracker_notifier_event_get_id (TrackerNotifierEvent *event)
  *
  * Returns the RDF type that this notification event relates to, in their
  * expanded forms (for example,
- * http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Audio).
+ * <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Audio>).
  *
  * A resource may have multiple RDF types. In the case of changes to a
  * resource with multiple types, one event will be notified for each

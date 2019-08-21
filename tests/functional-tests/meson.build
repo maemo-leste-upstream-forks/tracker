@@ -1,4 +1,8 @@
-test_runner = find_program('test-runner.sh')
+test_runner = configure_file(
+    input: 'test-runner.sh.in',
+    output: 'test-runner.sh',
+    configuration: conf)
+test_runner = find_program(test_runner)
 
 config_json = configure_file(
   input: 'configuration.json.in',
@@ -16,7 +20,6 @@ functional_tests = [
   '07-graph',
   '08-unique-insertions',
   '09-concurrent-query',
-  '12-transactions',
   '14-signals',
   '15-statistics',
   '16-collation',
@@ -37,7 +40,7 @@ dconf_profile_full_path = join_paths(meson.current_source_dir(), 'trackertest')
 
 test_env = environment()
 test_env.set('DCONF_PROFILE', dconf_profile_full_path)
-test_env.set('GSETTINGS_SCHEMA_DIR', join_paths(meson.build_root(), 'data'))
+test_env.set('GSETTINGS_SCHEMA_DIR', tracker_uninstalled_gsettings_schema_dir)
 
 test_env.set('TRACKER_DB_ONTOLOGIES_DIR', tracker_uninstalled_nepomuk_ontologies_dir)
 test_env.set('TRACKER_FUNCTIONAL_TEST_BUILD_DIR', build_root)

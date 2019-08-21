@@ -17,9 +17,7 @@ libtracker_data_vala = static_library('tracker-sparql-query',
         # doesn't seem to work here.
         '--target-glib', glib_required,
     ],
-    # This doesn't depend on tracker_common_dep because of
-    # https://github.com/mesonbuild/meson/issues/671
-    dependencies: [glib, gio],
+    dependencies: [tracker_common_dep],
     include_directories: [commoninc, configinc, srcinc],
 )
 
@@ -64,8 +62,7 @@ libtracker_data = library('tracker-data',
     tracker_common_enum_header,
     tracker_data_enums[0],
     tracker_data_enums[1],
-    tracker_gresources[0],
-    tracker_gresources[1],
+    tracker_gresources,
     tracker_sparql_generated_header,
     c_args: tracker_c_args,
     install: true,
