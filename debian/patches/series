@@ -1,3 +1,2 @@
-disable-miner-fs-test.patch
 drop-assert.patch
 libtracker-miners-common-Make-g_error-a-soft-error.patch

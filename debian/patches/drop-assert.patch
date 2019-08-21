@@ -11,10 +11,10 @@ Last-Update: 2018-02-16
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tests/libtracker-data/tracker-backup-test.c b/tests/libtracker-data/tracker-backup-test.c
-index dd3a9d9..d6b8dcc 100644
+index e3502dd..de1d225 100644
 --- a/tests/libtracker-data/tracker-backup-test.c
 +++ b/tests/libtracker-data/tracker-backup-test.c
-@@ -281,7 +281,7 @@ main (int argc, char **argv)
+@@ -279,7 +279,7 @@ main (int argc, char **argv)
  
  	result = g_test_run ();
  
@@ -24,10 +24,10 @@ index dd3a9d9..d6b8dcc 100644
  
  	return result;
 diff --git a/tests/libtracker-data/tracker-sparql-blank-test.c b/tests/libtracker-data/tracker-sparql-blank-test.c
-index 68912e3..f8d36ad 100644
+index fa4af4c..f6facf6 100644
 --- a/tests/libtracker-data/tracker-sparql-blank-test.c
 +++ b/tests/libtracker-data/tracker-sparql-blank-test.c
-@@ -170,7 +170,7 @@ main (int argc, char **argv)
+@@ -168,7 +168,7 @@ main (int argc, char **argv)
  	/* run tests */
  	result = g_test_run ();
  
