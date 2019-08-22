@@ -20,7 +20,6 @@ override_dh_auto_configure:
 
 # These libraries don't have the symlinks with the meson build yet
 # override_dh_install:
-#	find debian/tmp -name libtracker-common.so -print -delete
 #	find debian/tmp -name libtracker-data.so -print -delete
 #	dh_install
 
