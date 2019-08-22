@@ -1,3 +1,4 @@
 drop-assert.patch
 libtracker-miners-common-Make-g_error-a-soft-error.patch
 file-utils-test-application-x-zerosize-is-a-valid-mime-fo.patch
+meson-Don-t-install-libtracker-common-static-library.patch
