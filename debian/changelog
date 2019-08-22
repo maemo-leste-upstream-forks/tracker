@@ -10,8 +10,21 @@ tracker (2.2.99.0-1) UNRELEASED; urgency=medium
     - Handle correctly backreferences in TrackerResource tree
     - Fixed handling doubles with exponents in SPARQL
     - Don't limit to specific desktop environments
+  * Refresh patches
+  * d/p/disable-miner-fs-test.patch:
+    - Remove as the test now works correctly
+  * d/p/file-utils-test-application-x-zerosize-is-a-valid-mime-fo.patch:
+    - Support application/x-zerosize as valid mime type
+  * d/p/meson-Don-t-install-libtracker-common-static-library.patch:
+    - Don't install libtracker-common static library
+  * debian/control: BD on python3-gi in case we're running tests
+  * debian/rules:
+    - Set XDG_RUNTIME_DIR and HOME when running tests
+    - Fail build on tests failures
+  * libtracker-sparql-2.0-0.install: Don't install libtracker-common anymore
+  * debian/tracker.docs: Use README.md
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 22 Aug 2019 01:26:31 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 22 Aug 2019 04:06:37 +0200
 
 tracker (2.2.1-1) experimental; urgency=medium
 
