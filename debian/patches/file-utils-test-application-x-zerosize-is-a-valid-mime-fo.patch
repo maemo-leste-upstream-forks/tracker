@@ -1,0 +1,29 @@
+From: =?utf-8?b?Ik1hcmNvIFRyZXZpc2FuIChUcmV2acOxbyki?= <mail@3v1n0.net>
+Date: Thu, 22 Aug 2019 04:01:06 +0300
+Subject: file-utils-test: application/x-zerosize is a valid mime for an empty
+ file
+
+As per GLib commit 1c177ce0, empty files might have `application/x-zerosize` mime-type.
+
+So, accept both this one and "text/plain" as valid.
+
+Origin: https://gitlab.gnome.org/GNOME/tracker/merge_requests/118
+Applied-Upstream: 2.99.91
+---
+ tests/libtracker-common/tracker-file-utils-test.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/tests/libtracker-common/tracker-file-utils-test.c b/tests/libtracker-common/tracker-file-utils-test.c
+index 66f9739..a41bead 100644
+--- a/tests/libtracker-common/tracker-file-utils-test.c
++++ b/tests/libtracker-common/tracker-file-utils-test.c
+@@ -235,7 +235,8 @@ test_file_get_mime_type (void)
+ 
+         f = g_file_new_for_path (TEST_FILENAME);
+         result = tracker_file_get_mime_type (f);
+-        g_assert_cmpstr (result, ==, "text/plain");
++        g_assert_true (g_strcmp0 (result, "text/plain") == 0 ||
++                       g_strcmp0 (result, "application/x-zerosize") == 0);
+ 
+         g_object_unref (f);
+         g_free (result);
