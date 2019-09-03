@@ -34,5 +34,7 @@ override_dh_strip:
 	dh_strip --dbgsym-migration='tracker-dbg (<< 1.7.4-1~)'
 
 override_dh_auto_test:
+ifeq ($(filter nocheck,$(DEB_BUILD_OPTIONS)),)
 	env HOME=$(BUILDDIR)/HOME XDG_RUNTIME_DIR=$(BUILDDIR)/XRD \
 	dbus-run-session -- dh_auto_test
+endif
