@@ -1,5 +1,6 @@
 tracker (2.2.99.0-1) UNRELEASED; urgency=medium
 
+  [ Marco Trevisan (Treviño) ]
   * New upstream release
     - Support for storing Musicbrainz metadata in the multimedia ontology.
     - Fix detection of files that need writeback
@@ -24,7 +25,15 @@ tracker (2.2.99.0-1) UNRELEASED; urgency=medium
   * libtracker-sparql-2.0-0.install: Don't install libtracker-common anymore
   * debian/tracker.docs: Use README.md
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 22 Aug 2019 04:06:37 +0200
+  [ Iain Lane ]
+  * debian/rules: Don't run dh_auto_test if nocheck is set in
+    DEB_BUILD_OPTIONS
+  * Create the home directory and XDG_RUNTIME_DIR for the tests
+  * Revert "build: Include libdir in rpath" This reverts commit
+    a92309f9cf9099a8b0b54908e032dcb181ab6c63. We don't want these in rpath on
+    Debian; the standard libdir is in the search path.
+
+ -- Iain Lane <laney@debian.org>  Tue, 03 Sep 2019 16:26:38 +0100
 
 tracker (2.2.1-1) experimental; urgency=medium
 
