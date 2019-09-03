@@ -1,0 +1,54 @@
+From: Iain Lane <laney@debian.org>
+Date: Tue, 3 Sep 2019 16:25:39 +0100
+Subject: Revert "build: Include libdir in rpath"
+
+This reverts commit a92309f9cf9099a8b0b54908e032dcb181ab6c63.
+
+We don't want these in rpath on Debian; the standard libdir is in the
+search path.
+
+Forwarded: not-needed
+---
+ meson.build                   | 1 -
+ src/tracker-store/meson.build | 2 +-
+ src/tracker/meson.build       | 2 +-
+ 3 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 24582c8..2c3cb16 100644
+--- a/meson.build
++++ b/meson.build
+@@ -322,7 +322,6 @@ po_subdir = join_paths(source_root, 'po')
+ gsettings_schema_dir = join_paths(get_option('prefix'), get_option('datadir'), 'glib-2.0', 'schemas')
+ 
+ tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-' + tracker_api_version)
+-tracker_install_rpath = ':'.join([tracker_internal_libs_dir, libdir])
+ 
+ # NOTE: We don't use ${TRACKER_API_VERSION} because other content like
+ # the ontology is installed to the same location.
+diff --git a/src/tracker-store/meson.build b/src/tracker-store/meson.build
+index a6c3d09..308288c 100644
+--- a/src/tracker-store/meson.build
++++ b/src/tracker-store/meson.build
+@@ -31,7 +31,7 @@ tracker_store = executable('tracker-store',
+     ],
+     install: true,
+     install_dir: join_paths(get_option('prefix'), get_option('libexecdir')),
+-    install_rpath: tracker_install_rpath)
++    install_rpath: tracker_internal_libs_dir)
+ 
+ install_data(
+     'tracker-backup.xml',
+diff --git a/src/tracker/meson.build b/src/tracker/meson.build
+index 1bc682c..c54d3d2 100644
+--- a/src/tracker/meson.build
++++ b/src/tracker/meson.build
+@@ -22,7 +22,7 @@ executable('tracker', sources,
+         '-DMANDIR="@0@"'.format(join_paths(get_option('prefix'), get_option('datadir'), 'man')),
+     ],
+     install: true,
+-    install_rpath: tracker_install_rpath,
++    install_rpath: tracker_internal_libs_dir,
+     # This doesn't depend on tracker_common_dep because of
+     # https://github.com/mesonbuild/meson/issues/671
+     dependencies: [tracker_control_dep, tracker_sparql_dep, tracker_data_dep],
