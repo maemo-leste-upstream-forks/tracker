@@ -1,4 +1,4 @@
-tracker (2.2.99.0-1) UNRELEASED; urgency=medium
+tracker (2.2.99.0-1) experimental; urgency=medium
 
   [ Marco Trevisan (Treviño) ]
   * New upstream release
@@ -33,7 +33,7 @@ tracker (2.2.99.0-1) UNRELEASED; urgency=medium
     a92309f9cf9099a8b0b54908e032dcb181ab6c63. We don't want these in rpath on
     Debian; the standard libdir is in the search path.
 
- -- Iain Lane <laney@debian.org>  Tue, 03 Sep 2019 16:26:38 +0100
+ -- Iain Lane <laney@debian.org>  Tue, 03 Sep 2019 17:42:52 +0100
 
 tracker (2.2.1-1) experimental; urgency=medium
 
