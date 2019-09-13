@@ -1,3 +1,14 @@
+tracker (2.3.0-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+    - Handle circular references in TrackerResource
+    - Handle application/x-zero-size
+    - Documentation improvements
+    - Make tracker_sparql_escape_string() escape single quotes
+    - Don't make tracker:referenceSource a subproperty of nie:identifier
+
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Sat, 14 Sep 2019 01:53:30 +0200
+
 tracker (2.2.99.0-1) experimental; urgency=medium
 
   [ Marco Trevisan (Treviño) ]
