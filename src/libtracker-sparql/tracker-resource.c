@@ -74,6 +74,7 @@ enum {
 	PROP_IDENTIFIER,
 };
 
+static void dispose      (GObject *object);
 static void constructed  (GObject *object);
 static void finalize     (GObject *object);
 static void get_property (GObject    *object,
@@ -91,6 +92,7 @@ tracker_resource_class_init (TrackerResourceClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+	object_class->dispose      = dispose;
 	object_class->constructed  = constructed;
 	object_class->finalize     = finalize;
 	object_class->get_property = get_property;
@@ -137,6 +139,19 @@ tracker_resource_init (TrackerResource *resource)
 	        g_str_equal,
 	        g_free,
 	        NULL);
+}
+
+static void
+dispose (GObject *object)
+{
+	TrackerResourcePrivate *priv;
+
+	priv = GET_PRIVATE (TRACKER_RESOURCE (object));
+
+	g_hash_table_remove_all (priv->overwrite);
+	g_hash_table_remove_all (priv->properties);
+
+	G_OBJECT_CLASS (tracker_resource_parent_class)->dispose (object);
 }
 
 static void
