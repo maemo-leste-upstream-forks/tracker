@@ -15,7 +15,7 @@ Forwarded: not-needed
  3 files changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 24582c8..2c3cb16 100644
+index 82c75ae..b12d9c6 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -322,7 +322,6 @@ po_subdir = join_paths(source_root, 'po')
