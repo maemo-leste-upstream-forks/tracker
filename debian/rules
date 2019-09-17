@@ -18,10 +18,11 @@ override_dh_auto_configure:
 		-Dsystemd_user_services=/usr/lib/systemd/user \
 		--libexecdir=/usr/lib/tracker
 
-# These libraries don't have the symlinks with the meson build yet
-# override_dh_install:
-#	find debian/tmp -name libtracker-data.so -print -delete
-#	dh_install
+# These utils are not used by tracker-miners yet, but they will be used by it
+# soon. See upstream commit 8ae991922
+override_dh_install:
+	rm -rv debian/tmp/usr/lib/*/tracker-2.0/trackertestutils
+	dh_install
 
 override_dh_missing:
 	dh_missing --fail-missing
