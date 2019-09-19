@@ -1,4 +1,4 @@
-tracker (2.3.0-1) UNRELEASED; urgency=medium
+tracker (2.3.0-1) experimental; urgency=medium
 
   * New upstream release
     - Handle circular references in TrackerResource
@@ -14,7 +14,7 @@ tracker (2.3.0-1) UNRELEASED; urgency=medium
     appropriate package currently, and they aren't needed by tracker-miners
     right now.
 
- -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 17 Sep 2019 11:19:07 +0200
+ -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Thu, 19 Sep 2019 10:19:44 +0100
 
 tracker (2.2.99.0-1) experimental; urgency=medium
 
