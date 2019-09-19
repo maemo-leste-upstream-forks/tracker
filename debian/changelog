@@ -10,7 +10,9 @@ tracker (2.3.0-1) UNRELEASED; urgency=medium
     - d/p/file-utils-test-application-x-zerosize-is-a-valid-mime-fo.patch,
     - d/p/meson-Don-t-install-libtracker-common-static-library.patch:
       + Removed, applied upstream
-  * debian/rules: Don't install trackertestutils files
+  * debian/rules: Don't install trackertestutils files since we don't have an
+    appropriate package currently, and they aren't needed by tracker-miners
+    right now.
 
  -- Marco Trevisan (Treviño) <marco@ubuntu.com>  Tue, 17 Sep 2019 11:19:07 +0200
 
