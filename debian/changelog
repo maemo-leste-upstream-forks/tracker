@@ -1,11 +1,11 @@
-tracker (2.3.1-1) UNRELEASED; urgency=medium
+tracker (2.3.1-1) unstable; urgency=medium
 
   * autopkgtest: drop obsolete/duplicated dependencies.
     Thanks to Laney for the suggestions and guidance. (Closes: #943291)
   * autopkgtest: also drop dbus-x11 dependency
   * New upstream release
 
- -- Andreas Henriksson <andreas@fatal.se>  Fri, 25 Oct 2019 12:11:31 +0200
+ -- Andreas Henriksson <andreas@fatal.se>  Fri, 25 Oct 2019 12:11:58 +0200
 
 tracker (2.3.0-1) experimental; urgency=medium
 
