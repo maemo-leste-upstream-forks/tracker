@@ -1,2 +1,2 @@
 Tests: unit-tests
-Depends: @, @builddeps@, dbus-x11, locales
+Depends: @, @builddeps@, locales
