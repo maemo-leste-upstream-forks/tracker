@@ -6,7 +6,7 @@ Source: tracker
 Section: utils
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Iain Lane <laney@debian.org>, Jeremy Bicha <jbicha@debian.org>
+Uploaders: Iain Lane <laney@debian.org>, Jeremy Bicha <jbicha@debian.org>, Laurent Bigonville <bigon@debian.org>
 Build-Depends: debhelper (>= 11),
                meson (>= 0.47),
                pkg-config,
@@ -30,7 +30,7 @@ Build-Depends: debhelper (>= 11),
                dbus (>= 1.8) <!nocheck>,
                python3-gi <!nocheck>,
                gir1.2-glib-2.0 <!nocheck>,
-Standards-Version: 4.3.0
+Standards-Version: 4.4.1
 Vcs-Browser: https://salsa.debian.org/gnome-team/tracker
 Vcs-Git: https://salsa.debian.org/gnome-team/tracker.git
 Homepage: https://wiki.gnome.org/Projects/Tracker
