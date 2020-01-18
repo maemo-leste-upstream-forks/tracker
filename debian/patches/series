@@ -1,3 +1,4 @@
 drop-assert.patch
 libtracker-miners-common-Make-g_error-a-soft-error.patch
 Revert-build-Include-libdir-in-rpath.patch
+Use-ifdef-with-config.h-define-variable-HAVE_STATVFS64.patch

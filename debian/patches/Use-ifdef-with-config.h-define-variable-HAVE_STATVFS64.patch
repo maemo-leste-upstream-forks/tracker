@@ -1,0 +1,25 @@
+From: Sam Thursfield <sam@afuera.me.uk>
+Date: Thu, 19 Dec 2019 23:32:20 +0000
+Subject: Use #ifdef with config.h define variable HAVE_STATVFS64
+
+This was causing build failures on non-Linux architectures
+such as Debian/Hurd.
+
+Fixes https://gitlab.gnome.org/GNOME/tracker/issues/169
+---
+ src/libtracker-common/tracker-file-utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/libtracker-common/tracker-file-utils.c b/src/libtracker-common/tracker-file-utils.c
+index 57ced91..53e3912 100644
+--- a/src/libtracker-common/tracker-file-utils.c
++++ b/src/libtracker-common/tracker-file-utils.c
+@@ -253,7 +253,7 @@ tracker_file_get_mime_type (GFile *file)
+ 
+ #define __bsize f_frsize
+ 
+-#if HAVE_STATVFS64
++#ifdef HAVE_STATVFS64
+ #define __statvfs statvfs64
+ #else
+ #define __statvfs statvfs

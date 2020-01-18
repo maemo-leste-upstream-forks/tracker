@@ -1,3 +1,10 @@
+tracker (2.3.1-2) UNRELEASED; urgency=medium
+
+  * debian/patches/Use-ifdef-with-config.h-define-variable-HAVE_STATVFS64.patch:
+    Fix FTBFS on non-linux architectures
+
+ -- Laurent Bigonville <bigon@debian.org>  Sat, 18 Jan 2020 15:19:46 +0100
+
 tracker (2.3.1-1) unstable; urgency=medium
 
   * autopkgtest: drop obsolete/duplicated dependencies.
