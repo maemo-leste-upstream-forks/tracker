@@ -1,2 +1,0 @@
-gir1.2-tracker-2.0: typelib-package-name-does-not-match usr/lib/*/girepository-1.0/TrackerControl-2.0.typelib gir1.2-trackercontrol-2.0
-gir1.2-tracker-2.0: typelib-package-name-does-not-match usr/lib/*/girepository-1.0/TrackerMiner-2.0.typelib gir1.2-trackerminer-2.0
