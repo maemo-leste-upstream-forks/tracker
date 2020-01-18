@@ -39,5 +39,5 @@ ifeq ($(filter nocheck,$(DEB_BUILD_OPTIONS)),)
 	mkdir -p -m0755 $(BUILDDIR)/HOME
 	mkdir -p -m0700 $(BUILDDIR)/XRD
 	env HOME=$(BUILDDIR)/HOME XDG_RUNTIME_DIR=$(BUILDDIR)/XRD \
-		dbus-run-session -- dh_auto_test
+		dbus-run-session -- dh_auto_test --no-parallel
 endif
