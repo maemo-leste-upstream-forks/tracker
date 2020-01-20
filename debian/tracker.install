@@ -10,7 +10,7 @@ usr/share/tracker/tracker-backup.xml
 usr/share/tracker/tracker-resources.xml
 usr/share/tracker/tracker-status.xml
 
-usr/lib/tracker/tracker-store
+usr/libexec/tracker-store
 
 usr/share/man/man1/tracker-store.1*
 usr/share/man/man1/tracker-info.1*
