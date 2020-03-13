@@ -1,3 +1,9 @@
+tracker (2.3.4-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Olivier Tilloy <olivier.tilloy@canonical.com>  Fri, 13 Mar 2020 16:52:40 +0100
+
 tracker (2.3.2-1) unstable; urgency=medium
 
   [ Laurent Bigonville ]
