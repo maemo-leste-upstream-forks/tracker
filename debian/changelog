@@ -1,4 +1,4 @@
-tracker (2.3.4-1) UNRELEASED; urgency=medium
+tracker (2.3.4-1) unstable; urgency=medium
 
   [ Olivier Tilloy ]
   * New upstream release
@@ -6,7 +6,7 @@ tracker (2.3.4-1) UNRELEASED; urgency=medium
   [ Laurent Bigonville ]
   * debian/control.in: Bump Standards-Version to 4.5.0 (no further changes)
 
- -- Laurent Bigonville <bigon@debian.org>  Mon, 16 Mar 2020 11:17:19 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Mon, 16 Mar 2020 11:26:55 +0100
 
 tracker (2.3.2-1) unstable; urgency=medium
 
