@@ -1,5 +1,5 @@
 project('tracker', 'c', 'vala',
-        version: '2.3.4',
+        version: '2.3.6',
         meson_version: '>=0.47')
 
 gnome = import('gnome')
@@ -198,12 +198,11 @@ endif
 
 install_systemd_user_services = false
 if get_option('systemd_user_services') == 'yes' or get_option('systemd_user_services') == 'auto'
-  systemd = dependency('systemd', required: false)
+  systemd = dependency('systemd', version: '>= 242', required: false)
   if systemd.found()
-    # FIXME: this would ideally use the systemduserunitdir pkgconfig variable, but
-    # it does not depend on variables we can override to install within prefix.
     install_systemd_user_services = true
-    systemd_user_services_dir = join_paths(libdir, 'systemd', 'user')
+    systemd_user_services_dir = systemd.get_pkgconfig_variable('systemduserunitdir',
+                                                               define_variable: ['prefix', get_option('prefix')])
   else
     install_systemd_user_services = false
     systemd_user_services_dir = '(not found)'
