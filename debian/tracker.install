@@ -12,6 +12,7 @@ usr/share/tracker/tracker-status.xml
 
 usr/libexec/tracker-store
 
+usr/share/man/man1/tracker-export.1*
 usr/share/man/man1/tracker-store.1*
 usr/share/man/man1/tracker-info.1*
 usr/share/man/man1/tracker-search.1*
