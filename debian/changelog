@@ -1,8 +1,18 @@
 tracker (2.3.6-1) UNRELEASED; urgency=medium
 
+  * debian/watch: Try to match tracker-2 only. We'll need to branch for
+    tracker-3.
   * New upstream release
+    + Add 'tracker export' subcommand to ease migration to 3.x
+    + Do not autostart tracker-store
+    + get the systemd user unit dir from pkg-config
+    + Replace sensitive terms
+    + Use correct signature for DBusSignalCallback
+  * tracker.install: Install tracker-export manpage
+  * tracker.install: Drop XDG autostart file for tracker-store. Dropped
+    upstream, tracker uses DBus activation
 
- -- Iain Lane <laney@debian.org>  Tue, 15 Sep 2020 15:53:10 +0100
+ -- Iain Lane <laney@debian.org>  Tue, 15 Sep 2020 16:04:38 +0100
 
 tracker (2.3.4-1) unstable; urgency=medium
 
