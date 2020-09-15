@@ -1,4 +1,4 @@
-tracker (2.3.6-1) UNRELEASED; urgency=medium
+tracker (2.3.6-1) unstable; urgency=medium
 
   * debian/watch: Try to match tracker-2 only. We'll need to branch for
     tracker-3.
@@ -12,7 +12,7 @@ tracker (2.3.6-1) UNRELEASED; urgency=medium
   * tracker.install: Drop XDG autostart file for tracker-store. Dropped
     upstream, tracker uses DBus activation
 
- -- Iain Lane <laney@debian.org>  Tue, 15 Sep 2020 16:04:38 +0100
+ -- Iain Lane <laney@debian.org>  Tue, 15 Sep 2020 17:20:32 +0100
 
 tracker (2.3.4-1) unstable; urgency=medium
 
