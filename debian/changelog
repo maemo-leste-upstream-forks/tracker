@@ -1,3 +1,9 @@
+tracker (2.3.6-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Iain Lane <laney@debian.org>  Tue, 15 Sep 2020 15:53:10 +0100
+
 tracker (2.3.4-1) unstable; urgency=medium
 
   [ Olivier Tilloy ]
