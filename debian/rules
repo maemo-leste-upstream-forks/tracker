@@ -1,8 +1,11 @@
 #!/usr/bin/make -f
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,--as-needed -Wl,-Bsymbolic
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,--as-needed
 export BUILDDIR = $(CURDIR)/obj-$(DEB_HOST_GNU_TYPE)
+
+# needed for Ubuntu
+export DEB_LDFLAGS_MAINT_STRIP = -Wl,-Bsymbolic-functions
 
 %:
 	dh $@ --with gir,gnome
