@@ -52,12 +52,10 @@ test_blank (TestInfo      *info,
 
 	data_location = g_file_new_for_path (info->data_location);
 
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
-
 	/* initialization */
-	manager = tracker_data_manager_new (TRACKER_DB_MANAGER_FORCE_REINDEX,
-	                                    data_location, data_location, data_location, /* loc, domain and ontology_name */
-	                                    FALSE, FALSE, 100, 100);
+	manager = tracker_data_manager_new (TRACKER_DB_MANAGER_FLAGS_NONE,
+	                                    data_location, data_location, /* loc, domain and ontology_name */
+	                                    100, 100);
 	g_initable_init (G_INITABLE (manager), NULL, &error);
 	g_assert_no_error (error);
 
@@ -68,7 +66,7 @@ test_blank (TestInfo      *info,
 	                                            "INSERT { _:foo a rdfs:Resource . _:bar a rdfs:Resource } ",
 	                                            &error);
 	g_assert_no_error (error);
-	g_assert (updates != NULL);
+	g_assert_true (updates != NULL);
 
 	g_variant_iter_init (&iter, updates);
 	while ((rows = g_variant_iter_next_value (&iter))) {
@@ -100,13 +98,17 @@ test_blank (TestInfo      *info,
 	g_assert_cmpint (len, ==, 3);
 
 	g_assert_cmpstr (solutions[0][0], ==, "foo");
-	g_assert (solutions[0][1] != NULL);
+	g_assert_true (solutions[0][1] != NULL);
 
 	g_assert_cmpstr (solutions[1][0], ==, "foo");
-	g_assert (solutions[1][1] != NULL);
+	g_assert_true (solutions[1][1] != NULL);
+
+	g_assert_cmpstr (solutions[0][1], ==, solutions[1][1]);
 
 	g_assert_cmpstr (solutions[2][0], ==, "bar");
-	g_assert (solutions[2][1] != NULL);
+	g_assert_true (solutions[2][1] != NULL);
+
+	g_assert_cmpstr (solutions[2][1], !=, solutions[1][1]);
 
 	/* cleanup */
 
@@ -163,6 +165,7 @@ main (int argc, char **argv)
 	g_mkdtemp (tests_data_dir);
 
 	g_test_init (&argc, &argv, NULL);
+
 	g_test_add ("/libtracker-data/sparql-blank", TestInfo, NULL, setup, test_blank, teardown);
 
 	/* run tests */

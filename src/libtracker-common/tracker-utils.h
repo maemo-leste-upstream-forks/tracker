@@ -22,6 +22,7 @@
 #define __LIBTRACKER_COMMON_UTILS_H__
 
 #include <glib.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -29,17 +30,6 @@ G_BEGIN_DECLS
 #error "only <libtracker-common/tracker-common.h> must be included directly."
 #endif
 
-gboolean tracker_is_empty_string            (const char   *str);
-gboolean tracker_is_blank_string            (const char   *str);
-guint    tracker_seconds_estimate           (gdouble       seconds_elapsed,
-                                             guint         items_done,
-                                             guint         items_remaining);
-gchar *  tracker_seconds_estimate_to_string (gdouble       seconds_elapsed,
-                                             gboolean      short_string,
-                                             guint         items_done,
-                                             guint         items_remaining);
-gchar *  tracker_seconds_to_string          (gdouble       seconds,
-                                             gboolean      short_string);
 gchar *  tracker_strhex                     (const guint8 *data,
                                              gsize         size,
                                              gchar         delimiter);
@@ -47,6 +37,15 @@ gchar *  tracker_utf8_truncate              (const gchar  *str,
                                              gsize         max_size);
 gchar *  tracker_unescape_unichars          (const gchar  *str,
 					     gssize        len);
+gchar *  tracker_resolve_relative_uri       (const gchar  *base,
+                                             const gchar  *rel_uri);
+gboolean tracker_util_parse_dbus_uri        (const gchar  *uri,
+                                             GBusType     *bus_type,
+                                             gchar       **service,
+                                             gchar       **path);
+gchar * tracker_util_build_dbus_uri         (GBusType      bus_type,
+                                             const gchar  *service,
+                                             const gchar  *path);
 
 G_END_DECLS
 

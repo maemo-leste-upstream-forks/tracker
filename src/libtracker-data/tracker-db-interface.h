@@ -23,7 +23,7 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-sparql/tracker-cursor.h>
 
 #include "tracker-property.h"
 
@@ -62,10 +62,10 @@ typedef void (*TrackerBusyCallback)      (const gchar *status,
 
 typedef enum {
 	TRACKER_DB_QUERY_ERROR,
-	TRACKER_DB_CORRUPT,
 	TRACKER_DB_INTERRUPTED,
 	TRACKER_DB_OPEN_ERROR,
-	TRACKER_DB_NO_SPACE
+	TRACKER_DB_NO_SPACE,
+	TRACKER_DB_CONSTRAINT,
 } TrackerDBInterfaceError;
 
 typedef enum {
@@ -98,7 +98,11 @@ void                    tracker_db_interface_set_user_data           (TrackerDBI
 gpointer                tracker_db_interface_get_user_data           (TrackerDBInterface         *interface);
 
 /* Functions to create queries/procedures */
-TrackerDBStatement *    tracker_db_interface_create_statement        (TrackerDBInterface          *interface,
+TrackerDBStatement *    tracker_db_interface_create_statement        (TrackerDBInterface           *db_interface,
+                                                                      TrackerDBStatementCacheType   cache_type,
+                                                                      GError                      **error,
+                                                                      const gchar                  *query);
+TrackerDBStatement *    tracker_db_interface_create_vstatement       (TrackerDBInterface          *interface,
                                                                       TrackerDBStatementCacheType  cache_type,
                                                                       GError                     **error,
                                                                       const gchar                 *query,
@@ -128,6 +132,9 @@ void                    tracker_db_statement_bind_null               (TrackerDBS
 void                    tracker_db_statement_bind_text               (TrackerDBStatement         *stmt,
                                                                       int                         index,
                                                                       const gchar                *value);
+void                    tracker_db_statement_bind_bytes              (TrackerDBStatement         *stmt,
+                                                                      int                         index,
+                                                                      GBytes                     *value);
 void                    tracker_db_statement_bind_value              (TrackerDBStatement         *stmt,
                                                                       int                         index,
 								      const GValue               *value);

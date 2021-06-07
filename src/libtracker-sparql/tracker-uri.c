@@ -26,6 +26,7 @@
 #include <glib.h>
 
 #include "tracker-uri.h"
+#include "tracker-utils.h"
 
 /* The TrackerUri GType is useful when encapsulating a URI inside a GValue.
  * When we generate SPARQL we need to treat URIs differently to normal strings
@@ -46,15 +47,6 @@ tracker_uri_get_type (void)
 	}
 	return g_define_type_id__volatile;
 }
-
-gchar *
-tracker_sparql_escape_uri_vprintf (const gchar *format,
-                                   va_list      args);
-gchar *
-tracker_sparql_escape_uri_printf  (const gchar* format,
-                                   ...);
-gchar *
-tracker_sparql_escape_uri         (const gchar *uri);
 
 static const char *
 find_conversion (const char  *format,
@@ -169,8 +161,6 @@ find_conversion (const char  *format,
  *
  * Returns: (transfer full): a newly-allocated string holding the result. The returned string
  * should be freed with g_free() when no longer needed.
- *
- * Since: 0.10
  */
 gchar *
 tracker_sparql_escape_uri_vprintf (const gchar *format,
@@ -273,8 +263,6 @@ cleanup:
  *
  * Returns: (transfer full): a newly-allocated string holding the result.The returned string
  * should be freed with g_free() when no longer needed.
- *
- * Since: 0.10
  */
 gchar *
 tracker_sparql_escape_uri_printf (const gchar *format, ...)
@@ -297,8 +285,6 @@ tracker_sparql_escape_uri_printf (const gchar *format, ...)
  *
  * Returns: (transfer full): a newly-allocated string holding the result. The returned string
  * should be freed with g_free() when no longer needed.
- *
- * Since: 1.12
  */
 gchar *
 tracker_sparql_escape_uri (const gchar *uri)

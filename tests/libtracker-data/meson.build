@@ -1,9 +1,13 @@
+data_test_c_args = test_c_args + [
+  '-DTEST_ONTOLOGIES_DIR="@0@"'.format(tracker_uninstalled_nepomuk_ontologies_dir),
+]
+
 libtracker_data_tests = [
-    'backup',
     'crc32',
-    'db-journal',
     'ontology-change',
     'sparql-blank',
+    'insert-or-replace',
+    'service',
 ]
 
 libtracker_data_slow_tests = [
@@ -16,32 +20,30 @@ libtracker_data_test_deps = [tracker_common_dep, tracker_data_dep, tracker_sparq
 foreach base_name: libtracker_data_tests
     source = 'tracker-@0@-test.c'.format(base_name)
     binary_name = 'tracker-@0@-test'.format(base_name)
-    test_name = 'data-@0@'.format(base_name)
 
     binary = executable(binary_name, source,
       dependencies: libtracker_data_test_deps,
-      c_args: test_c_args)
+      c_args: data_test_c_args)
 
     tests += {
-      'name': test_name,
+      'name': base_name,
       'exe': binary,
-      'requires_dbus': true,
+      'suite': ['data'],
     }
 endforeach
 
 foreach base_name: libtracker_data_slow_tests
     source = 'tracker-@0@-test.c'.format(base_name)
     binary_name = 'tracker-@0@-test'.format(base_name)
-    test_name = 'data-@0@'.format(base_name)
 
     binary = executable(binary_name, source,
       dependencies: libtracker_data_test_deps,
-      c_args: test_c_args)
+      c_args: data_test_c_args)
 
       tests += {
-        'name': test_name,
+        'name': base_name,
         'exe': binary,
-        'requires_dbus': true,
-        'timeout': 180
+        'suite': ['data', 'slow'],
+        'timeout': 280
     }
 endforeach

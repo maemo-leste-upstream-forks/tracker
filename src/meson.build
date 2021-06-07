@@ -1,11 +1,6 @@
 # Shared common code
 subdir('libtracker-common')
 
-# Intermediate library of RDF & SPARQL helper functions.
-# This gets used internally and also becomes part of the
-# public libtracker-sparql library.
-subdir('libtracker-sparql')
-
 # Public ontologies
 subdir('ontologies')
 
@@ -14,20 +9,13 @@ subdir('gvdb')
 subdir('libtracker-fts')
 subdir('libtracker-data')
 
-# Public libtracker-sparql library
-subdir('libtracker-bus')
-subdir('libtracker-direct')
-subdir('libtracker-remote')
-subdir('libtracker-sparql-backend')
-
-# Public libtracker-miner library
-subdir('libtracker-miner')
-
-# Internal control library
-subdir('libtracker-control')
+# Intermediate library of RDF & SPARQL helper functions.
+# This gets used internally and also becomes part of the
+# public libtracker-sparql library.
+subdir('libtracker-sparql')
 
 # Public commandline control tool
 subdir('tracker')
 
-# Public shared database
-subdir('tracker-store')
+# XDG Portal
+subdir('portal')

@@ -1,47 +1,181 @@
-NEW in 2.3.6 - 2020-09-07
+NEW in 3.1.1 - 2021-04-02
 =========================
-  * Do not autostart tracker-store
+  * Better error handling during database initialization
+  * Implemented tracker_sparql_connection_update_array_async
+    over TrackerBatch, resulting in lower memory usage.
+  * VAPI updates
+  * Updated tracker_sparql_connection_update_array docs
+  * Leak and double free fixes
 
-Translations: de, es, hu, id, lt, pl, pt_BR, ro, sl, sv
+Translations: en_GB, nl, zh_CN
 
-NEW in 2.3.5 - 2020-08-24
+NEW in 3.1.0 - 2021-03-20
 =========================
-  * Add 'tracker export' subcommand to ease migration to 3.x
-  * Use correct signature for DBusSignalCallback
-  * get the systemd user unit dir from pkg-config
-  * Replace sensitive terms
+  * Add build-time warning for SQLite 3.35.[01]
+  * Workaround other SQLite 3.35 bug
 
-Translations: lt, uk
+  Highlighted changes since 3.0:
+  * New, faster API for updates, see TrackerBatch and
+    tracker_sparql_connection_update_resource
+  * New API to create HTTP endpoints, see
+    tracker_endpoint_http_new
+  * New tracker:strip-punctuation SPARQL function
+  * Multiple performance improvements
+  * Several SPARQL 1.1 correctness fixes
 
-NEW in 2.3.4 - 2020-03-10
+NEW in 3.1.0.rc - 2021-03-14
+============================
+  * Add tracker_sparql_connection_bus_new_async()
+  * Fix TrackerNotifier signal subscriptions across the portal
+  * Fix race condition / crash when performing SELECT queries
+  * Propagate errors better when updating the database
+  * Do not miss valid prefixed names in TrackerResource
+  * Sparql 1.1 correctness fixes
+  * Handle nesting of multivalued property functions
+  * CI improvements in JUnit test results
+
+Translations: fr, gl, hr, ko, pl, sr, tr
+
+NEW in 3.1.0.beta - 2021-02-14
+==============================
+  * Fix possible crash in fts:offsets function
+  * Handle variables as service URIs, e.g.
+    SERVICE ?s { ... } VALUES ?s { ... }
+  * Add more g-i-r annotations
+  * Improve ellipsizing in CLI tools
+
+Translations: cs, fur, hu, id, pt_BR, sl, sr, sv, tr
+
+NEW in 3.1.0.alpha - 2021-01-10
+===============================
+  * Add TrackerBatch, object made to hold multiple updates
+    (in SPARQL string form, or TrackerResource) that will
+    be performed atomically.
+  * Add TrackerEndpointHttp, a TrackerEndpoint subclass to
+    implement a (readonly) SPARQL HTTP endpoint as per
+    https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/
+  * Add tracker:strip-punctuation SPARQL function
+  * Specify that nfo:duration is expressed in seconds
+  * Fix portal initialization order
+  * Improve TTL parser
+  * Improve date/time parsing
+  * Make handling of large series of UPDATEs iteratively
+    to avoid stack size limits
+  * Improve parallelization of queries
+  * Optimize idempotent DELETE operations
+  * Optimize insert operations
+  * Optimize database resource refcount management
+  * Fix tracker_notifier_signal_subscribe annotation
+  * Fix possible race conditions handling ontology objects
+  * Handle NULL arguments in tracker:uri-is-parent
+  * Avoid FTS5 table inconsistency with SQLite >= 3.34.0
+  * Memory leak fixes
+  * Documentation improvements
+
+Translations: ca, de, es, eu, fur, gl, lt, ro, uk, zh_TW
+
+NEW in 3.0.1 - 2020-10-02
 =========================
-  * Brown paper bag release, fix NULL check.
+  * Reference Discourse instead of the mailing list
+  * Use specific Meson options to enable debug flags
+  * Reduce in use by TrackerSparqlStatement
+  * Fix tracker:title-sort
+  * Fix stale graphs with WITH clauses
+  * Cleanup libtracker-common
+  * Several fixes for Coverity warnings
+  * More tests
+  * Build fixes
 
-NEW in 2.3.3 - 2020-03-09
-=========================
-  * Fix race condition during tracker-store shutdown maybe leading to
-    warnings and missed writeback events.
-  * Made fts:offsets stronger against corrupt FTS tables
+Translations: he, nl, pt, sk
 
-Translations: ja
-
-NEW in 2.3.2 - 2020-02-18
-=========================
-
-  * Location info for photos is now inserted into the DB. It didn't
-    work before as we failed to process SPARQL "blank nodes" correctly.
-  * Fix for oversensitive FTS5 index corruption detection
-
-Translations: ms
-
-NEW in 2.3.1 - 2019-10-12
+NEW in 3.0.0 - 2020-09-13
 =========================
 
-  * Fixed a case where old data was not deleted correctly from the store when
-    inserting new values. This was causing tracker-extract to log errors for
-    multi-disc music albums stored as FLAC files with embedded CUE sheets.
+Translations: da, de, it, kk, ko, lv
 
-Translations: sk
+NEW in 2.99.5 - 2020-09-07
+==========================
+  * Fix DBus logging in tracker-sandbox test helper
+  * Removed programming terms from English stop word list
+  * Handle empty input correctly
+  * Fix possible database locks when using "tracker3 sql" on a
+    running database
+  * Fixes for SERVICE clauses in UNIONs
+  * Handle empty group graph patterns as per the spec
+  * Fixes to property paths being used in different graphs
+  * Release memory on inactivity
+  * Fix build/linking with 2.x in the system
+  * Add "tracker3 export --2to3" helper for data migrations
+  * Hide FTS5 search syntax from fts:match
+
+Translations: cs, fr, fur, gl, hr, id, lt, pt_BR, zh_CN
+
+NEW in 2.99.4 - 2020-08-24
+==========================
+  * CLI modernization
+    - integration with pager
+    - bash completion for endpoints
+  * Use curly quotes consistently in CLI options
+  * SPARQL parsing fixes
+  * Multiple fixes around 'VALUES' SPARQL syntax
+  * Fix race conditions around graph creation
+  * Better use of asserts in tests
+
+Translations: en_GB, es, eu, gl, pl, pt_BR, ro, sl, tr, uk
+
+NEW in 2.99.3 - 2020-08-10
+==========================
+  * Add portal
+  * Use WAL on all database connections
+  * Fix race conditions in reusable statements
+  * Documentation fixes and improvements
+  * Better errors from library function calls
+  * Test fixes
+  * CI improvements
+
+NEW in 2.99.2 - 2020-06-26
+==========================
+  * Dropped priority argument from tracker_sparql_connection_update*()
+  * Better parser error messages
+  * SPARQL correctness fixes
+  * Fixes to tracker_sparql_cursor_is_bound() checks
+  * Ontology clean ups and sync ups with Nepomuk
+  * Fixed lifetime of blank node labels
+  * Fixes to recursive property paths
+  * Ensure property functions pick non NULL values
+  * Several fixes merge SERVICE{} data with the local graph pattern
+  * Add `tracker export --show-graphs` CLI subcommand to show available
+    graphs
+  * Parameter bindings within SERVICE{} clauses are now allowed
+  * Fixes to single/double quote escaping
+  * Fixes to make tracker-sandbox more usable in tests
+  * Many cleanups, memory leak and performance fixes
+
+NEW in 2.99.1 - 2020-05-03
+==========================
+
+  Highlighted updates compared to 2.x:
+  ------------------------------------
+  * A full implementation of SPARQL 1.1
+  * A change of paradigm. There is no central store, services are
+    free to create their own, and to make those an endpoint for public
+    access. Applications may syndicate queries across external endpoints
+    through the SERVICE syntax.
+  * No tracker-store
+  * No libtracker-miner
+  * No libtracker-control
+  * API changes
+    - Explicit API to create a local store, or proxy a DBus/remote one
+    - TrackerEndpoint proxies local stores out of process
+    - separate python library to write tests
+  * A base and reference ontologies of our own
+    - Officially it's no longer Nepomuk
+    - No more broken links
+  * An extensible CLI tool, with a generic set of core subcommands
+  * Parallel installable to tracker 2.x
+  * Documentation
+  * Tests
+  * Many many others
 
 NEW in 2.3.0 - 2019-09-09
 =========================

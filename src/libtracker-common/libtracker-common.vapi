@@ -23,6 +23,9 @@ namespace Tracker {
 	[CCode (cheader_filename = "libtracker-common/tracker-date-time.h")]
 	public double string_to_date (string date_string, out int offset) throws DateError;
 
+	[CCode (cheader_filename = "libtracker-common/tracker-utils.h")]
+	public string? util_build_dbus_uri (GLib.BusType bus_type, string service, string? path);
+
 	[CCode (cheader_filename = "libtracker-common/tracker-date-time.h")]
 	public errordomain DateError {
 		OFFSET,
@@ -61,12 +64,6 @@ namespace Tracker {
 		public static void save_directory_list (void *object, string property, GLib.KeyFile key_file, string group, string key);
 	}
 
-	[CCode (cheader_filename = "libtracker-common/tracker-common.h")]
-	namespace Log {
-		public bool init (int verbosity, out string used_filename);
-		public void shutdown ();
-	}
-
 	[CCode (cheader_filename = "libtracker-common/tracker-locale.h")]
 	namespace Locale {
 		public void sanity_check ();
@@ -99,6 +96,9 @@ namespace Tracker {
 
 	[CCode (cheader_filename = "libtracker-common/tracker-common.h")]
 	public void ioprio_init ();
+
+	[CCode (cheader_filename = "libtracker-common/tracker-debug.h")]
+	public uint get_debug_flags ();
 
 	[CCode (cname = "g_message", cheader_filename = "glib.h")]
 	[PrintfFormat]

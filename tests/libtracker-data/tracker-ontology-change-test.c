@@ -67,6 +67,8 @@ const ChangeInfo changes[] = {
 	{ "99-example.ontology.v9", "99-example.queries.v9", NULL, NULL },
 	{ "99-example.ontology.v10", "99-example.queries.v10", NULL, NULL },
 	{ "99-example.ontology.v11", "99-example.queries.v11", "change/change-test-5", NULL },
+	{ "99-example.ontology.v12", "99-example.queries.v11", "change/change-test-5", NULL },
+	{ "99-example.ontology.v13", "99-example.queries.v11", "change/change-test-6", NULL },
 	{ NULL }
 };
 
@@ -211,8 +213,8 @@ test_ontology_change (void)
 		g_assert_no_error (error);
 		g_assert_cmpint (g_chmod (ontology_file, 0666), ==, 0);
 
-		manager = tracker_data_manager_new (0, data_location, data_location, test_schemas,
-		                                    FALSE, FALSE, 100, 100);
+		manager = tracker_data_manager_new (0, data_location, test_schemas,
+		                                    100, 100);
 		g_initable_init (G_INITABLE (manager), NULL, &error);
 		g_assert_no_error (error);
 
@@ -253,8 +255,7 @@ test_ontology_change (void)
 		g_object_unref (manager);
 	}
 
-	manager = tracker_data_manager_new (0, data_location, data_location, test_schemas,
-	                                    TRUE, FALSE, 100, 100);
+	manager = tracker_data_manager_new (0, data_location, test_schemas, 100, 100);
 	g_initable_init (G_INITABLE (manager), NULL, &error);
 	g_assert_no_error (error);
 
@@ -293,6 +294,7 @@ main (int argc, char **argv)
 	gint result;
 
 	g_test_init (&argc, &argv, NULL);
+
 	g_test_add_func ("/libtracker-data/ontology-change", test_ontology_change);
 	result = g_test_run ();
 

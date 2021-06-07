@@ -39,48 +39,67 @@ typedef void (*TrackerDBWalCallback) (TrackerDBInterface *iface,
 
 typedef enum {
 	TRACKER_DB_INTERFACE_READONLY  = 1 << 0,
-	TRACKER_DB_INTERFACE_USE_MUTEX = 1 << 1
+	TRACKER_DB_INTERFACE_USE_MUTEX = 1 << 1,
+	TRACKER_DB_INTERFACE_IN_MEMORY = 1 << 2,
 } TrackerDBInterfaceFlags;
 
 TrackerDBInterface *tracker_db_interface_sqlite_new                    (const gchar              *filename,
+                                                                        const gchar              *shared_cache_key,
                                                                         TrackerDBInterfaceFlags   flags,
                                                                         GError                  **error);
 gint64              tracker_db_interface_sqlite_get_last_insert_id     (TrackerDBInterface       *interface);
 void                tracker_db_interface_sqlite_enable_shared_cache    (void);
-void                tracker_db_interface_sqlite_fts_init               (TrackerDBInterface       *interface,
+gboolean            tracker_db_interface_sqlite_fts_init               (TrackerDBInterface       *interface,
+                                                                        const gchar              *database,
                                                                         GHashTable               *properties,
                                                                         GHashTable               *multivalued,
-                                                                        gboolean                  create);
+                                                                        gboolean                  create,
+                                                                        GError                  **error);
 void                tracker_db_interface_sqlite_reset_collator         (TrackerDBInterface       *interface);
-void                tracker_db_interface_sqlite_wal_hook               (TrackerDBInterface       *interface,
-                                                                        TrackerDBWalCallback      callback,
-                                                                        gpointer                  user_data);
 gboolean            tracker_db_interface_sqlite_wal_checkpoint         (TrackerDBInterface       *interface,
                                                                         gboolean                  blocking,
                                                                         GError                  **error);
 gboolean            tracker_db_interface_init_vtabs                    (TrackerDBInterface       *interface,
-                                                                        TrackerOntologies        *ontologies);
+                                                                        gpointer                  vtab_data);
 
-#if HAVE_TRACKER_FTS
-void                tracker_db_interface_sqlite_fts_delete_table       (TrackerDBInterface       *interface);
+gboolean            tracker_db_interface_sqlite_fts_delete_table       (TrackerDBInterface       *interface,
+                                                                        const gchar              *database,
+                                                                        GError                  **error);
 
-void                tracker_db_interface_sqlite_fts_alter_table        (TrackerDBInterface       *interface,
+gboolean            tracker_db_interface_sqlite_fts_alter_table        (TrackerDBInterface       *interface,
+                                                                        const gchar              *database,
                                                                         GHashTable               *properties,
-                                                                        GHashTable               *multivalued);
+                                                                        GHashTable               *multivalued,
+                                                                        GError                  **error);
 gboolean            tracker_db_interface_sqlite_fts_update_text        (TrackerDBInterface       *db_interface,
+                                                                        const gchar              *database,
 	                                                                int                       id,
                                                                         const gchar             **properties,
                                                                         const gchar             **text);
 
 gboolean            tracker_db_interface_sqlite_fts_delete_text        (TrackerDBInterface       *interface,
+                                                                        const gchar              *database,
                                                                         int                       rowid,
                                                                         const gchar             **properties,
                                                                         const gchar             **old_text);
 gboolean            tracker_db_interface_sqlite_fts_delete_id          (TrackerDBInterface       *interface,
+                                                                        const gchar              *database,
                                                                         int                       rowid);
-void                tracker_db_interface_sqlite_fts_rebuild_tokens     (TrackerDBInterface       *interface);
+gboolean            tracker_db_interface_sqlite_fts_rebuild_tokens     (TrackerDBInterface       *interface,
+                                                                        const gchar              *database,
+                                                                        GError                  **error);
 
-#endif
+gboolean            tracker_db_interface_attach_database               (TrackerDBInterface       *db_interface,
+                                                                        GFile                    *file,
+                                                                        const gchar              *name,
+                                                                        GError                  **error);
+gboolean            tracker_db_interface_detach_database               (TrackerDBInterface       *db_interface,
+                                                                        const gchar              *name,
+                                                                        GError                  **error);
+gssize              tracker_db_interface_sqlite_release_memory         (TrackerDBInterface       *db_interface);
+
+void                tracker_db_interface_ref_use   (TrackerDBInterface *db_interface);
+gboolean            tracker_db_interface_unref_use (TrackerDBInterface *db_interface);
 
 G_END_DECLS
 

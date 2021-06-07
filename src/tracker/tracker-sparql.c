@@ -30,6 +30,7 @@
 #include <glib/gi18n.h>
 
 #include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-common/tracker-common.h>
 
 #include "tracker-sparql.h"
 #include "tracker-color.h"
@@ -40,6 +41,7 @@
 	 list_properties || \
 	 list_notifies || \
 	 list_indexes || \
+	 list_graphs || \
 	 tree || \
 	 search || \
 	 get_shorthand || \
@@ -94,13 +96,28 @@ static gboolean list_class_prefixes;
 static gchar *list_properties;
 static gchar *list_notifies;
 static gchar *list_indexes;
+static gchar *list_graphs;
 static gchar *tree;
 static gchar *get_shorthand;
 static gchar *get_longhand;
 static gchar *search;
-static gchar *remote_url;
+static gchar *database_path;
+static gchar *dbus_service;
+static gchar *remote_service;
 
 static GOptionEntry entries[] = {
+	{ "database", 'd', 0, G_OPTION_ARG_FILENAME, &database_path,
+	  N_("Location of the database"),
+	  N_("FILE")
+	},
+	{ "dbus-service", 'b', 0, G_OPTION_ARG_STRING, &dbus_service,
+	  N_("Connects to a DBus service"),
+	  N_("DBus service name")
+	},
+	{ "remote-service", 'r', 0, G_OPTION_ARG_STRING, &remote_service,
+	  N_("Connects to a remote service"),
+	  N_("Remote service URI")
+	},
 	{ "file", 'f', 0, G_OPTION_ARG_FILENAME, &file,
 	  N_("Path to use to run a query or update from file"),
 	  N_("FILE"),
@@ -133,6 +150,10 @@ static GOptionEntry entries[] = {
 	  N_("Retrieve indexes used in database to improve performance (PROPERTY is optional)"),
 	  N_("PROPERTY"),
 	},
+	{ "list-graphs", 'g', 0, G_OPTION_ARG_NONE, &list_graphs,
+	  N_("Retrieve all named graphs"),
+	  NULL,
+	},
 	{ "tree", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, parse_tree,
 	  N_("Describe subclasses, superclasses (can be used with -s to highlight parts of the tree and -p to show properties)"),
 	  N_("CLASS"),
@@ -149,31 +170,44 @@ static GOptionEntry entries[] = {
 	  N_("Returns the full namespace for a class."),
 	  N_("CLASS"),
 	},
-	{ "remote-service", 'r', 0, G_OPTION_ARG_STRING, &remote_url,
-	  N_("Remote service to query to"),
-	  N_("BASE_URL"),
-	},
 	{ NULL }
 };
 
-GHashTable *
-tracker_sparql_get_prefixes (void)
+static TrackerSparqlConnection *
+create_connection (GError **error)
 {
-	TrackerSparqlConnection *connection;
+	if (database_path && !dbus_service && !remote_service) {
+		GFile *file;
+
+		file = g_file_new_for_commandline_arg (database_path);
+		return tracker_sparql_connection_new (update ?
+						      TRACKER_SPARQL_CONNECTION_FLAGS_NONE :
+						      TRACKER_SPARQL_CONNECTION_FLAGS_READONLY,
+		                                      file, NULL, NULL, error);
+	} else if (dbus_service && !database_path && !remote_service) {
+		GDBusConnection *dbus_conn;
+
+		dbus_conn = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
+		if (!dbus_conn)
+			return NULL;
+
+		return tracker_sparql_connection_bus_new (dbus_service, NULL, dbus_conn, error);
+	} else if (remote_service && !database_path && !dbus_service) {
+		return tracker_sparql_connection_remote_new (remote_service);
+	} else {
+		/* TRANSLATORS: Those are commandline arguments */
+		g_printerr ("%s\n", _("Specify one “--database”, “--dbus-service” or “--remote-service” option"));
+		exit (EXIT_FAILURE);
+	}
+}
+
+GHashTable *
+tracker_sparql_get_prefixes (TrackerSparqlConnection *connection)
+{
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
 	GHashTable *retval;
 	const gchar *query;
-
-	connection = tracker_sparql_connection_get (NULL, &error);
-
-	if (!connection) {
-		g_printerr ("%s: %s\n",
-		            _("Could not establish a connection to Tracker"),
-		            error ? error->message : _("No error given"));
-		g_clear_error (&error);
-		return NULL;
-	}
 
 	retval = g_hash_table_new_full (g_str_hash,
 	                                g_str_equal,
@@ -187,13 +221,11 @@ tracker_sparql_get_prefixes (void)
 	 */
 	query = "SELECT ?ns ?prefix "
 	        "WHERE {"
-	        "  ?ns a tracker:Namespace ;"
-	        "  tracker:prefix ?prefix "
+	        "  ?ns a nrl:Namespace ;"
+	        "  nrl:prefix ?prefix "
 	        "}";
 
 	cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
-
-	g_object_unref (connection);
 
 	if (error) {
 		g_printerr ("%s, %s\n",
@@ -242,8 +274,8 @@ get_class_from_prefix (TrackerSparqlConnection *connection,
 
 	query = "SELECT ?prefix ?ns "
 		"WHERE {"
-		"  ?ns a tracker:Namespace ;"
-		"  tracker:prefix ?prefix "
+		"  ?ns a nrl:Namespace ;"
+		"  nrl:prefix ?prefix "
 		"}";
 
 	/* We have namespace prefix, get full name */
@@ -945,7 +977,7 @@ tree_get (TrackerSparqlConnection *connection,
 	root = tree_new ();
 
 	/* Get shorthand prefixes for printing / filtering */
-	prefixes = tracker_sparql_get_prefixes ();
+	prefixes = tracker_sparql_get_prefixes (connection);
 
 	/* Is class_lookup a shothand string, e.g. nfo:FileDataObject? */
 	if (class_lookup && *class_lookup && strchr (class_lookup, ':')) {
@@ -1074,12 +1106,9 @@ sparql_run (void)
 	TrackerSparqlConnection *connection;
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
+	gint retval = EXIT_SUCCESS;
 
-	if (remote_url != NULL) {
-		connection = tracker_sparql_connection_remote_new (remote_url);
-	} else {
-		connection = tracker_sparql_connection_get (NULL, &error);
-	}
+	connection = create_connection (&error);
 
 	if (!connection) {
 		g_printerr ("%s: %s\n",
@@ -1088,6 +1117,8 @@ sparql_run (void)
 		g_clear_error (&error);
 		return EXIT_FAILURE;
 	}
+
+	tracker_term_pipe_to_pager ();
 
 	if (list_classes) {
 		const gchar *query;
@@ -1101,8 +1132,8 @@ sparql_run (void)
 			            error->message);
 			g_error_free (error);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		print_cursor (cursor, _("No classes were found"), _("Classes"), TRUE);
@@ -1113,8 +1144,8 @@ sparql_run (void)
 
 		query = "SELECT ?prefix ?ns "
 		        "WHERE {"
-		        "  ?ns a tracker:Namespace ;"
-		        "  tracker:prefix ?prefix "
+		        "  ?ns a nrl:Namespace ;"
+		        "  nrl:prefix ?prefix "
 		        "}";
 
 		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
@@ -1125,8 +1156,8 @@ sparql_run (void)
 			            error->message);
 			g_error_free (error);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		print_cursor (cursor, _("No class prefixes were found"), _("Prefixes"), FALSE);
@@ -1166,8 +1197,8 @@ sparql_run (void)
 			if (!class_name_no_property) {
 				g_free (property);
 				g_object_unref (connection);
-
-				return EXIT_FAILURE;
+				retval = EXIT_FAILURE;
+				goto out;
 			}
 
 			class_name = g_strconcat (class_name_no_property, property, NULL);
@@ -1192,8 +1223,8 @@ sparql_run (void)
 			            error->message);
 			g_error_free (error);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		print_cursor (cursor, _("No properties were found"), _("Properties"), TRUE);
@@ -1207,13 +1238,13 @@ sparql_run (void)
 			query = g_strdup_printf ("SELECT ?c "
 			                         "WHERE {"
 			                         "  ?c a rdfs:Class ."
-			                         "  ?c tracker:notify true ."
+			                         "  ?c nrl:notify true ."
 			                         "}");
 		} else {
 			query = g_strdup_printf ("SELECT ?c "
 			                         "WHERE {"
 			                         "  ?c a rdfs:Class ."
-			                         "  ?c tracker:notify true "
+			                         "  ?c nrl:notify true "
 			                         "  FILTER regex (?c, \"%s\", \"i\") "
 			                         "}",
 			                         list_notifies);
@@ -1228,8 +1259,8 @@ sparql_run (void)
 			            error->message);
 			g_error_free (error);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		print_cursor (cursor, _("No notifies were found"), _("Notifies"), TRUE);
@@ -1242,12 +1273,12 @@ sparql_run (void)
 		if (*list_indexes == '\0') {
 			query = g_strdup_printf ("SELECT ?p "
 			                         "WHERE {"
-			                         "  ?p tracker:indexed true ."
+			                         "  ?p nrl:indexed true ."
 			                         "}");
 		} else {
 			query = g_strdup_printf ("SELECT ?p "
 			                         "WHERE {"
-			                         "  ?p tracker:indexed true "
+			                         "  ?p nrl:indexed true "
 			                         "  FILTER regex (?p, \"%s\", \"i\") "
 			                         "}",
 			                         list_indexes);
@@ -1262,15 +1293,40 @@ sparql_run (void)
 			            error->message);
 			g_error_free (error);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		print_cursor (cursor, _("No indexes were found"), _("Indexes"), TRUE);
 	}
 
+	if (list_graphs) {
+		const gchar *query;
+
+		/* First list classes */
+		query = g_strdup_printf ("SELECT DISTINCT ?g "
+		                         "WHERE {"
+		                         "  GRAPH ?g { ?s ?p ?o }"
+		                         "}");
+
+		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
+
+		if (error) {
+			g_printerr ("%s, %s\n",
+			            _("Could not list named graphs"),
+			            error->message);
+			g_error_free (error);
+			g_object_unref (connection);
+			retval = EXIT_FAILURE;
+			goto out;
+		}
+
+		print_cursor (cursor, _("No graphs were found"), _("Named graphs"), TRUE);
+	}
+
 	if (tree) {
-		return tree_get (connection, tree, search);
+		retval = tree_get (connection, tree, search);
+		goto out;
 	}
 
 	if (search) {
@@ -1292,8 +1348,8 @@ sparql_run (void)
 			            error->message);
 			g_error_free (error);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		print_cursor (cursor, _("No classes were found to match search term"), _("Classes"), TRUE);
@@ -1315,15 +1371,15 @@ sparql_run (void)
 			            error->message);
 			g_error_free (error);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		print_cursor (cursor, _("No properties were found to match search term"), _("Properties"), TRUE);
 	}
 
 	if (get_shorthand) {
-		GHashTable *prefixes = tracker_sparql_get_prefixes ();
+		GHashTable *prefixes = tracker_sparql_get_prefixes (connection);
 		gchar *result;
 
 		result = tracker_sparql_get_shorthand (prefixes, get_shorthand);
@@ -1336,7 +1392,7 @@ sparql_run (void)
 	}
 
 	if (get_longhand) {
-		GHashTable *prefixes = tracker_sparql_get_prefixes ();
+		GHashTable *prefixes = tracker_sparql_get_prefixes (connection);
 		gchar *result;
 
 		result = tracker_sparql_get_longhand (prefixes, get_longhand);
@@ -1360,8 +1416,8 @@ sparql_run (void)
 			            error->message);
 			g_error_free (error);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		g_file_get_contents (path_in_utf8, &query, &size, &error);
@@ -1373,8 +1429,8 @@ sparql_run (void)
 			g_error_free (error);
 			g_free (path_in_utf8);
 			g_object_unref (connection);
-
-			return EXIT_FAILURE;
+			retval = EXIT_FAILURE;
+			goto out;
 		}
 
 		g_free (path_in_utf8);
@@ -1382,15 +1438,15 @@ sparql_run (void)
 
 	if (query) {
 		if (G_UNLIKELY (update)) {
-			tracker_sparql_connection_update (connection, query, 0, NULL, &error);
+			tracker_sparql_connection_update (connection, query, NULL, &error);
 
 			if (error) {
 				g_printerr ("%s, %s\n",
 				            _("Could not run update"),
 				            error->message);
 				g_error_free (error);
-
-				return EXIT_FAILURE;
+				retval = EXIT_FAILURE;
+				goto out;
 			}
 
 			g_print ("%s\n", _("Done"));
@@ -1427,7 +1483,7 @@ sparql_run (void)
 			GHashTable *prefixes = NULL;
 
 			if (strstr (query, "fts:offsets")) {
-				prefixes = tracker_sparql_get_prefixes ();
+				prefixes = tracker_sparql_get_prefixes (connection);
 			}
 
 			cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
@@ -1442,7 +1498,8 @@ sparql_run (void)
 					g_hash_table_unref (prefixes);
 				}
 
-				return EXIT_FAILURE;
+				retval = EXIT_FAILURE;
+				goto out;
 			}
 
 			if (G_UNLIKELY (prefixes)) {
@@ -1456,7 +1513,10 @@ sparql_run (void)
 
 	g_object_unref (connection);
 
-	return EXIT_SUCCESS;
+out:
+	tracker_term_pager_close ();
+
+	return retval;
 }
 
 static int

@@ -34,7 +34,6 @@
 #include <glib.h>
 
 #include "tracker-date-time.h"
-#include "tracker-type-utils.h"
 
 GQuark tracker_date_error_quark (void) {
 	return g_quark_from_static_string ("tracker_date_error-quark");
@@ -201,14 +200,15 @@ tracker_string_to_date (const gchar *date_string,
 }
 
 gchar *
-tracker_date_to_string (gdouble date_time)
+tracker_date_to_string (gdouble date_time,
+                        gint    offset)
 {
-	gchar     buffer[30];
+	gchar buffer[35];
 	time_t seconds;
 	gint64 total_milliseconds;
 	gint milliseconds;
 	struct tm utc_time;
-	size_t    count;
+	size_t count, size;
 
 	memset (buffer, '\0', sizeof (buffer));
 	memset (&utc_time, 0, sizeof (struct tm));
@@ -218,18 +218,32 @@ tracker_date_to_string (gdouble date_time)
 	if (milliseconds < 0) {
 		milliseconds += 1000;
 	}
-	seconds = (time_t) ((total_milliseconds - milliseconds) / 1000);
+	seconds = (time_t) ((total_milliseconds - milliseconds) / 1000) + offset;
 	gmtime_r (&seconds, &utc_time);
 
 	/* Output is ISO 8601 format : "YYYY-MM-DDThh:mm:ss" */
-	count = strftime (buffer, sizeof (buffer), "%FT%T", &utc_time);
+	count = strftime (buffer, sizeof (buffer), "%4Y-%m-%dT%T", &utc_time);
 
 	/* Append milliseconds (if non-zero) and time zone */
 	if (milliseconds > 0) {
-		snprintf (buffer + count, sizeof (buffer) - count, ".%03dZ", milliseconds);
-	} else {
-		buffer[count] = 'Z';
+		size = snprintf (buffer + count, sizeof (buffer) - count, ".%03d", milliseconds);
+		count += size;
 	}
+
+	if (offset != 0) {
+		gint hours, mins;
+
+		hours = ABS (offset) / 3600;
+		mins = (ABS (offset) % 3600) / 60;
+		size = snprintf (buffer + count, sizeof (buffer) - count, "%c%.2d:%.2d",
+		                 offset < 0 ? '-' : '+',
+		                 hours, mins);
+		count += size;
+	} else {
+		buffer[count++] = 'Z';
+	}
+
+	g_assert (count <= sizeof (buffer));
 
 	return count > 0 ? g_strdup (buffer) : NULL;
 }
@@ -334,28 +348,4 @@ tracker_date_time_get_offset (const GValue *value)
 
 	/* UTC offset */
 	return value->data[1].v_int;
-}
-
-gint
-tracker_date_time_get_local_date (const GValue *value)
-{
-	gdouble local_timestamp;
-
-	g_return_val_if_fail (G_VALUE_HOLDS (value, TRACKER_TYPE_DATE_TIME), 0);
-
-	/* return number of days since epoch */
-	local_timestamp = tracker_date_time_get_time (value) + tracker_date_time_get_offset (value);
-	return (gint) (local_timestamp / 3600 / 24);
-}
-
-gint
-tracker_date_time_get_local_time (const GValue *value)
-{
-	gdouble local_timestamp;
-
-	g_return_val_if_fail (G_VALUE_HOLDS (value, TRACKER_TYPE_DATE_TIME), 0);
-
-	/* return local time of day */
-	local_timestamp = tracker_date_time_get_time (value) + tracker_date_time_get_offset (value);
-	return (int) local_timestamp % (24 * 3600);
 }

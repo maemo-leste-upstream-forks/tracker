@@ -116,7 +116,7 @@ connection_cb (GObject      *object,
 	MyData *md = user_data;
 	GError *error = NULL;
 
-	md->connection = tracker_sparql_connection_get_finish (res, &error);
+	md->connection = tracker_sparql_connection_new_finish (res, &error);
 	g_print ("Async connection took: %.6f\n", g_timer_elapsed (md->timer, NULL));
 
 	g_timer_start (md->timer);
@@ -137,14 +137,26 @@ connection_cb (GObject      *object,
 gint
 main (gint argc, gchar *argv[])
 {
+	g_autoptr(GFile) store, ontology;
 	MyData *md;
+
+	if (argc > 1) {
+		store = g_file_new_for_commandline_arg (argv[1]);
+	} else {
+		g_print ("Usage: <command> <store-path>\n");
+		exit (1);
+	}
 
 	md = g_new0 (MyData, 1);
 	md->loop = g_main_loop_new (NULL, FALSE);
 	md->timer = g_timer_new ();
 	md->cancellable = g_cancellable_new ();
 
-	tracker_sparql_connection_get_async (md->cancellable,
+	ontology = tracker_sparql_get_ontology_nepomuk ();
+	tracker_sparql_connection_new_async (0,
+	                                     store,
+	                                     ontology,
+	                                     md->cancellable,
 	                                     connection_cb,
 	                                     md);
 

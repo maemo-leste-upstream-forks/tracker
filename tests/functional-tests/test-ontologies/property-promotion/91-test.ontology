@@ -1,10 +1,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix tracker: <http://www.tracker-project.org/ontologies/tracker#> .
 @prefix test: <http://example.org/ns#> .
-@prefix nao: <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix nrl: <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
+@prefix nrl: <http://tracker.api.gnome.org/ontology/v3/nrl#> .
 
 #
 # Note: If you modify this ontology remember to replicate the changes in the other
@@ -15,9 +13,9 @@
 #      / \
 #     B   C
 #
-test: a tracker:Namespace, tracker:Ontology ;
-        nao:lastModified "2010-03-24T11:00:04Z" ;
-        tracker:prefix "test" .
+test: a nrl:Namespace, nrl:Ontology ;
+        nrl:lastModified "2010-03-24T11:00:04Z" ;
+        nrl:prefix "test" .
 
 test:A a rdfs:Class .
 

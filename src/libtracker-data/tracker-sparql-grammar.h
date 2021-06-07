@@ -31,6 +31,7 @@ typedef enum {
 	NAMED_RULE_Prologue,
 	NAMED_RULE_BaseDecl,
 	NAMED_RULE_PrefixDecl,
+	NAMED_RULE_ConstraintDecl,
 	NAMED_RULE_SelectQuery,
 	NAMED_RULE_SubSelect,
 	NAMED_RULE_ConstructQuery,
@@ -191,6 +192,7 @@ typedef enum {
 	LITERAL_COLON,
 	LITERAL_CONCAT,
 	LITERAL_CONTAINS,
+	LITERAL_CONSTRAINT,
 	LITERAL_COMMA,
 	LITERAL_CONSTRUCT,
 	LITERAL_COPY,
@@ -341,6 +343,7 @@ static const gchar literals[][N_LITERALS] = {
 	":", /* LITERAL_COLON */
 	"concat", /* LITERAL_CONCAT */
 	"contains", /* LITERAL_CONTAINS */
+	"constraint", /* LITERAL_CONSTRAINT */
 	",", /* LITERAL_COMMA */
 	"construct", /* LITERAL_CONSTRUCT */
 	"copy", /* LITERAL_COPY */
@@ -1149,7 +1152,7 @@ static const TrackerGrammarRule helper_InlineDataFull_seq_1[] = { L(OPEN_PARENS)
 static const TrackerGrammarRule helper_InlineDataFull_or_1[] = { T(NIL), S(helper_InlineDataFull_seq_1), NIL };
 static const TrackerGrammarRule helper_InlineDataFull_gte0_2[] = { R(DataBlockValue), NIL };
 static const TrackerGrammarRule helper_InlineDataFull_seq_2[] = { L(OPEN_PARENS), GTE0(helper_InlineDataFull_gte0_2), L(CLOSE_PARENS), NIL };
-static const TrackerGrammarRule helper_InlineDataFull_or_2[] = { S(helper_InlineDataFull_seq_2), T(NIL), NIL };
+static const TrackerGrammarRule helper_InlineDataFull_or_2[] = { T(NIL), S(helper_InlineDataFull_seq_2), NIL };
 static const TrackerGrammarRule helper_InlineDataFull_gte0_3[] = { OR(helper_InlineDataFull_or_2), NIL };
 static const TrackerGrammarRule rule_InlineDataFull[] = { OR(helper_InlineDataFull_or_1), L(OPEN_BRACE), GTE0(helper_InlineDataFull_gte0_3), L(CLOSE_BRACE), NIL };
 
@@ -1249,7 +1252,7 @@ static const TrackerGrammarRule rule_GraphRefAll[] = { OR(helper_GraphRefAll_or)
 
 /* GraphOrDefault ::= 'DEFAULT' | 'GRAPH'? iri
  */
-static const TrackerGrammarRule helper_GraphOrDefault_seq[] = { L(NAMED), R(iri), NIL };
+static const TrackerGrammarRule helper_GraphOrDefault_seq[] = { L(GRAPH), R(iri), NIL };
 static const TrackerGrammarRule helper_GraphOrDefault_or[] = { L(DEFAULT), S(helper_GraphOrDefault_seq), NIL };
 static const TrackerGrammarRule rule_GraphOrDefault[] = { OR(helper_GraphOrDefault_or), NIL };
 
@@ -1358,12 +1361,20 @@ static const TrackerGrammarRule helper_ValuesClause_opt[] = { S(helper_ValuesCla
 static const TrackerGrammarRule rule_ValuesClause[] = { OPT(helper_ValuesClause_opt), NIL };
 
 /* OffsetClause ::= 'OFFSET' INTEGER
+ *
+ * TRACKER EXTENSION:
+ * The terminal PARAMETERIZED_VAR is additionally accepted
  */
-static const TrackerGrammarRule rule_OffsetClause[] = { L(OFFSET), T(INTEGER), NIL };
+static const TrackerGrammarRule helper_OffsetClause_or[] = { T(INTEGER), T(PARAMETERIZED_VAR), NIL };
+static const TrackerGrammarRule rule_OffsetClause[] = { L(OFFSET), OR(helper_OffsetClause_or), NIL };
 
 /* LimitClause ::= 'LIMIT' INTEGER
+ *
+ * TRACKER EXTENSION:
+ * The terminal PARAMETERIZED_VAR is additionally accepted
  */
-static const TrackerGrammarRule rule_LimitClause[] = { L(LIMIT), T(INTEGER), NIL };
+static const TrackerGrammarRule helper_LimitClause_or[] = { T(INTEGER), T(PARAMETERIZED_VAR), NIL };
+static const TrackerGrammarRule rule_LimitClause[] = { L(LIMIT), OR(helper_LimitClause_or), NIL };
 
 /* LimitOffsetClauses ::= LimitClause OffsetClause? | OffsetClause LimitClause?
  */
@@ -1498,14 +1509,27 @@ static const TrackerGrammarRule rule_SelectQuery[] = { R(SelectClause), GTE0(hel
  */
 static const TrackerGrammarRule rule_PrefixDecl[] = { L(PREFIX), T(PNAME_NS), T(IRIREF), NIL };
 
+/* ConstraintDecl ::= 'CONSTRAINT' ( 'GRAPH' | 'SERVICE' ) ( ( PNAME_LN | IRIREF | 'DEFAULT' | 'ALL' ) ( ',' ( PNAME_LN | IRIREF | 'DEFAULT' | 'ALL' ) )* )?
+ *
+ * TRACKER EXTENSION
+ */
+static const TrackerGrammarRule helper_ConstraintDecl_or_1[] = { L(GRAPH), L(SERVICE), NIL };
+static const TrackerGrammarRule helper_ConstraintDecl_or_2[] = { T(PNAME_LN), T(IRIREF), L(DEFAULT), L(ALL), NIL };
+static const TrackerGrammarRule helper_ConstraintDecl_seq_1[] = { L(COMMA), OR(helper_ConstraintDecl_or_2), NIL };
+static const TrackerGrammarRule helper_ConstraintDecl_gte0_1[] = { S(helper_ConstraintDecl_seq_1), NIL };
+static const TrackerGrammarRule helper_ConstraintDecl_opt_1[] = { OR(helper_ConstraintDecl_or_2), GTE0(helper_ConstraintDecl_gte0_1), NIL };
+static const TrackerGrammarRule rule_ConstraintDecl[] = { L(CONSTRAINT), OR(helper_ConstraintDecl_or_1), OPT(helper_ConstraintDecl_opt_1), NIL };
 
 /* BaseDecl ::= 'BASE' IRIREF
  */
 static const TrackerGrammarRule rule_BaseDecl[] = { L(BASE), T(IRIREF), NIL };
 
-/* Prologue ::= ( BaseDecl | PrefixDecl )*
+/* Prologue ::= ( BaseDecl | PrefixDecl | ConstraintDecl )*
+ *
+ * TRACKER EXTENSION:
+ * ConstraintDecl entirely.
  */
-static const TrackerGrammarRule helper_Prologue_or[] = { R(BaseDecl), R(PrefixDecl), NIL };
+static const TrackerGrammarRule helper_Prologue_or[] = { R(BaseDecl), R(PrefixDecl), R(ConstraintDecl), NIL };
 static const TrackerGrammarRule helper_Prologue_gte0[] = { OR(helper_Prologue_or), NIL };
 static const TrackerGrammarRule rule_Prologue[] = { GTE0 (helper_Prologue_gte0), NIL };
 
@@ -1656,7 +1680,7 @@ terminal_IRIREF (const gchar  *str,
 				  ch != '"' && ch != '{' &&
 				  ch != '}' && ch != '|' &&
 				  ch != '^' && ch != '`' &&
-				  ch != '\\' && !(ch >= 0x00 && ch <= 0x20)));
+				  ch != '\\' && ch > 0x20));
 	ACCEPT_CHAR ((ch == '>'));
 	*str_out = str;
 	return TRUE;
@@ -2144,6 +2168,7 @@ static const TrackerGrammarRule *named_rules[N_NAMED_RULES] = {
 	rule_Prologue,
 	rule_BaseDecl,
 	rule_PrefixDecl,
+	rule_ConstraintDecl,
 	rule_SelectQuery,
 	rule_SubSelect,
 	rule_ConstructQuery,

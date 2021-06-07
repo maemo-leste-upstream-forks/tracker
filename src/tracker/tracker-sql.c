@@ -37,8 +37,13 @@
 
 static gchar *file;
 static gchar *query;
+static gchar *database_path;
 
 static GOptionEntry entries[] = {
+	{ "database", 'd', 0, G_OPTION_ARG_FILENAME, &database_path,
+	  N_("Location of the database"),
+	  N_("FILE")
+	},
 	{ "file", 'f', 0, G_OPTION_ARG_FILENAME, &file,
 	  N_("Path to use to run a query from file"),
 	  N_("FILE"),
@@ -95,25 +100,14 @@ sql_by_query (void)
 	TrackerDBCursor *cursor = NULL;
 	GError *error = NULL;
 	gint n_rows = 0;
-	GFile *cache_location, *data_location, *ontology_location;
+	GFile *db_location;
 	TrackerDataManager *data_manager;
-	gchar *dir;
+	gint retval = EXIT_SUCCESS;
 
-	dir = g_build_filename (g_get_user_cache_dir (), "tracker", NULL);
-	cache_location = g_file_new_for_path (dir);
-	g_free (dir);
-
-	dir = g_build_filename (g_get_user_data_dir (), "tracker", "data", NULL);
-	data_location = g_file_new_for_path (dir);
-	g_free (dir);
-
-	dir = g_build_filename (SHAREDIR, "tracker", "ontologies", "nepomuk", NULL);
-	ontology_location = g_file_new_for_path (dir);
-	g_free (dir);
-
-	data_manager = tracker_data_manager_new (0, cache_location,
-	                                         data_location, ontology_location,
-	                                         FALSE, FALSE, 100, 100);
+	db_location = g_file_new_for_commandline_arg (database_path);
+	data_manager = tracker_data_manager_new (TRACKER_DB_MANAGER_READONLY,
+	                                         db_location, NULL,
+	                                         100, 100);
 
 	if (!g_initable_init (G_INITABLE (data_manager), NULL, &error)) {
 		g_printerr ("%s: %s\n",
@@ -123,12 +117,14 @@ sql_by_query (void)
 		return EXIT_FAILURE;
 	}
 
+	tracker_term_pipe_to_pager ();
+
 	g_print ("--------------------------------------------------\n");
 	g_print ("\n\n");
 
 	iface = tracker_data_manager_get_db_interface (data_manager);
 
-	stmt = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_NONE, &error, "%s", query);
+	stmt = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_NONE, &error, query);
 
 	if (stmt) {
 		cursor = tracker_db_statement_start_cursor (stmt, &error);
@@ -139,8 +135,8 @@ sql_by_query (void)
 		            _("Could not run query"),
 		            error->message);
 		g_error_free (error);
-
-		return EXIT_FAILURE;
+		retval = EXIT_FAILURE;
+		goto out;
 	}
 
 	g_print ("%s:\n", _("Results"));
@@ -172,15 +168,18 @@ sql_by_query (void)
 		            _("Could not run query"),
 		            error->message);
 		g_error_free (error);
-
-		return EXIT_FAILURE;
+		retval = EXIT_FAILURE;
+		goto out;
 	}
 
 	if (n_rows == 0) {
 		g_print ("%s\n", _("Empty result set"));
 	}
 
-	return EXIT_SUCCESS;
+out:
+	tracker_term_pager_close ();
+
+	return retval;
 }
 
 static int
@@ -243,7 +242,9 @@ tracker_sql (int argc, const char **argv)
 
 	g_option_context_free (context);
 
-	if (file && query) {
+	if (!database_path) {
+		failed = _("A database path must be specified");
+	} else if (file && query) {
 		failed = _("File and query can not be used together");
 	} else {
 		failed = NULL;

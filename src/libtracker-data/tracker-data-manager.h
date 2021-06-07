@@ -35,12 +35,11 @@ typedef struct _TrackerDataManager TrackerDataManager;
 typedef struct _TrackerDataManagerClass TrackerDataManagerClass;
 
 #include <libtracker-common/tracker-common.h>
-#include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-sparql/tracker-ontologies.h>
 
 #include <libtracker-data/tracker-data-update.h>
 #include <libtracker-data/tracker-db-interface.h>
 #include <libtracker-data/tracker-db-manager.h>
-#include <libtracker-data/tracker-db-journal.h>
 
 #define TRACKER_DATA_ONTOLOGY_ERROR                  (tracker_data_ontology_error_quark ())
 
@@ -60,21 +59,16 @@ typedef enum {
 GType    tracker_data_manager_get_type               (void) G_GNUC_CONST;
 
 GQuark   tracker_data_ontology_error_quark           (void);
+
 TrackerDataManager * tracker_data_manager_new        (TrackerDBManagerFlags   flags,
                                                       GFile                  *cache_location,
-                                                      GFile                  *data_location,
                                                       GFile                  *ontology_location,
-                                                      gboolean                journal_check,
-                                                      gboolean                restoring_backup,
                                                       guint                   select_cache_size,
                                                       guint                   update_cache_size);
 
 void                 tracker_data_manager_shutdown            (TrackerDataManager *manager);
 
 GFile *              tracker_data_manager_get_cache_location  (TrackerDataManager *manager);
-GFile *              tracker_data_manager_get_data_location   (TrackerDataManager *manager);
-TrackerDBJournal *   tracker_data_manager_get_journal_writer  (TrackerDataManager *manager);
-TrackerDBJournal *   tracker_data_manager_get_ontology_writer (TrackerDataManager *manager);
 TrackerOntologies *  tracker_data_manager_get_ontologies      (TrackerDataManager *manager);
 
 TrackerDBManager *   tracker_data_manager_get_db_manager      (TrackerDataManager *manager);
@@ -82,10 +76,45 @@ TrackerDBInterface * tracker_data_manager_get_db_interface    (TrackerDataManage
 TrackerDBInterface * tracker_data_manager_get_writable_db_interface (TrackerDataManager *manager);
 TrackerData *        tracker_data_manager_get_data            (TrackerDataManager *manager);
 
-gboolean tracker_data_manager_init_fts               (TrackerDBInterface     *interface,
-						      gboolean                create);
-
 GHashTable *         tracker_data_manager_get_namespaces      (TrackerDataManager *manager);
+
+gboolean             tracker_data_manager_create_graph (TrackerDataManager  *manager,
+                                                        const gchar         *name,
+                                                        GError             **error);
+
+gboolean             tracker_data_manager_drop_graph (TrackerDataManager  *manager,
+                                                      const gchar         *name,
+                                                      GError             **error);
+
+gboolean             tracker_data_manager_clear_graph (TrackerDataManager  *manager,
+                                                       const gchar         *graph,
+                                                       GError             **error);
+gboolean             tracker_data_manager_copy_graph  (TrackerDataManager  *manager,
+                                                       const gchar         *source,
+                                                       const gchar         *destination,
+                                                       GError             **error);
+
+GHashTable *         tracker_data_manager_get_graphs       (TrackerDataManager *manager,
+                                                            gboolean            in_transaction);
+
+gint                 tracker_data_manager_find_graph       (TrackerDataManager *manager,
+                                                            const gchar        *name,
+                                                            gboolean            in_transaction);
+
+guint                tracker_data_manager_get_generation   (TrackerDataManager *manager);
+void                 tracker_data_manager_rollback_graphs (TrackerDataManager *manager);
+void                 tracker_data_manager_commit_graphs (TrackerDataManager *manager);
+
+void                 tracker_data_manager_release_memory (TrackerDataManager *manager);
+
+gboolean             tracker_data_manager_expand_prefix (TrackerDataManager  *manager,
+                                                         const gchar         *term,
+                                                         GHashTable          *prefix_map,
+                                                         gchar              **prefix,
+                                                         gchar              **expanded);
+TrackerSparqlConnection * tracker_data_manager_get_remote_connection (TrackerDataManager  *data_manager,
+                                                                      const gchar         *uri,
+                                                                      GError             **error);
 
 G_END_DECLS
 
