@@ -149,7 +149,6 @@ update_store (const gchar *sparql)
 	/* Run a synchronous update query */
 	tracker_sparql_connection_update (connection,
 	                                  sparql,
-	                                  G_PRIORITY_DEFAULT,
 	                                  NULL,
 	                                  &error);
 
@@ -286,7 +285,8 @@ context_init (gint    argc,
 	}
 
 	/* Get connection */
-	connection = tracker_sparql_connection_get (NULL, &error);
+	connection = tracker_sparql_connection_bus_new ("org.freedesktop.Tracker3.Miner.Files",
+	                                                NULL, NULL, &error);
 	if (!connection) {
 		/* Some error happened performing the query, not good */
 		g_error ("Couldn't get sparql connection: %s",

@@ -67,24 +67,6 @@ const TestInfo nie_tests[] = {
 	{ NULL, NULL }
 };
 
-const TestInfo nmo_tests[] = {
-	{ "nmo/filter-charset-1", "nmo/data-1" },
-	{ "nmo/filter-contentdescription-1", "nmo/data-1" },
-	{ "nmo/filter-contentid-1", "nmo/data-1" },
-	{ "nmo/filter-contenttransferencoding-1", "nmo/data-1" },
-	{ "nmo/filter-headername-1", "nmo/data-1" },
-	{ "nmo/filter-headervalue-1", "nmo/data-1" },
-	{ "nmo/filter-isanswered-1", "nmo/data-1" },
-	{ "nmo/filter-isdeleted-1", "nmo/data-1" },
-	{ "nmo/filter-isdraft-1", "nmo/data-1" },
-	{ "nmo/filter-isflagged-1", "nmo/data-1" },
-	{ "nmo/filter-isread-1", "nmo/data-1" },
-	{ "nmo/filter-isrecent-1", "nmo/data-1" },
-	{ "nmo/filter-messageid-1", "nmo/data-1" },
-	{ "nmo/filter-messagesubject-1", "nmo/data-1" },
-	{ NULL, NULL }
-};
-
 static void
 query_helper (TrackerDataManager *manager, const gchar *query_filename, const gchar *results_filename)
 {
@@ -183,22 +165,18 @@ test_ontology_init (TestInfo      *test_info,
 
 	data_location = g_file_new_for_path (test_info->data_location);
 
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
-
 	/* first-time initialization */
-	manager = tracker_data_manager_new (TRACKER_DB_MANAGER_FORCE_REINDEX,
-	                                    data_location, data_location, data_location,
-	                                    FALSE, FALSE, 100, 100);
+	manager = tracker_data_manager_new (TRACKER_DB_MANAGER_FLAGS_NONE,
+	                                    data_location, data_location,
+	                                    100, 100);
 	g_initable_init (G_INITABLE (manager), NULL, &error);
 	g_assert_no_error (error);
 
 	g_object_unref (manager);
 
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
-
 	/* initialization from existing database */
-	manager = tracker_data_manager_new (0, data_location, data_location, data_location,
-	                                    FALSE, FALSE, 100, 100);
+	manager = tracker_data_manager_new (0, data_location, data_location,
+	                                    100, 100);
 	g_initable_init (G_INITABLE (manager), NULL, &error);
 	g_assert_no_error (error);
 
@@ -230,12 +208,10 @@ test_query (TestInfo      *test_info,
 	ontology_location = g_file_new_for_path (ontology_path);
 	g_free (ontology_path);
 
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
-
 	/* initialization */
-	manager = tracker_data_manager_new (TRACKER_DB_MANAGER_FORCE_REINDEX,
-	                                    data_location, data_location, ontology_location,
-	                                    FALSE, FALSE, 100, 100);
+	manager = tracker_data_manager_new (TRACKER_DB_MANAGER_FLAGS_NONE,
+	                                    data_location, ontology_location,
+	                                    100, 100);
 	g_initable_init (G_INITABLE (manager), NULL, &error);
 	g_assert_no_error (error);
 
@@ -245,7 +221,11 @@ test_query (TestInfo      *test_info,
 	data_filename = g_strconcat (data_prefix, ".ttl", NULL);
 	file = g_file_new_for_path (data_filename);
 	data_update = tracker_data_manager_get_data (manager);
-	tracker_turtle_reader_load (file, data_update, &error);
+	tracker_data_begin_transaction (data_update, &error);
+	g_assert_no_error (error);
+	tracker_data_load_turtle_file (data_update, file, NULL, &error);
+	g_assert_no_error (error);
+	tracker_data_commit_transaction (data_update, &error);
 	g_assert_no_error (error);
 	g_object_unref (file);
 
@@ -324,14 +304,6 @@ main (int argc, char **argv)
 
 		testpath = g_strconcat ("/libtracker-data/nie/", nie_tests[i].test_name, NULL);
 		g_test_add (testpath, TestInfo, &nie_tests[i], setup, test_query, teardown);
-		g_free (testpath);
-	}
-
-	for (i = 0; nmo_tests[i].test_name; i++) {
-		gchar *testpath;
-
-		testpath = g_strconcat ("/libtracker-data/nmo/", nmo_tests[i].test_name, NULL);
-		g_test_add (testpath, TestInfo, &nmo_tests[i], setup, test_query, teardown);
 		g_free (testpath);
 	}
 

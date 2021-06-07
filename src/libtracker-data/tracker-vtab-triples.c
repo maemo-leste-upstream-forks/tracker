@@ -20,6 +20,7 @@
  */
 #include "config.h"
 
+#include "tracker-ontologies.h"
 #include "tracker-vtab-triples.h"
 
 /* Define some constraints for older SQLite, we will never get
@@ -37,6 +38,7 @@ enum {
 	COL_SUBJECT,
 	COL_PREDICATE,
 	COL_OBJECT,
+	COL_OBJECT_TYPE,
 	N_COLS
 };
 
@@ -73,7 +75,9 @@ typedef struct {
 		guint idxFlags;
 	} match;
 
+	GHashTable *query_graphs;
 	GList *properties;
+	GList *graphs;
 
 	guint64 rowid;
 	guint finished : 1;
@@ -105,6 +109,8 @@ tracker_triples_cursor_reset (TrackerTriplesCursor *cursor)
 	g_clear_pointer (&cursor->match.subject, sqlite3_value_free);
 	g_clear_pointer (&cursor->match.predicate, sqlite3_value_free);
 	g_clear_pointer (&cursor->properties, g_list_free);
+	g_clear_pointer (&cursor->graphs, g_list_free);
+	g_clear_pointer (&cursor->query_graphs, g_hash_table_unref);
 	cursor->match.idxFlags = 0;
 	cursor->rowid = 0;
 	cursor->finished = FALSE;
@@ -140,7 +146,8 @@ triples_connect (sqlite3            *db,
 	                           "    graph INTEGER,"
 	                           "    subject INTEGER, "
 	                           "    predicate INTEGER, "
-	                           "    object INTEGER"
+	                           "    object INTEGER, "
+	                           "    object_type INTEGER"
 	                           ")");
 
 	if (rc == SQLITE_OK) {
@@ -180,18 +187,23 @@ triples_best_index (sqlite3_vtab       *vtab,
 		/* We let object be matched in upper layers, where proper
 		 * translation to strings can be done.
 		 */
-		if (info->aConstraint[i].iColumn == COL_OBJECT)
+		if (info->aConstraint[i].iColumn == COL_OBJECT ||
+		    info->aConstraint[i].iColumn == COL_OBJECT_TYPE)
 			continue;
 
-		if (info->aConstraint[i].iColumn == COL_ROWID)
+		if (info->aConstraint[i].iColumn == COL_ROWID) {
+			sqlite3_free (idx_str);
 			return SQLITE_ERROR;
+		}
 
 		/* We can only check for (in)equality */
 		if (info->aConstraint[i].op != SQLITE_INDEX_CONSTRAINT_EQ &&
 		    info->aConstraint[i].op != SQLITE_INDEX_CONSTRAINT_NE &&
 		    info->aConstraint[i].op != SQLITE_INDEX_CONSTRAINT_ISNULL &&
-		    info->aConstraint[i].op != SQLITE_INDEX_CONSTRAINT_ISNOTNULL)
+		    info->aConstraint[i].op != SQLITE_INDEX_CONSTRAINT_ISNOTNULL) {
+			sqlite3_free (idx_str);
 			return SQLITE_ERROR;
+		}
 
 		/* idxNum encodes the used columns and their operators */
 		idx |= masks[info->aConstraint[i].iColumn - 1].mask;
@@ -278,12 +290,59 @@ collect_properties (TrackerTriplesCursor *cursor)
 	}
 }
 
+static int
+collect_graphs (TrackerTriplesCursor *cursor)
+{
+	sqlite3_stmt *stmt;
+	int rc;
+
+	rc = sqlite3_prepare_v2 (cursor->vtab->module->db,
+	                         "SELECT 0, \"main\" "
+	                         "UNION ALL "
+	                         "SELECT ID, "
+	                         "       (SELECT Uri from Resource where Resource.ID = Graph.ID) "
+	                         "FROM Graph",
+	                         -1, &stmt, 0);
+	if (rc != SQLITE_OK)
+		return rc;
+
+	cursor->query_graphs = g_hash_table_new_full (NULL, NULL, NULL, g_free);
+
+	while ((rc = sqlite3_step (stmt)) == SQLITE_ROW) {
+		const gchar *uri;
+		gint id;
+
+		id = sqlite3_column_int (stmt, 0);
+		uri = sqlite3_column_text (stmt, 1);
+
+		if (cursor->match.graph) {
+			gboolean negated = !!(cursor->match.idxFlags & IDX_MATCH_GRAPH_NEG);
+			gboolean equals = (sqlite3_value_int64 (cursor->match.graph) == id);
+
+			if (equals == negated)
+				continue;
+		}
+
+		g_hash_table_insert (cursor->query_graphs,
+		                     GINT_TO_POINTER (id),
+		                     g_strdup (uri));
+	}
+
+	if (rc == SQLITE_DONE)
+		cursor->graphs = g_hash_table_get_keys (cursor->query_graphs);
+
+	sqlite3_finalize (stmt);
+
+	return rc;
+}
+
 static gchar *
 convert_to_string (const gchar         *table_name,
 		   TrackerPropertyType  type)
 {
 	switch (type) {
 	case TRACKER_PROPERTY_TYPE_STRING:
+	case TRACKER_PROPERTY_TYPE_LANGSTRING:
 	case TRACKER_PROPERTY_TYPE_INTEGER:
 		return g_strdup_printf ("t.\"%s\"", table_name);
 	case TRACKER_PROPERTY_TYPE_RESOURCE:
@@ -344,42 +403,61 @@ bind_arg (sqlite3_stmt  *stmt,
 	sqlite3_bind_value (stmt, idx, value);
 }
 
+static gboolean
+iterate_next_stmt (TrackerTriplesCursor  *cursor,
+                   const gchar          **graph,
+                   gint                  *graph_id,
+                   TrackerProperty      **property)
+{
+	while (cursor->properties && !cursor->graphs) {
+		/* Iterate to next property, and redo graph list */
+		cursor->properties = g_list_remove (cursor->properties,
+		                                    cursor->properties->data);
+		cursor->graphs = g_hash_table_get_keys (cursor->query_graphs);
+	}
+
+	if (!cursor->properties)
+		return FALSE;
+
+	*property = cursor->properties->data;
+	*graph_id = GPOINTER_TO_INT (cursor->graphs->data);
+	*graph = g_hash_table_lookup (cursor->query_graphs,
+	                              cursor->graphs->data);
+
+	cursor->graphs = g_list_remove (cursor->graphs, cursor->graphs->data);
+
+	return TRUE;
+}
+
 static int
 init_stmt (TrackerTriplesCursor *cursor)
 {
 	TrackerProperty *property;
+	const gchar *graph;
+	gint graph_id;
 	GString *sql;
 	int rc;
 
-	while (cursor->properties) {
+	while (iterate_next_stmt (cursor, &graph, &graph_id, &property)) {
 		gchar *string_expr;
-
-		property = cursor->properties->data;
-		cursor->properties = g_list_remove (cursor->properties, property);
 
 		string_expr = convert_to_string (tracker_property_get_name (property),
 						 tracker_property_get_data_type (property));
 
 		sql = g_string_new (NULL);
 		g_string_append_printf (sql,
-		                        "SELECT t.\"%s:graph\", t.ID, "
+		                        "SELECT %d, t.ID, "
 		                        "       (SELECT ID From Resource WHERE Uri = \"%s\"), "
-		                        "       %s "
-		                        "FROM \"%s\" AS t "
+		                        "       %s, "
+		                        "       %d "
+		                        "FROM \"%s\".\"%s\" AS t "
 		                        "WHERE 1 ",
-		                        tracker_property_get_name (property),
+		                        graph_id,
 		                        tracker_property_get_uri (property),
 		                        string_expr,
+		                        tracker_property_get_data_type (property),
+		                        graph,
 		                        tracker_property_get_table_name (property));
-
-		if (cursor->match.graph) {
-			g_string_append_printf (sql,
-			                        "AND t.\"%s:graph\" ",
-			                        tracker_property_get_name (property));
-			add_arg_check (sql, cursor->match.graph,
-			               !!(cursor->match.idxFlags & IDX_MATCH_GRAPH_NEG),
-			               "@g");
-		}
 
 		if (cursor->match.subject) {
 			g_string_append (sql, "AND t.ID ");
@@ -440,8 +518,10 @@ triples_filter (sqlite3_vtab_cursor  *vtab_cursor,
 
 	cursor->match.idxFlags = idx;
 
-	collect_properties (cursor);
+	if ((rc = collect_graphs (cursor)) != SQLITE_DONE)
+		return rc;
 
+	collect_properties (cursor);
 	rc = init_stmt (cursor);
 
 	if (rc == SQLITE_DONE)
@@ -515,10 +595,11 @@ triples_rowid (sqlite3_vtab_cursor *vtab_cursor,
 }
 
 void
-tracker_vtab_triples_init (sqlite3           *db,
-                           TrackerOntologies *ontologies)
+tracker_vtab_triples_init (sqlite3            *db,
+                           TrackerDataManager *data_manager)
 {
 	TrackerTriplesModule *module;
+	TrackerOntologies *ontologies;
 	static const sqlite3_module triples_module = {
 		2, /* version */
 		NULL, /* create(), null because this is an eponymous-only table */
@@ -547,6 +628,7 @@ tracker_vtab_triples_init (sqlite3           *db,
 
 	module = g_new0 (TrackerTriplesModule, 1);
 	module->db = db;
+	ontologies = tracker_data_manager_get_ontologies (data_manager);
 	g_set_object (&module->ontologies, ontologies);
 	sqlite3_create_module_v2 (db, "tracker_triples", &triples_module,
 	                          module, tracker_triples_module_free);

@@ -18,11 +18,16 @@
 # 02110-1301, USA.
 #
 
+from gi.repository import GLib
 
 import json
 import logging
 import os
+import pathlib
 import sys
+
+
+DEFAULT_TIMEOUT = 10
 
 
 if 'TRACKER_FUNCTIONAL_TEST_CONFIG' not in os.environ:
@@ -33,28 +38,31 @@ if 'TRACKER_FUNCTIONAL_TEST_CONFIG' not in os.environ:
 with open(os.environ['TRACKER_FUNCTIONAL_TEST_CONFIG']) as f:
     config = json.load(f)
 
+TEST_DBUS_DAEMON_CONFIG_FILE = config['TEST_DBUS_DAEMON_CONFIG_FILE']
+TEST_PORTAL_FLATPAK_INFO = config['TEST_PORTAL_FLATPAK_INFO']
 
-TOP_SRCDIR = os.path.dirname(os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
-TOP_BUILDDIR = os.environ['TRACKER_FUNCTIONAL_TEST_BUILD_DIR']
-
-TEST_ONTOLOGIES_DIR = config['TEST_ONTOLOGIES_DIR']
-TRACKER_STORE_PATH = config['TRACKER_STORE_PATH']
-disableJournal = (len(config['disableJournal']) == 0)
+def cli_dir():
+    return config['TEST_CLI_DIR']
 
 
-def get_environment_boolean(variable):
-    '''Parse a yes/no boolean passed through the environment.'''
-
-    value = os.environ.get(variable, 'no').lower()
-    if value in ['no', '0', 'false']:
-        return False
-    elif value in ['yes', '1', 'true']:
-        return True
-    else:
-        raise RuntimeError('Unexpected value for %s: %s' %
-                           (variable, value))
+def ontologies_dir():
+    return config['TEST_ONTOLOGIES_DIR']
 
 
-if get_environment_boolean('TRACKER_TESTS_VERBOSE'):
-    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+def tracker_version():
+    return config['TRACKER_VERSION']
+
+
+def tap_protocol_enabled():
+    return config['TEST_TAP_ENABLED']
+
+
+TRACKER_DEBUG_TESTS = 1
+
+def tests_verbose():
+    tracker_debug_tests = GLib.DebugKey()
+    tracker_debug_tests.key = "tests"
+    tracker_debug_tests.value = TRACKER_DEBUG_TESTS
+
+    flags = GLib.parse_debug_string (os.environ.get('TRACKER_DEBUG', ''), [tracker_debug_tests])
+    return (flags & TRACKER_DEBUG_TESTS)

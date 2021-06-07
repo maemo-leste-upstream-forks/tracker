@@ -99,8 +99,6 @@ finalize (GObject *object)
  * Creates a new #TrackerNamespaceManager instance.
  *
  * Returns: a new #TrackerNamespaceManager instance
- *
- * Since: 1.10
  */
 TrackerNamespaceManager *
 tracker_namespace_manager_new ()
@@ -123,8 +121,6 @@ tracker_namespace_manager_new ()
  * ontologies, if they have been modified since they were installed.
  *
  * Returns: (transfer none): a global, shared #TrackerNamespaceManager instance
- *
- * Since: 1.10
  */
 TrackerNamespaceManager *
 tracker_namespace_manager_get_default ()
@@ -141,16 +137,13 @@ tracker_namespace_manager_get_default ()
 		tracker_namespace_manager_add_prefix (manager, "dc", TRACKER_PREFIX_DC);
 
 		tracker_namespace_manager_add_prefix (manager, "nrl", TRACKER_PREFIX_NRL);
-		tracker_namespace_manager_add_prefix (manager, "nmo", TRACKER_PREFIX_NMO);
 		tracker_namespace_manager_add_prefix (manager, "nie", TRACKER_PREFIX_NIE);
 		tracker_namespace_manager_add_prefix (manager, "nco", TRACKER_PREFIX_NCO);
 		tracker_namespace_manager_add_prefix (manager, "nao", TRACKER_PREFIX_NAO);
-		tracker_namespace_manager_add_prefix (manager, "nid3", TRACKER_PREFIX_NID3);
 		tracker_namespace_manager_add_prefix (manager, "nfo", TRACKER_PREFIX_NFO);
 
 		tracker_namespace_manager_add_prefix (manager, "slo", TRACKER_PREFIX_SLO);
 		tracker_namespace_manager_add_prefix (manager, "nmm", TRACKER_PREFIX_NMM);
-		tracker_namespace_manager_add_prefix (manager, "mlo", TRACKER_PREFIX_MLO);
 		tracker_namespace_manager_add_prefix (manager, "mfo", TRACKER_PREFIX_MFO);
 		tracker_namespace_manager_add_prefix (manager, "osinfo", TRACKER_PREFIX_OSINFO);
 
@@ -165,9 +158,9 @@ tracker_namespace_manager_get_default ()
  * @self: a #TrackerNamespaceManager
  * @prefix: a string
  *
- * Returns: %TRUE if the #TrackerNamespaceManager knows about @prefix, %FALSE otherwise
+ * Returns whether @prefix is known.
  *
- * Since: 1.10
+ * Returns: %TRUE if the #TrackerNamespaceManager knows about @prefix, %FALSE otherwise
  */
 gboolean
 tracker_namespace_manager_has_prefix (TrackerNamespaceManager *self,
@@ -190,9 +183,7 @@ tracker_namespace_manager_has_prefix (TrackerNamespaceManager *self,
  * Looks up the namespace URI corresponding to @prefix, or %NULL if the prefix
  * is not known.
  *
- * Returns: a string owned by the #TrackerNamespaceManager, or %NULL
- *
- * Since: 1.10
+ * Returns: (nullable): a string owned by the #TrackerNamespaceManager, or %NULL
  */
 const char *
 tracker_namespace_manager_lookup_prefix (TrackerNamespaceManager *self,
@@ -217,8 +208,6 @@ tracker_namespace_manager_lookup_prefix (TrackerNamespaceManager *self,
  *
  * Only one prefix is allowed for a given namespace, and all prefixes must
  * be unique.
- *
- * Since: 1.10
  */
 void
 tracker_namespace_manager_add_prefix (TrackerNamespaceManager *self,
@@ -265,8 +254,6 @@ tracker_namespace_manager_add_prefix (TrackerNamespaceManager *self,
  * expanded URI. Otherwise, a copy of @compact_uri will be returned.
  *
  * Returns: a newly-allocated string
- *
- * Since: 1.10
  */
 char *
 tracker_namespace_manager_expand_uri (TrackerNamespaceManager *self,
@@ -287,7 +274,7 @@ tracker_namespace_manager_expand_uri (TrackerNamespaceManager *self,
 	if (colon != NULL) {
 		int colon_pos = colon - compact_uri;
 		if (colon_pos < MAX_PREFIX_LENGTH) {
-			strncpy (prefix, compact_uri, colon_pos - 1);
+			strncpy (prefix, compact_uri, colon_pos);
 			prefix[colon_pos] = 0;
 
 			namespace = g_hash_table_lookup (priv->prefix_to_namespace, prefix);
@@ -295,7 +282,7 @@ tracker_namespace_manager_expand_uri (TrackerNamespaceManager *self,
 	}
 
 	if (namespace) {
-		return g_strconcat (namespace, colon, NULL);
+		return g_strconcat (namespace, colon + 1, NULL);
 	} else {
 		return g_strdup (compact_uri);
 	}
@@ -308,14 +295,12 @@ tracker_namespace_manager_expand_uri (TrackerNamespaceManager *self,
  * Writes out all namespaces as Turtle @prefix statements.
  *
  * Returns: a newly-allocated string
- *
- * Since: 1.10
  */
 char *
 tracker_namespace_manager_print_turtle (TrackerNamespaceManager *self)
 {
 	TrackerNamespaceManagerPrivate *priv;
-	GString *result = g_string_new ("");
+	GString *result;
 	GHashTableIter iter;
 	const char *prefix;
 	const char *namespace;
@@ -323,6 +308,8 @@ tracker_namespace_manager_print_turtle (TrackerNamespaceManager *self)
 	g_return_val_if_fail (TRACKER_IS_NAMESPACE_MANAGER (self), NULL);
 
 	priv = GET_PRIVATE (self);
+
+	result = g_string_new ("");
 
 	g_hash_table_iter_init (&iter, priv->prefix_to_namespace);
 	while (g_hash_table_iter_next (&iter, (gpointer *)&prefix, (gpointer *)&namespace)) {
@@ -339,8 +326,6 @@ tracker_namespace_manager_print_turtle (TrackerNamespaceManager *self)
  * @user_data: user data to pass to the function
  *
  * Calls @func for each known prefix / URI pair.
- *
- * Since: 1.10
  */
 void
 tracker_namespace_manager_foreach (TrackerNamespaceManager *self,

@@ -34,13 +34,13 @@ typedef struct _TrackerClassPrivate TrackerClassPrivate;
 struct _TrackerClassPrivate {
 	gchar *uri;
 	gchar *name;
-	gint count;
 	gint id;
-	gboolean is_new;
-	gboolean db_schema_changed;
-	gboolean notify;
+	guint is_new : 1;
+	guint db_schema_changed : 1;
+	guint notify : 1;
+	guint use_gvdb : 1;
 
-	gboolean use_gvdb;
+	GMutex mutex;
 
 	GArray *super_classes;
 	GArray *domain_indexes;
@@ -74,6 +74,7 @@ tracker_class_init (TrackerClass *service)
 	priv->domain_indexes = g_array_new (TRUE, TRUE, sizeof (TrackerProperty *));
 	priv->last_domain_indexes = NULL;
 	priv->last_super_classes = NULL;
+	g_mutex_init (&priv->mutex);
 }
 
 static void
@@ -110,10 +111,50 @@ tracker_class_new (gboolean use_gvdb)
 
 	if (use_gvdb) {
 		priv = tracker_class_get_instance_private (service);
-		priv->use_gvdb = use_gvdb;
+		priv->use_gvdb = !!use_gvdb;
 	}
 
 	return service;
+}
+
+static void
+tracker_class_maybe_sync_from_gvdb (TrackerClass *service)
+{
+	TrackerClassPrivate *priv;
+	TrackerClass *super_class;
+	GVariant *variant;
+
+	priv = tracker_class_get_instance_private (service);
+
+	if (!priv->use_gvdb)
+		return;
+
+	g_mutex_lock (&priv->mutex);
+
+	/* In case the lock was contended, make the second lose */
+	if (!priv->use_gvdb)
+		goto out;
+
+	tracker_class_reset_super_classes (service);
+
+	variant = tracker_ontologies_get_class_value_gvdb (priv->ontologies, priv->uri, "super-classes");
+	if (variant) {
+		GVariantIter iter;
+		const gchar *uri;
+
+		g_variant_iter_init (&iter, variant);
+		while (g_variant_iter_loop (&iter, "&s", &uri)) {
+			super_class = tracker_ontologies_get_class_by_uri (priv->ontologies, uri);
+
+			tracker_class_add_super_class (service, super_class);
+		}
+
+		g_variant_unref (variant);
+	}
+
+	priv->use_gvdb = FALSE;
+out:
+	g_mutex_unlock (&priv->mutex);
 }
 
 const gchar *
@@ -141,18 +182,6 @@ tracker_class_get_name (TrackerClass *service)
 }
 
 gint
-tracker_class_get_count (TrackerClass *service)
-{
-	TrackerClassPrivate *priv;
-
-	g_return_val_if_fail (TRACKER_IS_CLASS (service), 0);
-
-	priv = tracker_class_get_instance_private (service);
-
-	return priv->count;
-}
-
-gint
 tracker_class_get_id (TrackerClass *service)
 {
 	TrackerClassPrivate *priv;
@@ -173,27 +202,7 @@ tracker_class_get_super_classes (TrackerClass *service)
 
 	priv = tracker_class_get_instance_private (service);
 
-	if (priv->use_gvdb) {
-		TrackerClass *super_class;
-		GVariant *variant;
-
-		tracker_class_reset_super_classes (service);
-
-		variant = tracker_ontologies_get_class_value_gvdb (priv->ontologies, priv->uri, "super-classes");
-		if (variant) {
-			GVariantIter iter;
-			const gchar *uri;
-
-			g_variant_iter_init (&iter, variant);
-			while (g_variant_iter_loop (&iter, "&s", &uri)) {
-				super_class = tracker_ontologies_get_class_by_uri (priv->ontologies, uri);
-
-				tracker_class_add_super_class (service, super_class);
-			}
-
-			g_variant_unref (variant);
-		}
-	}
+	tracker_class_maybe_sync_from_gvdb (service);
 
 	return (TrackerClass **) priv->super_classes->data;
 }
@@ -313,20 +322,6 @@ tracker_class_set_uri (TrackerClass *service,
 }
 
 void
-tracker_class_set_count (TrackerClass *service,
-                         gint          value)
-{
-	TrackerClassPrivate *priv;
-
-	g_return_if_fail (TRACKER_IS_CLASS (service));
-
-	priv = tracker_class_get_instance_private (service);
-
-	priv->count = value;
-}
-
-
-void
 tracker_class_set_id (TrackerClass *service,
                       gint          value)
 {
@@ -434,7 +429,7 @@ tracker_class_set_is_new (TrackerClass *service,
 
 	priv = tracker_class_get_instance_private (service);
 
-	priv->is_new = value;
+	priv->is_new = !!value;
 }
 
 
@@ -448,7 +443,7 @@ tracker_class_set_notify (TrackerClass *service,
 
 	priv = tracker_class_get_instance_private (service);
 
-	priv->notify = value;
+	priv->notify = !!value;
 }
 
 void
@@ -461,7 +456,7 @@ tracker_class_set_db_schema_changed (TrackerClass *service,
 
 	priv = tracker_class_get_instance_private (service);
 
-	priv->db_schema_changed = value;
+	priv->db_schema_changed = !!value;
 }
 
 void

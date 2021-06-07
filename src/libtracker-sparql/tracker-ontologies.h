@@ -28,36 +28,108 @@ G_BEGIN_DECLS
 #endif
 
 /* Core: resources, data types */
+
+/**
+ * TRACKER_PREFIX_RDF:
+ *
+ * The Prefix of the RDF namespace
+ */
 #define TRACKER_PREFIX_RDF      "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+
+/**
+ * TRACKER_PREFIX_RDFS:
+ *
+ * The Prefix of the RDFS namespace
+ */
 #define TRACKER_PREFIX_RDFS     "http://www.w3.org/2000/01/rdf-schema#"
+
+/**
+ * TRACKER_PREFIX_XSD:
+ *
+ * The Prefix of the XSD namespace
+ */
 #define TRACKER_PREFIX_XSD      "http://www.w3.org/2001/XMLSchema#"
-#define TRACKER_PREFIX_TRACKER  "http://www.tracker-project.org/ontologies/tracker#"
+
+/**
+ * TRACKER_PREFIX_TRACKER:
+ *
+ * The Prefix of the Tracker namespace
+ */
+#define TRACKER_PREFIX_TRACKER  "http://tracker.api.gnome.org/ontology/v3/tracker#"
+
+/**
+ * TRACKER_PREFIX_DC:
+ *
+ * The Prefix of the DC (Dublin Core) namespace
+ */
 #define TRACKER_PREFIX_DC       "http://purl.org/dc/elements/1.1/"
 
 /* Our Nepomuk selection */
-#define TRACKER_PREFIX_NRL      "http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#"
-#define TRACKER_PREFIX_NMO      "http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#"
-#define TRACKER_PREFIX_NIE      "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#"
-#define TRACKER_PREFIX_NCO      "http://www.semanticdesktop.org/ontologies/2007/03/22/nco#"
-#define TRACKER_PREFIX_NAO      "http://www.semanticdesktop.org/ontologies/2007/08/15/nao#"
-#define TRACKER_PREFIX_NID3     "http://www.semanticdesktop.org/ontologies/2007/05/10/nid3#"
-#define TRACKER_PREFIX_NFO      "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#"
-#define TRACKER_PREFIX_OSINFO   "http://www.tracker-project.org/ontologies/osinfo#"
 
-/* Temporary */
-#define TRACKER_PREFIX_SLO      "http://www.tracker-project.org/temp/slo#"
-#define TRACKER_PREFIX_NMM      "http://www.tracker-project.org/temp/nmm#"
-#define TRACKER_PREFIX_MLO      "http://www.tracker-project.org/temp/mlo#"
-#define TRACKER_PREFIX_MFO      "http://www.tracker-project.org/temp/mfo#"
+/**
+ * TRACKER_PREFIX_NRL:
+ *
+ * The Prefix of the NRL namespace
+ */
+#define TRACKER_PREFIX_NRL      "http://tracker.api.gnome.org/ontology/v3/nrl#"
 
-/* RDF/SPARQL consistency */
-#define TRACKER_PREFIX_DATASOURCE_URN \
-	"urn:nepomuk:datasource:"
+/**
+ * TRACKER_PREFIX_NIE:
+ *
+ * The Prefix of the NIE namespace
+ */
+#define TRACKER_PREFIX_NIE      "http://tracker.api.gnome.org/ontology/v3/nie#"
 
-#define TRACKER_DATASOURCE_URN_NON_REMOVABLE_MEDIA \
-	TRACKER_PREFIX_DATASOURCE_URN "9291a450-1d49-11de-8c30-0800200c9a66"
+/**
+ * TRACKER_PREFIX_NCO:
+ *
+ * The Prefix of the NCO namespace
+ */
+#define TRACKER_PREFIX_NCO      "http://tracker.api.gnome.org/ontology/v3/nco#"
 
-#define TRACKER_OWN_GRAPH_URN "urn:uuid:472ed0cc-40ff-4e37-9c0c-062d78656540"
+/**
+ * TRACKER_PREFIX_NAO:
+ *
+ * The Prefix of the NAO namespace
+ */
+#define TRACKER_PREFIX_NAO      "http://tracker.api.gnome.org/ontology/v3/nao#"
+
+/**
+ * TRACKER_PREFIX_NFO:
+ *
+ * The Prefix of the NFO namespace
+ */
+#define TRACKER_PREFIX_NFO      "http://tracker.api.gnome.org/ontology/v3/nfo#"
+
+/**
+ * TRACKER_PREFIX_NMM:
+ *
+ * The Prefix of the RDF namespace
+ */
+#define TRACKER_PREFIX_NMM      "http://tracker.api.gnome.org/ontology/v3/nmm#"
+
+/* Additional ontologies used by tracker-miners */
+
+/**
+ * TRACKER_PREFIX_MFO:
+ *
+ * The Prefix of the MFO namespace
+ */
+#define TRACKER_PREFIX_MFO      "http://tracker.api.gnome.org/ontology/v3/mfo#"
+
+/**
+ * TRACKER_PREFIX_SLO:
+ *
+ * The Prefix of the SLO namespace
+ */
+#define TRACKER_PREFIX_SLO      "http://tracker.api.gnome.org/ontology/v3/slo#"
+
+/**
+ * TRACKER_PREFIX_OSINFO:
+ *
+ * The Prefix of the Osinfo namespace
+ */
+#define TRACKER_PREFIX_OSINFO   "http://tracker.api.gnome.org/ontology/v3/osinfo#"
 
 G_END_DECLS
 

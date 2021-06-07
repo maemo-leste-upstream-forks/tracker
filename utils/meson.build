@@ -1,4 +1,5 @@
 subdir('mtp')
-subdir('ontology')
 subdir('tracker-resdump')
 subdir('trackertestutils')
+
+utils_dir = meson.current_source_dir()

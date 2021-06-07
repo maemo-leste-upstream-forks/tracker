@@ -78,18 +78,19 @@ static char *
 cmd_to_page (const char *cmd)
 {
 	if (!cmd) {
-		return g_strdup ("tracker");
-	} else if (g_str_has_prefix (cmd, "tracker")) {
+		return g_strdup (COMMANDNAME);
+	} else if (g_str_has_prefix (cmd, COMMANDNAME "-")) {
 		return g_strdup (cmd);
 	} else {
-		return g_strdup_printf ("tracker-%s", cmd);
+		return g_strdup_printf (COMMANDNAME "-%s", cmd);
 	}
 }
 
 int
 tracker_help_show_man_page (const char *cmd)
 {
-	const char *page = cmd_to_page (cmd);
+	char *page = cmd_to_page (cmd);
+	int retval;
 
 	setup_man_path ();
 
@@ -97,6 +98,9 @@ tracker_help_show_man_page (const char *cmd)
 		exec_man_cmd ("man", page);
 	}
 
-	return exec_man_man ("man", page);
+	retval = exec_man_man ("man", page);
+	g_free (page);
+
+	return retval;
 }
 

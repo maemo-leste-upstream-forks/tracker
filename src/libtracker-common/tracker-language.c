@@ -28,7 +28,6 @@
 #include <libstemmer.h>
 #endif /* HAVE_LIBSTEMMER */
 
-#include "tracker-log.h"
 #include "tracker-language.h"
 
 typedef struct _TrackerLanguagePrivate TrackerLanguagePrivate;
@@ -229,7 +228,7 @@ language_get_stopword_filename (const gchar *language_code)
 	testpath = g_getenv ("TRACKER_LANGUAGE_STOP_WORDS_DIR");
 	if (!testpath) {
 		filename = g_build_filename (SHAREDIR,
-		                             "tracker",
+		                             "tracker3",
 		                             "stop-words",
 		                             str,
 		                             NULL);
@@ -299,7 +298,7 @@ language_set_stopword_list (TrackerLanguage *language,
 	language_add_stopwords (language, stopword_filename);
 	g_free (stopword_filename);
 
-	if (!language_code || strcmp (language_code, "en") != 0) {
+	if (g_strcmp0 (language_code, "en") != 0) {
 		stopword_filename = language_get_stopword_filename ("en");
 		language_add_stopwords (language, stopword_filename);
 		g_free (stopword_filename);

@@ -33,7 +33,6 @@ G_BEGIN_DECLS
 typedef struct _TrackerData TrackerData;
 typedef struct _TrackerDataClass TrackerDataClass;
 
-#include <libtracker-sparql/tracker-sparql.h>
 #include "tracker-db-interface.h"
 #include "tracker-data-manager.h"
 
@@ -68,38 +67,23 @@ void     tracker_data_delete_statement              (TrackerData               *
                                                      const gchar               *graph,
                                                      const gchar               *subject,
                                                      const gchar               *predicate,
-                                                     const gchar               *object,
+                                                     GBytes                    *object,
                                                      GError                   **error);
 void     tracker_data_insert_statement              (TrackerData               *data,
                                                      const gchar               *graph,
                                                      const gchar               *subject,
                                                      const gchar               *predicate,
-                                                     const gchar               *object,
-                                                     GError                   **error);
-void     tracker_data_insert_statement_with_uri     (TrackerData               *data,
-                                                     const gchar               *graph,
-                                                     const gchar               *subject,
-                                                     const gchar               *predicate,
-                                                     const gchar               *object,
-                                                     GError                   **error);
-void     tracker_data_insert_statement_with_string  (TrackerData               *data,
-                                                     const gchar               *graph,
-                                                     const gchar               *subject,
-                                                     const gchar               *predicate,
-                                                     const gchar               *object,
+                                                     GBytes                    *object,
                                                      GError                   **error);
 void     tracker_data_update_statement              (TrackerData               *data,
                                                      const gchar               *graph,
                                                      const gchar               *subject,
                                                      const gchar               *predicate,
-                                                     const gchar               *object,
+                                                     GBytes                    *object,
                                                      GError                   **error);
 void     tracker_data_begin_transaction             (TrackerData               *data,
                                                      GError                   **error);
 void     tracker_data_begin_ontology_transaction    (TrackerData               *data,
-                                                     GError                   **error);
-void     tracker_data_begin_transaction_for_replay  (TrackerData               *data,
-                                                     time_t                     time,
                                                      GError                   **error);
 void     tracker_data_commit_transaction            (TrackerData               *data,
                                                      GError                   **error);
@@ -117,13 +101,14 @@ void     tracker_data_update_buffer_might_flush     (TrackerData               *
                                                      GError                   **error);
 void     tracker_data_load_turtle_file              (TrackerData               *data,
                                                      GFile                     *file,
+                                                     const gchar               *graph,
                                                      GError                   **error);
 
-void     tracker_data_sync                          (TrackerData               *data);
-void     tracker_data_replay_journal                (TrackerData               *data,
-                                                     TrackerBusyCallback        busy_callback,
-                                                     gpointer                   busy_user_data,
-                                                     const gchar               *busy_status,
+gint     tracker_data_ensure_graph                  (TrackerData               *data,
+                                                     const gchar               *name,
+                                                     GError                   **error);
+gboolean tracker_data_delete_graph                  (TrackerData               *data,
+                                                     const gchar               *uri,
                                                      GError                   **error);
 
 /* Calling back */
@@ -151,6 +136,20 @@ void     tracker_data_remove_commit_statement_callback   (TrackerData           
 void     tracker_data_remove_rollback_statement_callback (TrackerData               *data,
                                                           TrackerCommitCallback      callback,
                                                           gpointer                   user_data);
+
+gboolean tracker_data_update_resource (TrackerData      *data,
+                                       const gchar      *graph,
+                                       TrackerResource  *resource,
+                                       GHashTable       *bnodes,
+                                       GError          **error);
+
+gint tracker_data_update_ensure_resource (TrackerData  *data,
+                                          const gchar  *uri,
+                                          gboolean     *create,
+                                          GError      **error);
+gchar * tracker_data_update_ensure_new_bnode (TrackerData         *data,
+                                              TrackerDBInterface  *iface,
+                                              GError             **error);
 
 GType         tracker_data_get_type (void) G_GNUC_CONST;
 TrackerData * tracker_data_new      (TrackerDataManager *manager);

@@ -1,9 +1,40 @@
 sources = [
   '__init__.py',
+  '__main__.py',
+  'dbusdaemon.py',
   'dconf.py',
   'helpers.py',
-  'mainloop.py'
+  'mainloop.py',
+  'psutil_mini.py',
+  'sandbox.py',
+  'storehelper.py',
 ]
 
-install_data(sources,
-  install_dir: join_paths(tracker_internal_libs_dir, 'trackertestutils'))
+if get_option('test_utils')
+  testutils_dir = get_option('test_utils_dir')
+
+  if testutils_dir == ''
+    testutils_dir = tracker_internal_libs_dir
+  endif
+
+  install_data(sources, install_dir: testutils_dir / 'trackertestutils')
+
+  script_conf = configuration_data()
+  script_conf.set('typelibdir', typelib_dir)
+  script_conf.set('prefix', get_option('prefix'))
+  script_conf.set('testutils_dir', testutils_dir)
+  configure_file(
+    input: 'tracker-sandbox.in',
+    output: 'tracker-sandbox',
+    configuration: script_conf,
+    install_dir: testutils_dir / 'trackertestutils')
+
+  pkg.generate(
+    name: 'tracker-testutils-' + tracker_api_version,
+    description: 'tracker test utilities',
+    variables: [
+      'python_path=' + testutils_dir,
+      'command=' + testutils_dir / 'trackertestutils' / 'tracker-sandbox',
+    ]
+  )
+endif

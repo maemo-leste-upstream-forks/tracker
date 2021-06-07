@@ -44,6 +44,7 @@ typedef enum {
 	TRACKER_PROPERTY_TYPE_DATE,
 	TRACKER_PROPERTY_TYPE_DATETIME,
 	TRACKER_PROPERTY_TYPE_RESOURCE,
+	TRACKER_PROPERTY_TYPE_LANGSTRING,
 } TrackerPropertyType;
 
 GType        tracker_property_type_get_type  (void) G_GNUC_CONST;
@@ -89,17 +90,14 @@ gboolean            tracker_property_get_fulltext_indexed    (TrackerProperty   
 gboolean            tracker_property_get_multiple_values     (TrackerProperty      *property);
 gboolean            tracker_property_get_last_multiple_values(TrackerProperty      *property);
 gboolean            tracker_property_get_orig_multiple_values(TrackerProperty      *property);
-gboolean            tracker_property_get_transient           (TrackerProperty      *property);
 gboolean            tracker_property_get_is_new              (TrackerProperty      *property);
 gboolean            tracker_property_get_is_new_domain_index (TrackerProperty      *property,
                                                               TrackerClass         *class);
 gboolean            tracker_property_get_writeback           (TrackerProperty      *property);
-const gchar *       tracker_property_get_default_value       (TrackerProperty      *property);
 gboolean            tracker_property_get_db_schema_changed   (TrackerProperty      *property);
 gboolean            tracker_property_get_cardinality_changed (TrackerProperty      *property);
 gboolean            tracker_property_get_is_inverse_functional_property
                                                              (TrackerProperty      *property);
-gboolean            tracker_property_get_force_journal       (TrackerProperty      *property);
 TrackerProperty **  tracker_property_get_super_properties    (TrackerProperty      *property);
 void                tracker_property_set_uri                 (TrackerProperty      *property,
                                                               const gchar          *value);
@@ -130,8 +128,6 @@ void                tracker_property_set_last_multiple_values(TrackerProperty   
                                                               gboolean              value);
 void                tracker_property_set_orig_multiple_values(TrackerProperty      *property,
                                                               gboolean              value);
-void                tracker_property_set_transient           (TrackerProperty      *property,
-                                                              gboolean              value);
 void                tracker_property_set_is_new              (TrackerProperty      *property,
                                                               gboolean              value);
 void                tracker_property_set_is_new_domain_index (TrackerProperty      *property,
@@ -139,16 +135,12 @@ void                tracker_property_set_is_new_domain_index (TrackerProperty   
                                                               gboolean              value);
 void                tracker_property_set_writeback           (TrackerProperty      *property,
                                                                gboolean              value);
-void                tracker_property_set_default_value       (TrackerProperty      *property,
-                                                              const gchar          *value);
 void                tracker_property_set_db_schema_changed   (TrackerProperty      *property,
                                                               gboolean              value);
 void                tracker_property_set_cardinality_changed (TrackerProperty      *property,
                                                               gboolean              value);
 void                tracker_property_set_is_inverse_functional_property
                                                              (TrackerProperty      *property,
-                                                              gboolean              value);
-void                tracker_property_set_force_journal       (TrackerProperty      *property,
                                                               gboolean              value);
 void                tracker_property_add_super_property      (TrackerProperty      *property,
                                                               TrackerProperty      *value);

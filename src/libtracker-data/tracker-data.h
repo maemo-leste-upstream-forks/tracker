@@ -27,20 +27,16 @@
 #define __LIBTRACKER_DATA_INSIDE__
 
 #include "tracker-class.h"
-#include "tracker-data-backup.h"
 #include "tracker-data-manager.h"
 #include "tracker-data-query.h"
 #include "tracker-data-update.h"
-#include "tracker-db-config.h"
 #include "tracker-db-interface.h"
 #include "tracker-db-interface-sqlite.h"
-#include "tracker-db-journal.h"
 #include "tracker-db-manager.h"
 #include "tracker-namespace.h"
 #include "tracker-ontology.h"
 #include "tracker-ontologies.h"
 #include "tracker-property.h"
-#include "tracker-sparql-query.h"
 #include "tracker-sparql.h"
 #include "tracker-uuid.h"
 

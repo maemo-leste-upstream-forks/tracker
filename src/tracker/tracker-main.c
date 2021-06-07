@@ -28,25 +28,19 @@
 
 #include <libtracker-common/tracker-common.h>
 
-#include "tracker-daemon.h"
+#include "tracker-endpoint.h"
 #include "tracker-export.h"
-#include "tracker-extract.h"
 #include "tracker-help.h"
-#include "tracker-index.h"
-#include "tracker-info.h"
-#include "tracker-reset.h"
-#include "tracker-search.h"
+#include "tracker-import.h"
 #include "tracker-sparql.h"
 #include "tracker-sql.h"
-#include "tracker-status.h"
-#include "tracker-tag.h"
 
 const char usage_string[] =
-	"tracker [--version] [--help]\n"
-	"               <command> [<args>]";
- 
+	"tracker3 [--version] [--help]\n"
+	"                <command> [<args>]";
+
 const char usage_more_info_string[] =
-	N_("See “tracker help <command>” to read about a specific subcommand.");
+	N_("See “tracker3 help <command>” to read about a specific subcommand.");
 
 const char about[] =
 	"Tracker " PACKAGE_VERSION "\n"
@@ -74,7 +68,7 @@ tracker_help (int argc, const char **argv)
 }
 
 static int
-tracker_version (int argc, const char **argv)
+print_version (void)
 {
 	puts (about);
 	return 0;
@@ -95,19 +89,12 @@ struct cmd_struct {
 };
 
 static struct cmd_struct commands[] = {
-	{ "daemon", tracker_daemon, NEED_WORK_TREE, N_("Start, stop, pause and list processes responsible for indexing content") },
-	{ "export", tracker_export, NEED_WORK_TREE, N_("Export data from a Tracker database") },
-	{ "extract", tracker_extract, NEED_WORK_TREE, N_("Extract information from a file") },
 	{ "help", tracker_help, NEED_NOTHING, N_("Get help on how to use Tracker and any of these commands") },
-	{ "info", tracker_info, NEED_WORK_TREE, N_("Show information known about local files or items indexed") }, 
-	{ "index", tracker_index, NEED_NOTHING, N_("Backup, restore, import and (re)index by MIME type or file name") },
-	{ "reset", tracker_reset, NEED_NOTHING,  N_("Reset or remove index and revert configurations to defaults") },
-	{ "search", tracker_search, NEED_WORK_TREE, N_("Search for content indexed or show content by type") },
+	{ "endpoint", tracker_endpoint, NEED_NOTHING, N_("Create a SPARQL endpoint") },
+	{ "export", tracker_export, NEED_WORK_TREE, N_("Export data from a Tracker database") },
+	{ "import", tracker_import, NEED_WORK_TREE, N_("Import data into a Tracker database") },
 	{ "sparql", tracker_sparql, NEED_WORK_TREE, N_("Query and update the index using SPARQL or search, list and tree the ontology") },
 	{ "sql", tracker_sql, NEED_WORK_TREE, N_("Query the database at the lowest level using SQL") },
-	{ "status", tracker_status, NEED_NOTHING, N_("Show the indexing progress, content statistics and index state") },
-	{ "tag", tracker_tag, NEED_WORK_TREE, N_("Create, list or delete tags for indexed content") },
-	{ "version", tracker_version, NEED_NOTHING, N_("Show the license and version in use") },
 };
 
 static int
@@ -133,14 +120,8 @@ run_builtin (struct cmd_struct *p, int argc, const char **argv)
 static void
 handle_command (int argc, const char **argv)
 {
-	const char *cmd = argv[0];
+	char *cmd = g_path_get_basename (argv[0]);
 	int i;
-
-	/* Turn "tracker cmd --help" into "tracker help cmd" */
-	if (argc > 1 && !strcmp (argv[1], "--help")) {
-		argv[1] = argv[0];
-		argv[0] = cmd = "help";
-	}
 
 	for (i = 0; i < G_N_ELEMENTS (commands); i++) {
 		struct cmd_struct *p = commands + i;
@@ -149,11 +130,13 @@ handle_command (int argc, const char **argv)
 			continue;
 		}
 
+		g_free (cmd);
 		exit (run_builtin (p, argc, argv));
 	}
 
-	g_printerr (_("“%s” is not a tracker command. See “tracker --help”"), argv[0]);
+	g_printerr (_("“%s” is not a tracker3 command. See “tracker3 --help”"), argv[0]);
 	g_printerr ("\n");
+	g_free (cmd);
 	exit (EXIT_FAILURE);
 }
 
@@ -169,24 +152,68 @@ static void
 print_usage_list_cmds (void)
 {
 	int i, longest = 0;
+	GList *extra_commands = NULL;
+	GFileEnumerator *enumerator;
+	GFileInfo *info;
+	GFile *dir;
+	GError *error = NULL;
+	const gchar *subcommands_dir;
+
+	subcommands_dir = g_getenv ("TRACKER_CLI_SUBCOMMANDS_DIR");
+	if (!subcommands_dir) {
+		subcommands_dir = SUBCOMMANDSDIR;
+	}
 
 	for (i = 0; i < G_N_ELEMENTS(commands); i++) {
 		if (longest < strlen (commands[i].cmd))
 			longest = strlen(commands[i].cmd);
 	}
 
-	puts (_("Available tracker commands are:"));
+	puts (_("Available tracker3 commands are:"));
 
 	for (i = 0; i < G_N_ELEMENTS(commands); i++) {
-		/* Don't list version in commands */
-		if (!strcmp (commands[i].cmd, "version") ||
-		    !strcmp (commands[i].cmd, "help")) {
-			continue;
-		}
-
 		g_print ("   %s   ", commands[i].cmd);
 		mput_char (' ', longest - strlen (commands[i].cmd));
 		puts (_(commands[i].help));
+	}
+
+	dir = g_file_new_for_path (subcommands_dir);
+	enumerator = g_file_enumerate_children (dir,
+	                                        G_FILE_ATTRIBUTE_STANDARD_NAME ","
+	                                        G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK ","
+	                                        G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
+	                                        G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+	                                        NULL, &error);
+	g_object_unref (dir);
+
+	if (enumerator) {
+		while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL) {
+			/* Filter builtin commands */
+			if (g_file_info_get_is_symlink (info) &&
+			    g_strcmp0 (g_file_info_get_symlink_target (info), BINDIR "/tracker") == 0)
+				continue;
+
+			extra_commands = g_list_prepend (extra_commands,
+			                                 g_strdup (g_file_info_get_name (info)));
+			g_object_unref (info);
+		}
+
+		g_object_unref (enumerator);
+	} else {
+		g_warning ("Failed to list extra commands: %s", error->message);
+	}
+
+	if (extra_commands) {
+		extra_commands = g_list_sort (extra_commands, (GCompareFunc) g_strcmp0);
+
+		g_print ("\n");
+		puts (_("Additional / third party commands are:"));
+
+		while (extra_commands) {
+			g_print ("   %s   \n", (gchar *) extra_commands->data);
+			g_free (extra_commands->data);
+			extra_commands = g_list_remove (extra_commands, extra_commands->data);
+		}
 	}
 }
 
@@ -199,10 +226,11 @@ print_usage (void)
 }
 
 int
-main (int original_argc, char **original_argv)
+main (int argc, char *argv[])
 {
-	const char **argv = (const char **) original_argv;
-	int argc = original_argc;
+	gboolean basename_is_bin = FALSE;
+	gchar *command_basename;
+	const gchar *subcommands_dir;
 
 	setlocale (LC_ALL, "");
 
@@ -210,24 +238,51 @@ main (int original_argc, char **original_argv)
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
-	argv++;
-	argc--;
+	command_basename = g_path_get_basename (argv[0]);
+	basename_is_bin = g_strcmp0 (command_basename, COMMANDNAME) == 0;
+	g_free (command_basename);
 
-	if (argc > 0) {
-		/* For cases like --version */
-		if (g_str_has_prefix (argv[0], "--")) {
-			argv[0] += 2;
-		}
-	} else {
-		/* The user didn't specify a command; give them help */
-		print_usage ();
-		exit (1);
+	subcommands_dir = g_getenv ("TRACKER_CLI_SUBCOMMANDS_DIR");
+	if (!subcommands_dir) {
+		subcommands_dir = SUBCOMMANDSDIR;
 	}
 
-	handle_command (argc, argv);
+	if (g_path_is_absolute (argv[0]) &&
+	    g_str_has_prefix (argv[0], subcommands_dir)) {
+		/* This is a subcommand call */
+		handle_command (argc, (const gchar **) argv);
+		exit (EXIT_FAILURE);
+	} else if (basename_is_bin) {
+		/* This is a call to the main tracker executable,
+		 * look up and exec the subcommand if any.
+		 */
+		if (argc > 1) {
+			const gchar *subcommand = argv[1];
+			gchar *path;
 
-	if ((char **) argv != original_argv) {
-		g_strfreev ((char **) argv);
+			if (g_strcmp0 (subcommand, "--version") == 0) {
+				print_version ();
+				exit (EXIT_SUCCESS);
+			} else if (g_strcmp0 (subcommand, "--help") == 0) {
+				subcommand = "help";
+			}
+
+			path = g_build_filename (subcommands_dir, subcommand, NULL);
+
+			if (g_file_test (path, G_FILE_TEST_EXISTS)) {
+				/* Manipulate argv in place, in order to launch subcommand */
+				argv[1] = path;
+				execv (path, &argv[1]);
+			} else {
+				print_usage ();
+			}
+
+			g_free (path);
+		} else {
+			/* The user didn't specify a command; give them help */
+			print_usage ();
+			exit (EXIT_SUCCESS);
+		}
 	}
 
 	return EXIT_FAILURE;

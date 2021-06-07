@@ -24,6 +24,7 @@
 #include <glib-object.h>
 
 #include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-sparql/tracker-version.h>
 
 typedef struct {
 	const gchar *input ;
@@ -48,12 +49,33 @@ static GCancellable *cancellables[N_QUERIES] = { NULL, };
  */
 static const gchar *queries[N_QUERIES] = {
 	/* #1 */
-	"SELECT ?p WHERE { ?p tracker:indexed true }",
+	"SELECT ?p WHERE { ?p nrl:indexed true }",
 	/* #2 */
-	"SELECT ?prefix ?ns WHERE { ?ns a tracker:Namespace ; tracker:prefix ?prefix }",
+	"SELECT ?prefix ?ns WHERE { ?ns a nrl:Namespace ; nrl:prefix ?prefix }",
 	/* #3 */
-	"SELECT ?p WHERE { ?p tracker:fulltextIndexed true }",
+	"SELECT ?p WHERE { ?p nrl:fulltextIndexed true }",
 };
+
+TrackerSparqlConnection *
+create_local_connection (GError **error)
+{
+	TrackerSparqlConnection *conn;
+	GFile *store, *ontology;
+	gchar *path;
+
+	path = g_build_filename (g_get_tmp_dir (), "libtracker-sparql-test-XXXXXX", NULL);
+	g_mkdtemp_full (path, 0700);
+	store = g_file_new_for_path (path);
+	g_free (path);
+
+	ontology = g_file_new_for_path (TEST_ONTOLOGIES_DIR);
+
+	conn = tracker_sparql_connection_new (0, store, ontology, NULL, error);
+	g_object_unref (store);
+	g_object_unref (ontology);
+
+	return conn;
+}
 
 static void
 test_tracker_sparql_escape_string (void)
@@ -97,31 +119,25 @@ test_tracker_sparql_cursor_next_async_cb (GObject      *source,
 
 	query = GPOINTER_TO_INT(user_data);
 
-	g_assert (result != NULL);
+	g_assert_true (result != NULL);
 	success = tracker_sparql_cursor_next_finish (TRACKER_SPARQL_CURSOR (source),
 	                                             result,
 	                                             &error);
 
 	if (finished == 1 && next == next_to_cancel) {
 		g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
-		g_print ("Got Cancellation GError\n");
+		g_print ("# Got Cancellation GError\n");
 	} else {
 		g_assert_no_error (error);
 	}
 
 	cursor = TRACKER_SPARQL_CURSOR (source);
-	g_assert (cursor != NULL);
+	g_assert_true (cursor != NULL);
 	connection = tracker_sparql_cursor_get_connection (cursor);
-
-	g_print ("  %d: %s\n",
-	         query,
-	         tracker_sparql_cursor_get_string (cursor, 0, NULL));
 
 	if (!success) {
 		finished++;
 		next = 0;
-
-		g_print ("Finished %d\n", finished);
 
 		if (finished == 1 || finished == 2) {
 			test_tracker_sparql_cursor_next_async_query (connection,
@@ -137,7 +153,7 @@ test_tracker_sparql_cursor_next_async_cb (GObject      *source,
 		 */
 		if (next == next_to_cancel && finished == 1) {
 			/* Cancel */
-			g_print ("Cancelling cancellable:%p at count:%d\n",
+			g_print ("# Cancelling cancellable:%p at count:%d\n",
 			         cancellables[query],
 			         next);
 			g_cancellable_cancel (cancellables[query]);
@@ -157,18 +173,18 @@ test_tracker_sparql_cursor_next_async_query (TrackerSparqlConnection *connection
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
 
-	g_assert (query < G_N_ELEMENTS (queries));
-	g_print ("ASYNC query %d starting:\n", query);
+	g_assert_true (query < G_N_ELEMENTS (queries));
+	g_print ("# ASYNC query %d starting:\n", query);
 
 	cancellables[query] = g_cancellable_new ();
-	g_assert (cancellables[query] != NULL);
+	g_assert_true (cancellables[query] != NULL);
 
 	cursor = tracker_sparql_connection_query (connection,
 	                                          queries[query],
 	                                          NULL,
 	                                          &error);
 	g_assert_no_error (error);
-	g_assert (cursor != NULL);
+	g_assert_true (cursor != NULL);
 
 	tracker_sparql_cursor_next_async (cursor,
 	                                  cancellables[query],
@@ -190,136 +206,28 @@ test_tracker_sparql_cursor_next_async (void)
 	 * 3. Handle multiple async queries + async cursor_next() calls.
 	 */
 
-	connection = tracker_sparql_connection_get (NULL, &error);
+	connection = create_local_connection (&error);
 	g_assert_no_error (error);
-	g_assert (connection != NULL);
+	g_assert_true (connection != NULL);
 
 	test_tracker_sparql_cursor_next_async_query (connection, 0);
 	g_main_loop_run (main_loop);
 }
 
+/* Test that we return an error if no ontology is passed. */
 static void
-test_tracker_sparql_connection_locking_sync (void)
+test_tracker_sparql_connection_no_ontology (void)
 {
-	TrackerSparqlConnection *c1, *c2, *c3;
-
-	c1 = tracker_sparql_connection_get (NULL, NULL);
-	c2 = tracker_sparql_connection_get (NULL, NULL);
-	c3 = tracker_sparql_connection_get (NULL, NULL);
-	g_assert (c1 == c2);
-	g_assert (c2 == c3);
-
-	g_object_unref (c1);
-	g_object_unref (c2);
-	g_object_unref (c3);
-}
-
-static TrackerSparqlConnection *c1 = NULL;
-static TrackerSparqlConnection *c2 = NULL;
-static TrackerSparqlConnection *c3 = NULL;
-
-static void
-test_tracker_sparql_connection_locking_async_cb (GObject      *source,
-                                                 GAsyncResult *result,
-                                                 gpointer      user_data)
-{
-	TrackerSparqlConnection *connection;
-	TrackerSparqlConnection *connection_waiting;
 	GError *error = NULL;
 
-	g_assert (result != NULL);
-	connection = tracker_sparql_connection_get_finish (result, &error);
-	g_assert_no_error (error);
-	g_assert (connection != NULL);
-
-	if (!c1) {
-		g_print ("GOT connection #1, waiting connection:%p (expecting NULL)\n", user_data);
-		c1 = connection;
-	} else if (!c2) {
-		g_print ("GOT connection #2, waiting connection:%p (expecting NULL)\n", user_data);
-		c2 = connection;
-	}
-
-	connection_waiting = user_data;
-	g_assert (connection_waiting == NULL);
-}
-
-static void
-test_tracker_sparql_connection_locking_async (void)
-{
-	tracker_sparql_connection_get_async (NULL, test_tracker_sparql_connection_locking_async_cb, c2);
-	tracker_sparql_connection_get_async (NULL, test_tracker_sparql_connection_locking_async_cb, c3);
-	c3 = tracker_sparql_connection_get (NULL, NULL);
-	g_assert (c3 != NULL);
-}
-
-static void
-test_tracker_sparql_nb237150_cb (GObject      *source_object,
-                                 GAsyncResult *result,
-                                 gpointer      user_data)
-{
 	TrackerSparqlConnection *connection;
-	GError *error = NULL;
-	static gboolean had_1 = FALSE;
-	static gboolean had_2 = FALSE;
 
-	connection = tracker_sparql_connection_get_finish (result, &error);
-	g_assert_no_error (error);
-	g_assert (connection != NULL);
+	connection = tracker_sparql_connection_new (0, NULL, NULL, NULL, &error);
 
-	/* Not actually worried about this being called */
-	g_print ("Called back for #%d\n", GPOINTER_TO_INT(user_data));
+	g_assert_null (connection);
+	g_assert_error (error, TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_ONTOLOGY_NOT_FOUND);
 
-	if (GPOINTER_TO_INT(user_data) == 1)
-		had_1 = TRUE;
-	if (GPOINTER_TO_INT(user_data) == 2)
-		had_2 = TRUE;
-
-	if (had_1 && had_2) {
-		g_print ("Called back ALL\n");
-		g_main_loop_quit (main_loop);
-	}
-}
-
-static void
-test_tracker_sparql_nb237150_subprocess (void)
-{
-	main_loop = g_main_loop_new (NULL, TRUE);
-
-	g_print ("\n");
-	g_print ("Calling #1 - tracker_sparql_connection_get_async()\n");
-	tracker_sparql_connection_get_async (NULL, test_tracker_sparql_nb237150_cb, GINT_TO_POINTER(1));
-
-	g_print ("Calling #2 - tracker_sparql_connection_get_async()\n");
-	tracker_sparql_connection_get_async (NULL, test_tracker_sparql_nb237150_cb, GINT_TO_POINTER(2));
-
-	g_print ("Calling both finished\n");
-	g_main_loop_run (main_loop);
-}
-
-static void
-test_tracker_sparql_nb237150 (void)
-{
-	/* Test NB#237150 - Second tracker_sparql_connection_get_async
-	 * never returns
-	 */
-	g_test_trap_subprocess ("/libtracker-sparql/tracker-sparql/nb237150/subprocess",
-	                        G_USEC_PER_SEC * 2,
-	                        G_TEST_SUBPROCESS_INHERIT_STDOUT |
-	                        G_TEST_SUBPROCESS_INHERIT_STDERR);
-
-	g_test_trap_assert_passed ();
-
-	/* Check we called the functions in the test */
-	g_test_trap_assert_stdout ("*Calling #1*");
-	g_test_trap_assert_stdout ("*Calling #2*");
-	g_test_trap_assert_stdout ("*Calling both finished*");
-
-	/* Check the callbacks from the functions we called were
-	 * called in the test */
-	g_test_trap_assert_stdout ("*Called back for #1*");
-	g_test_trap_assert_stdout ("*Called back for #2*");
-	g_test_trap_assert_stdout ("*Called back ALL*");
+	g_error_free (error);
 }
 
 static void
@@ -333,17 +241,13 @@ test_tracker_sparql_connection_interleaved (void)
 
 	const gchar* query = "select ?u {?u a rdfs:Resource .}";
 
-	connection = tracker_sparql_connection_get (NULL, &error);
+	connection = create_local_connection (&error);
 	g_assert_no_error (error);
 
 	cursor1 = tracker_sparql_connection_query (connection, query, 0, &error);
 	g_assert_no_error (error);
 
 	/* intentionally not freeing cursor1 here */
-	g_object_unref(connection);
-
-	connection = tracker_sparql_connection_get (NULL, &error);
-	g_assert_no_error (error);
 
 	cursor2 = tracker_sparql_connection_query (connection, query, 0, &error);
 	g_assert_no_error (error);
@@ -354,6 +258,14 @@ test_tracker_sparql_connection_interleaved (void)
 	g_object_unref(cursor1);
 }
 
+static void
+test_tracker_check_version (void)
+{
+	g_assert_true(tracker_check_version(TRACKER_MAJOR_VERSION,
+	                                    TRACKER_MINOR_VERSION,
+	                                    TRACKER_MICRO_VERSION) == NULL);
+}
+
 gint
 main (gint argc, gchar **argv)
 {
@@ -361,30 +273,28 @@ main (gint argc, gchar **argv)
 
 	setlocale (LC_ALL, "");
 
-	g_setenv ("TRACKER_TEST_DOMAIN_ONTOLOGY_RULE", TEST_DOMAIN_ONTOLOGY_RULE, TRUE);
-	g_setenv ("TRACKER_DB_ONTOLOGIES_DIR", TEST_ONTOLOGIES_DIR, TRUE);
-
 	g_test_init (&argc, &argv, NULL);
 
-	/* NOTE: this first test must come BEFORE any others because
-	 * connections are cached by libtracker-sparql.
+	/* g_test_init() enables verbose logging by default, but Tracker is too
+	 * verbose. To make the logs managable, we hide DEBUG and INFO messages
+	 * unless TRACKER_TESTS_VERBOSE is set.
 	 */
-	g_test_add_func ("/libtracker-sparql/tracker-sparql/nb237150",
-	                 test_tracker_sparql_nb237150);
-	g_test_add_func ("/libtracker-sparql/tracker-sparql/nb237150/subprocess",
-	                 test_tracker_sparql_nb237150_subprocess);
+	if (! g_getenv ("TRACKER_TESTS_VERBOSE")) {
+		g_log_set_handler ("Tracker", G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_INFO, g_log_default_handler, NULL);
+	}
+
 	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_escape_string",
 	                 test_tracker_sparql_escape_string);
 	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_escape_uri_vprintf",
 	                 test_tracker_sparql_escape_uri_vprintf);
+	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_connection_no_ontology",
+	                 test_tracker_sparql_connection_no_ontology);
 	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_connection_interleaved",
 	                 test_tracker_sparql_connection_interleaved);
-	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_connection_locking_sync",
-	                 test_tracker_sparql_connection_locking_sync);
-	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_connection_locking_async",
-	                 test_tracker_sparql_connection_locking_async);
 	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_sparql_cursor_next_async",
 	                 test_tracker_sparql_cursor_next_async);
+	g_test_add_func ("/libtracker-sparql/tracker-sparql/tracker_check_version",
+	                 test_tracker_check_version);
 
 	result = g_test_run ();
 

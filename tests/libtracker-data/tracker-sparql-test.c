@@ -38,13 +38,14 @@ struct _TestInfo {
 	const gchar *data;
 	gboolean expect_query_error;
 	gboolean expect_update_error;
-	gchar *data_location;
 };
 
 const TestInfo tests[] = {
 	{ "aggregates/aggregate-1", "aggregates/data-1", FALSE },
 	{ "aggregates/aggregate-distinct-1", "aggregates/data-1", FALSE },
 	{ "aggregates/aggregate-group-1", "aggregates/data-1", FALSE },
+	{ "aggregates/aggregate-group-2", "aggregates/data-1", FALSE },
+	{ "aggregates/aggregate-group-as-1", "aggregates/data-1", FALSE },
 	{ "algebra/two-nested-opt", "algebra/two-nested-opt", FALSE },
 	{ "algebra/two-nested-opt-alt", "algebra/two-nested-opt", FALSE },
 	{ "algebra/opt-filter-3", "algebra/opt-filter-3", FALSE },
@@ -61,12 +62,17 @@ const TestInfo tests[] = {
 	{ "algebra/filter-in-4", "algebra/data-2", FALSE },
 	{ "algebra/filter-in-5", "algebra/data-2", FALSE },
 	{ "algebra/var-scope-join-1", "algebra/var-scope-join-1", FALSE },
+	{ "algebra/modifier-limit-offset-1", "algebra/data-1", FALSE },
+	{ "algebra/modifier-limit-offset-2", "algebra/data-1", FALSE },
+	{ "algebra/modifier-limit-1", "algebra/data-1", FALSE },
+	{ "algebra/modifier-offset-1", "algebra/data-1", FALSE },
 	{ "anon/query", "anon/data", FALSE },
 	{ "anon/query-2", "anon/data", FALSE },
 	{ "anon/query-3", "anon/data", FALSE },
 	{ "anon/query-4", "anon/data", FALSE },
 	{ "anon/query-5", "anon/data", FALSE },
 	{ "ask/ask-1", "ask/data", FALSE },
+	{ "basic/base-1", "basic/data-1", FALSE },
 	{ "basic/base-prefix-3", "basic/data-1", FALSE },
 	{ "basic/compare-cast", "basic/data-1", FALSE },
 	{ "basic/predicate-variable", "basic/data-1", FALSE },
@@ -82,10 +88,27 @@ const TestInfo tests[] = {
 	{ "bnode/query-5", "bnode/data", FALSE },
 	{ "bnode-coreference/query", "bnode-coreference/data", FALSE },
 	{ "bound/bound1", "bound/data", FALSE },
+	{ "unbound/unbound-1", "unbound/data", FALSE },
+	{ "unbound/unbound-2", "unbound/data", FALSE },
+	{ "unbound/unbound-3", "unbound/data", FALSE },
+	{ "unbound/unbound-4", "unbound/data", FALSE },
+	{ "unbound/unbound-5", "unbound/data", FALSE },
+	{ "construct/construct-where", "construct/data", FALSE },
+	{ "construct/construct-pattern", "construct/data", FALSE },
+	{ "construct/construct-with-modifiers", "construct/data", FALSE },
+	{ "datetime/direct-1", "datetime/data-1", FALSE },
 	{ "datetime/delete-1", "datetime/data-3", FALSE },
+	{ "datetime/insert-1", "datetime/data-4", FALSE },
 	{ "datetime/functions-localtime-1", "datetime/data-1", FALSE },
 	{ "datetime/functions-timezone-1", "datetime/data-2", FALSE },
 	{ "datetime/functions-timezone-2", "datetime/data-2", FALSE },
+	{ "datetime/functions-timezone-3", "datetime/data-2", FALSE },
+	{ "datetime/functions-tz-1", "datetime/data-2", FALSE },
+	{ "describe/describe-single", "describe/data", FALSE },
+	{ "describe/describe-non-existent", "describe/data", FALSE },
+	{ "describe/describe-pattern", "describe/data", FALSE },
+	{ "describe/describe-limit", "describe/data", FALSE },
+	{ "describe/describe-multiple", "describe/data", FALSE },
 	{ "expr-ops/query-ge-1", "expr-ops/data", FALSE },
 	{ "expr-ops/query-le-1", "expr-ops/data", FALSE },
 	{ "expr-ops/query-minus-1", "expr-ops/data", FALSE },
@@ -95,8 +118,16 @@ const TestInfo tests[] = {
 	{ "expr-ops/query-unplus-1", "expr-ops/data", FALSE },
 	{ "expr-ops/query-res-1", "expr-ops/data", FALSE },
 	{ "functions/functions-property-1", "functions/data-1", FALSE },
+	{ "functions/functions-property-2", "functions/data-5", FALSE },
 	{ "functions/functions-tracker-1", "functions/data-1", FALSE },
 	{ "functions/functions-tracker-2", "functions/data-2", FALSE },
+	{ "functions/functions-tracker-3", "functions/data-2", FALSE },
+	{ "functions/functions-tracker-4", "functions/data-2", FALSE },
+	{ "functions/functions-tracker-5", "functions/data-2", FALSE },
+	{ "functions/functions-tracker-6", "functions/data-2", FALSE },
+	{ "functions/functions-tracker-7", "functions/data-2", FALSE },
+	{ "functions/functions-tracker-8", "functions/data-2", FALSE },
+	{ "functions/functions-tracker-9", "functions/data-2", FALSE },
 	{ "functions/functions-tracker-loc-1", "functions/data-3", FALSE },
 	{ "functions/functions-xpath-1", "functions/data-1", FALSE },
 	{ "functions/functions-xpath-2", "functions/data-1", FALSE },
@@ -113,11 +144,71 @@ const TestInfo tests[] = {
 	{ "functions/functions-xpath-13", "functions/data-4", FALSE },
 	{ "functions/functions-xpath-14", "functions/data-4", FALSE },
 	{ "functions/functions-coalesce-1", "functions/data-1", FALSE },
+	{ "functions/functions-datatypes-1", "functions/data-1", FALSE },
+	{ "functions/functions-datatypes-2", "functions/data-2", FALSE },
+	{ "functions/functions-datatypes-3", "functions/data-3", FALSE },
+	{ "functions/functions-datatypes-4", "functions/data-4", FALSE },
+	{ "functions/functions-builtin-hash-1", "functions/data-1", FALSE },
+	{ "functions/functions-builtin-ucase-1", "functions/data-1", FALSE },
+	{ "functions/functions-builtin-lcase-1", "functions/data-1", FALSE },
+	{ "functions/functions-builtin-strbefore-1", "functions/data-1", FALSE },
+	{ "functions/functions-builtin-strafter-1", "functions/data-1", FALSE },
+	{ "functions/functions-builtin-ceil-1", "functions/data-1", FALSE },
+	{ "functions/functions-builtin-floor-1", "functions/data-1", FALSE },
+	/* Graph semantics and operations */
 	{ "graph/graph-1", "graph/data-1", FALSE },
 	{ "graph/graph-2", "graph/data-2", FALSE },
 	{ "graph/graph-3", "graph/data-3", FALSE },
 	{ "graph/graph-4", "graph/data-3", FALSE },
 	{ "graph/graph-5", "graph/data-4", FALSE },
+	{ "graph/graph-6", "graph/data-5", FALSE },
+	{ "graph/graph-7", "graph/data-5", FALSE },
+	{ "graph/non-existent-1",  "graph/data-1", FALSE },
+	{ "graph/non-existent-2",  "graph/data-1", FALSE },
+	{ "graph/non-existent-3",  "graph/data-1", FALSE },
+	{ "graph/graph-unbound-1", "graph/data-1", FALSE },
+	{ "graph/graph-unbound-2", "graph/data-1", FALSE },
+	{ "graph/graph-unbound-3", "graph/data-1", FALSE },
+	{ "graph/drop", "graph/data-drop", FALSE },
+	{ "graph/drop-non-existent", "graph/data-drop-non-existent", FALSE, TRUE },
+	{ "graph/drop-default", "graph/data-drop-default", FALSE },
+	{ "graph/drop-named", "graph/data-drop-named", FALSE },
+	{ "graph/drop-all", "graph/data-drop-all", FALSE },
+	{ "graph/drop-silent", "graph/data-drop-silent", FALSE },
+	{ "graph/clear", "graph/data-clear", FALSE },
+	{ "graph/clear-non-existent", "graph/data-clear-non-existent", FALSE, TRUE },
+	{ "graph/clear-default", "graph/data-clear-default", FALSE },
+	{ "graph/clear-named", "graph/data-clear-named", FALSE },
+	{ "graph/clear-all", "graph/data-clear-all", FALSE },
+	{ "graph/copy", "graph/data-copy", FALSE },
+	{ "graph/copy-to-existent", "graph/data-copy-to-existent", FALSE },
+	{ "graph/copy-to-non-existent", "graph/data-copy-to-non-existent", FALSE },
+	{ "graph/copy-from-non-existent", "graph/data-copy-from-non-existent", FALSE },
+	{ "graph/copy-into-self", "graph/data-copy-into-self", FALSE },
+	{ "graph/copy-from-default", "graph/data-copy-from-default", FALSE },
+	{ "graph/copy-to-default", "graph/data-copy-to-default", FALSE },
+	{ "graph/move", "graph/data-move", FALSE },
+	{ "graph/move-to-existent", "graph/data-move-to-existent", FALSE },
+	{ "graph/move-from-non-existent", "graph/data-move-from-non-existent", FALSE },
+	{ "graph/move-into-self", "graph/data-move-into-self", FALSE },
+	{ "graph/move-from-default", "graph/data-move-from-default", FALSE },
+	{ "graph/move-to-default", "graph/data-move-to-default", FALSE },
+	{ "graph/add", "graph/data-add", FALSE },
+	{ "graph/add-to-existent", "graph/data-add-to-existent", FALSE },
+	{ "graph/add-to-non-existent", "graph/data-add-to-non-existent", FALSE },
+	{ "graph/add-from-non-existent", "graph/data-add-from-non-existent", FALSE },
+	{ "graph/add-into-self", "graph/data-add-into-self", FALSE },
+	{ "graph/add-from-default", "graph/data-add-from-default", FALSE },
+	{ "graph/add-to-default", "graph/data-add-to-default", FALSE },
+	{ "langstring/match-with-non-langstring", "langstring/data", FALSE },
+	{ "langstring/match-with-langstring", "langstring/data", FALSE },
+	{ "langstring/match-non-langstring", "langstring/data", FALSE },
+	{ "langstring/langmatches", "langstring/data", FALSE },
+	{ "langstring/strlang", "langstring/data", FALSE },
+	{ "lists/list-in-object", "lists/data-list-in-object", FALSE },
+	{ "lists/list-in-subject", "lists/data-list-in-subject", FALSE },
+	{ "lists/list-in-select", "lists/data-list-in-select", FALSE },
+	{ "lists/list-nested", "lists/data-list-nested", FALSE },
 	{ "optional/q-opt-complex-1", "optional/complex-data-1", FALSE },
 	{ "optional/simple-optional-triple", "optional/simple-optional-triple", FALSE },
 	{ "regex/regex-query-001", "regex/regex-data-01", FALSE },
@@ -131,14 +222,24 @@ const TestInfo tests[] = {
 	{ "sort/query-sort-7", "sort/data-sort-1", FALSE },
 	{ "sort/query-sort-8", "sort/data-sort-5", FALSE },
 	{ "sort/query-sort-9", "sort/data-sort-5", FALSE },
+	{ "sort/query-title-sort-1", "sort/data-title-sort-1", FALSE },
 	{ "subqueries/subqueries-1", "subqueries/data-1", FALSE },
 	{ "subqueries/subqueries-union-1", "subqueries/data-1", FALSE },
 	{ "subqueries/subqueries-union-2", "subqueries/data-1", FALSE },
+	{ "subqueries/subqueries-union-3", "subqueries/data-1", FALSE },
+	{ "subqueries/subqueries-union-4", "subqueries/data-1", FALSE },
+	{ "subqueries/subqueries-minus-1", "subqueries/data-1", FALSE },
+	{ "subqueries/subqueries-minus-2", "subqueries/data-1", FALSE },
+	{ "subqueries/subqueries-minus-3", "subqueries/data-1", FALSE },
+	{ "subqueries/subqueries-minus-4", "subqueries/data-1", FALSE },
+	{ "subqueries/subqueries-minus-5", "subqueries/data-1", FALSE },
 	/* Bracket error after WHERE */
 	{ "error/query-error-1", "error/query-error-1", TRUE, FALSE },
 	/* Unknown property */
 	{ "error/query-error-2", "error/query-error-2", TRUE, FALSE },
 	{ "error/update-error-query-1", "error/update-error-1", FALSE, TRUE },
+	/* Remapping variables in BIND */
+	{ "error/bind-reused-same-pattern", "error/query-error-1", TRUE, FALSE },
 
 	{ "turtle/turtle-query-001", "turtle/turtle-data-001", FALSE },
 	{ "turtle/turtle-query-002", "turtle/turtle-data-002", FALSE },
@@ -153,6 +254,7 @@ const TestInfo tests[] = {
 	{ "bind/bind5", "bind/data", FALSE },
 	{ "bind/bind6", "bind/data", FALSE },
 	{ "bind/bind7", "bind/data", FALSE },
+	{ "bind/bind-reused-different-patterns", "bind/data", FALSE },
 	/* Property paths */
 	{ "property-paths/inverse-path-1", "property-paths/data", FALSE },
 	{ "property-paths/inverse-path-2", "property-paths/data", FALSE },
@@ -168,11 +270,18 @@ const TestInfo tests[] = {
 	{ "property-paths/mixed-inverse-and-sequence-2", "property-paths/data", FALSE },
 	{ "property-paths/mixed-inverse-and-sequence-3", "property-paths/data", FALSE },
 	{ "property-paths/mixed-recursive-and-sequence-1", "property-paths/data", FALSE },
+	{ "property-paths/mixed-recursive-and-sequence-2", "property-paths/data-2", FALSE },
+	{ "property-paths/mixed-recursive-and-sequence-3", "property-paths/data-2", FALSE },
+	{ "property-paths/mixed-recursive-and-sequence-4", "property-paths/data-2", FALSE },
+	{ "property-paths/mixed-recursive-and-sequence-5", "property-paths/data-2", FALSE },
 	{ "property-paths/mixed-recursive-and-alternative-1", "property-paths/data", FALSE },
 	{ "property-paths/mixed-recursive-and-alternative-2", "property-paths/data", FALSE },
 	{ "property-paths/mixed-recursive-and-inverse-1", "property-paths/data", FALSE },
 	{ "property-paths/mixed-recursive-and-inverse-2", "property-paths/data", FALSE },
 	{ "property-paths/mixed-recursive-and-inverse-3", "property-paths/data", FALSE },
+	{ "property-paths/mixed-optional-and-sequence-1", "property-paths/data-2", FALSE },
+	{ "property-paths/mixed-optional-and-sequence-2", "property-paths/data-2", FALSE },
+	{ "property-paths/mixed-graphs", "property-paths/data-3", FALSE },
 	/* Update tests */
 	{ "update/insert-data-query-1", "update/insert-data-1", FALSE, FALSE },
 	{ "update/insert-data-query-2", "update/insert-data-2", FALSE, TRUE },
@@ -188,6 +297,36 @@ const TestInfo tests[] = {
 	{ "update/delete-insert-where-query-4", "update/delete-insert-where-4", FALSE, FALSE },
 	{ "update/delete-insert-where-query-5", "update/delete-insert-where-5", FALSE, FALSE },
 	{ "update/delete-insert-where-query-6", "update/delete-insert-where-6", FALSE, FALSE },
+	{ "update/select-date-with-offset-1", "update/insert-date-with-offset-1", FALSE, FALSE },
+	/* Constraint declarations */
+	{ "constraint/empty-graph-1", "constraint/data", FALSE, FALSE },
+	{ "constraint/empty-graph-2", "constraint/data", FALSE, FALSE },
+	{ "constraint/empty-graph-3", "constraint/data", FALSE, FALSE },
+	{ "constraint/empty-graph-4", "constraint/data", FALSE, FALSE },
+	{ "constraint/nested-1", "constraint/data", FALSE, FALSE },
+	{ "constraint/nested-2", "constraint/data", FALSE, FALSE },
+	{ "constraint/nested-3", "constraint/data", FALSE, FALSE },
+	{ "constraint/nested-4", "constraint/data", FALSE, FALSE },
+	{ "constraint/nested-5", "constraint/data", FALSE, FALSE },
+	{ "constraint/nested-6", "constraint/data", FALSE, FALSE },
+	{ "constraint/coexisting-1", "constraint/data", FALSE, FALSE },
+	{ "constraint/coexisting-2", "constraint/data", FALSE, FALSE },
+	{ "constraint/coexisting-3", "constraint/data", FALSE, FALSE },
+	{ "constraint/coexisting-4", "constraint/data", FALSE, FALSE },
+	/* Inline data */
+	{ "inline/inline-1", "inline/data", FALSE, FALSE },
+	{ "inline/inline-2", "inline/data", FALSE, FALSE },
+	{ "inline/inline-3", "inline/data", FALSE, FALSE },
+	{ "inline/inline-4", "inline/data", FALSE, FALSE },
+	{ "inline/inline-5", "inline/data", FALSE, FALSE },
+	{ "inline/inline-6", "inline/data", FALSE, FALSE },
+	{ "inline/inline-7", "inline/data", FALSE, FALSE },
+	{ "inline/inline-8", "inline/data", FALSE, FALSE },
+	{ "inline/inline-9", "inline/data", FALSE, FALSE },
+	{ "inline/values-1", "inline/data", FALSE, FALSE },
+	{ "inline/values-2", "inline/data", FALSE, FALSE },
+	{ "inline/values-3", "inline/data", FALSE, FALSE },
+	{ "inline/values-4", "inline/data", FALSE, FALSE },
 	{ NULL }
 };
 
@@ -202,7 +341,7 @@ check_result (TrackerDBCursor *cursor,
 	GError *nerror = NULL;
 
 	if (test_info->expect_query_error) {
-		g_assert (error != NULL);
+		g_assert_true (error != NULL);
 	} else {
 		g_assert_no_error (error);
 	}
@@ -219,24 +358,42 @@ check_result (TrackerDBCursor *cursor,
 		gint col;
 
 		while (tracker_db_cursor_iter_next (cursor, NULL, &error)) {
+			GString *row_str = g_string_new (NULL);
+
 			for (col = 0; col < tracker_db_cursor_get_n_columns (cursor); col++) {
 				const gchar *str;
 
 				if (col > 0) {
-					g_string_append (test_results, "\t");
+					g_string_append (row_str, "\t");
 				}
 
 				str = tracker_db_cursor_get_string (cursor, col, NULL);
+
+				/* Hack to avoid misc properties that might tamper with
+				 * test reproduceability in DESCRIBE and other unrestricted
+				 * queries.
+				 */
+				if (g_strcmp0 (str, TRACKER_PREFIX_NRL "modified") == 0 ||
+				    g_strcmp0 (str, TRACKER_PREFIX_NRL "added") == 0) {
+					g_string_free (row_str, TRUE);
+					row_str = NULL;
+					break;
+				}
+
 				if (str != NULL) {
 					/* bound variable */
-					g_string_append_printf (test_results, "\"%s\"", str);
+					g_string_append_printf (row_str, "\"%s\"", str);
 				}
 			}
 
-			g_string_append (test_results, "\n");
+			if (row_str) {
+				g_string_append (test_results, row_str->str);
+				g_string_free (row_str, TRUE);
+				g_string_append (test_results, "\n");
+			}
 		}
 	} else if (test_info->expect_query_error) {
-		g_assert (error != NULL && error->domain == TRACKER_SPARQL_ERROR);
+		g_assert_true (error != NULL && error->domain == TRACKER_SPARQL_ERROR);
 		g_string_free (test_results, TRUE);
 		g_free (results);
 		return;
@@ -282,7 +439,7 @@ test_sparql_query (TestInfo      *test_info,
 	gchar *query, *query_filename;
 	gchar *results_filename;
 	gchar *prefix, *data_prefix, *test_prefix;
-	GFile *file, *test_schemas, *data_location;
+	GFile *file, *test_schemas;
 	TrackerDataManager *manager;
 	TrackerData *data_update;
 
@@ -296,13 +453,9 @@ test_sparql_query (TestInfo      *test_info,
 	test_schemas = g_file_get_parent (file);
 	g_object_unref (file);
 
-	data_location = g_file_new_for_path (test_info->data_location);
-
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
-
-	manager = tracker_data_manager_new (TRACKER_DB_MANAGER_FORCE_REINDEX,
-	                                    data_location, data_location, test_schemas, /* loc, domain and ontology_name */
-	                                    FALSE, FALSE, 100, 100);
+	manager = tracker_data_manager_new (TRACKER_DB_MANAGER_IN_MEMORY,
+	                                    NULL, test_schemas, /* loc, domain and ontology_name */
+	                                    100, 100);
 	g_initable_init (G_INITABLE (manager), NULL, &error);
 	g_assert_no_error (error);
 
@@ -314,7 +467,11 @@ test_sparql_query (TestInfo      *test_info,
 	data_filename = g_strconcat (data_prefix, ".ttl", NULL);
 	if (g_file_test (data_filename, G_FILE_TEST_IS_REGULAR)) {
 		GFile *file = g_file_new_for_path (data_filename);
-		tracker_turtle_reader_load (file, data_update, &error);
+		tracker_data_begin_transaction (data_update, &error);
+		g_assert_no_error (error);
+		tracker_data_load_turtle_file (data_update, file, NULL, &error);
+		g_assert_no_error (error);
+		tracker_data_commit_transaction (data_update, &error);
 		g_assert_no_error (error);
 		g_object_unref (file);
 	} else {
@@ -329,7 +486,7 @@ test_sparql_query (TestInfo      *test_info,
 
 		tracker_data_update_sparql (data_update, data, &error);
 		if (test_info->expect_update_error) {
-			g_assert (error != NULL);
+			g_assert_true (error != NULL);
 			g_clear_error (&error);
 		} else {
 			g_assert_no_error (error);
@@ -377,7 +534,6 @@ test_sparql_query (TestInfo      *test_info,
 	g_free (query);
 	g_free (results_filename);
 	g_object_unref (test_schemas);
-	g_object_unref (data_location);
 
 	tracker_data_manager_shutdown (manager);
 	g_object_unref (manager);
@@ -388,28 +544,14 @@ setup (TestInfo      *info,
        gconstpointer  context)
 {
 	const TestInfo *test = context;
-	gchar *basename;
 
 	*info = *test;
-
-	/* NOTE: g_test_build_filename() doesn't work env vars G_TEST_* are not defined?? */
-	basename = g_strdup_printf ("%d", g_test_rand_int_range (0, G_MAXINT));
-	info->data_location = g_build_path (G_DIR_SEPARATOR_S, tests_data_dir, basename, NULL);
-	g_free (basename);
 }
 
 static void
 teardown (TestInfo      *info,
           gconstpointer  context)
 {
-	gchar *cleanup_command;
-
-	/* clean up */
-	cleanup_command = g_strdup_printf ("rm -Rf %s/", info->data_location);
-	g_spawn_command_line_sync (cleanup_command, NULL, NULL, NULL, NULL);
-	g_free (cleanup_command);
-
-	g_free (info->data_location);
 }
 
 int
@@ -419,7 +561,7 @@ main (int argc, char **argv)
 	gint result;
 	gint i;
 
-	setlocale (LC_COLLATE, "en_US.utf8");
+	setlocale (LC_ALL, "en_US.utf8");
 
 	current_dir = g_get_current_dir ();
 	tests_data_dir = g_build_filename (current_dir, "sparql-test-data-XXXXXX", NULL);

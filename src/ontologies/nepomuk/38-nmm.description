@@ -1,4 +1,4 @@
-@prefix dsc: <http://www.tracker-project.org/temp/dsc#> .
+@prefix dsc: <http://tracker.api.gnome.org/ontology/v3/dsc#> .
 
 <virtual-ontology-uri:38-nmm.ontology> a dsc:Ontology ;
 	dsc:title "Nepomuk MultiMedia (NMM)" ;
@@ -9,8 +9,8 @@
 	dsc:editor "Urho Konttori &lt;urho.konttori@nokia.com&gt;" ;
 	dsc:editor "Ivan Frade &lt;ivan.frade@nokia.com&gt;" ;
 
-	dsc:gitlog "http://git.gnome.org/cgit/tracker/log/src/ontologies/38-nmm.ontology";
+	dsc:gitlog "hhttps://gitlab.gnome.org/GNOME/tracker/-/commits/master/src/ontologies/38-nmm.ontology";
 
 	dsc:localPrefix "nmm" ;
-	dsc:baseUrl "http://www.tracker-project.org/temp/nmm#" ;
+	dsc:baseUrl "http://tracker.api.gnome.org/ontology/v3/nmm#" ;
 	dsc:relativePath "./38-nmm.ontology" .

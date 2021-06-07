@@ -40,6 +40,7 @@ const TestInfo tests[] = {
 	{ "fts3ae", 1 },
 	{ "prefix/fts3prefix", 3 },
 	{ "limits/fts3limits", 4 },
+	{ "input/fts3input", 3 },
 	{ NULL }
 };
 
@@ -74,9 +75,9 @@ test_sparql_query (gconstpointer test_data)
 
 	data_location = g_file_new_for_path (datadir);
 
-	conn = tracker_sparql_connection_local_new (TRACKER_SPARQL_CONNECTION_FLAGS_NONE,
-	                                            data_location, data_location, ontology,
-	                                            NULL, &error);
+	conn = tracker_sparql_connection_new (TRACKER_SPARQL_CONNECTION_FLAGS_NONE,
+	                                      data_location, ontology,
+	                                      NULL, &error);
 	g_assert_no_error (error);
 
 	g_object_unref (ontology);
@@ -88,7 +89,7 @@ test_sparql_query (gconstpointer test_data)
 	g_file_get_contents (update_filename, &update, NULL, &error);
 	g_assert_no_error (error);
 
-	tracker_sparql_connection_update (conn, update, G_PRIORITY_DEFAULT, NULL, &error);
+	tracker_sparql_connection_update (conn, update, NULL, &error);
 	g_assert_no_error (error);
 
 	g_free (update_filename);
@@ -184,13 +185,9 @@ main (int argc, char **argv)
 {
 	gint result;
 	gint i;
-	gchar *current_dir, *path;
+	gchar *path;
 
 	g_test_init (&argc, &argv, NULL);
-
-	current_dir = g_get_current_dir ();
-	g_setenv ("TRACKER_LANGUAGE_STOP_WORDS_DIR", current_dir, TRUE);
-	g_free (current_dir);
 
 	/* add test cases */
 	for (i = 0; tests[i].test_name; i++) {

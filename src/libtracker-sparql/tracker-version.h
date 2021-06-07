@@ -29,10 +29,89 @@ G_BEGIN_DECLS
 #error "only <libtracker-sparql/tracker-sparql.h> must be included directly."
 #endif
 
+#ifndef _TRACKER_EXTERN
+#define _TRACKER_EXTERN __attribute__((visibility("default"))) extern
+#endif
+
+#define _TRACKER_UNAVAILABLE(maj, min) G_UNAVAILABLE(maj, min) _TRACKER_EXTERN
+#define _TRACKER_DEPRECATED G_DEPRECATED _TRACKER_EXTERN
+#define _TRACKER_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _TRACKER_EXTERN
+
+#define TRACKER_VERSION_3_0 G_ENCODE_VERSION (3, 0)
+#define TRACKER_VERSION_3_1 G_ENCODE_VERSION (3, 1)
+#define TRACKER_VERSION_CUR G_ENCODE_VERSION (TRACKER_MAJOR_VERSION, TRACKER_MINOR_VERSION)
+
+#ifndef TRACKER_VERSION_MIN_REQUIRED
+#define TRACKER_VERSION_MIN_REQUIRED TRACKER_VERSION_CUR
+#endif
+
+#ifndef TRACKER_VERSION_MAX_ALLOWED
+#define TRACKER_VERSION_MAX_ALLOWED TRACKER_VERSION_CUR
+#endif
+
+#if TRACKER_VERSION_MIN_REQUIRED > TRACKER_VERSION_MAX_ALLOWED
+#error "TRACKER_VERSION_MAX_ALLOWED must be >= TRACKER_VERSION_MIN_REQUIRED"
+#endif
+
+#define TRACKER_AVAILABLE_IN_ALL _TRACKER_EXTERN
+
+#if TRACKER_VERSION_MIN_REQUIRED >= TRACKER_VERSION_3_1
+#define TRACKER_DEPRECATED_IN_3_1 _TRACKER_DEPRECATED
+#define TRACKER_DEPRECATED_IN_3_1_FOR(f) _TRACKER_DEPRECATED_FOR(f)
+#else
+#define TRACKER_DEPRECATED_IN_3_1 _TRACKER_EXTERN
+#define TRACKER_DEPRECATED_IN_3_1_FOR(f) _TRACKER_EXTERN
+#endif
+
+#if TRACKER_VERSION_MAX_ALLOWED < TRACKER_VERSION_3_1
+#define TRACKER_AVAILABLE_IN_3_1 _TRACKER_UNAVAILABLE(3, 1)
+#else
+#define TRACKER_AVAILABLE_IN_3_1 _TRACKER_EXTERN
+#endif
+
+/**
+ * tracker_major_version:
+ *
+ * The major version of the Tracker library.
+ *
+ * An integer variable exported from the library linked against at application run time.
+ */
 GLIB_VAR const guint tracker_major_version;
+
+/**
+ * tracker_minor_version:
+ *
+ * The minor version of the Tracker library.
+ *
+ * An integer variable exported from the library linked against at application run time.
+ */
 GLIB_VAR const guint tracker_minor_version;
+
+/**
+ * tracker_micro_version:
+ *
+ * The micro version of the Tracker library.
+ *
+ * An integer variable exported from the library linked against at application run time.
+ */
 GLIB_VAR const guint tracker_micro_version;
+
+/**
+ * tracker_interface_age:
+ *
+ * The interface age of the Tracker library. Defines how far back the API has last been extended.
+ *
+ * An integer variable exported from the library linked against at application run time.
+ */
 GLIB_VAR const guint tracker_interface_age;
+
+/**
+ * tracker_binary_age:
+ *
+ * The binary age of the Tracker library. Defines how far back backwards compatibility reaches.
+ *
+ * An integer variable exported from the library linked against at application run time.
+ */
 GLIB_VAR const guint tracker_binary_age;
 
 /**
@@ -56,8 +135,6 @@ GLIB_VAR const guint tracker_binary_age;
  * }
  * </programlisting>
  * </example>
- *
- * Since: 0.10
  **/
 #define TRACKER_CHECK_VERSION(major,minor,micro)    \
     (TRACKER_MAJOR_VERSION > (major) || \
@@ -65,6 +142,7 @@ GLIB_VAR const guint tracker_binary_age;
      (TRACKER_MAJOR_VERSION == (major) && TRACKER_MINOR_VERSION == (minor) && \
       TRACKER_MICRO_VERSION >= (micro)))
 
+TRACKER_AVAILABLE_IN_ALL
 const gchar * tracker_check_version (guint required_major,
                                      guint required_minor,
                                      guint required_micro);

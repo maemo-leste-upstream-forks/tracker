@@ -1,53 +1,59 @@
-test_runner = configure_file(
-    input: 'test-runner.sh.in',
-    output: 'test-runner.sh',
-    configuration: conf)
-test_runner = find_program(test_runner)
+python = find_program('python3')
+
+testconf = configuration_data()
+
+config_json_full_path = join_paths(meson.current_build_dir(), 'configuration.json')
+
+testconf.set('TEST_CLI_DIR', tracker_uninstalled_cli_dir)
+testconf.set('TEST_ONTOLOGIES_DIR', tracker_uninstalled_nepomuk_ontologies_dir)
+testconf.set('TEST_DBUS_DAEMON_CONFIG_FILE', build_root / 'tests' / 'test-bus.conf')
+testconf.set('TEST_PORTAL_FLATPAK_INFO', source_root / 'tests' / 'flatpak-info')
+testconf.set('TRACKER_VERSION', meson.project_version())
+testconf.set('TEST_TAP_ENABLED', get_option('tests_tap_protocol'))
 
 config_json = configure_file(
   input: 'configuration.json.in',
   output: 'configuration.json',
-  configuration: conf
+  configuration: testconf
 )
 
 functional_tests = [
-  '01-insertion',
-  '02-sparql-bugs',
-  '03-fts-functions',
-  '04-group-concat',
-  '05-coalesce',
-  '06-distance',
-  '07-graph',
-  '08-unique-insertions',
-  '09-concurrent-query',
-  '14-signals',
-  '15-statistics',
-  '16-collation',
-  '17-ontology-changes',
+  'insertion',
+  'query',
+  'fts-functions',
+  'sparql-bugs',
+  'group-concat',
+  'coalesce',
+  'distance',
+  'graph',
+  'concurrent-query',
+  'notifier',
+  'collation',
+  'ontology-changes',
+  'cli',
+  'portal',
 ]
 
-config_json_full_path = join_paths(meson.current_build_dir(), 'configuration.json')
-dconf_profile_full_path = join_paths(meson.current_source_dir(), 'trackertest')
-
 test_env = environment()
-test_env.set('DCONF_PROFILE', dconf_profile_full_path)
-test_env.set('GSETTINGS_SCHEMA_DIR', tracker_uninstalled_gsettings_schema_dir)
-
-tracker_uninstalled_testutils_dir = join_paths(meson.current_source_dir(), '..', '..', 'utils')
+test_env.prepend('GI_TYPELIB_PATH', tracker_sparql_uninstalled_dir)
+test_env.prepend('LD_LIBRARY_PATH', tracker_sparql_uninstalled_dir)
 test_env.prepend('PYTHONPATH', tracker_uninstalled_testutils_dir)
-
-test_env.set('TRACKER_DB_ONTOLOGIES_DIR', tracker_uninstalled_nepomuk_ontologies_dir)
-test_env.set('TRACKER_FUNCTIONAL_TEST_BUILD_DIR', build_root)
 test_env.set('TRACKER_FUNCTIONAL_TEST_CONFIG', config_json_full_path)
-test_env.set('TRACKER_LANGUAGE_STOP_WORDS_DIR', tracker_uninstalled_stop_words_dir)
-test_env.set('TRACKER_TEST_DOMAIN_ONTOLOGY_RULE', tracker_uninstalled_domain_rule)
 
-foreach t: functional_tests
-  test('functional-' + t, test_runner,
-    args: './' + t + '.py',
+if get_option('tests_tap_protocol')
+  protocol = 'tap'
+else
+  protocol = 'exitcode'
+endif
+
+foreach test_name: functional_tests
+  file = meson.current_source_dir() / '@0@.py'.format(test_name)
+  test(test_name, python,
+    args: [file],
     env: test_env,
-    workdir: meson.current_source_dir(),
-    timeout: 120)
+    protocol: protocol,
+    suite: ['functional'],
+    timeout: 60)
 endforeach
 
 subdir('ipc')

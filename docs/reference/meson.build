@@ -11,8 +11,14 @@ fixxref_args = [
     '--extra-dir=@0@'.format(join_paths(docpath, 'libtracker-sparql')),
 ]
 
-subdir('libtracker-control')
-subdir('libtracker-miner')
+icon_images = files(
+  'images/icon-deprecated.svg',
+  'images/icon-fulltextindexed.svg',
+  'images/icon-multivalue.svg',
+  'images/icon-notify.svg',
+  'images/icon-superproperty.svg',
+)
+
 subdir('libtracker-sparql')
 
 subdir('ontology')

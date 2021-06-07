@@ -30,62 +30,50 @@ G_BEGIN_DECLS
 #error "only <libtracker-data/tracker-data.h> must be included directly."
 #endif
 
+#define TRACKER_TYPE_DB_MANAGER (tracker_db_manager_get_type ())
+G_DECLARE_FINAL_TYPE (TrackerDBManager, tracker_db_manager,
+                      TRACKER, DB_MANAGER, GObject)
+
 #define TRACKER_DB_CACHE_SIZE_DEFAULT 250
 #define TRACKER_DB_CACHE_SIZE_UPDATE 2000
 
 typedef enum {
-	TRACKER_DB_MANAGER_FORCE_REINDEX         = 1 << 1,
-	TRACKER_DB_MANAGER_REMOVE_ALL            = 1 << 2,
-	TRACKER_DB_MANAGER_READONLY              = 1 << 3,
-	TRACKER_DB_MANAGER_DO_NOT_CHECK_ONTOLOGY = 1 << 4,
-	TRACKER_DB_MANAGER_ENABLE_MUTEXES        = 1 << 5,
+	TRACKER_DB_MANAGER_FLAGS_NONE            = 0,
+	TRACKER_DB_MANAGER_READONLY              = 1 << 1,
+	TRACKER_DB_MANAGER_DO_NOT_CHECK_ONTOLOGY = 1 << 2,
+	TRACKER_DB_MANAGER_ENABLE_MUTEXES        = 1 << 3,
+	TRACKER_DB_MANAGER_FTS_ENABLE_STEMMER    = 1 << 4,
+	TRACKER_DB_MANAGER_FTS_ENABLE_UNACCENT   = 1 << 5,
+	TRACKER_DB_MANAGER_FTS_ENABLE_STOP_WORDS = 1 << 6,
+	TRACKER_DB_MANAGER_FTS_IGNORE_NUMBERS    = 1 << 7,
+	TRACKER_DB_MANAGER_IN_MEMORY             = 1 << 8,
+	TRACKER_DB_MANAGER_SKIP_VERSION_CHECK    = 1 << 9,
 } TrackerDBManagerFlags;
 
 typedef struct _TrackerDBManager TrackerDBManager;
 
+gboolean            tracker_db_manager_db_exists              (GFile *cache_location);
+
 TrackerDBManager   *tracker_db_manager_new                    (TrackerDBManagerFlags   flags,
                                                                GFile                  *cache_location,
-                                                               GFile                  *data_location,
                                                                gboolean               *first_time,
-                                                               gboolean                restoring_backup,
                                                                gboolean                shared_cache,
                                                                guint                   select_cache_size,
                                                                guint                   update_cache_size,
                                                                TrackerBusyCallback     busy_callback,
                                                                gpointer                busy_user_data,
-                                                               const gchar            *busy_operation,
                                                                GObject                *iface_data,
                                                                gpointer                vtab_data,
                                                                GError                **error);
-void                tracker_db_manager_free                   (TrackerDBManager      *db_manager);
-void                tracker_db_manager_remove_all             (TrackerDBManager      *db_manager);
-void                tracker_db_manager_optimize               (TrackerDBManager      *db_manager);
-const gchar *       tracker_db_manager_get_file               (TrackerDBManager      *db_manager);
 TrackerDBInterface *tracker_db_manager_get_db_interface       (TrackerDBManager      *db_manager);
 TrackerDBInterface *tracker_db_manager_get_writable_db_interface (TrackerDBManager   *db_manager);
 
-void                tracker_db_manager_ensure_locations       (TrackerDBManager      *db_manager,
-							       GFile                 *cache_location,
-                                                               GFile                 *data_location);
 gboolean            tracker_db_manager_has_enough_space       (TrackerDBManager      *db_manager);
-void                tracker_db_manager_create_version_file    (TrackerDBManager      *db_manager);
-void                tracker_db_manager_remove_version_file    (TrackerDBManager      *db_manager);
 
 TrackerDBManagerFlags
                     tracker_db_manager_get_flags              (TrackerDBManager      *db_manager,
 							       guint                 *select_cache_size,
                                                                guint                 *update_cache_size);
-
-gboolean            tracker_db_manager_get_first_index_done   (TrackerDBManager      *db_manager);
-guint64             tracker_db_manager_get_last_crawl_done    (TrackerDBManager      *db_manager);
-gboolean            tracker_db_manager_get_need_mtime_check   (TrackerDBManager      *db_manager);
-
-void                tracker_db_manager_set_first_index_done   (TrackerDBManager      *db_manager,
-							       gboolean               done);
-void                tracker_db_manager_set_last_crawl_done    (TrackerDBManager      *db_manager,
-							       gboolean               done);
-void                tracker_db_manager_set_need_mtime_check   (TrackerDBManager      *db_manager,
-							       gboolean               needed);
 
 gboolean            tracker_db_manager_locale_changed         (TrackerDBManager      *db_manager,
                                                                GError               **error);
@@ -95,6 +83,17 @@ gboolean            tracker_db_manager_get_tokenizer_changed  (TrackerDBManager 
 void                tracker_db_manager_tokenizer_update       (TrackerDBManager      *db_manager);
 
 void                tracker_db_manager_check_perform_vacuum   (TrackerDBManager      *db_manager);
+
+gboolean            tracker_db_manager_attach_database        (TrackerDBManager      *db_manager,
+                                                               TrackerDBInterface    *iface,
+                                                               const gchar           *name,
+                                                               gboolean               create,
+                                                               GError               **error);
+gboolean            tracker_db_manager_detach_database        (TrackerDBManager      *db_manager,
+                                                               TrackerDBInterface    *iface,
+                                                               const gchar           *name,
+                                                               GError               **error);
+void                tracker_db_manager_release_memory         (TrackerDBManager      *db_manager);
 
 G_END_DECLS
 

@@ -16,6 +16,17 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
+/**
+ * SECTION: tracker-version
+ * @short_description: variables and functions to check Tracker version
+ * @title: Version Information
+ * @stability: Stable
+ * @include: tracker-sparql.h
+ *
+ * Tracker provides version information, primarily useful in configure checks
+ * for builds that have a configure script. Applications will not typically use
+ * the features described here.
+ */
 
 #include "config.h"
 
@@ -55,8 +66,6 @@ const guint tracker_binary_age = TRACKER_BINARY_AGE;
  *   given version, or a string describing the version mismatch.
  *   The returned string is owned by Tracker and must not be modified
  *   or freed.
- *
- * Since: 0.10
  **/
 const gchar *
 tracker_check_version (guint required_major,

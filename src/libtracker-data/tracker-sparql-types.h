@@ -73,10 +73,12 @@ typedef struct _TrackerSolution TrackerSolution;
 typedef struct _TrackerPathElement TrackerPathElement;
 
 struct _TrackerDataTable {
-	gchar *subject; /* Subject this table is pulled from */
+	gchar *graph; /* Graph for this table, if specified */
 	gchar *sql_db_tablename; /* as in db schema */
 	gchar *sql_query_tablename; /* temp. name, generated */
 	gboolean predicate_variable;
+	gboolean predicate_path;
+	gboolean fts;
 };
 
 struct _TrackerBinding {
@@ -94,7 +96,8 @@ struct _TrackerBindingClass {
 /* Represents a mapping of a SPARQL literal to a SQL table and column */
 struct _TrackerLiteralBinding {
 	TrackerBinding parent_instance;
-	gchar *literal;
+	GBytes *bytes;
+	const gchar *literal;
 };
 
 struct _TrackerLiteralBindingClass {
@@ -132,7 +135,7 @@ struct _TrackerVariable {
 struct _TrackerToken {
 	guint type;
 	union {
-		gchar *literal;
+		GBytes *literal;
 		gchar *parameter;
 		TrackerVariable *var;
 		TrackerPathElement *path;
@@ -154,11 +157,14 @@ typedef enum {
 	TRACKER_PATH_OPERATOR_ZEROORONE,   /* ? */
 	TRACKER_PATH_OPERATOR_ONEORMORE,   /* + */
 	TRACKER_PATH_OPERATOR_ZEROORMORE,  /* * */
+	TRACKER_PATH_OPERATOR_NEGATED,     /* ! */
+	TRACKER_PATH_OPERATOR_INTERSECTION, /* Used for negated paths */
 } TrackerPathOperator;
 
 struct _TrackerPathElement {
 	TrackerPathOperator op;
 	TrackerPropertyType type;
+	gchar *graph;
 	gchar *name;
 
 	union {
@@ -236,6 +242,8 @@ struct _TrackerTripleContextClass {
 /* Data table */
 void tracker_data_table_set_predicate_variable (TrackerDataTable *table,
                                                 gboolean          is_variable);
+void tracker_data_table_set_predicate_path     (TrackerDataTable *table,
+                                                gboolean          is_path);
 
 /* Binding */
 GType              tracker_binding_get_type (void) G_GNUC_CONST;
@@ -256,7 +264,7 @@ gchar * tracker_binding_get_extra_sql_expression (TrackerBinding *binding,
 
 /* Literal binding */
 GType            tracker_literal_binding_get_type (void) G_GNUC_CONST;
-TrackerBinding * tracker_literal_binding_new (const gchar      *literal,
+TrackerBinding * tracker_literal_binding_new (GBytes           *bytes,
 					      TrackerDataTable *table);
 
 /* Parameter binding */
@@ -288,7 +296,8 @@ TrackerVariableBinding * tracker_variable_get_sample_binding (TrackerVariable *v
 
 /* Token */
 void tracker_token_literal_init  (TrackerToken    *token,
-				  const gchar     *literal);
+                                  const gchar     *literal,
+                                  gssize           len);
 void tracker_token_variable_init (TrackerToken    *token,
                                   TrackerVariable *variable);
 void tracker_token_parameter_init (TrackerToken   *token,
@@ -298,7 +307,7 @@ void tracker_token_path_init      (TrackerToken       *token,
 void tracker_token_unset (TrackerToken *token);
 
 gboolean           tracker_token_is_empty     (TrackerToken *token);
-const gchar      * tracker_token_get_literal  (TrackerToken *token);
+GBytes           * tracker_token_get_literal  (TrackerToken *token);
 TrackerVariable  * tracker_token_get_variable (TrackerToken *token);
 const gchar      * tracker_token_get_idstring (TrackerToken *token);
 const gchar      * tracker_token_get_parameter (TrackerToken *token);
@@ -317,8 +326,11 @@ void              tracker_solution_add_value       (TrackerSolution *solution,
 GHashTable      * tracker_solution_get_bindings    (TrackerSolution *solution);
 
 /* Property path element */
-TrackerPathElement * tracker_path_element_property_new (TrackerProperty *prop);
+TrackerPathElement * tracker_path_element_property_new (TrackerPathOperator  op,
+                                                        const gchar         *graph,
+                                                        TrackerProperty     *prop);
 TrackerPathElement * tracker_path_element_operator_new (TrackerPathOperator  op,
+                                                        const gchar         *graph,
                                                         TrackerPathElement  *child1,
                                                         TrackerPathElement  *child2);
 
@@ -334,6 +346,8 @@ void tracker_context_add_variable_ref    (TrackerContext  *context,
 					  TrackerVariable *variable);
 gboolean tracker_context_lookup_variable_ref (TrackerContext  *context,
                                               TrackerVariable *variable);
+gboolean tracker_context_lookup_variable_by_name (TrackerContext  *context,
+                                                  const gchar     *name);
 
 /* Select context */
 GType            tracker_select_context_get_type (void) G_GNUC_CONST;
@@ -352,6 +366,7 @@ void tracker_select_context_add_path_element (TrackerSelectContext *context,
                                               TrackerPathElement   *path_elem);
 TrackerPathElement *
      tracker_select_context_lookup_path_element_for_property (TrackerSelectContext *context,
+                                                              const gchar          *graph,
                                                               TrackerProperty      *property);
 
 /* Triple context */
@@ -359,10 +374,10 @@ GType            tracker_triple_context_get_type (void) G_GNUC_CONST;
 TrackerContext * tracker_triple_context_new (void);
 
 TrackerDataTable * tracker_triple_context_lookup_table (TrackerTripleContext *context,
-                                                        const gchar          *subject,
+                                                        const gchar          *graph,
                                                         const gchar          *table);
 TrackerDataTable * tracker_triple_context_add_table    (TrackerTripleContext *context,
-                                                        const gchar          *subject,
+                                                        const gchar          *graph,
                                                         const gchar          *table);
 void tracker_triple_context_add_literal_binding  (TrackerTripleContext   *context,
 						  TrackerLiteralBinding  *binding);

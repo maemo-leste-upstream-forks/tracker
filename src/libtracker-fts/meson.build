@@ -8,12 +8,11 @@ libtracker_fts_dependencies = [sqlite]
 
 libtracker_fts = static_library('tracker-fts',
     'tracker-fts.c',
-    'tracker-fts-config.c',
     'tracker-fts-tokenizer.c',
     libtracker_fts_fts5,
-    tracker_sparql_generated_header,
     dependencies: [tracker_common_dep],
-    c_args: tracker_c_args
+    c_args: tracker_c_args,
+    gnu_symbol_visibility: 'hidden'
 )
 
 tracker_fts_dep = declare_dependency(
