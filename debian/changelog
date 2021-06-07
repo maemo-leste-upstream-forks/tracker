@@ -1,8 +1,38 @@
 tracker (3.1.1-1) UNRELEASED; urgency=medium
 
-  * New upstream release
+  * New upstream release (Closes: #964376)
+  * debian/patches/*: Refresh for tracker 3
+    - drop-assert.patch: Drop, let's try without now
+    - libtracker-miners-common-Make-g_error-a-soft-error.patch: This code is
+      gone.
+    - Revert-build-Include-libdir-in-rpath.patch: Refresh
+  * rules:
+    - Update configure flags, enable bash-completion
+    - Drop unneded dh_install override
+    - Drop dbg → dbgsym transitional code. The transition is well in the past
+      now.
+  * debian/various: Update to 3.0.
+    - Update all 2.0 references to 3.0
+    - Drop libtracker-miner, libtracker-control which are dropped upstream
+    - Stop installing things which no longer exist, and install things which
+      are new
+  * libtracker-sparql-3.0-0.symbols: Update with added/dropped symbols in
+    Tracker 3.
+  * Fix up autopkgtest for new config options and drop ADTTMP.
+  * control: Set Rules-Requires-Root to no - it's not needed.
+  * control, rules: Bump to compat 13.
+    - Use dh-sequence-{gir,gnome} instead of --with=
+    - No need to override dh_missing to add --fail-missing any more; this is
+      the default now
+    - No need to set HOME and XDG_RUNTIME_DIR for the dh_auto_test override,
+      and no need to explicitly check for `nocheck` any more.
+  * control update BDs:
+    - add asciidoc; required for the build
+    - add python3-tap; needed for the tests
+    - Drop Provides from gir1.2-tracker-3.0 for .gir files that are
+      dropped
 
- -- Iain Lane <laney@debian.org>  Mon, 07 Jun 2021 11:49:17 +0100
+ -- Iain Lane <laney@debian.org>  Mon, 07 Jun 2021 17:46:47 +0100
 
 tracker (2.3.6-2) unstable; urgency=medium
 
