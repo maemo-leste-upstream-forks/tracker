@@ -1,32 +1,13 @@
-usr/bin/tracker
+usr/bin/tracker3
 
-usr/lib/systemd/user/tracker-store.service
+usr/share/dbus-1/services/org.freedesktop.portal.Tracker.service
 
-usr/share/dbus-1/services/org.freedesktop.Tracker1.service
+usr/lib/systemd/user/tracker-xdg-portal-3.service
 
-usr/share/tracker/tracker-miner.xml
-usr/share/tracker/tracker-statistics.xml
-usr/share/tracker/tracker-backup.xml
-usr/share/tracker/tracker-resources.xml
-usr/share/tracker/tracker-status.xml
+usr/libexec/tracker3
+usr/libexec/tracker-xdg-portal-3
 
-usr/libexec/tracker-store
-
-usr/share/man/man1/tracker-export.1*
-usr/share/man/man1/tracker-store.1*
-usr/share/man/man1/tracker-info.1*
-usr/share/man/man1/tracker-search.1*
-usr/share/man/man1/tracker-sparql.1*
-usr/share/man/man1/tracker-tag.1*
-usr/share/man/man1/tracker-reset.1*
-usr/share/man/man1/tracker-sql.1*
-usr/share/man/man1/tracker-daemon.1*
-usr/share/man/man1/tracker-status.1*
-usr/share/man/man1/tracker-index.1*
+usr/share/man/man1
 
 usr/share/bash-completion/
-usr/share/glib-2.0/schemas/
 usr/share/locale/
-usr/share/tracker/ontologies/
-usr/share/tracker/stop-words/
-usr/share/tracker/domain-ontologies/

@@ -6,7 +6,7 @@ Source: tracker
 Section: utils
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
-Uploaders: Iain Lane <laney@debian.org>, Jeremy Bicha <jbicha@debian.org>, Laurent Bigonville <bigon@debian.org>
+Uploaders: Iain Lane <laney@debian.org>, Jeremy Bicha <jbicha@debian.org>, Laurent Bigonville <bigon@debian.org>, Sebastien Bacher <seb128@debian.org>
 Build-Depends: debhelper-compat (= 12),
                meson (>= 0.47),
                pkg-config,
@@ -44,12 +44,13 @@ Depends: ${shlibs:Depends},
          libglib2.0-bin,
          default-dbus-session-bus | dbus-session-bus
 Recommends: tracker-miner-fs
+Breaks: tracker-miner-fs (<< 3.1.1)
 Description: metadata database, indexer and search tool
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-sparql-2.0-0
+Package: libtracker-sparql-3.0-0
 Architecture: any
 Multi-Arch: same
 Section: libs
@@ -64,15 +65,20 @@ Description: metadata database, indexer and search tool - library
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-sparql-2.0-dev
+Package: libtracker-sparql-3.0-dev
 Architecture: any
 Multi-Arch: same
 Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         libtracker-sparql-2.0-0 (= ${binary:Version}),
-         libglib2.0-dev,
-         gir1.2-tracker-2.0 (= ${binary:Version})
+         libtracker-sparql-3.0-0 (= ${binary:Version}),
+         libglib2.0-dev (>= 2.52.0),
+         libicu-dev (>= 4.8.1.1),
+         libjson-glib-dev (>= 1.0),
+         libxml2-dev (>= 2.6),
+         libsoup2.4-dev (>= 2.40),
+         libsqlite3-dev (>= 3.15.0),
+         gir1.2-tracker-3.0 (= ${binary:Version})
 Suggests: libtracker-sparql-doc
 Description: metadata database, indexer and search tool - development files
  This package contains the static libraries and header files needed to link
@@ -85,141 +91,52 @@ Description: metadata database, indexer and search tool - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-sparql-doc
+Package: libtracker-doc
 Architecture: all
 Section: doc
 Depends: ${misc:Depends}
 Suggests: devhelp
-Breaks: libtracker-sparql-0.10-dev
-Replaces: libtracker-sparql-0.10-dev
+Breaks: libtracker-sparql-doc
+Replaces: libtracker-sparql-doc
+Provides: libtracker-sparql-doc (= ${binary:Version})
 Description: metadata database, indexer and search tool - API documentation
- This package contains the gtk-doc API documentation for libtracker-sparql.
- .
- libtracker-sparql provides a library to perform SPARQL queries and updates in
- the Tracker store.
+ This package contains the gtk-doc API documentation for libtracker-sparql-3
+ and ontology-3, as well as some example programs.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-miner-2.0-0
-Architecture: any
-Multi-Arch: same
-Section: libs
-Pre-Depends: ${misc:Pre-Depends},
-Depends: ${shlibs:Depends},
-         ${misc:Depends}
-Description: tracker data miner library
- This package contains the library that is used by applications that provide
- data miners for tracker.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: libtracker-miner-2.0-dev
-Architecture: any
-Multi-Arch: same
-Section: libdevel
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
-         libtracker-miner-2.0-0 (= ${binary:Version}),
-         libtracker-sparql-2.0-dev,
-         libglib2.0-dev,
-         gir1.2-tracker-2.0 (= ${binary:Version})
-Suggests: libtracker-miner-doc
-Description: tracker data miner library - development files
- This package contains the static libraries and header files needed to link
- applications with libtracker-miner.
- .
- libtracker-miner provides a library to develop tracker data miners.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: libtracker-miner-doc
-Architecture: all
-Section: doc
-Depends: ${misc:Depends}
-Suggests: devhelp
-Breaks: libtracker-miner-0.8-dev, libtracker-miner-0.10-dev
-Replaces: libtracker-miner-0.8-dev, libtracker-miner-0.10-dev
-Description: tracker data miner library - API documentation
- This package contains the gtk-doc API documentation for libtracker-miner.
- .
- libtracker-miner provides a library to develop tracker data miners.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: libtracker-control-2.0-0
-Architecture: any
-Multi-Arch: same
-Section: libs
-Pre-Depends: ${misc:Pre-Depends},
-Depends: ${shlibs:Depends},
-         ${misc:Depends}
-Description: library to control/monitor tracker miners
- This package contains a library for managing miners, including polling
- status and progress, pausing, resuming and more.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: libtracker-control-2.0-dev
-Architecture: any
-Multi-Arch: same
-Section: libdevel
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
-         libtracker-control-2.0-0 (= ${binary:Version}),
-         libglib2.0-dev,
-         gir1.2-tracker-2.0 (= ${binary:Version})
-Suggests: libtracker-control-doc
-Description: library to control/monitor tracker miners - development files
- This package contains the static libraries and header files needed to link
- applications with libtracker-control.
- .
- libtracker-control provides a library for managing miners, including polling
- status and progress, pausing, resuming and more.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: libtracker-control-doc
-Architecture: all
-Section: doc
-Depends: ${misc:Depends}
-Suggests: devhelp
-Description: library to control/monitor tracker miners - API documentation
- This package contains the gtk-doc API documentation for libtracker-control.
- .
- libtracker-control provides a library for managing miners, including polling
- status and progress, pausing, resuming and more.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: gir1.2-tracker-2.0
+Package: gir1.2-tracker-3.0
 Section: introspection
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          ${gir:Depends}
-Provides: gir1.2-trackercontrol-2.0 (= ${binary:Version}),
-          gir1.2-trackerminer-2.0 (= ${binary:Version})
 Description: GObject introspection data for Tracker
  This package contains introspection data for libtracker-control,
  libtracker-miner and libtracker-sparql.
  .
  It can be used by packages using the GIRepository format to generate
  dynamic bindings
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: tracker-test-utils
+Section: libs
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         python3-gi,
+         gir1.2-tracker-3.0 (= ${binary:Version}),
+         gir1.2-glib-2.0
+Description: test utilities for tracker
+ This package contains shared test utilities provided by tracker, for use by
+ tracker-miners.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
