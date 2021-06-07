@@ -23,17 +23,9 @@ override_dh_auto_configure:
 		-Dsystemd_user_services=true \
 		-Dsystemd_user_services_dir=/usr/lib/systemd/user
 
-override_dh_missing:
-	dh_missing --fail-missing
-
 # Enforce tight shlibs dependencies
 override_dh_makeshlibs:
 	dh_makeshlibs -V -X/usr/lib/$(DEB_HOST_MULTIARCH)/tracker-3.0/ -- -c4
 
 override_dh_auto_test:
-ifeq ($(filter nocheck,$(DEB_BUILD_OPTIONS)),)
-	mkdir -p -m0755 $(BUILDDIR)/HOME
-	mkdir -p -m0700 $(BUILDDIR)/XRD
-	env HOME=$(BUILDDIR)/HOME XDG_RUNTIME_DIR=$(BUILDDIR)/XRD \
-		dbus-run-session -- dh_auto_test --no-parallel || true
-endif
+	dbus-run-session -- dh_auto_test --no-parallel || true
