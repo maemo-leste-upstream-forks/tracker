@@ -1,19 +1,18 @@
 #!/bin/bash
 
-mkdir ${ADTTMP}/locale
-localedef -c -i en_US -f UTF-8 ${ADTTMP}/locale/en_US.utf8
+mkdir "${AUTOPKGTEST_TMP}/locale"
+localedef -c -i en_US -f UTF-8 "${AUTOPKGTEST_TMP}/locale/en_US.utf8"
 
 dh_auto_configure -- \
     -Dunicode_support=icu \
     -Dfts=true \
     -Dstemmer=enabled \
+    -Ddocs=true \
     -Dfunctional_tests=true \
-    -Dnetwork_manager=disabled \
-    -Dsystemd_user_services=/usr/lib/systemd/user \
     --libexecdir=/usr/lib/tracker
 
-LOCPATH=${ADTTMP}/locale \
-    HOME=${ADTTMP} \
+LOCPATH=${AUTOPKGTEST_TMP}/locale \
+    HOME=${AUTOPKGTEST_TMP} \
     LANG=en_US.utf8 \
     LC_ALL=en_US.utf8 \
     dbus-run-session -- dh_auto_test 2> >(grep -vE '^(Activating|Successfully activated)')>&2
