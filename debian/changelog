@@ -1,4 +1,4 @@
-tracker (3.1.1-1) UNRELEASED; urgency=medium
+tracker (3.1.1-1) experimental; urgency=medium
 
   * New upstream release (Closes: #964376)
   * debian/patches/*: Refresh for tracker 3
@@ -32,7 +32,7 @@ tracker (3.1.1-1) UNRELEASED; urgency=medium
     - Drop Provides from gir1.2-tracker-3.0 for .gir files that are
       dropped
 
- -- Iain Lane <laney@debian.org>  Mon, 07 Jun 2021 17:46:47 +0100
+ -- Iain Lane <laney@debian.org>  Wed, 23 Jun 2021 17:34:20 +0100
 
 tracker (2.3.6-2) unstable; urgency=medium
 
