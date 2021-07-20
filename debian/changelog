@@ -1,9 +1,9 @@
-tracker (3.1.1-2) UNRELEASED; urgency=medium
+tracker (3.1.1-2) experimental; urgency=medium
 
   * Cherry-pick upstream mr !401 to port to using GDateTime. This fixes an
     overflow error on 32 bit systems
 
- -- Iain Lane <laney@debian.org>  Tue, 20 Jul 2021 11:07:24 +0100
+ -- Iain Lane <laney@debian.org>  Tue, 20 Jul 2021 11:32:20 +0100
 
 tracker (3.1.1-1) experimental; urgency=medium
 
