@@ -1,0 +1,69 @@
+From: Carlos Garnacho <carlosg@gnome.org>
+Date: Wed, 7 Apr 2021 12:21:05 +0200
+Subject: libtracker-common: Add GDateTime helper functions
+
+Add functions that allow parsing and producing ISO8601 exactly as
+we used to expect them.
+
+Origin: upstream, commit:dad7a4b67c1b85661975a8397fcc3c094253965d
+Applied-Upstream: 3.2.0~alpha
+---
+ src/libtracker-common/tracker-date-time.c | 32 +++++++++++++++++++++++++++++++
+ src/libtracker-common/tracker-date-time.h |  4 ++++
+ 2 files changed, 36 insertions(+)
+
+diff --git a/src/libtracker-common/tracker-date-time.c b/src/libtracker-common/tracker-date-time.c
+index 003239f..388a972 100644
+--- a/src/libtracker-common/tracker-date-time.c
++++ b/src/libtracker-common/tracker-date-time.c
+@@ -349,3 +349,35 @@ tracker_date_time_get_offset (const GValue *value)
+ 	/* UTC offset */
+ 	return value->data[1].v_int;
+ }
++
++GDateTime *
++tracker_date_new_from_iso8601 (const gchar  *string,
++			       GError      **error)
++{
++	GDateTime *datetime;
++	GTimeZone *tz;
++
++	tz = g_time_zone_new_local ();
++	datetime = g_date_time_new_from_iso8601 (string, tz);
++	g_time_zone_unref (tz);
++
++	if (!datetime) {
++		g_set_error (error,
++			     TRACKER_DATE_ERROR,
++			     TRACKER_DATE_ERROR_INVALID_ISO8601,
++		             "'%s' is not a ISO 8601 date string. "
++			     "Allowed form is CCYY-MM-DDThh:mm:ss[.ssssss][Z|(+|-)hh:mm]",
++			     string);
++	}
++
++	return datetime;
++}
++
++gchar *
++tracker_date_format_iso8601 (GDateTime *datetime)
++{
++	if (g_date_time_get_utc_offset (datetime) == 0)
++		return g_date_time_format (datetime, "%C%y-%m-%dT%TZ");
++	else
++		return g_date_time_format (datetime, "%C%y-%m-%dT%T%:z");
++}
+diff --git a/src/libtracker-common/tracker-date-time.h b/src/libtracker-common/tracker-date-time.h
+index cd3111b..6290b0d 100644
+--- a/src/libtracker-common/tracker-date-time.h
++++ b/src/libtracker-common/tracker-date-time.h
+@@ -58,6 +58,10 @@ gdouble  tracker_string_to_date                (const gchar  *date_string,
+ gchar *  tracker_date_to_string                (gdouble       date_time,
+                                                 gint          offset);
+ 
++GDateTime * tracker_date_new_from_iso8601 (const gchar  *string,
++					   GError      **error);
++gchar * tracker_date_format_iso8601 (GDateTime *datetime);
++
+ G_END_DECLS
+ 
+ #endif /* __LIBTRACKER_COMMON_DATE_TIME_H__ */
