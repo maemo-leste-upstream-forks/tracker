@@ -1,3 +1,9 @@
+tracker (3.1.1-3) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Jeremy Bicha <jbicha@debian.org>  Mon, 30 Aug 2021 22:46:49 -0400
+
 tracker (3.1.1-2) experimental; urgency=medium
 
   * Cherry-pick upstream mr !401 to port to using GDateTime. This fixes an
