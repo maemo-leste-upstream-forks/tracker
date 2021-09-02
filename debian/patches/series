@@ -1,9 +1,0 @@
-mr-401-gdatetime/docs-Change-lower-datetime-bound-in-doc-tests-about-limit.patch
-mr-401-gdatetime/libtracker-data-Change-TrackerOntology-timestamp-to-be-gi.patch
-mr-401-gdatetime/libtracker-common-Add-GDateTime-helper-functions.patch
-mr-401-gdatetime/libtracker-data-Update-ontology-nrl-lastModified-with-GDa.patch
-mr-401-gdatetime/libtracker-data-Use-GDateTime-parsing-for-xsd-date-Time-l.patch
-mr-401-gdatetime/libtracker-data-Port-datetime-SQLite-functions-to-use-GDa.patch
-mr-401-gdatetime/libtracker-data-Use-GDateTime-on-update-machinery.patch
-mr-401-gdatetime/tests-Remove-old-date-time-helpers.patch
-Revert-build-Include-libdir-in-rpath.patch
