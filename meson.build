@@ -1,5 +1,5 @@
 project('tracker', 'c', 'vala',
-        version: '3.1.1',
+        version: '3.1.2',
         meson_version: '>=0.50')
 
 gnome = import('gnome')
@@ -46,7 +46,7 @@ gobject = dependency('gobject-2.0', version: '>' + glib_required)
 gobject_introspection = dependency('gobject-introspection-1.0')
 icu_i18n = dependency('icu-i18n', version: '> 4.8.1.1', required: false)
 icu_uc = dependency('icu-uc', version: '> 4.8.1.1', required: false)
-json_glib = dependency('json-glib-1.0', version: '>= 1.0', required: true)
+json_glib = dependency('json-glib-1.0', version: '>= 1.4', required: true)
 libsoup = dependency('libsoup-2.4', version: '> 2.40', required: true)
 libxml2 = dependency('libxml-2.0', version: '> 2.6')
 sqlite = dependency('sqlite3', version: '>' + sqlite_required)
@@ -292,7 +292,6 @@ build_root = meson.current_build_dir()
 po_subdir = join_paths(source_root, 'po')
 
 tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-' + tracker_api_version)
-tracker_install_rpath = ':'.join([tracker_internal_libs_dir, libdir])
 
 # NOTE: We don't use ${TRACKER_API_VERSION} because other content like
 # the ontology is installed to the same location.

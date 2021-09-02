@@ -38,7 +38,7 @@ namespace Tracker {
 		FTS_ENABLE_STEMMER = 1 << 1,
 		FTS_ENABLE_UNACCENT = 1 << 2,
 		FTS_ENABLE_STOP_WORDS = 1 << 3,
-		FTS_ENABLE_IGNORE_NUMBERS = 1 << 4,
+		FTS_IGNORE_NUMBERS = 1 << 4,
 	}
 
 	[CCode (cheader_filename = "libtracker-sparql/tracker-sparql.h")]
@@ -64,6 +64,8 @@ namespace Tracker {
 		public static string escape_uri_vprintf (string format, va_list args);
 		[CCode (cheader_filename = "libtracker-sparql/tracker-sparql.h")]
 		public static string get_uuid_urn ();
+		[CCode (cheader_filename = "libtracker-sparql/tracker-sparql.h")]
+		public static GLib.File get_ontology_nepomuk ();
 	}
 
 	[CCode (cheader_filename = "libtracker-sparql/tracker-sparql.h")]
