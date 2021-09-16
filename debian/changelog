@@ -1,3 +1,11 @@
+tracker (3.1.2-2) unstable; urgency=medium
+
+  * Properly remove /etc/xdg/autostart/tracker-store.desktop on upgrade
+    (Closes: #970636)
+  * debian/rules: Completely disable the tests if nocheck option is used
+
+ -- Laurent Bigonville <bigon@debian.org>  Thu, 16 Sep 2021 16:02:01 +0200
+
 tracker (3.1.2-1) unstable; urgency=medium
 
   * New upstream release
