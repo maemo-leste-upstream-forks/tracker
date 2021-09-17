@@ -1,3 +1,9 @@
+tracker (3.1.2-3) unstable; urgency=medium
+
+  * debian/rules: Fix bash-completion directory path
+
+ -- Laurent Bigonville <bigon@debian.org>  Fri, 17 Sep 2021 10:59:16 +0200
+
 tracker (3.1.2-2) unstable; urgency=medium
 
   * Properly remove /etc/xdg/autostart/tracker-store.desktop on upgrade
