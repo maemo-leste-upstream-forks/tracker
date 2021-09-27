@@ -1,3 +1,16 @@
+tracker (3.1.2-4) UNRELEASED; urgency=medium
+
+  [ Jeremy Bicha ]
+  * Revert "debian/rules: Completely disable the tests if nocheck option is
+    used"
+
+  [ Laurent Bigonville ]
+  * debian/rules: Drop configure options that have been removed upstream
+  * debian/tests/unit-tests: Sync the configure options with the ones in
+    debian/rules
+
+ -- Laurent Bigonville <bigon@debian.org>  Mon, 27 Sep 2021 16:10:24 +0200
+
 tracker (3.1.2-3) unstable; urgency=medium
 
   * debian/rules: Fix bash-completion directory path
