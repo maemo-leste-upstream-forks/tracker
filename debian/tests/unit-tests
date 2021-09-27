@@ -5,11 +5,12 @@ localedef -c -i en_US -f UTF-8 "${AUTOPKGTEST_TMP}/locale/en_US.utf8"
 
 dh_auto_configure -- \
     -Dunicode_support=icu \
-    -Dfts=true \
     -Dstemmer=enabled \
     -Ddocs=true \
-    -Dfunctional_tests=true \
-    --libexecdir=/usr/lib/tracker
+    -Dbash_completion=true \
+    -Dbash_completion_dir=/usr/share/bash-completion/completions \
+    -Dsystemd_user_services=true \
+    -Dsystemd_user_services_dir=/usr/lib/systemd/user
 
 LOCPATH=${AUTOPKGTEST_TMP}/locale \
     HOME=${AUTOPKGTEST_TMP} \
