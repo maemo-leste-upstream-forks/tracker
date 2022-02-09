@@ -1,15 +1,17 @@
-tracker (3.1.2-4) UNRELEASED; urgency=medium
+tracker (3.1.2-4) unstable; urgency=medium
 
   [ Jeremy Bicha ]
   * Revert "debian/rules: Completely disable the tests if nocheck option is
     used"
+  * debian/libtracker-sparql-3.0-0.symbols: Add new symbols (Closes: #997451)
 
   [ Laurent Bigonville ]
   * debian/rules: Drop configure options that have been removed upstream
   * debian/tests/unit-tests: Sync the configure options with the ones in
     debian/rules
+  * d/control.in: tracker-test-utils requires libglib2.0-bin for gsettings executable
 
- -- Laurent Bigonville <bigon@debian.org>  Mon, 27 Sep 2021 16:10:24 +0200
+ -- Jeremy Bicha <jeremy.bicha@canonical.com>  Wed, 09 Feb 2022 08:16:32 -0500
 
 tracker (3.1.2-3) unstable; urgency=medium
 
