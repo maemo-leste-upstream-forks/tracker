@@ -7,6 +7,21 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_batch_execute_finish@Base 3.1.1
  tracker_batch_get_connection@Base 3.1.1
  tracker_batch_get_type@Base 3.1.1
+ tracker_bus_connection_construct@Base 3.1.2
+ tracker_bus_connection_construct_finish@Base 3.1.2
+ tracker_bus_connection_get_bus_name@Base 3.1.2
+ tracker_bus_connection_get_bus_object_path@Base 3.1.2
+ tracker_bus_connection_get_type@Base 3.1.2
+ tracker_bus_connection_new@Base 3.1.2
+ tracker_bus_connection_new_finish@Base 3.1.2
+ tracker_bus_connection_perform_query_call@Base 3.1.2
+ tracker_bus_connection_perform_query_call_finish@Base 3.1.2
+ tracker_bus_fd_cursor_construct@Base 3.1.2
+ tracker_bus_fd_cursor_get_type@Base 3.1.2
+ tracker_bus_fd_cursor_new@Base 3.1.2
+ tracker_bus_statement_construct@Base 3.1.2
+ tracker_bus_statement_get_type@Base 3.1.2
+ tracker_bus_statement_new@Base 3.1.2
  tracker_check_version@Base 3.1.1
  tracker_endpoint_dbus_get_type@Base 3.1.1
  tracker_endpoint_dbus_new@Base 3.1.1
@@ -31,6 +46,15 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_notifier_get_type@Base 1.12.0
  tracker_notifier_signal_subscribe@Base 3.1.1
  tracker_notifier_signal_unsubscribe@Base 3.1.1
+ tracker_remote_connection_construct@Base 3.1.2
+ tracker_remote_connection_get_type@Base 3.1.2
+ tracker_remote_connection_new@Base 3.1.2
+ tracker_remote_json_cursor_construct@Base 3.1.2
+ tracker_remote_json_cursor_get_type@Base 3.1.2
+ tracker_remote_json_cursor_new@Base 3.1.2
+ tracker_remote_xml_cursor_construct@Base 3.1.2
+ tracker_remote_xml_cursor_get_type@Base 3.1.2
+ tracker_remote_xml_cursor_new@Base 3.1.2
  tracker_resource_add_boolean@Base 1.9.1
  tracker_resource_add_double@Base 1.9.1
  tracker_resource_add_gvalue@Base 1.9.1
