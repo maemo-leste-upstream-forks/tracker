@@ -39,9 +39,6 @@ const char usage_string[] =
 	"tracker3 [--version] [--help]\n"
 	"                <command> [<args>]";
 
-const char usage_more_info_string[] =
-	N_("See “tracker3 help <command>” to read about a specific subcommand.");
-
 const char about[] =
 	"Tracker " PACKAGE_VERSION "\n"
 	"\n"
@@ -121,7 +118,7 @@ static void
 handle_command (int argc, const char **argv)
 {
 	char *cmd = g_path_get_basename (argv[0]);
-	int i;
+	guint i;
 
 	for (i = 0; i < G_N_ELEMENTS (commands); i++) {
 		struct cmd_struct *p = commands + i;
@@ -151,7 +148,7 @@ mput_char (char c, unsigned int num)
 static void
 print_usage_list_cmds (void)
 {
-	int i, longest = 0;
+	guint i, longest = 0;
 	GList *extra_commands = NULL;
 	GFileEnumerator *enumerator;
 	GFileInfo *info;
@@ -181,6 +178,7 @@ print_usage_list_cmds (void)
 	enumerator = g_file_enumerate_children (dir,
 	                                        G_FILE_ATTRIBUTE_STANDARD_NAME ","
 	                                        G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK ","
+	                                        G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN ","
 	                                        G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
 	                                        G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 	                                        NULL, &error);
@@ -189,8 +187,9 @@ print_usage_list_cmds (void)
 	if (enumerator) {
 		while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL) {
 			/* Filter builtin commands */
-			if (g_file_info_get_is_symlink (info) &&
-			    g_strcmp0 (g_file_info_get_symlink_target (info), BINDIR "/tracker") == 0)
+			if (g_file_info_get_is_hidden (info) ||
+			    (g_file_info_get_is_symlink (info) &&
+			    g_strcmp0 (g_file_info_get_symlink_target (info), BINDIR "/tracker") == 0))
 				continue;
 
 			extra_commands = g_list_prepend (extra_commands,
@@ -222,7 +221,7 @@ print_usage (void)
 {
 	g_print ("usage: %s\n\n", usage_string);
 	print_usage_list_cmds ();
-	g_print ("\n%s\n", _(usage_more_info_string));
+	g_print ("\n%s\n", _("See “tracker3 help <command>” to read about a specific subcommand."));
 }
 
 int

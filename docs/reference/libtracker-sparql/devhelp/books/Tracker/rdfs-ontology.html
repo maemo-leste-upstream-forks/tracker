@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>RDF Schema (RDFS)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="rdfs-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="rdf-schema-rdfs">RDF Schema (RDFS)</h1>
+<pre><code class="language-turtle">@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+</code></pre>
+<h2 id="classes">
+<a name="rdfs.classes"></a>Classes</h2>
+<p><a href="rdfs-ontology.html#rdfs:Class">Class</a>, <a href="rdfs-ontology.html#rdfs:Datatype">Datatype</a>, <a href="rdfs-ontology.html#rdfs:Literal">Literal</a>, <a href="rdfs-ontology.html#rdfs:Resource">Resource</a></p>
+<h2 id="class-details">
+<a name="rdfs-classes"></a>Class Details</h2>
+<h3 id="class">
+<a name="rdfs:Class"></a>Class</h3>
+<h5 id="description">Description</h5>
+<p>The class of classes</p>
+<h3 id="specification">Specification</h3>
+<p><a href="https://www.w3.org/TR/rdf-schema/#ch_class">https://www.w3.org/TR/rdf-schema/#ch_class</a></p>
+<h4 id="class-hierarchy">
+<a name="rdfs:Class.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── rdfs:Class 
+    ╰── rdfs:Datatype 
+</code></pre>
+<h4 id="predefined-instances">
+<a name="rdfs:Class.predefined-instances"></a>Predefined instances</h4>
+<p>rdfs:Class has the following predefined instances:</p>
+<ul>
+<li>nrl:Ontology</li>
+<li>nrl:Namespace</li>
+<li>nrl:InverseFunctionalProperty</li>
+<li>rdfs:Datatype</li>
+<li>rdfs:Literal</li>
+<li>rdfs:Class</li>
+<li>rdfs:Resource</li>
+<li>rdf:List</li>
+<li>rdf:langString</li>
+<li>rdf:Property</li>
+<li>xsd:dateTime</li>
+<li>xsd:date</li>
+<li>xsd:double</li>
+<li>xsd:integer</li>
+<li>xsd:boolean</li>
+<li>xsd:string</li>
+</ul>
+<h4 id="properties">
+<a name="rdfs:Class.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nrl:classSpecification"></a>classSpecification</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Link to upstream specification for an ontology class. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:domainIndex"></a>domainIndex</td>
+<td> <a href="rdf-ontology.html#rdf:Property">Property</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values"></a>
+</td>
+<td> Property is a domain index for the subject class. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:notify"></a>notify</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Whether resources of this class emits notifications on changes. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="rdfs:subClassOf"></a>subClassOf</td>
+<td> <a href="rdfs-ontology.html#rdfs:Class">Class</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values1"></a>
+</td>
+<td> The subject is a subclass of a class</td>
+</tr>
+</tbody>
+</table>
+<h3 id="datatype">
+<a name="rdfs:Datatype"></a>Datatype</h3>
+<h5 id="description1">Description</h5>
+<p>The class of RDF datatypes.</p>
+<h3 id="specification1">Specification</h3>
+<p><a href="https://www.w3.org/TR/rdf-schema/#ch_datatype">https://www.w3.org/TR/rdf-schema/#ch_datatype</a></p>
+<h4 id="class-hierarchy1">
+<a name="rdfs:Datatype.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── rdfs:Class 
+    ╰── rdfs:Datatype 
+</code></pre>
+<h4 id="predefined-instances1">
+<a name="rdfs:Datatype.predefined-instances"></a>Predefined instances</h4>
+<p>rdfs:Datatype has the following predefined instances:</p>
+<ul>
+<li>rdf:langString</li>
+</ul>
+<h3 id="literal">
+<a name="rdfs:Literal"></a>Literal</h3>
+<h5 id="description2">Description</h5>
+<p>The class of literal values, eg. textual strings and integers</p>
+<h3 id="specification2">Specification</h3>
+<p><a href="https://www.w3.org/TR/rdf-schema/#ch_literal">https://www.w3.org/TR/rdf-schema/#ch_literal</a></p>
+<h4 id="class-hierarchy2">
+<a name="rdfs:Literal.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── rdfs:Literal 
+    ╰── rdf:langString 
+</code></pre>
+<h3 id="resource">
+<a name="rdfs:Resource"></a>Resource</h3>
+<h5 id="description3">Description</h5>
+<p>All resources</p>
+<h3 id="specification3">Specification</h3>
+<p><a href="https://www.w3.org/TR/rdf-schema/#ch_resource">https://www.w3.org/TR/rdf-schema/#ch_resource</a></p>
+<h4 id="class-hierarchy3">
+<a name="rdfs:Resource.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+├── rdfs:Literal 
+├── rdfs:Class 
+├── rdf:Property 
+├── rdf:List 
+├── nrl:Ontology 
+╰── nrl:Namespace 
+</code></pre>
+<h4 id="predefined-instances2">
+<a name="rdfs:Resource.predefined-instances"></a>Predefined instances</h4>
+<p>rdfs:Resource has the following predefined instances:</p>
+<ul>
+<li>dc:</li>
+<li>dc:rights</li>
+<li>dc:coverage</li>
+<li>dc:relation</li>
+<li>dc:language</li>
+<li>dc:source</li>
+<li>dc:identifier</li>
+<li>dc:format</li>
+<li>dc:type</li>
+<li>dc:date</li>
+<li>dc:contributor</li>
+<li>dc:publisher</li>
+<li>dc:description</li>
+<li>dc:subject</li>
+<li>dc:creator</li>
+<li>dc:title</li>
+<li>nrl:</li>
+<li>nrl:propertySpecification</li>
+<li>nrl:classSpecification</li>
+<li>nrl:deprecated</li>
+<li>nrl:notify</li>
+<li>nrl:modified</li>
+<li>nrl:added</li>
+<li>nrl:weight</li>
+<li>nrl:fulltextIndexed</li>
+<li>nrl:secondaryIndex</li>
+<li>nrl:indexed</li>
+<li>nrl:domainIndex</li>
+<li>nrl:prefix</li>
+<li>nrl:lastModified</li>
+<li>nrl:Ontology</li>
+<li>nrl:Namespace</li>
+<li>nrl:maxCardinality</li>
+<li>nrl:InverseFunctionalProperty</li>
+<li>tracker:</li>
+<li>rdfs:</li>
+<li>rdfs:range</li>
+<li>rdfs:domain</li>
+<li>rdfs:label</li>
+<li>rdfs:comment</li>
+<li>rdfs:subPropertyOf</li>
+<li>rdfs:subClassOf</li>
+<li>rdfs:Datatype</li>
+<li>rdfs:Literal</li>
+<li>rdfs:Class</li>
+<li>rdfs:Resource</li>
+<li>rdf:nil</li>
+<li>rdf:</li>
+<li>rdf:rest</li>
+<li>rdf:first</li>
+<li>rdf:List</li>
+<li>rdf:type</li>
+<li>rdf:langString</li>
+<li>rdf:Property</li>
+<li>xsd:</li>
+<li>xsd:dateTime</li>
+<li>xsd:date</li>
+<li>xsd:double</li>
+<li>xsd:integer</li>
+<li>xsd:boolean</li>
+<li>xsd:string</li>
+</ul>
+<h4 id="properties1">
+<a name="rdfs:Resource.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="dc:contributor"></a>contributor</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values2"></a>
+</td>
+<td> An entity responsible for making contributions to the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:coverage"></a>coverage</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.</td>
+</tr>
+<tr>
+<td> <a name="dc:creator"></a>creator</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> An entity primarily responsible for making the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:date"></a>date</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values3"></a>
+</td>
+<td> A point or period of time associated with an event in the lifecycle of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:description"></a>description</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> An account of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:format"></a>format</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The file format, physical medium, or dimensions of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:identifier"></a>identifier</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> An unambiguous reference to the resource within a given context.</td>
+</tr>
+<tr>
+<td> <a name="dc:language"></a>language</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A language of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:publisher"></a>publisher</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> An entity responsible for making the resource available.</td>
+</tr>
+<tr>
+<td> <a name="dc:relation"></a>relation</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values4"></a>
+</td>
+<td> A related resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:rights"></a>rights</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values5"></a>
+</td>
+<td> Information about rights held in and over the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:source"></a>source</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values6"></a>
+</td>
+<td> A related resource from which the described resource is derived.</td>
+</tr>
+<tr>
+<td> <a name="dc:subject"></a>subject</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The topic of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:title"></a>title</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A name given to the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:type"></a>type</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The nature or genre of the resource.</td>
+</tr>
+<tr>
+<td> <a name="nrl:added"></a>added</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td></td>
+<td> Time of insertion of the resource. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:deprecated"></a>deprecated</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> If this property is assigned, the subject class, property, or resource, is deprecated and should not be used in production systems any longer. It may be removed without further notice. This property is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:modified"></a>modified</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Modification sequence number. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="rdf:type"></a>type</td>
+<td> <a href="rdfs-ontology.html#rdfs:Class">Class</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values7"></a>
+</td>
+<td> The subject is an instance of a class</td>
+</tr>
+<tr>
+<td> <a name="rdfs:comment"></a>comment</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A description of the subject resource</td>
+</tr>
+<tr>
+<td> <a name="rdfs:label"></a>label</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A human-readable name for the subject</td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>W3C</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>Tracker developers (translation into turtle)</li>
+</ul>
+<p>Upstream: <em>Not available</em></p>
+<p>ChangeLog: <a href="http://git.gnome.org/cgit/tracker/log/src/ontologies/11-rdf.ontology">Tracker changes</a></p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

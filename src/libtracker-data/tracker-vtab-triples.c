@@ -22,6 +22,11 @@
 
 #include "tracker-ontologies.h"
 #include "tracker-vtab-triples.h"
+#include "tracker-rowid.h"
+
+/* Avoid casts everywhere. */
+#define sqlite3_value_text(x) ((const gchar *) sqlite3_value_text(x))
+#define sqlite3_column_text(x, y) ((const gchar *) sqlite3_column_text(x, y))
 
 /* Define some constraints for older SQLite, we will never get
  * those in older versions, and simplifies checks in code.
@@ -49,6 +54,12 @@ enum {
 	IDX_MATCH_GRAPH_NEG     = 1 << 3,
 	IDX_MATCH_SUBJECT_NEG   = 1 << 4,
 	IDX_MATCH_PREDICATE_NEG = 1 << 5,
+};
+
+enum {
+	WEIGHT_GRAPH     = 1 << 10,
+	WEIGHT_PREDICATE = 1 << 20,
+	WEIGHT_SUBJECT   = 1 << 30,
 };
 
 typedef struct {
@@ -165,6 +176,7 @@ triples_best_index (sqlite3_vtab       *vtab,
 {
 	gboolean order_by_consumed = FALSE;
 	int i, argv_idx = 1, idx = 0;
+	int cost_divisor = 1;
 	char *idx_str;
 
 	idx_str = sqlite3_malloc (sizeof (char) * N_COLS);
@@ -217,12 +229,20 @@ triples_best_index (sqlite3_vtab       *vtab,
 		info->aConstraintUsage[i].argvIndex = argv_idx;
 		info->aConstraintUsage[i].omit = FALSE;
 		argv_idx++;
+
+		if (info->aConstraint[i].iColumn == COL_SUBJECT)
+			cost_divisor |= WEIGHT_SUBJECT;
+		else if (info->aConstraint[i].iColumn == COL_PREDICATE)
+			cost_divisor |= WEIGHT_PREDICATE;
+		else if (info->aConstraint[i].iColumn == COL_GRAPH)
+			cost_divisor |= WEIGHT_GRAPH;
 	}
 
 	info->idxNum = idx;
 	info->orderByConsumed = order_by_consumed;
 	info->idxStr = idx_str;
 	info->needToFreeIdxStr = TRUE;
+	info->estimatedCost = info->estimatedCost / cost_divisor;
 
 	return SQLITE_OK;
 }
@@ -306,13 +326,16 @@ collect_graphs (TrackerTriplesCursor *cursor)
 	if (rc != SQLITE_OK)
 		return rc;
 
-	cursor->query_graphs = g_hash_table_new_full (NULL, NULL, NULL, g_free);
+	cursor->query_graphs = g_hash_table_new_full (tracker_rowid_hash,
+	                                              tracker_rowid_equal,
+	                                              (GDestroyNotify) tracker_rowid_free,
+	                                              g_free);
 
 	while ((rc = sqlite3_step (stmt)) == SQLITE_ROW) {
 		const gchar *uri;
-		gint id;
+		TrackerRowid id;
 
-		id = sqlite3_column_int (stmt, 0);
+		id = sqlite3_column_int64 (stmt, 0);
 		uri = sqlite3_column_text (stmt, 1);
 
 		if (cursor->match.graph) {
@@ -324,7 +347,7 @@ collect_graphs (TrackerTriplesCursor *cursor)
 		}
 
 		g_hash_table_insert (cursor->query_graphs,
-		                     GINT_TO_POINTER (id),
+		                     tracker_rowid_copy (&id),
 		                     g_strdup (uri));
 	}
 
@@ -346,7 +369,7 @@ convert_to_string (const gchar         *table_name,
 	case TRACKER_PROPERTY_TYPE_INTEGER:
 		return g_strdup_printf ("t.\"%s\"", table_name);
 	case TRACKER_PROPERTY_TYPE_RESOURCE:
-		return g_strdup_printf ("(SELECT Uri FROM Resource WHERE ID = t.\"%s\")",
+		return g_strdup_printf ("(SELECT COALESCE(Uri, 'urn:bnode:' || ID) FROM Resource WHERE ID = t.\"%s\")",
 		                        table_name);
 	case TRACKER_PROPERTY_TYPE_BOOLEAN:
 		return g_strdup_printf ("CASE t.\"%s\" "
@@ -360,11 +383,14 @@ convert_to_string (const gchar         *table_name,
 	case TRACKER_PROPERTY_TYPE_DATETIME:
 		return g_strdup_printf ("SparqlFormatTime (t.\"%s\")",
 		                        table_name);
-	default:
+        case TRACKER_PROPERTY_TYPE_DOUBLE:
+	case TRACKER_PROPERTY_TYPE_UNKNOWN:
 		/* Let sqlite convert the expression to string */
 		return g_strdup_printf ("CAST (t.\"%s\" AS TEXT)",
 		                        table_name);
 	}
+
+	g_assert_not_reached();
 }
 
 static void
@@ -406,9 +432,11 @@ bind_arg (sqlite3_stmt  *stmt,
 static gboolean
 iterate_next_stmt (TrackerTriplesCursor  *cursor,
                    const gchar          **graph,
-                   gint                  *graph_id,
+                   TrackerRowid          *graph_id,
                    TrackerProperty      **property)
 {
+	TrackerRowid *id;
+
 	while (cursor->properties && !cursor->graphs) {
 		/* Iterate to next property, and redo graph list */
 		cursor->properties = g_list_remove (cursor->properties,
@@ -420,9 +448,10 @@ iterate_next_stmt (TrackerTriplesCursor  *cursor,
 		return FALSE;
 
 	*property = cursor->properties->data;
-	*graph_id = GPOINTER_TO_INT (cursor->graphs->data);
-	*graph = g_hash_table_lookup (cursor->query_graphs,
-	                              cursor->graphs->data);
+
+	id = cursor->graphs->data;
+	*graph_id = *id;
+	*graph = g_hash_table_lookup (cursor->query_graphs, id);
 
 	cursor->graphs = g_list_remove (cursor->graphs, cursor->graphs->data);
 
@@ -434,7 +463,7 @@ init_stmt (TrackerTriplesCursor *cursor)
 {
 	TrackerProperty *property;
 	const gchar *graph;
-	gint graph_id;
+	TrackerRowid graph_id;
 	GString *sql;
 	int rc;
 
@@ -446,7 +475,7 @@ init_stmt (TrackerTriplesCursor *cursor)
 
 		sql = g_string_new (NULL);
 		g_string_append_printf (sql,
-		                        "SELECT %d, t.ID, "
+		                        "SELECT %" G_GINT64_FORMAT ", t.ID, "
 		                        "       (SELECT ID From Resource WHERE Uri = \"%s\"), "
 		                        "       %s, "
 		                        "       %d "

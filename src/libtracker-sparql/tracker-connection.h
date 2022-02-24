@@ -39,6 +39,8 @@ G_BEGIN_DECLS
  * @TRACKER_SPARQL_CONNECTION_FLAGS_FTS_ENABLE_UNACCENT: Unaccenting is applied to FTS search terms.
  * @TRACKER_SPARQL_CONNECTION_FLAGS_FTS_ENABLE_STOP_WORDS: FTS Search terms are filtered through a stop word list.
  * @TRACKER_SPARQL_CONNECTION_FLAGS_FTS_IGNORE_NUMBERS: Ignore numbers in FTS search terms.
+ * @TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES: Treat blank nodes as specified in
+ *   SPARQL 1.1 syntax. Namely, they cannot be used as URIs. This flag is available since Tracker 3.3.
  *
  * Connection flags to modify #TrackerSparqlConnection behavior.
  */
@@ -49,7 +51,18 @@ typedef enum {
 	TRACKER_SPARQL_CONNECTION_FLAGS_FTS_ENABLE_UNACCENT   = 1 << 2,
 	TRACKER_SPARQL_CONNECTION_FLAGS_FTS_ENABLE_STOP_WORDS = 1 << 3,
 	TRACKER_SPARQL_CONNECTION_FLAGS_FTS_IGNORE_NUMBERS    = 1 << 4,
+	TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES      = 1 << 5,
 } TrackerSparqlConnectionFlags;
+
+typedef enum {
+	TRACKER_RDF_FORMAT_TURTLE,
+	TRACKER_RDF_FORMAT_TRIG,
+	TRACKER_N_RDF_FORMATS
+} TrackerRdfFormat;
+
+typedef enum {
+	TRACKER_SERIALIZE_FLAGS_NONE = 0,
+} TrackerSerializeFlags;
 
 /**
  * TrackerSparqlConnection:
@@ -201,6 +214,19 @@ TrackerNotifier * tracker_sparql_connection_create_notifier (TrackerSparqlConnec
 TRACKER_AVAILABLE_IN_ALL
 void tracker_sparql_connection_close (TrackerSparqlConnection *connection);
 
+TRACKER_AVAILABLE_IN_3_3
+void tracker_sparql_connection_serialize_async (TrackerSparqlConnection  *connection,
+                                                TrackerSerializeFlags     flags,
+                                                TrackerRdfFormat          format,
+                                                const gchar              *query,
+                                                GCancellable             *cancellable,
+                                                GAsyncReadyCallback      callback,
+                                                gpointer                 user_data);
+TRACKER_AVAILABLE_IN_3_3
+GInputStream * tracker_sparql_connection_serialize_finish (TrackerSparqlConnection  *connection,
+                                                           GAsyncResult             *result,
+                                                           GError                  **error);
+
 TRACKER_AVAILABLE_IN_ALL
 void tracker_sparql_connection_close_async (TrackerSparqlConnection *connection,
                                             GCancellable            *cancellable,
@@ -211,6 +237,17 @@ TRACKER_AVAILABLE_IN_ALL
 gboolean tracker_sparql_connection_close_finish (TrackerSparqlConnection  *connection,
                                                  GAsyncResult             *res,
                                                  GError                  **error);
+
+TRACKER_AVAILABLE_IN_3_3
+TrackerSparqlStatement * tracker_sparql_connection_load_statement_from_gresource (TrackerSparqlConnection  *connection,
+                                                                                  const gchar              *resource_path,
+                                                                                  GCancellable             *cancellable,
+                                                                                  GError                  **error);
+
+TRACKER_AVAILABLE_IN_3_3
+void tracker_sparql_connection_map_connection (TrackerSparqlConnection *connection,
+					       const gchar             *handle_name,
+					       TrackerSparqlConnection *service_connection);
 
 G_END_DECLS
 

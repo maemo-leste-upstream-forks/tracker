@@ -75,8 +75,8 @@ sql_by_file (void)
 		return EXIT_FAILURE;
 	}
 
-	g_file_get_contents (path_in_utf8, &query, &size, &error);
-	if (error) {
+	if (!g_file_get_contents (path_in_utf8, &query, &size, &error)) {
+		g_assert (error != NULL);
 		g_printerr ("%s:'%s', %s\n",
 		            _("Could not read file"),
 		            path_in_utf8,
@@ -96,7 +96,7 @@ static int
 sql_by_query (void)
 {
 	TrackerDBInterface *iface;
-	TrackerDBStatement *stmt;
+	TrackerDBStatement *stmt = NULL;
 	TrackerDBCursor *cursor = NULL;
 	GError *error = NULL;
 	gint n_rows = 0;
@@ -122,9 +122,11 @@ sql_by_query (void)
 	g_print ("--------------------------------------------------\n");
 	g_print ("\n\n");
 
-	iface = tracker_data_manager_get_db_interface (data_manager);
+	iface = tracker_data_manager_get_db_interface (data_manager, &error);
 
-	stmt = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_NONE, &error, query);
+	if (iface) {
+		stmt = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_NONE, &error, query);
+	}
 
 	if (stmt) {
 		cursor = tracker_db_statement_start_cursor (stmt, &error);

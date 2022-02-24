@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Examples</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="examples.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="examples">Examples</h1>
+<p>This chapters shows some real examples of usage of the Tracker
+SPARQL Library.</p>
+<h2 id="querying-a-remote-endpoint">Querying a remote endpoint</h2>
+<p>All SPARQL queries happen on a <a href="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-href-javascript="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-javascript="Tracker.SparqlConnection" data-gi-href-python="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-python="Tracker.SparqlConnection">TrackerSparqlConnection</a>, often these
+connections represent a remote endpoints maintained by another process or
+server.</p>
+<p>This example demonstrates the use of these connections on a remote
+endpoint. Concretely creating a D-Bus <a href="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-href-javascript="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-javascript="Tracker.SparqlConnection" data-gi-href-python="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-python="Tracker.SparqlConnection">TrackerSparqlConnection</a>,
+creating a prepared statement from a SPARQL query string, executing
+the query, and obtaining the query results from the cursor.</p>
+<p>The <a href="tracker-sparql-connection.html#tracker_sparql_connection_query_statement" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_query_statement" data-gi-title-javascript="Tracker.SparqlConnection.prototype.query_statement" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_query_statement" data-gi-title-python="Tracker.SparqlConnection.query_statement">tracker_sparql_connection_query_statement</a> function can be used
+to obtain a <a href="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-href-javascript="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-title-javascript="Tracker.SparqlStatement" data-gi-href-python="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-title-python="Tracker.SparqlStatement">TrackerSparqlStatement</a> object holding a prepared SPARQL
+query that can then be executed with <a href="tracker-sparql-statement.html#tracker_sparql_statement_execute" data-gi-href-javascript="tracker-sparql-statement.html#tracker_sparql_statement_execute" data-gi-title-javascript="Tracker.SparqlStatement.prototype.execute" data-gi-href-python="tracker-sparql-statement.html#tracker_sparql_statement_execute" data-gi-title-python="Tracker.SparqlStatement.execute">tracker_sparql_statement_execute</a>.
+The query string can contain <code>~name</code> placeholders which can be replaced with
+arbitrary values before query execution with
+<a href="tracker-sparql-statement.html#tracker_sparql_statement_bind_string" data-gi-href-javascript="tracker-sparql-statement.html#tracker_sparql_statement_bind_string" data-gi-title-javascript="Tracker.SparqlStatement.prototype.bind_string" data-gi-href-python="tracker-sparql-statement.html#tracker_sparql_statement_bind_string" data-gi-title-python="Tracker.SparqlStatement.bind_string">tracker_sparql_statement_bind_string</a> and similar functions.
+This allows parsing the query string only once and to execute it multiple
+times with different parameters with potentially significant performance gains.</p>
+<p>Multiple functions offer asynchronous variants, so the application
+main loop is not blocked while these operations are executed.</p>
+<p>Once you end up with the query, remember to call <a href="tracker-sparql-cursor.html#tracker_sparql_cursor_close" data-gi-href-javascript="tracker-sparql-cursor.html#tracker_sparql_cursor_close" data-gi-title-javascript="Tracker.SparqlCursor.prototype.close" data-gi-href-python="tracker-sparql-cursor.html#tracker_sparql_cursor_close" data-gi-title-python="Tracker.SparqlCursor.close">tracker_sparql_cursor_close</a>.
+The same applies to <a href="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-title-javascript="Tracker.SparqlConnection.prototype.close" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-title-python="Tracker.SparqlConnection.close">tracker_sparql_connection_close</a> when no longer needed.</p>
+<pre><code class="language-c">#include &lt;libtracker-sparql/tracker-sparql.h&gt;
+
+#define REMOTE_NAME "org.freedesktop.Tracker3.Miner.Files"
+
+int main (int argc, const char **argv)
+{
+  g_autoptr (GError) error = NULL;
+  g_autoptr (TrackerSparqlConnection) connection = NULL;
+  g_autoptr (TrackerSparqlCursor) cursor = NULL;
+  g_autoptr (TrackerSparqlStatement) stmt = NULL;
+  const char *query = "SELECT nie:url(?u) WHERE { ?u a nfo:FileDataObject ; nfo:fileName ~name }";
+  const char *name = NULL;
+  int i = 0;
+
+  connection = tracker_sparql_connection_bus_new (REMOTE_NAME, NULL, NULL, &amp;error);
+  if (!connection) {
+    g_printerr ("Couldn't obtain a connection to the Tracker store: %s",
+                error ? error-&gt;message : "unknown error");
+    return 1;
+  }
+
+  /* Create a prepared statement */
+  stmt = tracker_sparql_connection_query_statement (connection,
+                                                    query,
+                                                    NULL,
+                                                    &amp;error);
+
+  if (!stmt) {
+    g_printerr ("Couldn't create a prepared statement: '%s'",
+                error-&gt;message);
+    return 1;
+  }
+
+  /* Bind a value to the query variables */
+  name = argv[1] ? argv[1] : "";
+  tracker_sparql_statement_bind_string (stmt, "name", name);
+
+  /* Executes the SPARQL query with the currently bound values and get new cursor */
+  cursor = tracker_sparql_statement_execute (stmt, NULL, &amp;error);
+  if (!cursor) {
+    g_printerr ("Couldn't execute query: '%s'",
+                error-&gt;message);
+    return 1;
+  }
+
+  /* Iterate synchronously the results */
+  while (tracker_sparql_cursor_next (cursor, NULL, &amp;error)) {
+    g_print ("Result [%d]: %s\n",
+             i++,
+             tracker_sparql_cursor_get_string (cursor, 0, NULL));
+  }
+
+  g_print ("A total of '%d' results were found\n", i);
+
+  tracker_sparql_cursor_close (cursor);
+
+  tracker_sparql_connection_close (connection);
+
+  return 0;
+}
+
+</code></pre>
+<h2 id="creating-a-private-database">Creating a private database</h2>
+<p>Applications may create private stores via the <a href="tracker-sparql-connection.html#tracker_sparql_connection_new" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_new" data-gi-title-javascript="Tracker.SparqlConnection.prototype.new" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_new" data-gi-title-python="Tracker.SparqlConnection.new">tracker_sparql_connection_new</a>
+constructor.</p>
+<p>This example demonstrates the creation of a private store, for simplicity the
+example uses the builtin Nepomuk ontology, but the data structures may be defined
+by the application, see the documentation on
+<a href="defining-ontologies.html">defining ontologies</a> for more information about this.</p>
+<p>The example also demonstrates the use of <a href="tracker-resource.html#TrackerResource" data-gi-href-javascript="tracker-resource.html#TrackerResource" data-gi-title-javascript="Tracker.Resource" data-gi-href-python="tracker-resource.html#TrackerResource" data-gi-title-python="Tracker.Resource">TrackerResource</a> and <a href="tracker-batch.html#TrackerBatch" data-gi-href-javascript="tracker-batch.html#TrackerBatch" data-gi-title-javascript="Tracker.Batch" data-gi-href-python="tracker-batch.html#TrackerBatch" data-gi-title-python="Tracker.Batch">TrackerBatch</a>
+for insertion of RDF data. It is also possible the direct use of SPARQL update
+strings via <a href="tracker-sparql-connection.html#tracker_sparql_connection_update" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_update" data-gi-title-javascript="Tracker.SparqlConnection.prototype.update" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_update" data-gi-title-python="Tracker.SparqlConnection.update">tracker_sparql_connection_update</a>.</p>
+<p>Multiple functions offer asynchronous variants, so the application
+main loop is not blocked while these operations are executed.</p>
+<p>Once you no longer need the connection, remember to call
+<a href="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-title-javascript="Tracker.SparqlConnection.prototype.close" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-title-python="Tracker.SparqlConnection.close">tracker_sparql_connection_close</a> on the <a href="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-href-javascript="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-javascript="Tracker.SparqlConnection" data-gi-href-python="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-python="Tracker.SparqlConnection">TrackerSparqlConnection</a>.</p>
+<pre><code class="language-c">#include &lt;libtracker-sparql/tracker-sparql.h&gt;
+
+int main (int argc, const char **argv)
+{
+  g_autoptr (GError) error = NULL;
+  g_autoptr (TrackerSparqlConnection) connection = NULL;
+  g_autoptr (TrackerResource) resource = NULL;
+  g_autoptr (GFile) ontology = NULL;
+
+  /* Create a private SPARQL store */
+  ontology = tracker_sparql_get_ontology_nepomuk ();
+  connection = tracker_sparql_connection_new (TRACKER_SPARQL_CONNECTION_FLAGS_NONE,
+					      NULL, /* Database location, NULL creates it in-memory */
+					      ontology, /* Ontology location */
+					      NULL,
+					      &amp;error);
+  if (connection) {
+    g_printerr ("Couldn't create a Tracker store: %s",
+                error-&gt;message);
+    return 1;
+  }
+
+  /* Create a resource containing RDF data */
+  resource = tracker_resource_new (NULL);
+  tracker_resource_set_uri (resource, "rdf:type", "nmm:MusicPiece");
+
+  /* Create a batch, and add the resource to it */
+  batch = tracker_sparql_connection_create_batch (connection);
+  tracker_batch_add_resource (batch, NULL, resource);
+
+  /* Execute the batch to insert the data */
+  if (!tracker_batch_execute (batch, NULL, &amp;error)) {
+    g_printerr ("Couldn't insert batch of resources: %s",
+                error-&gt;message);
+    return 1;
+  }
+
+  tracker_sparql_connection_close (connection);
+
+  return 0;
+}
+
+</code></pre>
+<h2 id="creating-a-sparql-endpoint">Creating a SPARQL endpoint</h2>
+<p>For some applications and services, it might be desirable to export a
+SPARQL store as an endpoint. Making it possible for other applications to
+query the data they hold.</p>
+<p>This example demonstrates the use of <a href="tracker-endpoint.html#TrackerEndpoint" data-gi-href-javascript="tracker-endpoint.html#TrackerEndpoint" data-gi-title-javascript="Tracker.Endpoint" data-gi-href-python="tracker-endpoint.html#TrackerEndpoint" data-gi-title-python="Tracker.Endpoint">TrackerEndpoint</a> subclasses,
+concretely the creation of a D-Bus endpoint, that other applications
+may query e.g. through a connection created with
+<a href="tracker-sparql-connection.html#tracker_sparql_connection_bus_new" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_bus_new" data-gi-title-javascript="Tracker.SparqlConnection.prototype.bus_new" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_bus_new" data-gi-title-python="Tracker.SparqlConnection.bus_new">tracker_sparql_connection_bus_new</a>.</p>
+<pre><code class="language-c">#include &lt;libtracker-sparql/tracker-sparql.h&gt;
+
+int main (int argc, const char **argv)
+{
+  g_autoptr (GError) error = NULL;
+  g_autoptr (TrackerSparqlConnection) connection = NULL;
+  g_autoptr (GFile) ontology = NULL;
+  g_autoptr (GMainLoop) main_loop = NULL;
+
+  /* Create a SPARQL store */
+  ontology = tracker_sparql_get_ontology_nepomuk ();
+  connection = tracker_sparql_connection_new (TRACKER_SPARQL_CONNECTION_FLAGS_NONE,
+					      NULL, /* Database location, NULL creates it in-memory */
+					      ontology, /* Ontology location */
+					      NULL,
+					      &amp;error);
+  if (connection) {
+    g_printerr ("Couldn't create a Tracker store: %s",
+                error-&gt;message);
+    return 1;
+  }
+
+  /* Make the connection available via D-Bus, other applications would be
+   * able to make connections to this application's bus name
+   */
+  endpoint = tracker_endpoint_dbus_new (connection, NULL, NULL, NULL, &amp;error);
+  if (!endpoint) {
+    g_printerr ("Couldn't create D-Bus endpoint: %s",
+                error-&gt;message);
+    return 1;
+  }
+
+  main_loop = g_main_loop_new (NULL, FALSE);
+  g_main_loop_run (main_loop);
+
+  return 0;
+}
+
+</code></pre>
+<h2 id="receiving-notification-on-changes">Receiving notification on changes</h2>
+<p>As an additional feature over SPARQL endpoints, Tracker allows for
+users of private and D-Bus SPARQL connections to receive notifications
+on changes of certain RDF classes (Those with the
+<a href="nrl-ontology.html#nrl:notify">nrl:notify</a> property, like
+<a href="nmm-ontology.html#nmm:MusicPiece">nmm:MusicPiece</a>).</p>
+<p>This example demonstrates the use of <a href="tracker-notifier.html#TrackerNotifier" data-gi-href-javascript="tracker-notifier.html#TrackerNotifier" data-gi-title-javascript="Tracker.Notifier" data-gi-href-python="tracker-notifier.html#TrackerNotifier" data-gi-title-python="Tracker.Notifier">TrackerNotifier</a> to receive
+notifications on database updates.</p>
+<pre><code class="language-c">#include &lt;libtracker-sparql/tracker-sparql.h&gt;
+
+#define REMOTE_NAME "org.freedesktop.Tracker3.Miner.Files"
+
+void on_events (TrackerNotifier *notifier,
+                const char      *service,
+                const char      *graph,
+                GPtrArray       *events,
+                gpointer         user_data)
+{
+  int i;
+
+  for (i = 0; i &lt; events-&gt;len; i++) {
+    TrackerNotifierEvent *event = g_ptr_array_index (events, i);
+
+    g_print ("Event %d on %s\n",
+             tracker_notifier_event_get_event_type (event),
+             tracker_notifier_event_get_urn (event));
+  }
+}
+
+int main (int   argc,
+          char *argv[])
+{
+  g_autoptr (GError) error = NULL;
+  g_autoptr (TrackerSparqlConnection) connection = NULL;
+  g_autoptr (TrackerNotifier) notifier = NULL;
+  g_autoptr (GMainLoop) main_loop = NULL;
+
+  /* Create connection to remote service */
+  connection = tracker_sparql_connection_bus_new (REMOTE_NAME, NULL, NULL, &amp;error);
+  if (!connection) {
+    g_printerr ("Couldn't obtain a connection to the Tracker store: %s",
+                error ? error-&gt;message : "unknown error");
+    return 1;
+  }
+
+  /* Create notifier, and connect to its events signal */
+  notifier = tracker_sparql_connection_create_notifier (connection);
+  g_signal_connect (notifier, "events", G_CALLBACK (on_events), NULL);
+
+  main_loop = g_main_loop_new (NULL, FALSE);
+  g_main_loop_run (main_loop);
+
+  tracker_sparql_connection_close (connection);
+
+  return 0;
+}
+
+</code></pre>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

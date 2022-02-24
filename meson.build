@@ -1,6 +1,9 @@
 project('tracker', 'c', 'vala',
-        version: '3.1.2',
-        meson_version: '>=0.50')
+        version: '3.3.0.beta',
+        meson_version: '>=0.51',
+        default_options: [
+          'c_std=c99',
+          'warning_level=2'])
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -43,27 +46,61 @@ gio_unix = dependency('gio-unix-2.0', version: '>' + glib_required)
 glib = dependency('glib-2.0', version: '>' + glib_required)
 gmodule = dependency('gmodule-2.0', version: '>' + glib_required)
 gobject = dependency('gobject-2.0', version: '>' + glib_required)
-gobject_introspection = dependency('gobject-introspection-1.0')
+gobject_introspection = dependency('gobject-introspection-1.0', required: get_option('introspection'))
 icu_i18n = dependency('icu-i18n', version: '> 4.8.1.1', required: false)
 icu_uc = dependency('icu-uc', version: '> 4.8.1.1', required: false)
 json_glib = dependency('json-glib-1.0', version: '>= 1.4', required: true)
-libsoup = dependency('libsoup-2.4', version: '> 2.40', required: true)
 libxml2 = dependency('libxml-2.0', version: '> 2.6')
 sqlite = dependency('sqlite3', version: '>' + sqlite_required)
 dbus = dependency('dbus-1')
+libsoup2 = dependency('libsoup-2.4', version: '> 2.40', required: false)
+libsoup3 = dependency('libsoup-3.0', version: '>= 2.99.2', required: false)
 
 libmath = cc.find_library('m', required: false)
+libdl = cc.find_library('dl')
+
+soup_backends = ''
+if libsoup2.found()
+  soup_backends = soup_backends + '2.x '
+endif
+if libsoup3.found()
+  soup_backends = soup_backends + '3.x '
+endif
+
+if not libsoup2.found() and not libsoup3.found()
+  error('At least one of libsoup2 or libsoup3 is required')
+endif
 
 if get_option('man')
   asciidoc = find_program('asciidoc')
   xsltproc = find_program('xsltproc')
 endif
 
-add_project_arguments('-Wformat', '-Wformat-security', language: 'c')
+py_modules = ['gi']
+if get_option('tests_tap_protocol')
+  py_modules += 'tap'
+endif
+python = import('python').find_installation('python3', modules: py_modules)
 
-# There are various gchar vs. unsigned char warnings that occur in extract
-# modules, it's not worth adding casts everywhere so we disable the warning.
-add_project_arguments('-Wno-pointer-sign', language: 'c')
+cc_warning_flags = [
+  '-Wformat',
+  '-Wformat-security',
+  # There are numerous switches over data or token types in the
+  # codebase. This makes it easy to verify that all are handled
+  # correctly. -Wswitch-enum could be even better, but there are a few
+  # enums with hundreds of entries that are only partially covered in
+  # some of the switches.
+  '-Wswitch',
+  '-Werror=switch',
+  # Too many warnings in libtracker-data/tracker-sparql-grammar.h
+  '-Wno-tautological-constant-out-of-range-compare',
+  # This probably deserves a better look.
+  '-Wno-missing-field-initializers',
+  # Too many unused parameters in tests. Disabling this warning only
+  # for the tests executables could be a better solution.
+  '-Wno-unused-parameter',
+]
+add_project_arguments(cc.get_supported_arguments(cc_warning_flags), language: 'c')
 
 add_project_arguments('-DTRACKER_COMPILATION',
                       '-DG_LOG_DOMAIN="Tracker"',
@@ -266,6 +303,10 @@ conf.set('TRACKER_MICRO_VERSION', tracker_micro_version)
 conf.set('TRACKER_INTERFACE_AGE', 0)
 conf.set('TRACKER_BINARY_AGE', 100 * tracker_minor_version + tracker_micro_version)
 
+# Check for RTLD_NOLOAD
+have_rtld_noload = cc.has_header_symbol('dlfcn.h', 'RTLD_NOLOAD')
+conf.set('HAVE_RTLD_NOLOAD', have_rtld_noload)
+
 # Config that goes in some other generated files (.desktop, .service, etc)
 conf.set('abs_top_builddir', meson.current_build_dir())
 conf.set('libexecdir', join_paths(get_option('prefix'), get_option('libexecdir')))
@@ -299,8 +340,10 @@ tracker_ontologies_dir = join_paths(get_option('prefix'), get_option('datadir'),
 
 vapi_dir = join_paths(get_option('prefix'), get_option('datadir'), 'vala', 'vapi')
 
-typelib_dir = gobject_introspection.get_pkgconfig_variable('typelibdir',
-                                                           define_variable:  [ 'libdir', libdir ])
+if gobject_introspection.found()
+  typelib_dir = gobject_introspection.get_pkgconfig_variable('typelibdir',
+                                                             define_variable: [ 'libdir', libdir ])
+endif
 
 subdir('src')
 subdir('docs')
@@ -356,6 +399,9 @@ summary = [
   '    Unicode support library:                ' + unicode_library_name,
   '    Use external FTS module:                ' + (not sqlite3_has_builtin_fts5).to_string(),
   '    Build with Stemming support:            ' + have_libstemmer.to_string(),
+  '    API documentation:                      ' + get_option('docs').to_string(),
+  '    CLI documentation (manpages):           ' + get_option('man').to_string(),
+  '    Libsoup backends:                       ' + soup_backends,
 ]
 
 if get_option('bash_completion')

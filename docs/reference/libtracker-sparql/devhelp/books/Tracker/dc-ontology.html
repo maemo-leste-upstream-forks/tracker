@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Dublin Core metadata (DC)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="dc-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="dublin-core-metadata-dc">Dublin Core metadata (DC)</h1>
+<pre><code class="language-turtle">@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+</code></pre>
+<h2 id="additional-properties">
+<a name="dc.extra_properties"></a>Additional Properties</h2>
+<p><a href="dc-ontology.html#dc:contributor">contributor</a>, <a href="dc-ontology.html#dc:coverage">coverage</a>, <a href="dc-ontology.html#dc:creator">creator</a>, <a href="dc-ontology.html#dc:date">date</a>, <a href="dc-ontology.html#dc:description">description</a>, <a href="dc-ontology.html#dc:format">format</a>, <a href="dc-ontology.html#dc:identifier">identifier</a>, <a href="dc-ontology.html#dc:language">language</a>, <a href="dc-ontology.html#dc:publisher">publisher</a>, <a href="dc-ontology.html#dc:relation">relation</a>, <a href="dc-ontology.html#dc:rights">rights</a>, <a href="dc-ontology.html#dc:source">source</a>, <a href="dc-ontology.html#dc:subject">subject</a>, <a href="dc-ontology.html#dc:title">title</a>, <a href="dc-ontology.html#dc:type">type</a></p>
+<h2 id="property-details">
+<a name="dc-extra-properties"></a>Property Details</h2>
+<h3 id="additional-properties-for-rdfsresource">
+<a name="dc.rdfs:Resource"></a>Additional properties for rdfs:Resource</h3>
+<h4 id="description">Description</h4>
+<p>Properties this ontology defines which can describe rdfs:Resource resources.</p>
+<h4 id="properties">
+<a name="dc.rdfs:Resource.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="dc:contributor"></a>contributor</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values"></a>
+</td>
+<td> An entity responsible for making contributions to the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:coverage"></a>coverage</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.</td>
+</tr>
+<tr>
+<td> <a name="dc:creator"></a>creator</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> An entity primarily responsible for making the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:date"></a>date</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values1"></a>
+</td>
+<td> A point or period of time associated with an event in the lifecycle of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:description"></a>description</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> An account of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:format"></a>format</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The file format, physical medium, or dimensions of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:identifier"></a>identifier</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> An unambiguous reference to the resource within a given context.</td>
+</tr>
+<tr>
+<td> <a name="dc:language"></a>language</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A language of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:publisher"></a>publisher</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> An entity responsible for making the resource available.</td>
+</tr>
+<tr>
+<td> <a name="dc:relation"></a>relation</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values2"></a>
+</td>
+<td> A related resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:rights"></a>rights</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values3"></a>
+</td>
+<td> Information about rights held in and over the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:source"></a>source</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values4"></a>
+</td>
+<td> A related resource from which the described resource is derived.</td>
+</tr>
+<tr>
+<td> <a name="dc:subject"></a>subject</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The topic of the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:title"></a>title</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A name given to the resource.</td>
+</tr>
+<tr>
+<td> <a name="dc:type"></a>type</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The nature or genre of the resource.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>Dublin Core consortium</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>Tracker developers (translation into turtle)</li>
+</ul>
+<p>Upstream: <em>Not available</em></p>
+<p>ChangeLog: <a href="http://git.gnome.org/cgit/tracker/log/src/ontologies/20-dc.ontology">Tracker changes</a></p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

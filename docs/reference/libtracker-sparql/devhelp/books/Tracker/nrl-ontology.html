@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Nepomuk Resource Language (NRL)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="nrl-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="nepomuk-resource-language-nrl">Nepomuk Resource Language (NRL)</h1>
+<pre><code class="language-turtle">@prefix nrl: &lt;http://tracker.api.gnome.org/ontology/v3/nrl#&gt;
+</code></pre>
+<h2 id="classes">
+<a name="nrl.classes"></a>Classes</h2>
+<p><a href="nrl-ontology.html#nrl:InverseFunctionalProperty">InverseFunctionalProperty</a>, <a href="nrl-ontology.html#nrl:Namespace">Namespace</a>, <a href="nrl-ontology.html#nrl:Ontology">Ontology</a></p>
+<h2 id="additional-properties">
+<a name="nrl.extra_properties"></a>Additional Properties</h2>
+<p><a href="nrl-ontology.html#nrl:fulltextIndexed">fulltextIndexed</a>, <a href="nrl-ontology.html#nrl:indexed">indexed</a>, <a href="nrl-ontology.html#nrl:maxCardinality">maxCardinality</a>, <a href="nrl-ontology.html#nrl:propertySpecification">propertySpecification</a>, <a href="nrl-ontology.html#nrl:secondaryIndex">secondaryIndex</a>, <a href="nrl-ontology.html#nrl:weight">weight</a>, <a href="nrl-ontology.html#nrl:classSpecification">classSpecification</a>, <a href="nrl-ontology.html#nrl:domainIndex">domainIndex</a>, <a href="nrl-ontology.html#nrl:notify">notify</a>, <a href="nrl-ontology.html#nrl:added">added</a>, <a href="nrl-ontology.html#nrl:deprecated">deprecated</a>, <a href="nrl-ontology.html#nrl:modified">modified</a></p>
+<h2 id="class-details">
+<a name="nrl-classes"></a>Class Details</h2>
+<h3 id="inversefunctionalproperty">
+<a name="nrl:InverseFunctionalProperty"></a>InverseFunctionalProperty</h3>
+<h5 id="description">Description</h5>
+<p>A marker class to identify inverse functional properties</p>
+<h4 id="class-hierarchy">
+<a name="nrl:InverseFunctionalProperty.hierarchy"></a>Class hierarchy</h4>
+<pre><code>nrl:InverseFunctionalProperty 
+</code></pre>
+<h3 id="namespace">
+<a name="nrl:Namespace"></a>Namespace</h3>
+<h5 id="description1">Description</h5>
+<p>Specifies a namespace. This is a Tracker extension</p>
+<h4 id="class-hierarchy1">
+<a name="nrl:Namespace.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nrl:Namespace 
+</code></pre>
+<h4 id="predefined-instances">
+<a name="nrl:Namespace.predefined-instances"></a>Predefined instances</h4>
+<p>nrl:Namespace has the following predefined instances:</p>
+<ul>
+<li>dc:</li>
+<li>nrl:</li>
+<li>tracker:</li>
+<li>rdfs:</li>
+<li>rdf:</li>
+<li>xsd:</li>
+</ul>
+<h4 id="properties">
+<a name="nrl:Namespace.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nrl:prefix"></a>prefix</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> This is a Tracker extension</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ontology">
+<a name="nrl:Ontology"></a>Ontology</h3>
+<h5 id="description2">Description</h5>
+<p>An ontology</p>
+<h4 id="class-hierarchy2">
+<a name="nrl:Ontology.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nrl:Ontology 
+</code></pre>
+<h4 id="predefined-instances1">
+<a name="nrl:Ontology.predefined-instances"></a>Predefined instances</h4>
+<p>nrl:Ontology has the following predefined instances:</p>
+<ul>
+<li>dc:</li>
+<li>nrl:</li>
+<li>rdf:</li>
+<li>xsd:</li>
+</ul>
+<h4 id="properties1">
+<a name="nrl:Ontology.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nrl:lastModified"></a>lastModified</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td></td>
+<td> last modification date. This is a Tracker extension</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-details">
+<a name="nrl-extra-properties"></a>Property Details</h2>
+<h3 id="additional-properties-for-rdfproperty">
+<a name="nrl.rdf:Property"></a>Additional properties for rdf:Property</h3>
+<h4 id="description3">Description</h4>
+<p>Properties this ontology defines which can describe rdf:Property resources.</p>
+<h4 id="properties2">
+<a name="nrl.rdf:Property.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nrl:fulltextIndexed"></a>fulltextIndexed</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Whether the property is full-text indexed. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:indexed"></a>indexed</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Whether a property has an index. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:maxCardinality"></a>maxCardinality</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Specifies a maximum value cardinality for a specific property</td>
+</tr>
+<tr>
+<td> <a name="nrl:propertySpecification"></a>propertySpecification</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Link to upstream specification for an ontology property. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:secondaryIndex"></a>secondaryIndex</td>
+<td> <a href="rdf-ontology.html#rdf:Property">Property</a>
+</td>
+<td></td>
+<td> Whether subject and object properties share an index. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:weight"></a>weight</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Property weight on full-text search relevance. This is a Tracker extension</td>
+</tr>
+</tbody>
+</table>
+<h3 id="additional-properties-for-rdfsclass">
+<a name="nrl.rdfs:Class"></a>Additional properties for rdfs:Class</h3>
+<h4 id="description4">Description</h4>
+<p>Properties this ontology defines which can describe rdfs:Class resources.</p>
+<h4 id="properties3">
+<a name="nrl.rdfs:Class.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nrl:classSpecification"></a>classSpecification</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Link to upstream specification for an ontology class. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:domainIndex"></a>domainIndex</td>
+<td> <a href="rdf-ontology.html#rdf:Property">Property</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values"></a>
+</td>
+<td> Property is a domain index for the subject class. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:notify"></a>notify</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Whether resources of this class emits notifications on changes. This is a Tracker extension</td>
+</tr>
+</tbody>
+</table>
+<h3 id="additional-properties-for-rdfsresource">
+<a name="nrl.rdfs:Resource"></a>Additional properties for rdfs:Resource</h3>
+<h4 id="description5">Description</h4>
+<p>Properties this ontology defines which can describe rdfs:Resource resources.</p>
+<h4 id="properties4">
+<a name="nrl.rdfs:Resource.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nrl:added"></a>added</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td></td>
+<td> Time of insertion of the resource. This is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:deprecated"></a>deprecated</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> If this property is assigned, the subject class, property, or resource, is deprecated and should not be used in production systems any longer. It may be removed without further notice. This property is a Tracker extension</td>
+</tr>
+<tr>
+<td> <a name="nrl:modified"></a>modified</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Modification sequence number. This is a Tracker extension</td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>Nepomuk People</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>Tracker developers (translation into turtle)</li>
+</ul>
+<p>Upstream: <em>Not available</em></p>
+<p>ChangeLog: <a href="http://git.gnome.org/cgit/tracker/log/src/ontologies/12-nrl.ontology">Tracker changes</a></p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

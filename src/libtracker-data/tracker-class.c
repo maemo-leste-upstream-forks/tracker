@@ -34,11 +34,15 @@ typedef struct _TrackerClassPrivate TrackerClassPrivate;
 struct _TrackerClassPrivate {
 	gchar *uri;
 	gchar *name;
-	gint id;
+	TrackerRowid id;
 	guint is_new : 1;
 	guint db_schema_changed : 1;
 	guint notify : 1;
 	guint use_gvdb : 1;
+
+	gchar *ontology_path;
+	goffset definition_line_no;
+	goffset definition_column_no;
 
 	GMutex mutex;
 
@@ -52,7 +56,7 @@ struct _TrackerClassPrivate {
 
 static void class_finalize     (GObject      *object);
 
-G_DEFINE_TYPE_WITH_PRIVATE (TrackerClass, tracker_class, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (TrackerClass, tracker_class, G_TYPE_OBJECT)
 
 static void
 tracker_class_class_init (TrackerClassClass *klass)
@@ -89,6 +93,10 @@ class_finalize (GObject *object)
 
 	g_array_free (priv->super_classes, TRUE);
 	g_array_free (priv->domain_indexes, TRUE);
+
+	if (priv->ontology_path) {
+		g_free (priv->ontology_path);
+	}
 
 	if (priv->last_domain_indexes) {
 		g_array_free (priv->last_domain_indexes, TRUE);
@@ -181,7 +189,7 @@ tracker_class_get_name (TrackerClass *service)
 	return priv->name;
 }
 
-gint
+TrackerRowid
 tracker_class_get_id (TrackerClass *service)
 {
 	TrackerClassPrivate *priv;
@@ -280,6 +288,42 @@ tracker_class_get_db_schema_changed (TrackerClass *service)
 	return priv->db_schema_changed;
 }
 
+const gchar *
+tracker_class_get_ontology_path (TrackerClass *service)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_CLASS (service), FALSE);
+
+	priv = tracker_class_get_instance_private (service);
+
+	return priv->ontology_path;
+}
+
+goffset
+tracker_class_get_definition_line_no (TrackerClass *service)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_CLASS (service), FALSE);
+
+	priv = tracker_class_get_instance_private (service);
+
+	return priv->definition_line_no;
+}
+
+goffset
+tracker_class_get_definition_column_no (TrackerClass *service)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_CLASS (service), FALSE);
+
+	priv = tracker_class_get_instance_private (service);
+
+	return priv->definition_column_no;
+}
+
 void
 tracker_class_set_uri (TrackerClass *service,
                        const gchar  *value)
@@ -323,7 +367,7 @@ tracker_class_set_uri (TrackerClass *service,
 
 void
 tracker_class_set_id (TrackerClass *service,
-                      gint          value)
+                      TrackerRowid  value)
 {
 	TrackerClassPrivate *priv;
 
@@ -470,4 +514,46 @@ tracker_class_set_ontologies (TrackerClass      *class,
 
 	priv = tracker_class_get_instance_private (class);
 	priv->ontologies = ontologies;
+}
+
+void
+tracker_class_set_ontology_path (TrackerClass *service,
+                                 const gchar  *value)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_CLASS (service));
+
+	priv = tracker_class_get_instance_private (service);
+
+	if (priv->ontology_path)
+		g_free (priv->ontology_path);
+
+	priv->ontology_path = g_strdup (value);
+}
+
+void
+tracker_class_set_definition_line_no (TrackerClass *service,
+                                      goffset       value)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_CLASS (service));
+
+	priv = tracker_class_get_instance_private (service);
+
+	priv->definition_line_no = value;
+}
+
+void
+tracker_class_set_definition_column_no (TrackerClass *service,
+                                        goffset       value)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_CLASS (service));
+
+	priv = tracker_class_get_instance_private (service);
+
+	priv->definition_column_no = value;
 }

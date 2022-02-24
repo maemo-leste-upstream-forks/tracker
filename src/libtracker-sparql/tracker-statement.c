@@ -38,7 +38,9 @@
  * Once all arguments have a value, the query may be executed through
  * tracker_sparql_statement_execute() or tracker_sparql_statement_execute_async().
  *
- * This object was added in Tracker 2.2.
+ * It is possible to use a given #TrackerSparqlStatement in other threads than
+ * the one it was created from. It must be however used from just one thread
+ * at any given time.
  */
 #include "config.h"
 
@@ -214,9 +216,9 @@ tracker_sparql_statement_bind_boolean (TrackerSparqlStatement *stmt,
 	g_return_if_fail (TRACKER_IS_SPARQL_STATEMENT (stmt));
 	g_return_if_fail (name != NULL);
 
-	return TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_boolean (stmt,
-	                                                                name,
-	                                                                value);
+	TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_boolean (stmt,
+	                                                         name,
+	                                                         value);
 }
 
 /**
@@ -235,9 +237,9 @@ tracker_sparql_statement_bind_int (TrackerSparqlStatement *stmt,
 	g_return_if_fail (TRACKER_IS_SPARQL_STATEMENT (stmt));
 	g_return_if_fail (name != NULL);
 
-	return TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_int (stmt,
-	                                                            name,
-	                                                            value);
+	TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_int (stmt,
+	                                                     name,
+	                                                     value);
 }
 
 /**
@@ -256,9 +258,9 @@ tracker_sparql_statement_bind_double (TrackerSparqlStatement *stmt,
 	g_return_if_fail (TRACKER_IS_SPARQL_STATEMENT (stmt));
 	g_return_if_fail (name != NULL);
 
-	return TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_double (stmt,
-	                                                               name,
-	                                                               value);
+	TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_double (stmt,
+	                                                        name,
+	                                                        value);
 }
 
 /**
@@ -278,9 +280,33 @@ tracker_sparql_statement_bind_string (TrackerSparqlStatement *stmt,
 	g_return_if_fail (name != NULL);
 	g_return_if_fail (value != NULL);
 
-	return TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_string (stmt,
-	                                                               name,
-	                                                               value);
+	TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_string (stmt,
+	                                                        name,
+	                                                        value);
+}
+
+/**
+ * tracker_sparql_statement_bind_datetime:
+ * @stmt: a #TrackerSparqlStatement
+ * @name: variable name
+ * @value: value
+ *
+ * Binds the GDateTime @value to variable @name.
+ * Since: 3.2
+ */
+
+void
+tracker_sparql_statement_bind_datetime (TrackerSparqlStatement *stmt,
+                                        const gchar            *name,
+                                        GDateTime              *value)
+{
+	g_return_if_fail (TRACKER_IS_SPARQL_STATEMENT (stmt));
+	g_return_if_fail (name != NULL);
+	g_return_if_fail (value != NULL);
+
+	TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->bind_datetime (stmt,
+	                                                          name,
+	                                                          value);
 }
 
 /**
@@ -326,10 +352,10 @@ tracker_sparql_statement_execute_async (TrackerSparqlStatement *stmt,
 	g_return_if_fail (TRACKER_IS_SPARQL_STATEMENT (stmt));
 	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
 
-	return TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->execute_async (stmt,
-	                                                                 cancellable,
-	                                                                 callback,
-	                                                                 user_data);
+	TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->execute_async (stmt,
+	                                                          cancellable,
+	                                                          callback,
+	                                                          user_data);
 }
 
 /**
@@ -371,4 +397,77 @@ tracker_sparql_statement_clear_bindings (TrackerSparqlStatement *stmt)
 	g_return_if_fail (TRACKER_IS_SPARQL_STATEMENT (stmt));
 
 	TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->clear_bindings (stmt);
+}
+
+/**
+ * tracker_sparql_statement_serialize_async:
+ * @stmt: a #TrackerSparqlStatement
+ * @flags: serialization flags
+ * @format: RDF format of the serialized data
+ * @cancellable: (nullable): a #GCancellable used to cancel the operation
+ * @callback: user-defined #GAsyncReadyCallback to be called when
+ *            asynchronous operation is finished.
+ * @user_data: user-defined data to be passed to @callback
+ *
+ * Serializes data into the specified RDF format. The query @stmt was
+ * created from must be either a `DESCRIBE` or `CONSTRUCT` query, an
+ * error will be raised otherwise.
+ *
+ * This is an asynchronous operation, @callback will be invoked when the
+ * data is available for reading.
+ *
+ * The SPARQL endpoint may not support the specified format, in that case
+ * an error will be raised.
+ *
+ * The @flags argument is reserved for future expansions, currently
+ * %TRACKER_SERIALIZE_FLAGS_NONE must be passed.
+ *
+ * Since: 3.3
+ **/
+void
+tracker_sparql_statement_serialize_async (TrackerSparqlStatement *stmt,
+                                          TrackerSerializeFlags   flags,
+                                          TrackerRdfFormat        format,
+                                          GCancellable           *cancellable,
+                                          GAsyncReadyCallback     callback,
+                                          gpointer                user_data)
+{
+	g_return_if_fail (TRACKER_IS_SPARQL_STATEMENT (stmt));
+	g_return_if_fail (flags == TRACKER_SERIALIZE_FLAGS_NONE);
+	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
+	g_return_if_fail (callback != NULL);
+
+	TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->serialize_async (stmt,
+	                                                            flags,
+	                                                            format,
+	                                                            cancellable,
+	                                                            callback,
+	                                                            user_data);
+}
+
+/**
+ * tracker_sparql_statement_serialize_finish:
+ * @stmt: a #TrackerSparqlStatement
+ * @result: the #GAsyncResult
+ * @error: location for returned errors, or %NULL
+ *
+ * Finishes a tracker_sparql_statement_serialize_async() operation.
+ * In case of error, %NULL will be returned and @error will be set.
+ *
+ * Returns: (transfer full): a #GInputStream to read RDF content.
+ *
+ * Since: 3.3
+ **/
+GInputStream *
+tracker_sparql_statement_serialize_finish (TrackerSparqlStatement  *stmt,
+                                           GAsyncResult            *result,
+                                           GError                 **error)
+{
+	g_return_val_if_fail (TRACKER_IS_SPARQL_STATEMENT (stmt), NULL);
+	g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
+	g_return_val_if_fail (!error || !*error, NULL);
+
+	return TRACKER_SPARQL_STATEMENT_GET_CLASS (stmt)->serialize_finish (stmt,
+	                                                                    result,
+	                                                                    error);
 }

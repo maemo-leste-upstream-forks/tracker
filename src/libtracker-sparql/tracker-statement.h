@@ -70,6 +70,10 @@ TRACKER_AVAILABLE_IN_ALL
 void tracker_sparql_statement_bind_string (TrackerSparqlStatement *stmt,
                                            const gchar            *name,
                                            const gchar            *value);
+TRACKER_AVAILABLE_IN_3_2
+void tracker_sparql_statement_bind_datetime (TrackerSparqlStatement *stmt,
+                                             const gchar            *name,
+                                             GDateTime              *value);
 
 TRACKER_AVAILABLE_IN_ALL
 TrackerSparqlCursor * tracker_sparql_statement_execute (TrackerSparqlStatement  *stmt,
@@ -86,6 +90,19 @@ TRACKER_AVAILABLE_IN_ALL
 TrackerSparqlCursor * tracker_sparql_statement_execute_finish (TrackerSparqlStatement  *stmt,
                                                                GAsyncResult            *res,
                                                                GError                 **error);
+
+TRACKER_AVAILABLE_IN_3_3
+void tracker_sparql_statement_serialize_async (TrackerSparqlStatement *stmt,
+                                               TrackerSerializeFlags   flags,
+                                               TrackerRdfFormat        format,
+                                               GCancellable           *cancellable,
+                                               GAsyncReadyCallback     callback,
+                                               gpointer                user_data);
+
+TRACKER_AVAILABLE_IN_3_3
+GInputStream * tracker_sparql_statement_serialize_finish (TrackerSparqlStatement  *stmt,
+                                                          GAsyncResult            *result,
+                                                          GError                 **error);
 
 TRACKER_AVAILABLE_IN_ALL
 void tracker_sparql_statement_clear_bindings (TrackerSparqlStatement *stmt);

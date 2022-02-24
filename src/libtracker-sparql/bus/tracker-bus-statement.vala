@@ -51,6 +51,11 @@ public class Tracker.Bus.Statement : Tracker.Sparql.Statement {
 		this.arguments.insert (name, new GLib.Variant.string (value));
 	}
 
+	public override void bind_datetime (string name, DateTime value) {
+		string date_time = value.to_string ();
+		this.arguments.insert (name, new GLib.Variant.string (date_time));
+	}
+
 	public override void clear_bindings () {
 		this.arguments.remove_all ();
 	}
@@ -87,5 +92,9 @@ public class Tracker.Bus.Statement : Tracker.Sparql.Statement {
 
 	public async override Sparql.Cursor execute_async (GLib.Cancellable? cancellable) throws Sparql.Error, GLib.Error, GLib.IOError, GLib.DBusError {
 		return yield Tracker.Bus.Connection.perform_query_call (bus, dbus_name, object_path, query, get_arguments (), cancellable);
+	}
+
+	public async override GLib.InputStream serialize_async (SerializeFlags flags, RdfFormat format, GLib.Cancellable? cancellable) throws Sparql.Error, GLib.Error, GLib.IOError, GLib.DBusError {
+		return yield Tracker.Bus.Connection.perform_serialize (bus, dbus_name, object_path, flags, format, query, get_arguments (), cancellable);
 	}
 }

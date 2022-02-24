@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Nepomuk File Ontology (NFO)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="nfo-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="nepomuk-file-ontology-nfo">Nepomuk File Ontology (NFO)</h1>
+<pre><code class="language-turtle">@prefix nfo: &lt;http://tracker.api.gnome.org/ontology/v3/nfo#&gt;
+</code></pre>
+<h2 id="classes">
+<a name="nfo.classes"></a>Classes</h2>
+<p><a href="nfo-ontology.html#nfo:Application">Application</a>, <a href="nfo-ontology.html#nfo:Archive">Archive</a>, <a href="nfo-ontology.html#nfo:ArchiveItem">ArchiveItem</a>, <a href="nfo-ontology.html#nfo:Attachment">Attachment</a>, <a href="nfo-ontology.html#nfo:Audio">Audio</a>, <a href="nfo-ontology.html#nfo:Bookmark">Bookmark</a>, <a href="nfo-ontology.html#nfo:BookmarkFolder">BookmarkFolder</a>, <a href="nfo-ontology.html#nfo:CompressionType">CompressionType</a>, <a href="nfo-ontology.html#nfo:Cursor">Cursor</a>, <a href="nfo-ontology.html#nfo:DataContainer">DataContainer</a>, <a href="nfo-ontology.html#nfo:DeletedResource">DeletedResource</a>, <a href="nfo-ontology.html#nfo:Document">Document</a>, <a href="nfo-ontology.html#nfo:EBook">EBook</a>, <a href="nfo-ontology.html#nfo:EmbeddedFileDataObject">EmbeddedFileDataObject</a>, <a href="nfo-ontology.html#nfo:Equipment">Equipment</a>, <a href="nfo-ontology.html#nfo:Executable">Executable</a>, <a href="nfo-ontology.html#nfo:FileDataObject">FileDataObject</a>, <a href="nfo-ontology.html#nfo:FileHash">FileHash</a>, <a href="nfo-ontology.html#nfo:Filesystem">Filesystem</a>, <a href="nfo-ontology.html#nfo:FilesystemImage">FilesystemImage</a>, <a href="nfo-ontology.html#nfo:Folder">Folder</a>, <a href="nfo-ontology.html#nfo:Font">Font</a>, <a href="nfo-ontology.html#nfo:GameImage">GameImage</a>, <a href="nfo-ontology.html#nfo:HardDiskPartition">HardDiskPartition</a>, <a href="nfo-ontology.html#nfo:HelpDocument">HelpDocument</a>, <a href="nfo-ontology.html#nfo:HtmlDocument">HtmlDocument</a>, <a href="nfo-ontology.html#nfo:Icon">Icon</a>, <a href="nfo-ontology.html#nfo:Image">Image</a>, <a href="nfo-ontology.html#nfo:ImageCategory">ImageCategory</a>, <a href="nfo-ontology.html#nfo:Media">Media</a>, <a href="nfo-ontology.html#nfo:MediaFileListEntry">MediaFileListEntry</a>, <a href="nfo-ontology.html#nfo:MediaList">MediaList</a>, <a href="nfo-ontology.html#nfo:MediaStream">MediaStream</a>, <a href="nfo-ontology.html#nfo:MindMap">MindMap</a>, <a href="nfo-ontology.html#nfo:Note">Note</a>, <a href="nfo-ontology.html#nfo:OperatingSystem">OperatingSystem</a>, <a href="nfo-ontology.html#nfo:Orientation">Orientation</a>, <a href="nfo-ontology.html#nfo:PaginatedTextDocument">PaginatedTextDocument</a>, <a href="nfo-ontology.html#nfo:PlainTextDocument">PlainTextDocument</a>, <a href="nfo-ontology.html#nfo:Presentation">Presentation</a>, <a href="nfo-ontology.html#nfo:RasterImage">RasterImage</a>, <a href="nfo-ontology.html#nfo:RegionOfInterest">RegionOfInterest</a>, <a href="nfo-ontology.html#nfo:RegionOfInterestContent">RegionOfInterestContent</a>, <a href="nfo-ontology.html#nfo:RemoteDataObject">RemoteDataObject</a>, <a href="nfo-ontology.html#nfo:RemotePortAddress">RemotePortAddress</a>, <a href="nfo-ontology.html#nfo:Software">Software</a>, <a href="nfo-ontology.html#nfo:SoftwareApplication">SoftwareApplication</a>, <a href="nfo-ontology.html#nfo:SoftwareCategory">SoftwareCategory</a>, <a href="nfo-ontology.html#nfo:SoftwareItem">SoftwareItem</a>, <a href="nfo-ontology.html#nfo:SoftwareService">SoftwareService</a>, <a href="nfo-ontology.html#nfo:SourceCode">SourceCode</a>, <a href="nfo-ontology.html#nfo:Spreadsheet">Spreadsheet</a>, <a href="nfo-ontology.html#nfo:TextDocument">TextDocument</a>, <a href="nfo-ontology.html#nfo:Trash">Trash</a>, <a href="nfo-ontology.html#nfo:VectorImage">VectorImage</a>, <a href="nfo-ontology.html#nfo:Video">Video</a>, <a href="nfo-ontology.html#nfo:Visual">Visual</a>, <a href="nfo-ontology.html#nfo:WebHistory">WebHistory</a>, <a href="nfo-ontology.html#nfo:Website">Website</a></p>
+<h2 id="additional-properties">
+<a name="nfo.extra_properties"></a>Additional Properties</h2>
+<p><a href="nfo-ontology.html#nfo:belongsToContainer">belongsToContainer</a>, <a href="nfo-ontology.html#nfo:isBootable">isBootable</a>, <a href="nfo-ontology.html#nfo:isContentEncrypted">isContentEncrypted</a>, <a href="nfo-ontology.html#nfo:depiction">depiction</a></p>
+<h2 id="class-details">
+<a name="nfo-classes"></a>Class Details</h2>
+<h3 id="application">
+<a name="nfo:Application"></a>Application</h3>
+<h5 id="description">Description</h5>
+<p>An application</p>
+<h4 id="class-hierarchy">
+<a name="nfo:Application.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Software 
+        ╰── nfo:Application 
+</code></pre>
+<h3 id="archive">
+<a name="nfo:Archive"></a>Archive</h3>
+<h5 id="description1">Description</h5>
+<p>A compressed file. May contain other files or folder inside.</p>
+<h4 id="class-hierarchy1">
+<a name="nfo:Archive.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:DataContainer 
+        ╰── nfo:Archive 
+</code></pre>
+<h4 id="properties">
+<a name="nfo:Archive.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:uncompressedSize"></a>uncompressedSize</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Uncompressed size of the content of a compressed file.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="archiveitem">
+<a name="nfo:ArchiveItem"></a>ArchiveItem</h3>
+<h5 id="description2">Description</h5>
+<p>A file entity inside an archive.</p>
+<h4 id="class-hierarchy2">
+<a name="nfo:ArchiveItem.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:FileDataObject 
+        ╰── nfo:EmbeddedFileDataObject 
+            ╰── nfo:ArchiveItem 
+</code></pre>
+<h4 id="properties1">
+<a name="nfo:ArchiveItem.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:isPasswordProtected"></a>isPasswordProtected</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> States if a given resource is password-protected.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="attachment">
+<a name="nfo:Attachment"></a>Attachment</h3>
+<h5 id="description3">Description</h5>
+<p>A file attached to another data object. Many data formats allow for attachments: emails, vcards, ical events, id3 and exif...</p>
+<h4 id="class-hierarchy3">
+<a name="nfo:Attachment.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:FileDataObject 
+        ╰── nfo:EmbeddedFileDataObject 
+            ╰── nfo:Attachment 
+</code></pre>
+<h3 id="audio">
+<a name="nfo:Audio"></a>Audio</h3>
+<h5 id="description4">Description</h5>
+<p>A file containing audio content</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy4">
+<a name="nfo:Audio.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Media 
+        ╰── nfo:Audio 
+            ├── nmm:Video 
+            ╰── nmm:RadioStation 
+</code></pre>
+<h4 id="properties2">
+<a name="nfo:Audio.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:audioOffset"></a>audioOffset</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Specifies the start offset of this resource within a larger file, such as a single song within a recording of a radio broadcast or a CD rip.</td>
+</tr>
+<tr>
+<td> <a name="nfo:averageAudioBitrate"></a>averageAudioBitrate</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</td>
+</tr>
+<tr>
+<td> <a name="nfo:bitsPerSample"></a>bitsPerSample</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:bitDepth"><img src="images/icon-superproperty.svg" alt="This property extends nfo:bitDepth" title="This property extends nfo:bitDepth" id="this-property-extends-nfobitdepth"></a>
+</td>
+<td> Amount of bits in each audio sample.</td>
+</tr>
+<tr>
+<td> <a name="nfo:channels"></a>channels</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Number of channels. This property is to be used directly if no detailed information is necessary. Otherwise use more detailed subproperties.</td>
+</tr>
+<tr>
+<td> <a name="nfo:frontChannels"></a>frontChannels</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:channels"><img src="images/icon-superproperty.svg" alt="This property extends nfo:channels" title="This property extends nfo:channels" id="this-property-extends-nfochannels"></a>
+</td>
+<td> Number of front channels.</td>
+</tr>
+<tr>
+<td> <a name="nfo:gain"></a>gain</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Gain of media</td>
+</tr>
+<tr>
+<td> <a name="nfo:lfeChannels"></a>lfeChannels</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:channels"><img src="images/icon-superproperty.svg" alt="This property extends nfo:channels" title="This property extends nfo:channels" id="this-property-extends-nfochannels1"></a>
+</td>
+<td> Number of Low Frequency Expansion (subwoofer) channels.</td>
+</tr>
+<tr>
+<td> <a name="nfo:peakGain"></a>peakGain</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Peak Gain of media</td>
+</tr>
+<tr>
+<td> <a name="nfo:rearChannels"></a>rearChannels</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:channels"><img src="images/icon-superproperty.svg" alt="This property extends nfo:channels" title="This property extends nfo:channels" id="this-property-extends-nfochannels2"></a>
+</td>
+<td> Number of rear channels.</td>
+</tr>
+<tr>
+<td> <a name="nfo:sampleCount"></a>sampleCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:count"><img src="images/icon-superproperty.svg" alt="This property extends nfo:count" title="This property extends nfo:count" id="this-property-extends-nfocount"></a>
+</td>
+<td> The amount of samples in an audio clip.</td>
+</tr>
+<tr>
+<td> <a name="nfo:sampleRate"></a>sampleRate</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> The amount of audio samples per second.</td>
+</tr>
+<tr>
+<td> <a name="nfo:sideChannels"></a>sideChannels</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:channels"><img src="images/icon-superproperty.svg" alt="This property extends nfo:channels" title="This property extends nfo:channels" id="this-property-extends-nfochannels3"></a>
+</td>
+<td> Number of side channels</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bookmark">
+<a name="nfo:Bookmark"></a>Bookmark</h3>
+<h5 id="description5">Description</h5>
+<p>A bookmark of a webbrowser. Use nie:title for the name/label, nie:contentCreated to represent the date when the user added the bookmark, and nie:contentLastModified for modifications. nfo:bookmarks to store the link.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon1"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy5">
+<a name="nfo:Bookmark.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Bookmark 
+</code></pre>
+<h4 id="properties3">
+<a name="nfo:Bookmark.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:bookmarks"></a>bookmarks</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td> <a href="nie-ontology.html#nie:links"><img src="images/icon-superproperty.svg" alt="This property extends nie:links" title="This property extends nie:links" id="this-property-extends-nielinks"></a>
+</td>
+<td> The address of the linked object. Usually a web URL.</td>
+</tr>
+<tr>
+<td> <a name="nfo:characterPosition"></a>characterPosition</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Character position of the bookmark</td>
+</tr>
+<tr>
+<td> <a name="nfo:pageNumber"></a>pageNumber</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Page linked by the bookmark</td>
+</tr>
+<tr>
+<td> <a name="nfo:streamDuration"></a>streamDuration</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nfo:streamPosition"></a>streamPosition</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Stream position of the bookmark, suitable for e.g. audio books. Expressed in milliseconds</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bookmarkfolder">
+<a name="nfo:BookmarkFolder"></a>BookmarkFolder</h3>
+<h5 id="description6">Description</h5>
+<p>A folder with bookmarks of a webbrowser. Use nfo:containsBookmark to relate Bookmarks. Folders can contain subfolders, use containsBookmarkFolder to relate them.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon2"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy6">
+<a name="nfo:BookmarkFolder.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:BookmarkFolder 
+</code></pre>
+<h4 id="properties4">
+<a name="nfo:BookmarkFolder.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:containsBookmark"></a>containsBookmark</td>
+<td> <a href="nfo-ontology.html#nfo:Bookmark">Bookmark</a>
+</td>
+<td> <a href="nie-ontology.html#nie:hasLogicalPart"><img src="images/icon-superproperty.svg" alt="This property extends nie:hasLogicalPart" title="This property extends nie:hasLogicalPart" id="this-property-extends-niehaslogicalpart"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values"></a>
+</td>
+<td> The folder contains a bookmark.</td>
+</tr>
+<tr>
+<td> <a name="nfo:containsBookmarkFolder"></a>containsBookmarkFolder</td>
+<td> <a href="nfo-ontology.html#nfo:BookmarkFolder">BookmarkFolder</a>
+</td>
+<td> <a href="nie-ontology.html#nie:hasLogicalPart"><img src="images/icon-superproperty.svg" alt="This property extends nie:hasLogicalPart" title="This property extends nie:hasLogicalPart" id="this-property-extends-niehaslogicalpart1"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values1"></a>
+</td>
+<td> The folder contains a bookmark folder.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="compressiontype">
+<a name="nfo:CompressionType"></a>CompressionType</h3>
+<h5 id="description7">Description</h5>
+<p>Type of compression. Instances of this class represent the limited set of values allowed for the nfo:compressionType property.</p>
+<h4 id="class-hierarchy7">
+<a name="nfo:CompressionType.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nfo:CompressionType 
+</code></pre>
+<h3 id="cursor">
+<a name="nfo:Cursor"></a>Cursor</h3>
+<h5 id="description8">Description</h5>
+<p>A Cursor.</p>
+<h4 id="class-hierarchy8">
+<a name="nfo:Cursor.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Media 
+        ╰── nfo:Visual 
+            ╰── nfo:Image 
+                ╰── nfo:RasterImage 
+                    ╰── nfo:Cursor 
+</code></pre>
+<h3 id="datacontainer">
+<a name="nfo:DataContainer"></a>DataContainer</h3>
+<h5 id="description9">Description</h5>
+<p>A superclass for all entities, whose primary purpose is to serve as containers for other data object. They usually don't have any 'meaning' by themselves. Examples include folders, archives and optical disc images.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon3"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy9">
+<a name="nfo:DataContainer.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement ──┐
+    ╰── nfo:DataContainer ───┤
+        ├── nfo:Trash        │
+    │                        └── nfo:SoftwareCategory 
+        ├── nfo:ImageCategory 
+        ├── nfo:Folder 
+        ├── nfo:Filesystem 
+        ╰── nfo:Archive 
+</code></pre>
+<h4 id="predefined-instances">
+<a name="nfo:DataContainer.predefined-instances"></a>Predefined instances</h4>
+<p>nfo:DataContainer has the following predefined instances:</p>
+<ul>
+<li>nfo:image-category-screenshot</li>
+</ul>
+<h3 id="deletedresource">
+<a name="nfo:DeletedResource"></a>DeletedResource</h3>
+<h5 id="description10">Description</h5>
+<p>A file entity that has been deleted from the original source. Usually such entities are stored within various kinds of 'Trash' or 'Recycle Bin' folders.</p>
+<h4 id="class-hierarchy10">
+<a name="nfo:DeletedResource.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:FileDataObject 
+        ╰── nfo:DeletedResource 
+</code></pre>
+<h4 id="properties5">
+<a name="nfo:DeletedResource.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:deletionDate"></a>deletionDate</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td></td>
+<td> The date and time of the deletion.</td>
+</tr>
+<tr>
+<td> <a name="nfo:originalLocation"></a>originalLocation</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The original location of the deleted resource.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="document">
+<a name="nfo:Document"></a>Document</h3>
+<h5 id="description11">Description</h5>
+<p>A generic document. A common superclass for all documents on the desktop.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon4"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy11">
+<a name="nfo:Document.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ├── nfo:TextDocument 
+        ├── nfo:Spreadsheet 
+        ├── nfo:Presentation 
+        ├── nfo:Note 
+        ├── nfo:MindMap 
+        ╰── nfo:HelpDocument 
+</code></pre>
+<h4 id="properties6">
+<a name="nfo:Document.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:tableOfContents"></a>tableOfContents</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch"></a>
+</td>
+<td> Section titles and figure descriptions of the document.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ebook">
+<a name="nfo:EBook"></a>EBook</h3>
+<h5 id="description12">Description</h5>
+<p>Books which can be electronically viewed</p>
+<h4 id="class-hierarchy12">
+<a name="nfo:EBook.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:TextDocument 
+            ╰── nfo:PaginatedTextDocument 
+                ╰── nfo:EBook 
+</code></pre>
+<h3 id="embeddedfiledataobject">
+<a name="nfo:EmbeddedFileDataObject"></a>EmbeddedFileDataObject</h3>
+<h5 id="description13">Description</h5>
+<p>A file embedded in another data object. There are many ways in which a file may be embedded in another one. Use this class directly only in cases if none of the subclasses gives a better description of your case.</p>
+<h4 id="class-hierarchy13">
+<a name="nfo:EmbeddedFileDataObject.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:FileDataObject 
+        ╰── nfo:EmbeddedFileDataObject 
+            ├── nfo:Attachment 
+            ╰── nfo:ArchiveItem 
+</code></pre>
+<h4 id="properties7">
+<a name="nfo:EmbeddedFileDataObject.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:encoding"></a>encoding</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The encoding used for the Embedded File. Examples might include BASE64 or UUEncode</td>
+</tr>
+</tbody>
+</table>
+<h3 id="equipment">
+<a name="nfo:Equipment"></a>Equipment</h3>
+<h5 id="description14">Description</h5>
+<p>The equipment used to create media</p>
+<h4 id="class-hierarchy14">
+<a name="nfo:Equipment.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Equipment 
+</code></pre>
+<h4 id="properties8">
+<a name="nfo:Equipment.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:equipmentSoftware"></a>equipmentSoftware</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The software of the equipment</td>
+</tr>
+<tr>
+<td> <a name="nfo:manufacturer"></a>manufacturer</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The manufacturer of the equipment</td>
+</tr>
+<tr>
+<td> <a name="nfo:model"></a>model</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The model of the equipment</td>
+</tr>
+</tbody>
+</table>
+<h3 id="executable">
+<a name="nfo:Executable"></a>Executable</h3>
+<h5 id="description15">Description</h5>
+<p>An executable file.</p>
+<h4 id="class-hierarchy15">
+<a name="nfo:Executable.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Executable 
+</code></pre>
+<h3 id="filedataobject">
+<a name="nfo:FileDataObject"></a>FileDataObject</h3>
+<h5 id="description16">Description</h5>
+<p>A resource containing a finite sequence of bytes with arbitrary information, that is available to a computer program and is usually based on some kind of durable storage. A file is durable in the sense that it remains available for programs to use after the current program has finished.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon5"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy16">
+<a name="nfo:FileDataObject.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:FileDataObject 
+        ├── nfo:RemoteDataObject 
+        ├── nfo:EmbeddedFileDataObject 
+        ╰── nfo:DeletedResource 
+</code></pre>
+<h4 id="properties9">
+<a name="nfo:FileDataObject.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:fileCreated"></a>fileCreated</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="nie-ontology.html#nie:created"><img src="images/icon-superproperty.svg" alt="This property extends nie:created" title="This property extends nie:created" id="this-property-extends-niecreated"></a>
+</td>
+<td> File creation date</td>
+</tr>
+<tr>
+<td> <a name="nfo:fileLastAccessed"></a>fileLastAccessed</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="dc-ontology.html#dc:date"><img src="images/icon-superproperty.svg" alt="This property extends dc:date" title="This property extends dc:date" id="this-property-extends-dcdate"></a>
+</td>
+<td> Time when the file was last accessed.</td>
+</tr>
+<tr>
+<td> <a name="nfo:fileLastModified"></a>fileLastModified</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="dc-ontology.html#dc:date"><img src="images/icon-superproperty.svg" alt="This property extends dc:date" title="This property extends dc:date" id="this-property-extends-dcdate1"></a>
+</td>
+<td> last modification date</td>
+</tr>
+<tr>
+<td> <a name="nfo:fileName"></a>fileName</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch1"></a>
+</td>
+<td> Name of the file, together with the extension</td>
+</tr>
+<tr>
+<td> <a name="nfo:fileOwner"></a>fileOwner</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td></td>
+<td> The owner of the file as defined by the file system access rights feature.</td>
+</tr>
+<tr>
+<td> <a name="nfo:fileSize"></a>fileSize</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nie-ontology.html#nie:byteSize"><img src="images/icon-superproperty.svg" alt="This property extends nie:byteSize" title="This property extends nie:byteSize" id="this-property-extends-niebytesize"></a>
+</td>
+<td> The size of the file in bytes. For compressed files it means the size of the packed file, not of the contents. For folders it means the aggregated size of all contained files and folders</td>
+</tr>
+<tr>
+<td> <a name="nfo:hasHash"></a>hasHash</td>
+<td> <a href="nfo-ontology.html#nfo:FileHash">FileHash</a>
+</td>
+<td></td>
+<td> Links the file with it's hash value.</td>
+</tr>
+<tr>
+<td> <a name="nfo:permissions"></a>permissions</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A string containing the permissions of a file. A feature common in many UNIX-like operating systems.</td>
+</tr>
+<tr>
+<td> <a name="tracker:extractorHash"></a>extractorHash</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Hash identifying the extractor of the metadata</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filehash">
+<a name="nfo:FileHash"></a>FileHash</h3>
+<h5 id="description17">Description</h5>
+<p>A fingerprint of the file, generated by some hashing function.</p>
+<h4 id="class-hierarchy17">
+<a name="nfo:FileHash.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nfo:FileHash 
+</code></pre>
+<h4 id="properties10">
+<a name="nfo:FileHash.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:hashAlgorithm"></a>hashAlgorithm</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Name of the algorithm used to compute the hash value. Examples might include CRC32, MD5, SHA, TTH etc.</td>
+</tr>
+<tr>
+<td> <a name="nfo:hashValue"></a>hashValue</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The actual value of the hash.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filesystem">
+<a name="nfo:Filesystem"></a>Filesystem</h3>
+<h5 id="description18">Description</h5>
+<p>A filesystem. Examples of filesystems include hard disk partitions, removable media, but also images thereof stored in files.</p>
+<h4 id="class-hierarchy18">
+<a name="nfo:Filesystem.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:DataContainer 
+        ╰── nfo:Filesystem 
+            ╰── nfo:FilesystemImage 
+</code></pre>
+<h3 id="filesystemimage">
+<a name="nfo:FilesystemImage"></a>FilesystemImage</h3>
+<h5 id="description19">Description</h5>
+<p>An image of a filesystem. Instances of this class may include CD images, DVD images or hard disk partition images created by various pieces of software (e.g. Norton Ghost)</p>
+<h4 id="class-hierarchy19">
+<a name="nfo:FilesystemImage.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:DataContainer 
+        ╰── nfo:Filesystem 
+            ╰── nfo:FilesystemImage 
+</code></pre>
+<h3 id="folder">
+<a name="nfo:Folder"></a>Folder</h3>
+<h5 id="description20">Description</h5>
+<p>A folder/directory. Examples of folders include folders on a filesystem and message folders in a mailbox.</p>
+<h4 id="class-hierarchy20">
+<a name="nfo:Folder.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:DataContainer 
+        ╰── nfo:Folder 
+            ╰── tracker:IndexedFolder 
+</code></pre>
+<h3 id="font">
+<a name="nfo:Font"></a>Font</h3>
+<h5 id="description21">Description</h5>
+<p>A font.</p>
+<h4 id="class-hierarchy21">
+<a name="nfo:Font.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Font 
+</code></pre>
+<h4 id="properties11">
+<a name="nfo:Font.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:fontFamily"></a>fontFamily</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch2"></a>
+</td>
+<td> The name of the font family.</td>
+</tr>
+<tr>
+<td> <a name="nfo:foundry"></a>foundry</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td> <a href="nco-ontology.html#nco:creator"><img src="images/icon-superproperty.svg" alt="This property extends nco:creator" title="This property extends nco:creator" id="this-property-extends-ncocreator"></a>
+</td>
+<td> The foundry, the organization that created the font.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gameimage">
+<a name="nfo:GameImage"></a>GameImage</h3>
+<h5 id="description22">Description</h5>
+<p>A game image. This is a Tracker extension</p>
+<h4 id="class-hierarchy22">
+<a name="nfo:GameImage.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Software 
+        ╰── nfo:SoftwareApplication 
+            ╰── nfo:GameImage 
+</code></pre>
+<h3 id="harddiskpartition">
+<a name="nfo:HardDiskPartition"></a>HardDiskPartition</h3>
+<h5 id="description23">Description</h5>
+<p>A partition on a hard disk</p>
+<h4 id="class-hierarchy23">
+<a name="nfo:HardDiskPartition.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:HardDiskPartition 
+</code></pre>
+<h3 id="helpdocument">
+<a name="nfo:HelpDocument"></a>HelpDocument</h3>
+<h5 id="description24">Description</h5>
+<p>User guides and similar to assist the user</p>
+<h4 id="class-hierarchy24">
+<a name="nfo:HelpDocument.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:HelpDocument 
+</code></pre>
+<h3 id="htmldocument">
+<a name="nfo:HtmlDocument"></a>HtmlDocument</h3>
+<h5 id="description25">Description</h5>
+<p>A HTML document, may contain links to other files.</p>
+<h4 id="class-hierarchy25">
+<a name="nfo:HtmlDocument.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:TextDocument 
+            ╰── nfo:PlainTextDocument 
+                ╰── nfo:HtmlDocument 
+</code></pre>
+<h3 id="icon">
+<a name="nfo:Icon"></a>Icon</h3>
+<h5 id="description26">Description</h5>
+<p>An Icon (regardless of whether it's a raster or a vector icon. A resource representing an icon could have two types (Icon and Raster, or Icon and Vector) if required.</p>
+<h4 id="class-hierarchy26">
+<a name="nfo:Icon.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Media 
+        ╰── nfo:Visual 
+            ╰── nfo:Image 
+                ╰── nfo:Icon 
+</code></pre>
+<h3 id="image">
+<a name="nfo:Image"></a>Image</h3>
+<h5 id="description27">Description</h5>
+<p>A file containing an image.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon6"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy27">
+<a name="nfo:Image.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Media 
+        ╰── nfo:Visual 
+            ╰── nfo:Image 
+                ├── nmm:Photo 
+                ├── nfo:VectorImage 
+                ├── nfo:RasterImage 
+                ╰── nfo:Icon 
+</code></pre>
+<h4 id="properties12">
+<a name="nfo:Image.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:depicts"></a>depicts</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values2"></a>
+</td>
+<td> Relates an image to the information elements it depicts.</td>
+</tr>
+<tr>
+<td> <a name="nfo:hasRegionOfInterest"></a>hasRegionOfInterest</td>
+<td> <a href="nfo-ontology.html#nfo:RegionOfInterest">RegionOfInterest</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values3"></a>
+</td>
+<td> Link an element with a defined region</td>
+</tr>
+<tr>
+<td> <a name="nfo:horizontalResolution"></a>horizontalResolution</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Horizontal resolution of an image (if printed). Expressed in DPI.</td>
+</tr>
+<tr>
+<td> <a name="nfo:orientation"></a>orientation</td>
+<td> <a href="nfo-ontology.html#nfo:Orientation">Orientation</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nfo:verticalResolution"></a>verticalResolution</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Vertical resolution of an Image (if printed). Expressed in DPI</td>
+</tr>
+</tbody>
+</table>
+<h3 id="imagecategory">
+<a name="nfo:ImageCategory"></a>ImageCategory</h3>
+<h5 id="description28">Description</h5>
+<p>A image category</p>
+<h4 id="class-hierarchy28">
+<a name="nfo:ImageCategory.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:DataContainer 
+        ╰── nfo:ImageCategory 
+</code></pre>
+<h4 id="predefined-instances1">
+<a name="nfo:ImageCategory.predefined-instances"></a>Predefined instances</h4>
+<p>nfo:ImageCategory has the following predefined instances:</p>
+<ul>
+<li>nfo:image-category-screenshot</li>
+</ul>
+<h3 id="media">
+<a name="nfo:Media"></a>Media</h3>
+<h5 id="description29">Description</h5>
+<p>A piece of media content. This class may be used to express complex media containers with many streams of various media content (both aural and visual).</p>
+<h4 id="class-hierarchy29">
+<a name="nfo:Media.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement ──┐──┐
+    ╰── nfo:Media ───────────┤──┤
+        │                    └── nmm:TVShow   │
+        ├── nmm:MusicPiece      │
+        │                       └── nmm:Movie 
+        ├── nfo:Visual 
+        ╰── nfo:Audio 
+</code></pre>
+<h4 id="properties13">
+<a name="nfo:Media.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:averageBitrate"></a>averageBitrate</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</td>
+</tr>
+<tr>
+<td> <a name="nfo:bitDepth"></a>bitDepth</td>
+<td> <a href="rdfs-ontology.html#rdfs:Literal">Literal</a>
+</td>
+<td></td>
+<td> A common superproperty for all properties signifying the amount of bits for an atomic unit of data. Examples of subproperties may include bitsPerSample and bitsPerPixel</td>
+</tr>
+<tr>
+<td> <a name="nfo:bitrateType"></a>bitrateType</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The type of the bitrate. Examples may include CBR and VBR.</td>
+</tr>
+<tr>
+<td> <a name="nfo:codec"></a>codec</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The name of the codec necessary to decode a piece of media.</td>
+</tr>
+<tr>
+<td> <a name="nfo:compressionType"></a>compressionType</td>
+<td> <a href="nfo-ontology.html#nfo:CompressionType">CompressionType</a>
+</td>
+<td></td>
+<td> The type of the compression. Values include, lossy and lossless.</td>
+</tr>
+<tr>
+<td> <a name="nfo:count"></a>count</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> A common superproperty for all properties signifying the amount of atomic media data units. Examples of subproperties may include sampleCount and frameCount.</td>
+</tr>
+<tr>
+<td> <a name="nfo:duration"></a>duration</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Duration of a media piece, measured in seconds.</td>
+</tr>
+<tr>
+<td> <a name="nfo:encodedBy"></a>encodedBy</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The contains the name of the person or organisation that encoded the media</td>
+</tr>
+<tr>
+<td> <a name="nfo:equipment"></a>equipment</td>
+<td> <a href="nfo-ontology.html#nfo:Equipment">Equipment</a>
+</td>
+<td></td>
+<td> Equipment used to create the media</td>
+</tr>
+<tr>
+<td> <a name="nfo:genre"></a>genre</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch3"></a>
+</td>
+<td> Genre of media</td>
+</tr>
+<tr>
+<td> <a name="nfo:hasMediaStream"></a>hasMediaStream</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td> <a href="nie-ontology.html#nie:hasPart"><img src="images/icon-superproperty.svg" alt="This property extends nie:hasPart" title="This property extends nie:hasPart" id="this-property-extends-niehaspart"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values4"></a>
+</td>
+<td> Connects a media container with a single media stream contained within.</td>
+</tr>
+<tr>
+<td> <a name="nfo:lastPlayedPosition"></a>lastPlayedPosition</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Position in the media (in seconds) where the play was paused. Positive number, being 0 the beginning of the media.</td>
+</tr>
+<tr>
+<td> <a name="nmm:alternativeMedia"></a>alternativeMedia</td>
+<td> <a href="nfo-ontology.html#nfo:Media">Media</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values5"></a>
+</td>
+<td> Link between to different version of the same media. This is used for instances in uPnp where the server can provide the same video in different resolutions and codecs</td>
+</tr>
+<tr>
+<td> <a name="nmm:artwork"></a>artwork</td>
+<td> <a href="nfo-ontology.html#nfo:Image">Image</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:depiction"><img src="images/icon-superproperty.svg" alt="This property extends nfo:depiction" title="This property extends nfo:depiction" id="this-property-extends-nfodepiction"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values6"></a>
+</td>
+<td> Associated Artwork</td>
+</tr>
+<tr>
+<td> <a name="nmm:dlnaMime"></a>dlnaMime</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Mimetypes as defined for DLNA (occasional differences compared to xdg-mime)</td>
+</tr>
+<tr>
+<td> <a name="nmm:dlnaProfile"></a>dlnaProfile</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> DLNA profile of the content, like MP3, MPEG_TS_HD_US, LPCM etc</td>
+</tr>
+<tr>
+<td> <a name="nmm:genre"></a>genre</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch4"></a>
+</td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nmm:skipCounter"></a>skipCounter</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nmm:uPnPShared"></a>uPnPShared</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Tells the uPnP MediaServer (e.g. Rygel) whether to export/share the resource or not</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mediafilelistentry">
+<a name="nfo:MediaFileListEntry"></a>MediaFileListEntry</h3>
+<h5 id="description30">Description</h5>
+<p>A single node in the list of media files contained within an MediaList instance. This class is intended to provide a type all those links have. In valid NRL untyped resources cannot be linked. There are no properties defined for this class but the application may expect rdf:first and rdf:last links. The former points to the DataObject instance, interpreted as Media the latter points at another MediaFileListEntr. At the end of the list there is a link to rdf:nil.</p>
+<h4 id="class-hierarchy30">
+<a name="nfo:MediaFileListEntry.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nfo:MediaFileListEntry 
+</code></pre>
+<h4 id="properties14">
+<a name="nfo:MediaFileListEntry.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:entryUrl"></a>entryUrl</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> URL to the element in certain position of the list</td>
+</tr>
+<tr>
+<td> <a name="nfo:listPosition"></a>listPosition</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Position of an entry in a list. Double, to optimize the poor insertions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="medialist">
+<a name="nfo:MediaList"></a>MediaList</h3>
+<h5 id="description31">Description</h5>
+<p>A file containing a list of media files.e.g. a playlist</p>
+<h4 id="class-hierarchy31">
+<a name="nfo:MediaList.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:MediaList 
+        ├── nmm:Playlist 
+        ├── nmm:MusicAlbum 
+        ╰── nmm:ImageList 
+</code></pre>
+<h4 id="properties15">
+<a name="nfo:MediaList.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:entryCounter"></a>entryCounter</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Number of entries in the list. Optimize some common queries</td>
+</tr>
+<tr>
+<td> <a name="nfo:hasMediaFileListEntry"></a>hasMediaFileListEntry</td>
+<td> <a href="nfo-ontology.html#nfo:MediaFileListEntry">MediaFileListEntry</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values7"></a>
+</td>
+<td> This property is intended to point to an RDF list of MediaFiles.</td>
+</tr>
+<tr>
+<td> <a name="nfo:listDuration"></a>listDuration</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Sum of the duration of all items in the list. Optimize some common queries. In seconds</td>
+</tr>
+<tr>
+<td> <a name="nfo:mediaListEntry"></a>mediaListEntry</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values8"></a>
+</td>
+<td> A certain item belongs to a media list. This can reflect that a song is in a playlist, an image or video in an Album</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mediastream">
+<a name="nfo:MediaStream"></a>MediaStream</h3>
+<h5 id="description32">Description</h5>
+<p>A stream of multimedia content, usually contained within a media container such as a movie (containing both audio and video) or a DVD (possibly containing many streams of audio and video). Most common interpretations for such a DataObject include Audio and Video.</p>
+<h4 id="class-hierarchy32">
+<a name="nfo:MediaStream.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:MediaStream 
+        ├── nmm:DigitalRadio 
+        ╰── nmm:AnalogRadio 
+</code></pre>
+<h3 id="mindmap">
+<a name="nfo:MindMap"></a>MindMap</h3>
+<h5 id="description33">Description</h5>
+<p>A MindMap, created by a mind-mapping utility. Examples might include FreeMind or mind mapper.</p>
+<h4 id="class-hierarchy33">
+<a name="nfo:MindMap.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:MindMap 
+</code></pre>
+<h3 id="note">
+<a name="nfo:Note"></a>Note</h3>
+<h5 id="description34">Description</h5>
+<p>Usually small document with snippets, reminders or frequenly used content.</p>
+<h4 id="class-hierarchy34">
+<a name="nfo:Note.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:Note 
+</code></pre>
+<h3 id="operatingsystem">
+<a name="nfo:OperatingSystem"></a>OperatingSystem</h3>
+<h5 id="description35">Description</h5>
+<p>An OperatingSystem</p>
+<h4 id="class-hierarchy35">
+<a name="nfo:OperatingSystem.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Software 
+        ╰── nfo:OperatingSystem 
+            ╰── osinfo:Installer 
+</code></pre>
+<h3 id="orientation">
+<a name="nfo:Orientation"></a>Orientation</h3>
+<h5 id="description36">Description</h5>
+<p>Orientation enum</p>
+<h4 id="class-hierarchy36">
+<a name="nfo:Orientation.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nfo:Orientation 
+</code></pre>
+<h4 id="predefined-instances2">
+<a name="nfo:Orientation.predefined-instances"></a>Predefined instances</h4>
+<p>nfo:Orientation has the following predefined instances:</p>
+<ul>
+<li>nfo:orientation-left</li>
+<li>nfo:orientation-right-mirror</li>
+<li>nfo:orientation-right</li>
+<li>nfo:orientation-left-mirror</li>
+<li>nfo:orientation-bottom-mirror</li>
+<li>nfo:orientation-bottom</li>
+<li>nfo:orientation-top-mirror</li>
+<li>nfo:orientation-top</li>
+</ul>
+<h3 id="paginatedtextdocument">
+<a name="nfo:PaginatedTextDocument"></a>PaginatedTextDocument</h3>
+<h5 id="description37">Description</h5>
+<p>A file containing a text document, that is unambiguously divided into pages. Examples might include PDF, DOC, PS', DVI etc.</p>
+<h4 id="class-hierarchy37">
+<a name="nfo:PaginatedTextDocument.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:TextDocument 
+            ╰── nfo:PaginatedTextDocument 
+                ╰── nfo:EBook 
+</code></pre>
+<h4 id="properties16">
+<a name="nfo:PaginatedTextDocument.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:pageCount"></a>pageCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Number of pages.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="plaintextdocument">
+<a name="nfo:PlainTextDocument"></a>PlainTextDocument</h3>
+<h5 id="description38">Description</h5>
+<p>A file containing plain text (ASCII, Unicode or other encodings). Examples may include TXT, HTML, XML, program source code etc.</p>
+<h4 id="class-hierarchy38">
+<a name="nfo:PlainTextDocument.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:TextDocument 
+            ╰── nfo:PlainTextDocument 
+                ├── nmm:SynchronizedText 
+                ├── nfo:SourceCode 
+                ╰── nfo:HtmlDocument 
+</code></pre>
+<h3 id="presentation">
+<a name="nfo:Presentation"></a>Presentation</h3>
+<h5 id="description39">Description</h5>
+<p>A Presentation made by some presentation software (Corel Presentations, OpenOffice Impress, MS Powerpoint etc.)</p>
+<h4 id="class-hierarchy39">
+<a name="nfo:Presentation.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:Presentation 
+</code></pre>
+<h3 id="rasterimage">
+<a name="nfo:RasterImage"></a>RasterImage</h3>
+<h5 id="description40">Description</h5>
+<p>A raster image.</p>
+<h4 id="class-hierarchy40">
+<a name="nfo:RasterImage.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Media 
+        ╰── nfo:Visual 
+            ╰── nfo:Image 
+                ╰── nfo:RasterImage 
+                    ╰── nfo:Cursor 
+</code></pre>
+<h3 id="regionofinterest">
+<a name="nfo:RegionOfInterest"></a>RegionOfInterest</h3>
+<h5 id="description41">Description</h5>
+<p>Area on an image with relevant content. Following the spec in http://www.metadataworkinggroup.org</p>
+<h4 id="class-hierarchy41">
+<a name="nfo:RegionOfInterest.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:RegionOfInterest 
+</code></pre>
+<h4 id="properties17">
+<a name="nfo:RegionOfInterest.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:regionOfInterestHeight"></a>regionOfInterestHeight</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Height of the region. It is normalized (values between 0 and 1) to the total height of the picture.</td>
+</tr>
+<tr>
+<td> <a name="nfo:regionOfInterestType"></a>regionOfInterestType</td>
+<td> <a href="nfo-ontology.html#nfo:RegionOfInterestContent">RegionOfInterestContent</a>
+</td>
+<td></td>
+<td> The content of a region can be one of the predefined types in the spec</td>
+</tr>
+<tr>
+<td> <a name="nfo:regionOfInterestWidth"></a>regionOfInterestWidth</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Width of the region. It is normalized (values between 0 and 1) to the total width of the picture.</td>
+</tr>
+<tr>
+<td> <a name="nfo:regionOfInterestX"></a>regionOfInterestX</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Coordinate X where the region starts. It is normalized (values between 0 and 1) to the width of the picture. Starting in the upper left corner.</td>
+</tr>
+<tr>
+<td> <a name="nfo:regionOfInterestY"></a>regionOfInterestY</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Coordinate y where the region starts. It is normalized (values between 0 and 1) to the height of the picture. Starting in the upper left corner.</td>
+</tr>
+<tr>
+<td> <a name="nfo:roiRefersTo"></a>roiRefersTo</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td></td>
+<td> Link to an item that is represented in the region. The 'type' of the region can give a clue of what exact content is linked in this property</td>
+</tr>
+</tbody>
+</table>
+<h3 id="regionofinterestcontent">
+<a name="nfo:RegionOfInterestContent"></a>RegionOfInterestContent</h3>
+<h5 id="description42">Description</h5>
+<p>Content in the area. There is a predefined set of contents in the spec: http://www.metadataworkinggroup.org</p>
+<h4 id="class-hierarchy42">
+<a name="nfo:RegionOfInterestContent.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:RegionOfInterestContent 
+</code></pre>
+<h4 id="predefined-instances3">
+<a name="nfo:RegionOfInterestContent.predefined-instances"></a>Predefined instances</h4>
+<p>nfo:RegionOfInterestContent has the following predefined instances:</p>
+<ul>
+<li>nfo:roi-content-undefined</li>
+<li>nfo:roi-content-barcode</li>
+<li>nfo:roi-content-focus</li>
+<li>nfo:roi-content-pet</li>
+<li>nfo:roi-content-face</li>
+</ul>
+<h3 id="remotedataobject">
+<a name="nfo:RemoteDataObject"></a>RemoteDataObject</h3>
+<h5 id="description43">Description</h5>
+<p>A file data object stored at a remote location. Don't confuse this class with a RemotePortAddress. This one applies to a particular resource, RemotePortAddress applies to an address, that can have various interpretations.</p>
+<h4 id="class-hierarchy43">
+<a name="nfo:RemoteDataObject.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:FileDataObject 
+        ╰── nfo:RemoteDataObject 
+</code></pre>
+<h3 id="remoteportaddress">
+<a name="nfo:RemotePortAddress"></a>RemotePortAddress</h3>
+<h5 id="description44">Description</h5>
+<p>An address specifying a remote host and port. Such an address can be interpreted in many ways (examples of such interpretations include mailboxes, websites, remote calendars or filesystems), depending on an interpretation, various kinds of data may be extracted from such an address.</p>
+<h4 id="class-hierarchy44">
+<a name="nfo:RemotePortAddress.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:RemotePortAddress 
+</code></pre>
+<h3 id="software">
+<a name="nfo:Software"></a>Software</h3>
+<h5 id="description45">Description</h5>
+<p>A piece of software. Examples may include applications and the operating system. This interpretation most commonly applies to SoftwareItems.</p>
+<h4 id="class-hierarchy45">
+<a name="nfo:Software.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Software 
+        ├── nfo:SoftwareApplication 
+        ├── nfo:OperatingSystem 
+        ╰── nfo:Application 
+</code></pre>
+<h4 id="properties18">
+<a name="nfo:Software.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:conflicts"></a>conflicts</td>
+<td> <a href="nfo-ontology.html#nfo:Software">Software</a>
+</td>
+<td></td>
+<td> States that a piece of software is in conflict with another piece of software.</td>
+</tr>
+<tr>
+<td> <a name="nfo:softwareCmdLine"></a>softwareCmdLine</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Command to launch the software</td>
+</tr>
+<tr>
+<td> <a name="nfo:softwareIcon"></a>softwareIcon</td>
+<td> <a href="nfo-ontology.html#nfo:Image">Image</a>
+</td>
+<td></td>
+<td> Icon of the software</td>
+</tr>
+<tr>
+<td> <a name="nfo:supercedes"></a>supercedes</td>
+<td> <a href="nfo-ontology.html#nfo:Software">Software</a>
+</td>
+<td></td>
+<td> States that a piece of software supercedes another piece of software.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="softwareapplication">
+<a name="nfo:SoftwareApplication"></a>SoftwareApplication</h3>
+<h5 id="description46">Description</h5>
+<p>An application</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon7"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy46">
+<a name="nfo:SoftwareApplication.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Software 
+        ╰── nfo:SoftwareApplication 
+            ╰── nfo:GameImage 
+</code></pre>
+<h3 id="softwarecategory">
+<a name="nfo:SoftwareCategory"></a>SoftwareCategory</h3>
+<h5 id="description47">Description</h5>
+<p>A software category</p>
+<h4 id="class-hierarchy47">
+<a name="nfo:SoftwareCategory.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement ──┐
+    ╰── nfo:DataContainer ───┤
+                             └── nfo:SoftwareCategory 
+</code></pre>
+<h4 id="properties19">
+<a name="nfo:SoftwareCategory.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:softwareCategoryIcon"></a>softwareCategoryIcon</td>
+<td> <a href="nfo-ontology.html#nfo:Image">Image</a>
+</td>
+<td></td>
+<td> Icon of the software</td>
+</tr>
+</tbody>
+</table>
+<h3 id="softwareitem">
+<a name="nfo:SoftwareItem"></a>SoftwareItem</h3>
+<h5 id="description48">Description</h5>
+<p>A DataObject representing a piece of software. Examples of interpretations of a SoftwareItem include an Application and an OperatingSystem.</p>
+<h4 id="class-hierarchy48">
+<a name="nfo:SoftwareItem.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:SoftwareItem 
+</code></pre>
+<h3 id="softwareservice">
+<a name="nfo:SoftwareService"></a>SoftwareService</h3>
+<h5 id="description49">Description</h5>
+<p>A service published by a piece of software, either by an operating system or an application. Examples of such services may include calendar, addresbook and mailbox managed by a PIM application. This category is introduced to distinguish between data available directly from the applications (Via some Interprocess Communication Mechanisms) and data available from files on a disk. In either case both DataObjects would receive a similar interpretation (e.g. a Mailbox) and wouldn't differ on the content level.</p>
+<h4 id="class-hierarchy49">
+<a name="nfo:SoftwareService.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nfo:SoftwareService 
+</code></pre>
+<h3 id="sourcecode">
+<a name="nfo:SourceCode"></a>SourceCode</h3>
+<h5 id="description50">Description</h5>
+<p>Code in a compilable or interpreted programming language.</p>
+<h4 id="class-hierarchy50">
+<a name="nfo:SourceCode.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:TextDocument 
+            ╰── nfo:PlainTextDocument 
+                ╰── nfo:SourceCode 
+</code></pre>
+<h4 id="properties20">
+<a name="nfo:SourceCode.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:commentCharacterCount"></a>commentCharacterCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> The amount of character in comments i.e. characters ignored by the compiler/interpreter.</td>
+</tr>
+<tr>
+<td> <a name="nfo:definesClass"></a>definesClass</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Name of a class defined in the source code file.</td>
+</tr>
+<tr>
+<td> <a name="nfo:definesFunction"></a>definesFunction</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A name of a function/method defined in the given source code file.</td>
+</tr>
+<tr>
+<td> <a name="nfo:definesGlobalVariable"></a>definesGlobalVariable</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Name of a global variable defined within the source code file.</td>
+</tr>
+<tr>
+<td> <a name="nfo:programmingLanguage"></a>programmingLanguage</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Indicates the name of the programming language this source code file is written in. Examples might include 'C', 'C++', 'Java' etc</td>
+</tr>
+</tbody>
+</table>
+<h3 id="spreadsheet">
+<a name="nfo:Spreadsheet"></a>Spreadsheet</h3>
+<h5 id="description51">Description</h5>
+<p>A spreadsheet, created by a spreadsheet application. Examples might include Gnumeric, OpenOffice Calc or MS Excel.</p>
+<h4 id="class-hierarchy51">
+<a name="nfo:Spreadsheet.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:Spreadsheet 
+</code></pre>
+<h3 id="textdocument">
+<a name="nfo:TextDocument"></a>TextDocument</h3>
+<h5 id="description52">Description</h5>
+<p>A text document</p>
+<h4 id="class-hierarchy52">
+<a name="nfo:TextDocument.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Document 
+        ╰── nfo:TextDocument 
+            ├── nfo:PlainTextDocument 
+            ╰── nfo:PaginatedTextDocument 
+</code></pre>
+<h4 id="properties21">
+<a name="nfo:TextDocument.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:characterCount"></a>characterCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> The amount of characters in the document.</td>
+</tr>
+<tr>
+<td> <a name="nfo:lineCount"></a>lineCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> The amount of lines in a text document</td>
+</tr>
+<tr>
+<td> <a name="nfo:wordCount"></a>wordCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> The amount of words in a text document.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="trash">
+<a name="nfo:Trash"></a>Trash</h3>
+<h5 id="description53">Description</h5>
+<p>Represents a container for deleted files, a feature common in modern operating systems.</p>
+<h4 id="class-hierarchy53">
+<a name="nfo:Trash.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:DataContainer 
+        ╰── nfo:Trash 
+</code></pre>
+<h3 id="vectorimage">
+<a name="nfo:VectorImage"></a>VectorImage</h3>
+<h5 id="description54">Description</h5>
+<p>A vector image (e.g. SVG)</p>
+<h4 id="class-hierarchy54">
+<a name="nfo:VectorImage.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Media 
+        ╰── nfo:Visual 
+            ╰── nfo:Image 
+                ╰── nfo:VectorImage 
+</code></pre>
+<h3 id="video">
+<a name="nfo:Video"></a>Video</h3>
+<h5 id="description55">Description</h5>
+<p>A video file.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon8"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy55">
+<a name="nfo:Video.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement ──┐──┐
+    ╰── nfo:Media ───────────┤──┤
+        ╰── nfo:Visual ──────┤──┤
+            ╰── nfo:Video ───┤──┤
+                ╰── nmm:Video   │  │
+                             └── nmm:TVShow   │
+                                └── nmm:Movie 
+</code></pre>
+<h4 id="properties22">
+<a name="nfo:Video.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:averageVideoBitrate"></a>averageVideoBitrate</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</td>
+</tr>
+<tr>
+<td> <a name="nfo:frameCount"></a>frameCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:count"><img src="images/icon-superproperty.svg" alt="This property extends nfo:count" title="This property extends nfo:count" id="this-property-extends-nfocount1"></a>
+</td>
+<td> The amount of frames in a video sequence.</td>
+</tr>
+<tr>
+<td> <a name="nfo:frameRate"></a>frameRate</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Amount of video frames per second.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="visual">
+<a name="nfo:Visual"></a>Visual</h3>
+<h5 id="description56">Description</h5>
+<p>File containing visual content.</p>
+<h4 id="class-hierarchy56">
+<a name="nfo:Visual.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement ──┐──┐
+    ╰── nfo:Media ───────────┤──┤
+        ╰── nfo:Visual ──────┤──┤
+            │                └── nmm:TVShow   │
+            │                   └── nmm:Movie 
+            ├── nfo:Video 
+            ╰── nfo:Image 
+</code></pre>
+<h4 id="properties23">
+<a name="nfo:Visual.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:aspectRatio"></a>aspectRatio</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Visual content aspect ratio. (Width divided by Height)</td>
+</tr>
+<tr>
+<td> <a name="nfo:colorDepth"></a>colorDepth</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td> <a href="nfo-ontology.html#nfo:bitDepth"><img src="images/icon-superproperty.svg" alt="This property extends nfo:bitDepth" title="This property extends nfo:bitDepth" id="this-property-extends-nfobitdepth1"></a>
+</td>
+<td> Amount of bits used to express the color of each pixel.</td>
+</tr>
+<tr>
+<td> <a name="nfo:heading"></a>heading</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Specifies the direction of travelling while capturing image/video. The range of values from 0.00 to 359.99 (where 0 is due North, 90 is East, 180 South and 270 is West)</td>
+</tr>
+<tr>
+<td> <a name="nfo:height"></a>height</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Visual content height in pixels.</td>
+</tr>
+<tr>
+<td> <a name="nfo:interlaceMode"></a>interlaceMode</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> True if the image is interlaced, false if not.</td>
+</tr>
+<tr>
+<td> <a name="nfo:tilt"></a>tilt</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Vertical inclination of the camera while capturing the image, in angles starting on 0 as horizontal, positive numbers pointing up, negative angles pointing down</td>
+</tr>
+<tr>
+<td> <a name="nfo:width"></a>width</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Visual content width in pixels.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="webhistory">
+<a name="nfo:WebHistory"></a>WebHistory</h3>
+<h5 id="description57">Description</h5>
+<p>A web history entry</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon9"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy57">
+<a name="nfo:WebHistory.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:WebHistory 
+</code></pre>
+<h4 id="properties24">
+<a name="nfo:WebHistory.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:domain"></a>domain</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nfo:uri"></a>uri</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="website">
+<a name="nfo:Website"></a>Website</h3>
+<h5 id="description58">Description</h5>
+<p>A website, usually a container for remote resources, that may be interpreted as HTMLDocuments, images or other types of content.</p>
+<h4 id="class-hierarchy58">
+<a name="nfo:Website.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nfo:Website 
+</code></pre>
+<h2 id="property-details">
+<a name="nfo-extra-properties"></a>Property Details</h2>
+<h3 id="additional-properties-for-niedataobject">
+<a name="nfo.nie:DataObject"></a>Additional properties for nie:DataObject</h3>
+<h4 id="description59">Description</h4>
+<p>Properties this ontology defines which can describe nie:DataObject resources.</p>
+<h4 id="properties25">
+<a name="nfo.nie:DataObject.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:belongsToContainer"></a>belongsToContainer</td>
+<td> <a href="nfo-ontology.html#nfo:DataContainer">DataContainer</a>
+</td>
+<td> <a href="nie-ontology.html#nie:isPartOf"><img src="images/icon-superproperty.svg" alt="This property extends nie:isPartOf" title="This property extends nie:isPartOf" id="this-property-extends-nieispartof"></a>
+</td>
+<td> Models the containment relations between Files and Folders (or CompressedFiles).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="additional-properties-for-nieinformationelement">
+<a name="nfo.nie:InformationElement"></a>Additional properties for nie:InformationElement</h3>
+<h4 id="description60">Description</h4>
+<p>Properties this ontology defines which can describe nie:InformationElement resources.</p>
+<h4 id="properties26">
+<a name="nfo.nie:InformationElement.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:isBootable"></a>isBootable</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> True when the file is bootable, for example like an ISO or other disc images</td>
+</tr>
+<tr>
+<td> <a name="nfo:isContentEncrypted"></a>isContentEncrypted</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Might change (IE of DataObject property?)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="additional-properties-for-rdfsresource">
+<a name="nfo.rdfs:Resource"></a>Additional properties for rdfs:Resource</h3>
+<h4 id="description61">Description</h4>
+<p>Properties this ontology defines which can describe rdfs:Resource resources.</p>
+<h4 id="properties27">
+<a name="nfo.rdfs:Resource.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:depiction"></a>depiction</td>
+<td> <a href="nfo-ontology.html#nfo:Image">Image</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values9"></a>
+</td>
+<td> Relates an information element to an image which depicts said element.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
+<li>Leo Sauermann, DFKI,  &lt;leo.sauermann@dfki.de&gt;</li>
+<li>Ludger van Elst, DFKI,  &lt;elst@dfki.uni-kl.de&gt;</li>
+<li>Michael Sintek, DFKI,  &lt;michael.sintek@dfki.de&gt;</li>
+<li>Tracker Developers</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
+<li>Tracker developers (translation into turtle)</li>
+</ul>
+<p>Contributors:</p>
+<ul>
+<li>Christiaan Fluit, Aduna, &lt;christiaan.fluit@aduna-software.com&gt;</li>
+<li>Evgeny 'phreedom' Egorochkin, KDE Strigi Developer, &lt;stexx@mail.ru&gt;</li>
+</ul>
+<p>Upstream: <a href="http://www.semanticdesktop.org/ontologies/nfo/">Upstream version</a></p>
+<p>ChangeLog: <a href="hhttps://gitlab.gnome.org/GNOME/tracker/-/commits/master/src/ontologies/33-nfo.ontology">Tracker changes</a></p>
+<p>Copyright:
+© 2007 <ulink url="http://www.dfki.de/">DFKI</ulink> © 2009 <ulink url="http://www.nokia.com/">Nokia</ulink>. The ontologies are made available under the terms of NEPOMUK <ulink url="http://www.semanticdesktop.org/ontologies/nfo/LICENSE.txt">software license</ulink> (FIXME verify)</p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

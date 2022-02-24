@@ -53,9 +53,6 @@
 /* Required minimum space needed to create databases (5Mb) */
 #define TRACKER_DB_MIN_REQUIRED_SPACE 5242880
 
-/* Set current database version we are working with */
-#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_2_3
-
 #define TRACKER_VACUUM_CHECK_SIZE     ((goffset) 4 * 1024 * 1024 * 1024) /* 4GB */
 
 #define IN_USE_FILENAME               ".meta.isrunning"
@@ -68,35 +65,6 @@
                    TRACKER_DB_MANAGER_FTS_ENABLE_UNACCENT |	  \
                    TRACKER_DB_MANAGER_FTS_ENABLE_STOP_WORDS |	  \
                    TRACKER_DB_MANAGER_FTS_IGNORE_NUMBERS)
-
-typedef enum {
-	TRACKER_DB_VERSION_UNKNOWN, /* Unknown */
-	TRACKER_DB_VERSION_0_6_6,   /* before indexer-split */
-	TRACKER_DB_VERSION_0_6_90,  /* after  indexer-split */
-	TRACKER_DB_VERSION_0_6_91,  /* stable release */
-	TRACKER_DB_VERSION_0_6_92,  /* current TRUNK */
-	TRACKER_DB_VERSION_0_7_0,   /* vstore branch */
-	TRACKER_DB_VERSION_0_7_4,   /* nothing special */
-	TRACKER_DB_VERSION_0_7_12,  /* nmo ontology */
-	TRACKER_DB_VERSION_0_7_13,  /* coalesce & writeback */
-	TRACKER_DB_VERSION_0_7_17,  /* mlo ontology */
-	TRACKER_DB_VERSION_0_7_20,  /* nco im ontology */
-	TRACKER_DB_VERSION_0_7_21,  /* named graphs/localtime */
-	TRACKER_DB_VERSION_0_7_22,  /* fts-limits branch */
-	TRACKER_DB_VERSION_0_7_28,  /* RC1 + mto + nco:url */
-	TRACKER_DB_VERSION_0_8_0,   /* stable release */
-	TRACKER_DB_VERSION_0_9_0,   /* unstable release */
-	TRACKER_DB_VERSION_0_9_8,   /* affiliation cardinality + volumes */
-	TRACKER_DB_VERSION_0_9_15,  /* mtp:hidden */
-	TRACKER_DB_VERSION_0_9_16,  /* Fix for NB#184823 */
-	TRACKER_DB_VERSION_0_9_19,  /* collation */
-	TRACKER_DB_VERSION_0_9_21,  /* Fix for NB#186055 */
-	TRACKER_DB_VERSION_0_9_24,  /* nmo:PhoneMessage class */
-	TRACKER_DB_VERSION_0_9_34,  /* ontology cache */
-	TRACKER_DB_VERSION_0_9_38,  /* nie:url an inverse functional property */
-	TRACKER_DB_VERSION_0_15_2,  /* fts4 */
-	TRACKER_DB_VERSION_2_3      /* sparql1.1 */
-} TrackerDBVersion;
 
 typedef struct {
 	TrackerDBInterface *iface;
@@ -128,6 +96,8 @@ struct _TrackerDBManager {
 	TrackerDBManagerFlags flags;
 	guint s_cache_size;
 	guint u_cache_size;
+	gboolean first_time;
+	TrackerDBVersion db_version;
 
 	gpointer vtab_data;
 
@@ -151,6 +121,12 @@ static TrackerDBInterface *tracker_db_manager_create_db_interface   (TrackerDBMa
                                                                      GError             **error);
 
 static TrackerDBInterface * init_writable_db_interface              (TrackerDBManager *db_manager);
+
+gboolean
+tracker_db_manager_is_first_time (TrackerDBManager *db_manager)
+{
+	return db_manager->first_time;
+}
 
 TrackerDBManagerFlags
 tracker_db_manager_get_flags (TrackerDBManager *db_manager,
@@ -316,7 +292,7 @@ db_get_version (TrackerDBManager *db_manager)
 	return version;
 }
 
-static void
+void
 tracker_db_manager_update_version (TrackerDBManager *db_manager)
 {
 	TrackerDBInterface *iface;
@@ -456,6 +432,29 @@ tracker_db_manager_db_exists (GFile *cache_location)
 	return db_exists;
 }
 
+void
+tracker_db_manager_rollback_db_creation (TrackerDBManager *db_manager)
+{
+	gchar *dir;
+	gchar *filename;
+
+	g_return_if_fail (db_manager->first_time);
+
+	if ((db_manager->flags & TRACKER_DB_MANAGER_IN_MEMORY) != 0)
+		return;
+
+	dir = g_file_get_path (db_manager->cache_location);
+	filename = g_build_filename (dir, db_base.file, NULL);
+
+	if (g_unlink (filename) < 0) {
+		g_warning ("Could not delete database file '%s': %m",
+		           db_base.file);
+	}
+
+	g_free (dir);
+	g_free (filename);
+}
+
 static gboolean
 db_check_integrity (TrackerDBManager *db_manager)
 {
@@ -513,19 +512,17 @@ db_check_integrity (TrackerDBManager *db_manager)
 
 TrackerDBManager *
 tracker_db_manager_new (TrackerDBManagerFlags   flags,
-			GFile                  *cache_location,
-			gboolean               *first_time,
-			gboolean                shared_cache,
-			guint                   select_cache_size,
-			guint                   update_cache_size,
-			TrackerBusyCallback     busy_callback,
-			gpointer                busy_user_data,
+                        GFile                  *cache_location,
+                        gboolean                shared_cache,
+                        guint                   select_cache_size,
+                        guint                   update_cache_size,
+                        TrackerBusyCallback     busy_callback,
+                        gpointer                busy_user_data,
                         GObject                *iface_data,
                         gpointer                vtab_data,
-			GError                **error)
+                        GError                **error)
 {
 	TrackerDBManager *db_manager;
-	TrackerDBVersion version;
 	int in_use_file;
 	TrackerDBInterface *resources_iface;
 	GError *internal_error = NULL;
@@ -534,10 +531,8 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 	db_manager = g_object_new (TRACKER_TYPE_DB_MANAGER, NULL);
 	db_manager->vtab_data = vtab_data;
 
-	/* First set defaults for return values */
-	if (first_time) {
-		*first_time = FALSE;
-	}
+	/* Set default value for first_time */
+	db_manager->first_time = FALSE;
 
 	/* Set up locations */
 	db_manager->flags = flags;
@@ -558,7 +553,14 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 		if ((flags & TRACKER_DB_MANAGER_READONLY) == 0) {
 
 			/* Make sure the directories exist */
-			g_mkdir_with_parents (db_manager->data_dir, 00755);
+			if (g_mkdir_with_parents (db_manager->data_dir, 00755) < 0) {
+				g_set_error (error,
+				             TRACKER_DB_INTERFACE_ERROR,
+				             TRACKER_DB_OPEN_ERROR,
+				             "Could not create database directory");
+				g_object_unref (db_manager);
+				return NULL;
+			}
 		}
 	} else {
 		db_manager->shared_cache_key = tracker_generate_uuid (NULL);
@@ -580,14 +582,25 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 			return NULL;
 		}
 	} else if ((flags & TRACKER_DB_MANAGER_SKIP_VERSION_CHECK) == 0) {
-		version = db_get_version (db_manager);
+		db_manager->db_version = db_get_version (db_manager);
 
-		if (version < TRACKER_DB_VERSION_NOW) {
+		if (db_manager->db_version < TRACKER_DB_VERSION_3_0 ||
+		    ((flags & TRACKER_DB_MANAGER_READONLY) != 0 &&
+		     db_manager->db_version < TRACKER_DB_VERSION_NOW)) {
 			g_set_error (error,
 			             TRACKER_DB_INTERFACE_ERROR,
 			             TRACKER_DB_OPEN_ERROR,
 			             "Database version is too old: got version %i, but %i is needed",
-			             version, TRACKER_DB_VERSION_NOW);
+			             db_manager->db_version, TRACKER_DB_VERSION_NOW);
+
+			g_object_unref (db_manager);
+			return NULL;
+		} else if (db_manager->db_version > TRACKER_DB_VERSION_NOW) {
+			g_set_error (error,
+			             TRACKER_DB_INTERFACE_ERROR,
+			             TRACKER_DB_OPEN_ERROR,
+			             "Database version is too new: got version %i, but %i is needed",
+			             db_manager->db_version, TRACKER_DB_VERSION_NOW);
 
 			g_object_unref (db_manager);
 			return NULL;
@@ -618,9 +631,7 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 	}
 
 	if (need_to_create) {
-		if (first_time) {
-			*first_time = TRUE;
-		}
+		db_manager->first_time = TRUE;
 
 		if ((db_manager->flags & TRACKER_DB_MANAGER_IN_MEMORY) == 0 &&
 		     !tracker_file_system_has_enough_space (db_manager->data_dir, TRACKER_DB_MIN_REQUIRED_SPACE, TRUE)) {
@@ -641,8 +652,6 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 		}
 
 		g_clear_object (&db_manager->db.iface);
-
-		tracker_db_manager_update_version (db_manager);
 	} else {
 		TRACKER_NOTE (SQLITE, g_message ("Loading files for database %s...", db_manager->db.abs_filename));
 
@@ -738,7 +747,8 @@ tracker_db_manager_finalize (GObject *object)
 
 	if (db_manager->in_use_filename && !readonly) {
 		/* do not delete in-use file for read-only mode (direct access) */
-		g_unlink (db_manager->in_use_filename);
+		if (g_unlink (db_manager->in_use_filename) < 0)
+			g_warning ("Could not delete '" IN_USE_FILENAME "': %m");
 	}
 
 	g_free (db_manager->in_use_filename);
@@ -817,7 +827,8 @@ tracker_db_manager_create_db_interface (TrackerDBManager  *db_manager,
  * returns: (callee-owns): a database connection
  **/
 TrackerDBInterface *
-tracker_db_manager_get_db_interface (TrackerDBManager *db_manager)
+tracker_db_manager_get_db_interface (TrackerDBManager  *db_manager,
+                                     GError           **error)
 {
 	GError *internal_error = NULL;
 	TrackerDBInterface *interface = NULL;
@@ -863,8 +874,7 @@ tracker_db_manager_get_db_interface (TrackerDBManager *db_manager)
 			g_signal_emit (db_manager, signals[SETUP_INTERFACE], 0, interface);
 		} else {
 			if (g_async_queue_length_unlocked (db_manager->interfaces) == 0) {
-				g_critical ("Error opening database: %s", internal_error->message);
-				g_error_free (internal_error);
+				g_propagate_prefixed_error (error, internal_error, "Error opening database: ");
 				g_async_queue_unlock (db_manager->interfaces);
 				return NULL;
 			} else {
@@ -1140,4 +1150,10 @@ tracker_db_manager_release_memory (TrackerDBManager *db_manager)
 	}
 
 	g_async_queue_unlock (db_manager->interfaces);
+}
+
+TrackerDBVersion
+tracker_db_manager_get_version (TrackerDBManager *db_manager)
+{
+	return db_manager->db_version;
 }

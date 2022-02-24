@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Maemo Feeds Ontology (MFO)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="mfo-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="maemo-feeds-ontology-mfo">Maemo Feeds Ontology (MFO)</h1>
+<pre><code class="language-turtle">@prefix mfo: &lt;http://tracker.api.gnome.org/ontology/v3/mfo#&gt;
+</code></pre>
+<h2 id="classes">
+<a name="mfo.classes"></a>Classes</h2>
+<p><a href="mfo-ontology.html#mfo:Action">Action</a>, <a href="mfo-ontology.html#mfo:Enclosure">Enclosure</a>, <a href="mfo-ontology.html#mfo:FeedChannel">FeedChannel</a>, <a href="mfo-ontology.html#mfo:FeedElement">FeedElement</a>, <a href="mfo-ontology.html#mfo:FeedMessage">FeedMessage</a>, <a href="mfo-ontology.html#mfo:FeedSettings">FeedSettings</a>, <a href="mfo-ontology.html#mfo:FeedType">FeedType</a></p>
+<h1 id="overview">Overview</h1>
+<h2 id="introduction">Introduction</h2>
+<p>This ontology is an abstract representation of entries coming from feeds. These feeds can be blogs (any of the common syndication formats can be translated into this representation), podcasts or even some online services (like flickr).</p>
+<p>The basic assumption in the ontology is that all these feeds are unidirectional conversations with (from) the author of the content and every post on those channels is a message.</p>
+<p>The source of the posts, the feed itself, is an instance of <a href="mfo-ontology.html#mfo:FeedChannel">mfo:FeedChannel</a>. Each post in that feed will be an instance of <a href="mfo-ontology.html#mfo:FeedMessage">mfo:FeedMessage</a>. The relation between the messages and the channel comes from their superclasses, <a href="nmo-ontology.md#nmo:communicationChannel">nmo:communicationChannel</a> (taking into account that <a href="mfo-ontology.html#mfo:FeedChannel">mfo:FeedChannel</a> is a subclass of <a href="nmo-ontology.md#nmo:CommunicationChannel">nmo:CommunicationChannel</a> and <a href="mfo-ontology.html#mfo:FeedMessage">mfo:FeedMessage</a> a subclass of <a href="nmo-ontology.md#nmo:Message">nmo:Message</a>.</p>
+<p>A post can be plain text but can contain also more things like links, videos or Mp3. We represent those internal pieces in instances of <a href="mfo-ontology.html#mfo:Enclosure">mfo:Enclosure</a>. This class has properties to link with the remote and local representation of the resource (in case the content has been downloaded).</p>
+<p>Finally, the three important classes (mfo:FeedChannel, mfo:FeedMessage, mfo:Enclosure) are subclasses of <a href="mfo-ontology.html#mfo:FeedElement">mfo:FeedElement</a>, just an abstract class to share the link with mfo:FeedSettings. <a href="mfo-ontology.html#mfo:FeedSettings">mfo:FeedSettings</a> contains some common configuration options. Not all of them applies to all, but it is a quite cleaner solution. For instance the <a href="mfo-ontology.html#mfo:maxSize">mfo:maxSize</a> property only makes sense per-enclosure, while the <a href="mfo-ontology.html#mfo:updateInterval">mfo:updateInterval</a> is useful for the channel.</p>
+<h2 id="special-remarks">Special remarks</h2>
+<p>In some feeds there can be multiple enclosures together in a group, representing the same resource in different formats, qualities, resolutions, etc. Until further notify, the group will be represented using <a href="nie-ontology.html#nie:identifier">nie:identifier</a> property. To mark the default enclosure of the group, there is a <a href="mfo-ontology.html#mfo:groupDefault">mfo:groupDefault</a> property.</p>
+<h2 id="class-details">
+<a name="mfo-classes"></a>Class Details</h2>
+<h3 id="action">
+<a name="mfo:Action"></a>Action</h3>
+<h5 id="description">Description</h5>
+<p>class with a restricted set of actions</p>
+<h4 id="class-hierarchy">
+<a name="mfo:Action.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── mfo:Action 
+</code></pre>
+<h4 id="predefined-instances">
+<a name="mfo:Action.predefined-instances"></a>Predefined instances</h4>
+<p>mfo:Action has the following predefined instances:</p>
+<ul>
+<li>mfo:refresh-now</li>
+</ul>
+<h3 id="enclosure">
+<a name="mfo:Enclosure"></a>Enclosure</h3>
+<h5 id="description1">Description</h5>
+<p>Represents an enclosure of a feed message</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy1">
+<a name="mfo:Enclosure.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── mfo:FeedElement 
+        ╰── mfo:Enclosure 
+</code></pre>
+<h4 id="properties">
+<a name="mfo:Enclosure.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="mfo:groupDefault"></a>groupDefault</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Different enclosures can represent the same resource in different formats/resolutions. This representations are grouped using the nie:identifier property and this property identify the default between them.</td>
+</tr>
+<tr>
+<td> <a name="mfo:localLink"></a>localLink</td>
+<td> <a href="nfo-ontology.html#nfo:FileDataObject">FileDataObject</a>
+</td>
+<td></td>
+<td> Downloaded copy of the enclosure</td>
+</tr>
+<tr>
+<td> <a name="mfo:optional"></a>optional</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> The enclosure is mandatory to download or only optional</td>
+</tr>
+<tr>
+<td> <a name="mfo:remoteLink"></a>remoteLink</td>
+<td> <a href="nfo-ontology.html#nfo:RemoteDataObject">RemoteDataObject</a>
+</td>
+<td></td>
+<td> Used to store remote URL of enclosure</td>
+</tr>
+</tbody>
+</table>
+<h3 id="feedchannel">
+<a name="mfo:FeedChannel"></a>FeedChannel</h3>
+<h5 id="description2">Description</h5>
+<p>Represents feed channel transfer, typically a download of RSS or ATOM.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon1"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy2">
+<a name="mfo:FeedChannel.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── mfo:FeedElement 
+        ╰── mfo:FeedChannel 
+</code></pre>
+<h4 id="properties1">
+<a name="mfo:FeedChannel.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="mfo:action"></a>action</td>
+<td> <a href="mfo-ontology.html#mfo:Action">Action</a>
+</td>
+<td></td>
+<td> Captures the current action for the channel: Refresh Now</td>
+</tr>
+<tr>
+<td> <a name="mfo:totalCount"></a>totalCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Total messages count within a channel</td>
+</tr>
+<tr>
+<td> <a name="mfo:type"></a>type</td>
+<td> <a href="mfo-ontology.html#mfo:FeedType">FeedType</a>
+</td>
+<td></td>
+<td>  Feeds format type which is mapped to plugin used in engine: flickr,rss-atom</td>
+</tr>
+<tr>
+<td> <a name="mfo:unreadCount"></a>unreadCount</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Unread messages count within a channel</td>
+</tr>
+<tr>
+<td> <a name="mfo:updatedTime"></a>updatedTime</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td></td>
+<td> Captures the updated date and time when the channel is updated</td>
+</tr>
+</tbody>
+</table>
+<h3 id="feedelement">
+<a name="mfo:FeedElement"></a>FeedElement</h3>
+<h5 id="description3">Description</h5>
+<p>Superclass for all elements related with feeds, to provide common configuration options</p>
+<h4 id="class-hierarchy3">
+<a name="mfo:FeedElement.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── mfo:FeedElement 
+        ├── mfo:FeedMessage 
+        ├── mfo:FeedChannel 
+        ╰── mfo:Enclosure 
+</code></pre>
+<h4 id="properties2">
+<a name="mfo:FeedElement.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="mfo:feedSettings"></a>feedSettings</td>
+<td> <a href="mfo-ontology.html#mfo:FeedSettings">FeedSettings</a>
+</td>
+<td></td>
+<td> Settings</td>
+</tr>
+<tr>
+<td> <a name="mfo:image"></a>image</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="feedmessage">
+<a name="mfo:FeedMessage"></a>FeedMessage</h3>
+<h5 id="description4">Description</h5>
+<p>Represents feed entry. May have enclosures attached and certain settings that allow deviation from feed channel's setup</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon2"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy4">
+<a name="mfo:FeedMessage.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── mfo:FeedElement 
+        ╰── mfo:FeedMessage 
+</code></pre>
+<h4 id="properties3">
+<a name="mfo:FeedMessage.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="mfo:downloadedTime"></a>downloadedTime</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td></td>
+<td> Captures the time stamp when message was downloaded</td>
+</tr>
+<tr>
+<td> <a name="mfo:enclosureList"></a>enclosureList</td>
+<td> <a href="mfo-ontology.html#mfo:Enclosure">Enclosure</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values"></a>
+</td>
+<td> A list of enclosures</td>
+</tr>
+</tbody>
+</table>
+<h3 id="feedsettings">
+<a name="mfo:FeedSettings"></a>FeedSettings</h3>
+<h5 id="description5">Description</h5>
+<p>Represents settings applied to a feed channel or a feed entry. How often it is updated, through which connection type it is delivered, when data expires and so on</p>
+<h4 id="class-hierarchy5">
+<a name="mfo:FeedSettings.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── mfo:FeedSettings 
+</code></pre>
+<h4 id="properties4">
+<a name="mfo:FeedSettings.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="mfo:downloadFlag"></a>downloadFlag</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> To indicate whether enclosures will be downloaded or not</td>
+</tr>
+<tr>
+<td> <a name="mfo:downloadPath"></a>downloadPath</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Download path for enclosures in a message</td>
+</tr>
+<tr>
+<td> <a name="mfo:expiryInterval"></a>expiryInterval</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Expiry interval for feed channel, it tells time that a message in a channel can live. Interpreted as minutes</td>
+</tr>
+<tr>
+<td> <a name="mfo:maxSize"></a>maxSize</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Maximum size of enclosure that can be downloaded. Interpreted as KBs</td>
+</tr>
+<tr>
+<td> <a name="mfo:updateInterval"></a>updateInterval</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> Update interval for a feed channel to get updated or refreshed. Interpreted as minutes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="feedtype">
+<a name="mfo:FeedType"></a>FeedType</h3>
+<h5 id="description6">Description</h5>
+<p>class with a restricted set of feed types</p>
+<h4 id="class-hierarchy6">
+<a name="mfo:FeedType.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── mfo:FeedType 
+</code></pre>
+<h4 id="properties5">
+<a name="mfo:FeedType.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="mfo:name"></a>name</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Feed format name like rss-atom,flickr,facebook</td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>Ivan Frade &lt;ivan.frade@nokia.com&gt;</li>
+<li>Jitendra Kumar &lt;jitendra.1.kumar@nokia.com&gt;</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>Ivan Frade &lt;ivan.frade@nokia.com&gt;</li>
+</ul>
+<p>Upstream: <em>Not available</em></p>
+<p>ChangeLog: <a href="hhttps://gitlab.gnome.org/GNOME/tracker/-/commits/master/src/ontologies/41-mfo.ontology">Tracker changes</a></p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

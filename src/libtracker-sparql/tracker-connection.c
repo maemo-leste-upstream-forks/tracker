@@ -24,50 +24,46 @@
  * @stability: Stable
  * @include: tracker-sparql.h
  *
- * <para>
  * #TrackerSparqlConnection is an object that represents a connection to a
  * SPARQL triple store. This store may be local and private (see
  * tracker_sparql_connection_new()), or it may be a remote connection to a
  * public endpoint (See tracker_sparql_connection_bus_new() and
  * tracker_sparql_connection_remote_new()).
- * </para>
  *
- * <para>
  * A #TrackerSparqlConnection is private to the calling process, it can be
  * exposed publicly via a #TrackerEndpoint, see tracker_endpoint_dbus_new().
- * </para>
  *
- * <para>
  * Updates on a connection are performed via the tracker_sparql_connection_update()
  * family of calls. tracker_sparql_connection_update_array() may be used for batched
  * updates. All functions have asynchronous variants.
- * </para>
  *
- * <para>
  * Queries on a connection are performed via tracker_sparql_connection_query()
  * and tracker_sparql_connection_query_statement(). The first call receives a
  * query string and returns a #TrackerSparqlCursor to iterate the results. The
  * second call returns a #TrackerSparqlStatement object that may be reused for
  * repeatable queries with variable parameters. tracker_sparql_statement_execute()
  * will returns a #TrackerSparqlCursor.
- * </para>
  *
- * <para>
  * Depending on the ontology definition, #TrackerSparqlConnection may emit
  * notifications whenever changes happen in the stored data. These notifications
  * can be processed via a #TrackerNotifier obtained with
  * tracker_sparql_connection_create_notifier().
- * </para>
  *
- * <para>
  * After use, a #TrackerSparqlConnection should be closed. See
  * tracker_sparql_connection_close() and tracker_sparql_connection_close_async().
- * </para>
+ *
+ * A #TrackerSparqlConnection may be used from multiple threads, asynchronous
+ * database updates are executed sequentially on arrival order, asynchronous
+ * queries are executed in a thread pool.
  */
 #include "config.h"
 
 #include "tracker-connection.h"
 #include "tracker-private.h"
+#include "tracker-serializer-json.h"
+#include "tracker-serializer-trig.h"
+#include "tracker-serializer-turtle.h"
+#include "tracker-serializer-xml.h"
 
 G_DEFINE_ABSTRACT_TYPE (TrackerSparqlConnection, tracker_sparql_connection,
                         G_TYPE_OBJECT)
@@ -91,6 +87,14 @@ tracker_sparql_connection_class_init (TrackerSparqlConnectionClass *klass)
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->dispose = tracker_sparql_connection_dispose;
+
+	/* Ensure serializer types, we want all of these initialized before
+	 * the remote soup 2/3 modules gets to initialize them.
+	 */
+	g_type_ensure (TRACKER_TYPE_SERIALIZER_XML);
+	g_type_ensure (TRACKER_TYPE_SERIALIZER_JSON);
+	g_type_ensure (TRACKER_TYPE_SERIALIZER_TURTLE);
+	g_type_ensure (TRACKER_TYPE_SERIALIZER_TRIG);
 }
 
 gboolean
@@ -350,10 +354,10 @@ tracker_sparql_connection_update (TrackerSparqlConnection  *connection,
 	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (!error || !*error);
 
-	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->update (connection,
-	                                                                 sparql,
-	                                                                 cancellable,
-	                                                                 error);
+	TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->update (connection,
+	                                                          sparql,
+	                                                          cancellable,
+	                                                          error);
 }
 
 /**
@@ -402,9 +406,9 @@ tracker_sparql_connection_update_finish (TrackerSparqlConnection  *connection,
 	g_return_if_fail (G_IS_ASYNC_RESULT (res));
 	g_return_if_fail (!error || !*error);
 
-	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->update_finish (connection,
-	                                                                        res,
-	                                                                        error);
+	TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->update_finish (connection,
+	                                                                 res,
+	                                                                 error);
 }
 
 /**
@@ -479,6 +483,13 @@ tracker_sparql_connection_update_array_finish (TrackerSparqlConnection  *connect
  * its parts correctly escaped using tracker_sparql_escape_string(),
  * otherwise SPARQL injection is possible.
  *
+ * The format string of the `GVariant` is `aaa{ss}` (an array of an array
+ * of dictionaries). The first array represents each INSERT that may exist in
+ * the SPARQL string. The second array represents each new node for a given
+ * WHERE clause. The last array holds a string pair with the blank node name
+ * (e.g. `foo` for the blank node `_:foo`) and the URN that was generated for
+ * it. For most updates the first two outer arrays will only contain one item.
+ *
  * Returns: a #GVariant with the generated URNs, which should be freed with
  * g_variant_unref() when no longer used.
  */
@@ -508,7 +519,9 @@ tracker_sparql_connection_update_blank (TrackerSparqlConnection  *connection,
  *            asynchronous operation is finished.
  * @user_data: user-defined data to be passed to @callback
  *
- * Executes asynchronously a SPARQL update.
+ * Executes asynchronously a SPARQL update with blank nodes. See
+ * the tracker_sparql_connection_update_blank() documentation to
+ * see the differences with tracker_sparql_connection_update().
  */
 void
 tracker_sparql_connection_update_blank_async (TrackerSparqlConnection *connection,
@@ -535,7 +548,9 @@ tracker_sparql_connection_update_blank_async (TrackerSparqlConnection *connectio
  * @error: #GError for error reporting.
  *
  * Finishes the asynchronous SPARQL update operation, and returns
- * the URNs of the generated nodes, if any.
+ * the URNs of the generated nodes, if any. See the
+ * tracker_sparql_connection_update_blank() documentation for the interpretation
+ * of the returned #GVariant.
  *
  * Returns: a #GVariant with the generated URNs, which should be freed with
  * g_variant_unref() when no longer used.
@@ -663,9 +678,14 @@ tracker_sparql_connection_update_resource_finish (TrackerSparqlConnection  *conn
 TrackerNamespaceManager *
 tracker_sparql_connection_get_namespace_manager (TrackerSparqlConnection *connection)
 {
+	TrackerNamespaceManager *manager;
+
 	g_return_val_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection), NULL);
 
-	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->get_namespace_manager (connection);
+	manager = TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->get_namespace_manager (connection);
+	tracker_namespace_manager_seal (manager);
+
+	return manager;
 }
 
 /**
@@ -805,4 +825,166 @@ tracker_sparql_connection_create_batch (TrackerSparqlConnection *connection)
 		return NULL;
 
 	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->create_batch (connection);
+}
+
+/**
+ * tracker_sparql_connection_load_statement_from_gresource:
+ * @connection: a #TrackerSparqlConnection
+ * @resource_path: the resource path of the file to parse.
+ * @cancellable: a #GCancellable, or %NULL
+ * @error: return location for an error, or %NULL
+ *
+ * Prepares a #TrackerSparqlStatement for the SPARQL query contained as a resource
+ * file at @resource_path. SPARQL Query files typically have the .rq extension.
+ *
+ * Returns: (transfer full) (nullable): a prepared statement
+ *
+ * Since: 3.3
+ **/
+TrackerSparqlStatement *
+tracker_sparql_connection_load_statement_from_gresource (TrackerSparqlConnection  *connection,
+                                                         const gchar              *resource_path,
+                                                         GCancellable             *cancellable,
+                                                         GError                  **error)
+{
+	TrackerSparqlStatement *stmt;
+	GBytes *query;
+
+	g_return_val_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection), NULL);
+	g_return_val_if_fail (resource_path && *resource_path, NULL);
+	g_return_val_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable), NULL);
+	g_return_val_if_fail (!error || !*error, NULL);
+
+	query = g_resources_lookup_data (resource_path,
+	                                 G_RESOURCE_LOOKUP_FLAGS_NONE,
+	                                 error);
+	if (!query)
+		return NULL;
+
+	stmt = TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->query_statement (connection,
+	                                                                          g_bytes_get_data (query,
+	                                                                                            NULL),
+	                                                                          cancellable,
+	                                                                          error);
+	g_bytes_unref (query);
+
+	return stmt;
+}
+
+/**
+ * tracker_sparql_connection_serialize_async:
+ * @connection: a #TrackerSparqlConnection
+ * @flags: serialization flags
+ * @format: output RDF format
+ * @query: SPARQL query
+ * @cancellable: a #GCancellable
+ * @callback: the #GAsyncReadyCallback called when the operation completes
+ * @user_data: data passed to @callback
+ *
+ * Serializes data into the specified RDF format. @query must be either a
+ * `DESCRIBE` or `CONSTRUCT` query. This is an asynchronous operation,
+ * @callback will be invoked when the data is available for reading.
+ *
+ * The SPARQL endpoint may not support the specified format, in that case
+ * an error will be raised.
+ *
+ * The @flags argument is reserved for future expansions, currently
+ * %TRACKER_SERIALIZE_FLAGS_NONE must be passed.
+ *
+ * Since: 3.3
+ **/
+void
+tracker_sparql_connection_serialize_async (TrackerSparqlConnection *connection,
+                                           TrackerSerializeFlags    flags,
+                                           TrackerRdfFormat         format,
+                                           const gchar             *query,
+                                           GCancellable            *cancellable,
+                                           GAsyncReadyCallback      callback,
+                                           gpointer                 user_data)
+{
+	g_return_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection));
+	g_return_if_fail (flags == TRACKER_SERIALIZE_FLAGS_NONE);
+	g_return_if_fail (format < TRACKER_N_RDF_FORMATS);
+	g_return_if_fail (query != NULL);
+	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
+	g_return_if_fail (callback != NULL);
+
+	TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->serialize_async (connection,
+	                                                                   flags,
+	                                                                   format,
+	                                                                   query,
+	                                                                   cancellable,
+	                                                                   callback,
+	                                                                   user_data);
+}
+
+/**
+ * tracker_sparql_connection_serialize_finish:
+ * @connection: a #TrackerSparqlConnection
+ * @result: the #GAsyncResult
+ * @error: location for returned errors, or %NULL
+ *
+ * Finishes a tracker_sparql_connection_serialize_async() operation.
+ * In case of error, %NULL will be returned and @error will be set.
+ *
+ * Returns: (transfer full): a #GInputStream to read RDF content.
+ *
+ * Since: 3.3
+ **/
+GInputStream *
+tracker_sparql_connection_serialize_finish (TrackerSparqlConnection  *connection,
+                                            GAsyncResult             *result,
+                                            GError                  **error)
+{
+	g_return_val_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection), NULL);
+	g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
+	g_return_val_if_fail (!error || !*error, NULL);
+
+	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->serialize_finish (connection,
+	                                                                           result,
+	                                                                           error);
+}
+
+/**
+ * tracker_sparql_connection_map_connection:
+ * @connection: a #TrackerSparqlConnection
+ * @handle_name: handle name for @service_connection
+ * @service_connection: a #TrackerSparqlConnection to use from @connection
+ *
+ * Maps @service_connection so it is available as a "private:@handle_name" URI
+ * in @connection. This can be accessed via the SERVICE SPARQL syntax in
+ * queries from @connection. E.g.:
+ *
+ * ```sparql
+ * SELECT ?u {
+ *   SERVICE <private:other-connection> {
+ *     ?u a rdfs:Resource
+ *   }
+ * }
+ * ```
+ *
+ * This is useful to interrelate data from multiple
+ * #TrackerSparqlConnection instances maintained by the same process,
+ * without creating a public endpoint for @service_connection.
+ *
+ * @connection may only be a #TrackerSparqlConnection created via
+ * tracker_sparql_connection_new() and tracker_sparql_connection_new_async().
+ *
+ * Since: 3.3
+ **/
+void
+tracker_sparql_connection_map_connection (TrackerSparqlConnection *connection,
+					  const gchar             *handle_name,
+					  TrackerSparqlConnection *service_connection)
+{
+	g_return_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection));
+	g_return_if_fail (TRACKER_IS_SPARQL_CONNECTION (service_connection));
+	g_return_if_fail (handle_name && *handle_name);
+
+	if (!TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->map_connection)
+		return;
+
+	TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->map_connection (connection,
+	                                                                  handle_name,
+	                                                                  service_connection);
 }

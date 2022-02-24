@@ -1,0 +1,2059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>TrackerNotifier</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="gi-extension" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="tracker-notifier.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']" data-hotdoc-meta-gi-language="c">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="trackernotifier-page">TrackerNotifier</h1>
+<p><a href="tracker-notifier.html#TrackerNotifier" data-gi-href-javascript="tracker-notifier.html#TrackerNotifier" data-gi-title-javascript="Tracker.Notifier" data-gi-href-python="tracker-notifier.html#TrackerNotifier" data-gi-title-python="Tracker.Notifier">TrackerNotifier</a> is an object that receives notifications about
+changes to the Tracker database. A <a href="tracker-notifier.html#TrackerNotifier" data-gi-href-javascript="tracker-notifier.html#TrackerNotifier" data-gi-title-javascript="Tracker.Notifier" data-gi-href-python="tracker-notifier.html#TrackerNotifier" data-gi-title-python="Tracker.Notifier">TrackerNotifier</a> is created
+through <a href="tracker-sparql-connection.html#tracker_sparql_connection_create_notifier" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_create_notifier" data-gi-title-javascript="Tracker.SparqlConnection.prototype.create_notifier" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_create_notifier" data-gi-title-python="Tracker.SparqlConnection.create_notifier">tracker_sparql_connection_create_notifier</a>, after the notifier
+is created, events can be listened for by connecting to the
+<a href="tracker-notifier.html#TrackerNotifier::events" data-gi-href-javascript="tracker-notifier.html#TrackerNotifier::events" data-gi-title-javascript="events" data-gi-href-python="tracker-notifier.html#TrackerNotifier::events" data-gi-title-python="events">events</a> signal.</p>
+<h1 id="known-caveats">Known caveats</h1>
+<ul>
+<li>The <a href="tracker-notifier.html#TRACKER_NOTIFIER_EVENT_DELETE" data-gi-href-javascript="tracker-notifier.html#TRACKER_NOTIFIER_EVENT_DELETE" data-gi-title-javascript="Tracker.NotifierEventType.DELETE" data-gi-href-python="tracker-notifier.html#TRACKER_NOTIFIER_EVENT_DELETE" data-gi-title-python="Tracker.NotifierEventType.DELETE">TRACKER_NOTIFIER_EVENT_DELETE</a> events will be received after the
+resource has been deleted. At that time queries on those elements will
+not bring any metadata. Only the ID/URN obtained through the event
+remain meaningful.</li>
+<li>Notifications of files being moved across indexed folders will
+appear as <a href="tracker-notifier.html#TRACKER_NOTIFIER_EVENT_UPDATE" data-gi-href-javascript="tracker-notifier.html#TRACKER_NOTIFIER_EVENT_UPDATE" data-gi-title-javascript="Tracker.NotifierEventType.UPDATE" data-gi-href-python="tracker-notifier.html#TRACKER_NOTIFIER_EVENT_UPDATE" data-gi-title-python="Tracker.NotifierEventType.UPDATE">TRACKER_NOTIFIER_EVENT_UPDATE</a> events, containing
+the new location (if requested). The older location is no longer
+known to Tracker, this may make tracking of elements in specific
+folders hard using solely the <a href="tracker-notifier.html#TrackerNotifier" data-gi-href-javascript="tracker-notifier.html#TrackerNotifier" data-gi-title-javascript="Tracker.Notifier" data-gi-href-python="tracker-notifier.html#TrackerNotifier" data-gi-title-python="Tracker.Notifier">TrackerNotifier</a>/Tracker data
+available at event notification time.</li>
+</ul>
+
+    </div>
+        
+        
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TrackerNotifier">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h2 data-hotdoc-id="TrackerNotifier">
+	<i>TrackerNotifier</i>
+</h2>
+
+
+<div class="hierarchy_container">
+	<div class="hierarchy_details">
+<pre>
+<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span>TrackerNotifier
+</pre>
+
+</div>
+
+</div>
+
+<div class="class_details">
+	<p>The <structname>TrackerNotifier</structname> object allows subscribing
+to changes in the stored data.</p>
+
+</div>
+
+
+
+	<div class="members-container">
+		<h3>Members</h3>
+					
+<div class="symbol-detail" data-hotdoc-id="TrackerNotifier.parent_instance">
+	<div>
+		<i><em><code>parent_instance</code></em></i>
+		(<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>)
+		–
+	</div>
+			<i>No description available</i>
+	</div>
+
+			</div>
+
+
+
+<hr>
+<h3>Class structure</h3>
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="TrackerNotifierClass">
+	<i>TrackerNotifierClass</i>
+</h4>
+
+
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h3>
+	Tracker.NotifierClass
+</h3>
+
+
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h3>
+	Tracker.NotifierClass
+</h3>
+
+
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h2 data-hotdoc-id="TrackerNotifier">
+	<i>Tracker.Notifier</i>
+</h2>
+
+
+<div class="hierarchy_container">
+	<div class="hierarchy_details">
+<pre>
+<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+    <span class="lineart">╰──</span>Tracker.Notifier
+</pre>
+
+</div>
+
+</div>
+
+<div class="class_details">
+	<p>The <structname>TrackerNotifier</structname> object allows subscribing
+to changes in the stored data.</p>
+
+</div>
+
+
+
+	<div class="members-container">
+		<h3>Members</h3>
+					
+<div class="symbol-detail" data-hotdoc-id="TrackerNotifier.parent_instance">
+	<div>
+		<i><em><code>parent_instance</code></em></i>
+		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		–
+	</div>
+			<i>No description available</i>
+	</div>
+
+			</div>
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h2 data-hotdoc-id="TrackerNotifier">
+	<i>Tracker.Notifier</i>
+</h2>
+
+
+<div class="hierarchy_container">
+	<div class="hierarchy_details">
+<pre>
+<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+    <span class="lineart">╰──</span>Tracker.Notifier
+</pre>
+
+</div>
+
+</div>
+
+<div class="class_details">
+	<p>The <structname>TrackerNotifier</structname> object allows subscribing
+to changes in the stored data.</p>
+
+</div>
+
+
+
+	<div class="members-container">
+		<h3>Members</h3>
+					
+<div class="symbol-detail" data-hotdoc-id="TrackerNotifier.parent_instance">
+	<div>
+		<i><em><code>parent_instance</code></em></i>
+		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		–
+	</div>
+			<i>No description available</i>
+	</div>
+
+			</div>
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h3 class="symbol_section">Methods</h3>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.0;" id="tracker_notifier_signal_subscribe">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_signal_subscribe">
+	<i>tracker_notifier_signal_subscribe</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a>
+tracker_notifier_signal_subscribe (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a> * notifier,
+                                   <a title="GDBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">GDBusConnection</a> * connection,
+                                   const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * service,
+                                   const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * object_path,
+                                   const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * graph)</pre>
+
+<p>Listens to notification events from a remote SPARQL endpoint as a DBus
+service (see <a href="tracker-endpoint-dbus.html#TrackerEndpointDBus">TrackerEndpointDBus</a>). If the <em>object_path</em> argument is
+<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a>, the default "/org/freedesktop/Tracker3/Endpoint" path will be
+used. If <em>graph</em> is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a>, all graphs will be listened for.</p>
+<p>The signal subscription can be removed with
+<a href="tracker-notifier.html#tracker_notifier_signal_unsubscribe">tracker_notifier_signal_unsubscribe</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>notifier</code></em></i>
+–
+</div>
+<p>a <a href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>connection</code></em></i>
+–
+</div>
+<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">GDBusConnection</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>service</code></em></i>
+–
+</div>
+<p>DBus service name to subscribe to events for</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>object_path</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
+–
+</div>
+<p>DBus object path to subscribe to events for, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
+–
+</div>
+<p>graph to listen events for, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>An ID for this subscription</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_signal_subscribe">
+	<i>Tracker.Notifier.prototype.signal_subscribe</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Notifier.prototype.signal_subscribe(connection: <a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a>, service: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, object_path: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, graph: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_notifier_signal_subscribe'
+}</code></pre>
+
+<p>Listens to notification events from a remote SPARQL endpoint as a DBus
+service (see <a href="tracker-endpoint-dbus.html#TrackerEndpointDBus">Tracker.EndpointDBus</a>). If the <em>object_path</em> argument is
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a>, the default "/org/freedesktop/Tracker3/Endpoint" path will be
+used. If <em>graph</em> is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a>, all graphs will be listened for.</p>
+<p>The signal subscription can be removed with
+<a href="tracker-notifier.html#tracker_notifier_signal_unsubscribe">Tracker.Notifier.prototype.signal_unsubscribe</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>notifier</code></em></i>
+<span>(</span><a title="Tracker.Notifier" href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>connection</code></em></i>
+<span>(</span><a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a><span>)</span>
+–
+</div>
+<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>service</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>DBus service name to subscribe to events for</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>object_path</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>DBus object path to subscribe to events for, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>graph to listen events for, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>An ID for this subscription</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_signal_subscribe">
+	<i>Tracker.Notifier.signal_subscribe</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Notifier.signal_subscribe (self, connection, service, object_path, graph):
+    #python wrapper for 'tracker_notifier_signal_subscribe'</code></pre>
+
+<p>Listens to notification events from a remote SPARQL endpoint as a DBus
+service (see <a href="tracker-endpoint-dbus.html#TrackerEndpointDBus">Tracker.EndpointDBus</a>). If the <em>object_path</em> argument is
+<a href="https://docs.python.org/3/library/constants.html#None">None</a>, the default "/org/freedesktop/Tracker3/Endpoint" path will be
+used. If <em>graph</em> is <a href="https://docs.python.org/3/library/constants.html#None">None</a>, all graphs will be listened for.</p>
+<p>The signal subscription can be removed with
+<a href="tracker-notifier.html#tracker_notifier_signal_unsubscribe">Tracker.Notifier.signal_unsubscribe</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>notifier</code></em></i>
+<span>(</span><a title="Tracker.Notifier" href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>connection</code></em></i>
+<span>(</span><a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a><span>)</span>
+–
+</div>
+<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>service</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>DBus service name to subscribe to events for</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>object_path</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>DBus object path to subscribe to events for, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>graph to listen events for, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+			</div>
+							<p>An ID for this subscription</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.0;" id="tracker_notifier_signal_unsubscribe">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_signal_unsubscribe">
+	<i>tracker_notifier_signal_unsubscribe</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_notifier_signal_unsubscribe (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a> * notifier,
+                                     <a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a> handler_id)</pre>
+
+<p>Undoes a DBus signal subscription, the <em>handler_id</em> argument was previously
+obtained with a <a href="tracker-notifier.html#tracker_notifier_signal_subscribe">tracker_notifier_signal_subscribe</a> call.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>notifier</code></em></i>
+–
+</div>
+<p>a <a href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>handler_id</code></em></i>
+–
+</div>
+<p>a handler ID obtained with <a href="tracker-notifier.html#tracker_notifier_signal_subscribe">tracker_notifier_signal_subscribe</a></p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_signal_unsubscribe">
+	<i>Tracker.Notifier.prototype.signal_unsubscribe</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Notifier.prototype.signal_unsubscribe(handler_id: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_notifier_signal_unsubscribe'
+}</code></pre>
+
+<p>Undoes a DBus signal subscription, the <em>handler_id</em> argument was previously
+obtained with a <a href="tracker-notifier.html#tracker_notifier_signal_subscribe">Tracker.Notifier.prototype.signal_subscribe</a> call.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>notifier</code></em></i>
+<span>(</span><a title="Tracker.Notifier" href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>handler_id</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>a handler ID obtained with <a href="tracker-notifier.html#tracker_notifier_signal_subscribe">Tracker.Notifier.prototype.signal_subscribe</a></p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_signal_unsubscribe">
+	<i>Tracker.Notifier.signal_unsubscribe</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Notifier.signal_unsubscribe (self, handler_id):
+    #python wrapper for 'tracker_notifier_signal_unsubscribe'</code></pre>
+
+<p>Undoes a DBus signal subscription, the <em>handler_id</em> argument was previously
+obtained with a <a href="tracker-notifier.html#tracker_notifier_signal_subscribe">Tracker.Notifier.signal_subscribe</a> call.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>notifier</code></em></i>
+<span>(</span><a title="Tracker.Notifier" href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>handler_id</code></em></i>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+</div>
+<p>a handler ID obtained with <a href="tracker-notifier.html#tracker_notifier_signal_subscribe">Tracker.Notifier.signal_subscribe</a></p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h3 class="symbol_section">Signals</h3>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TrackerNotifier::events">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="TrackerNotifier::events">
+	<i>events</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a> * self,
+                 <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * service,
+                 <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * graph,
+                 <a title="TrackerNotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a> * events,
+                 <a title="gpointer" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer">gpointer</a> user_data)</pre>
+
+<p>Notifies of changes in the Tracker database.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>The <a href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>service</code></em></i>
+–
+</div>
+<p>The SPARQL service that originated the events, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> for the local store</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph</code></em></i>
+–
+</div>
+<p>The graph where the events happened on, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> for the default anonymous graph</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>events</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="Generic and defining element of containers and arrays"><span class="acronym">element-type</span></abbr>TrackerNotifierEvent]</span><span>)</span>
+–
+</div>
+<p>A <a href="https://developer.gnome.org/glib/unstable/glib-Pointer-Arrays.html#GPtrArray">GPtrArray</a> of <a href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>user_data</code></em></i>
+–
+</div>
+<i>No description available</i>
+</div>
+
+			</div>
+
+
+<p>
+	<b>Flags:</b>	
+
+</p>
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="TrackerNotifier::events">
+	<i>events</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function events_callback(self: <a title="Tracker.Notifier" href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a>, service: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, graph: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, events: [ <a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a> ], user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
+    // javascript callback for the 'events' signal
+}</code></pre>
+
+<p>Notifies of changes in the Tracker database.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Notifier" href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a><span>)</span>
+–
+</div>
+<p>The <a href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>service</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>The SPARQL service that originated the events, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> for the local store</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>The graph where the events happened on, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> for the default anonymous graph</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>events</code></em></i>
+<span>(</span>[ <a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a> ]<span>)</span>
+–
+</div>
+<p>A <a href="https://developer.gnome.org/glib/unstable/glib-Pointer-Arrays.html#GPtrArray">GLib.PtrArray</a> of <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>user_data</code></em></i>
+<span>(</span><a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a><span>)</span>
+–
+</div>
+<i>No description available</i>
+</div>
+
+			</div>
+
+
+<p>
+	<b>Flags:</b>	
+
+</p>
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="TrackerNotifier::events">
+	<i>events</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def events_callback (self, service, graph, events, *user_data):
+    #python callback for the 'events' signal</code></pre>
+
+<p>Notifies of changes in the Tracker database.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Notifier" href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a><span>)</span>
+–
+</div>
+<p>The <a href="tracker-notifier.html#TrackerNotifier">Tracker.Notifier</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>service</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>The SPARQL service that originated the events, <a href="https://docs.python.org/3/library/constants.html#None">None</a> for the local store</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>The graph where the events happened on, <a href="https://docs.python.org/3/library/constants.html#None">None</a> for the default anonymous graph</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>events</code></em></i>
+<span>(</span>[ <a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a> ]<span>)</span>
+–
+</div>
+<p>A <a href="https://developer.gnome.org/glib/unstable/glib-Pointer-Arrays.html#GPtrArray">GLib.PtrArray</a> of <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>user_data</code></em></i>
+<span>(</span><a title="variadic" href="https://docs.python.org/dev/tutorial/controlflow.html#arbitrary-argument-lists">variadic</a><span>)</span>
+–
+</div>
+<i>No description available</i>
+</div>
+
+			</div>
+
+
+<p>
+	<b>Flags:</b>	
+
+</p>
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h3 class="symbol_section">Properties</h3>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TrackerNotifier:connection">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="TrackerNotifier:connection">
+	<i>connection</i>
+</h4>
+
+
+<pre class="property_signature">
+“connection” <span class="type"><a title="TrackerSparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> *</span>
+</pre>
+
+<p>SPARQL connection to listen to.</p>
+
+
+<p>
+	Flags :	
+	
+		
+				Read
+			
+				/		
+				Write
+			
+				/		
+				Construct Only
+			
+</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="TrackerNotifier:connection">
+	<i>connection</i>
+</h4>
+
+
+<pre class="property_signature">
+“connection” <span class="type"><a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a></span>
+</pre>
+
+<p>SPARQL connection to listen to.</p>
+
+
+<p>
+	Flags :	
+	
+		
+				Read
+			
+				/		
+				Write
+			
+				/		
+				Construct Only
+			
+</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="TrackerNotifier:connection">
+	<i>connection</i>
+</h4>
+
+
+<pre class="property_signature">
+“self.props.connection” <span class="type"><a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a></span>
+</pre>
+
+<p>SPARQL connection to listen to.</p>
+
+
+<p>
+	Flags :	
+	
+		
+				Read
+			
+				/		
+				Write
+			
+				/		
+				Construct Only
+			
+</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+        
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TrackerNotifierEvent">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h2 data-hotdoc-id="TrackerNotifierEvent">
+	<i>TrackerNotifierEvent</i>
+</h2>
+
+
+
+<div class="class_details">
+	<p>The <structname>TrackerNotifierEvent</structname> struct represents a
+change event in the stored data.</p>
+
+</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h2 data-hotdoc-id="TrackerNotifierEvent">
+	<i>Tracker.NotifierEvent</i>
+</h2>
+
+
+
+<div class="class_details">
+	<p>The <structname>TrackerNotifierEvent</structname> struct represents a
+change event in the stored data.</p>
+
+</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h2 data-hotdoc-id="TrackerNotifierEvent">
+	<i>Tracker.NotifierEvent</i>
+</h2>
+
+
+
+<div class="class_details">
+	<p>The <structname>TrackerNotifierEvent</structname> struct represents a
+change event in the stored data.</p>
+
+</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h3 class="symbol_section">Methods</h3>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_notifier_event_get_event_type">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_event_type">
+	<i>tracker_notifier_event_get_event_type</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="TrackerNotifierEventType" href="tracker-notifier.html#TrackerNotifierEventType">TrackerNotifierEventType</a>
+tracker_notifier_event_get_event_type (<a title="TrackerNotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a> * event)</pre>
+
+<p>Returns the event type.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>The event type</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_event_type">
+	<i>Tracker.NotifierEvent.prototype.get_event_type</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.NotifierEvent.prototype.get_event_type(): {
+    // javascript wrapper for 'tracker_notifier_event_get_event_type'
+}</code></pre>
+
+<p>Returns the event type.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+<span>(</span><a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Tracker.NotifierEventType" href="tracker-notifier.html#TrackerNotifierEventType">Tracker.NotifierEventType</a><span>)</span>
+–
+			</div>
+							<p>The event type</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_event_type">
+	<i>Tracker.NotifierEvent.get_event_type</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.NotifierEvent.get_event_type (self):
+    #python wrapper for 'tracker_notifier_event_get_event_type'</code></pre>
+
+<p>Returns the event type.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+<span>(</span><a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Tracker.NotifierEventType" href="tracker-notifier.html#TrackerNotifierEventType">Tracker.NotifierEventType</a><span>)</span>
+–
+			</div>
+							<p>The event type</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_notifier_event_get_id">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_id">
+	<i>tracker_notifier_event_get_id</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="gint64" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a>
+tracker_notifier_event_get_id (<a title="TrackerNotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a> * event)</pre>
+
+<p>Returns the tracker:id of the element being notified upon. This is a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a>
+which is used as efficient internal identifier for the resource.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>the resource ID</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_id">
+	<i>Tracker.NotifierEvent.prototype.get_id</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.NotifierEvent.prototype.get_id(): {
+    // javascript wrapper for 'tracker_notifier_event_get_id'
+}</code></pre>
+
+<p>Returns the tracker:id of the element being notified upon. This is a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>
+which is used as efficient internal identifier for the resource.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+<span>(</span><a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>the resource ID</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_id">
+	<i>Tracker.NotifierEvent.get_id</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.NotifierEvent.get_id (self):
+    #python wrapper for 'tracker_notifier_event_get_id'</code></pre>
+
+<p>Returns the tracker:id of the element being notified upon. This is a <a href="https://docs.python.org/3/library/functions.html#int">int</a>
+which is used as efficient internal identifier for the resource.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+<span>(</span><a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+			</div>
+							<p>the resource ID</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_notifier_event_get_urn">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_urn">
+	<i>tracker_notifier_event_get_urn</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *
+tracker_notifier_event_get_urn (<a title="TrackerNotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a> * event)</pre>
+
+<p>Returns the Uniform Resource Name of the element. This is Tracker's
+public identifier for the resource.</p>
+<p>This URN is an unique string identifier for the resource being
+notified upon, typically of the form "urn:uuid:...".</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>The element URN</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_urn">
+	<i>Tracker.NotifierEvent.prototype.get_urn</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.NotifierEvent.prototype.get_urn(): {
+    // javascript wrapper for 'tracker_notifier_event_get_urn'
+}</code></pre>
+
+<p>Returns the Uniform Resource Name of the element. This is Tracker's
+public identifier for the resource.</p>
+<p>This URN is an unique string identifier for the resource being
+notified upon, typically of the form "urn:uuid:...".</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+<span>(</span><a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+			</div>
+							<p>The element URN</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_notifier_event_get_urn">
+	<i>Tracker.NotifierEvent.get_urn</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.NotifierEvent.get_urn (self):
+    #python wrapper for 'tracker_notifier_event_get_urn'</code></pre>
+
+<p>Returns the Uniform Resource Name of the element. This is Tracker's
+public identifier for the resource.</p>
+<p>This URN is an unique string identifier for the resource being
+notified upon, typically of the form "urn:uuid:...".</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>event</code></em></i>
+<span>(</span><a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+			</div>
+							<p>The element URN</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+        
+
+            <h2 class="symbol_section">Enumerations</h2>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TrackerNotifierEventType">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h3 data-hotdoc-id="TrackerNotifierEventType">
+	<i>TrackerNotifierEventType</i>
+</h3>
+
+
+<p>Notifier event types.</p>
+
+
+
+
+	<div class="members-container">
+		<h5>Members</h5>
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_CREATE">
+	<div>
+		<i><em><code>TRACKER_NOTIFIER_EVENT_CREATE</code></em></i>
+		(<span class="value">0</span>)
+		–
+	</div>
+			<p>An element was created.</p>
+
+	</div>
+
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_DELETE">
+	<div>
+		<i><em><code>TRACKER_NOTIFIER_EVENT_DELETE</code></em></i>
+		(<span class="value">1</span>)
+		–
+	</div>
+			<p>An element was deleted.</p>
+
+	</div>
+
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_UPDATE">
+	<div>
+		<i><em><code>TRACKER_NOTIFIER_EVENT_UPDATE</code></em></i>
+		(<span class="value">2</span>)
+		–
+	</div>
+			<p>An element was updated.</p>
+
+	</div>
+
+			</div>
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h3 data-hotdoc-id="TrackerNotifierEventType">
+	<i>Tracker.NotifierEventType</i>
+</h3>
+
+
+<p>Notifier event types.</p>
+
+
+
+
+	<div class="members-container">
+		<h5>Members</h5>
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_CREATE">
+	<div>
+		<i><em><code>Tracker.NotifierEventType.CREATE</code></em></i>
+		(<span class="value">0</span>)
+		–
+	</div>
+			<p>An element was created.</p>
+
+	</div>
+
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_DELETE">
+	<div>
+		<i><em><code>Tracker.NotifierEventType.DELETE</code></em></i>
+		(<span class="value">1</span>)
+		–
+	</div>
+			<p>An element was deleted.</p>
+
+	</div>
+
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_UPDATE">
+	<div>
+		<i><em><code>Tracker.NotifierEventType.UPDATE</code></em></i>
+		(<span class="value">2</span>)
+		–
+	</div>
+			<p>An element was updated.</p>
+
+	</div>
+
+			</div>
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h3 data-hotdoc-id="TrackerNotifierEventType">
+	<i>Tracker.NotifierEventType</i>
+</h3>
+
+
+<p>Notifier event types.</p>
+
+
+
+
+	<div class="members-container">
+		<h5>Members</h5>
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_CREATE">
+	<div>
+		<i><em><code>Tracker.NotifierEventType.CREATE</code></em></i>
+		(<span class="value">0</span>)
+		–
+	</div>
+			<p>An element was created.</p>
+
+	</div>
+
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_DELETE">
+	<div>
+		<i><em><code>Tracker.NotifierEventType.DELETE</code></em></i>
+		(<span class="value">1</span>)
+		–
+	</div>
+			<p>An element was deleted.</p>
+
+	</div>
+
+					
+<div class="symbol-detail" data-hotdoc-id="TRACKER_NOTIFIER_EVENT_UPDATE">
+	<div>
+		<i><em><code>Tracker.NotifierEventType.UPDATE</code></em></i>
+		(<span class="value">2</span>)
+		–
+	</div>
+			<p>An element was updated.</p>
+
+	</div>
+
+			</div>
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h2 class="symbol_section">Constants</h2>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TRACKER_TYPE_NOTIFIER_EVENT">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h3 data-hotdoc-id="TRACKER_TYPE_NOTIFIER_EVENT">
+	<i>TRACKER_TYPE_NOTIFIER_EVENT</i>
+</h3>
+
+
+<pre class="raw_code">
+#define TRACKER_TYPE_NOTIFIER_EVENT (tracker_notifier_event_get_type ())
+</pre>
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+</div>
+<div class="gi-symbol gi-symbol-python">
+</div>
+
+</div>
+
+
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

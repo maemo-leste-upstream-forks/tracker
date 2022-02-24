@@ -48,15 +48,25 @@ typedef enum {
 	TRACKER_DB_MANAGER_FTS_IGNORE_NUMBERS    = 1 << 7,
 	TRACKER_DB_MANAGER_IN_MEMORY             = 1 << 8,
 	TRACKER_DB_MANAGER_SKIP_VERSION_CHECK    = 1 << 9,
+	TRACKER_DB_MANAGER_ANONYMOUS_BNODES      = 1 << 10,
 } TrackerDBManagerFlags;
 
-typedef struct _TrackerDBManager TrackerDBManager;
+typedef enum {
+	TRACKER_DB_VERSION_UNKNOWN = 0,
+	/* Starts at 25 because we forgot to clean up */
+	TRACKER_DB_VERSION_3_0 = 25, /* 3.0 */
+	TRACKER_DB_VERSION_3_3,      /* Blank nodes */
+} TrackerDBVersion;
+
+/* Set current database version we are working with */
+#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_3_3
+
+void                tracker_db_manager_rollback_db_creation   (TrackerDBManager *db_manager);
 
 gboolean            tracker_db_manager_db_exists              (GFile *cache_location);
 
 TrackerDBManager   *tracker_db_manager_new                    (TrackerDBManagerFlags   flags,
                                                                GFile                  *cache_location,
-                                                               gboolean               *first_time,
                                                                gboolean                shared_cache,
                                                                guint                   select_cache_size,
                                                                guint                   update_cache_size,
@@ -65,10 +75,13 @@ TrackerDBManager   *tracker_db_manager_new                    (TrackerDBManagerF
                                                                GObject                *iface_data,
                                                                gpointer                vtab_data,
                                                                GError                **error);
-TrackerDBInterface *tracker_db_manager_get_db_interface       (TrackerDBManager      *db_manager);
+TrackerDBInterface *tracker_db_manager_get_db_interface       (TrackerDBManager      *db_manager,
+                                                               GError               **error);
 TrackerDBInterface *tracker_db_manager_get_writable_db_interface (TrackerDBManager   *db_manager);
 
 gboolean            tracker_db_manager_has_enough_space       (TrackerDBManager      *db_manager);
+
+gboolean            tracker_db_manager_is_first_time          (TrackerDBManager      *db_manager);
 
 TrackerDBManagerFlags
                     tracker_db_manager_get_flags              (TrackerDBManager      *db_manager,
@@ -94,6 +107,10 @@ gboolean            tracker_db_manager_detach_database        (TrackerDBManager 
                                                                const gchar           *name,
                                                                GError               **error);
 void                tracker_db_manager_release_memory         (TrackerDBManager      *db_manager);
+
+TrackerDBVersion    tracker_db_manager_get_version            (TrackerDBManager      *db_manager);
+void                tracker_db_manager_update_version         (TrackerDBManager      *db_manager);
+
 
 G_END_DECLS
 

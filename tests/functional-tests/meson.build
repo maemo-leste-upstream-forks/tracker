@@ -1,4 +1,8 @@
-python = find_program('python3')
+if get_option('tests_tap_protocol')
+  protocol = 'tap'
+else
+  protocol = 'exitcode'
+endif
 
 testconf = configuration_data()
 
@@ -30,6 +34,7 @@ functional_tests = [
   'notifier',
   'collation',
   'ontology-changes',
+  'ontology-rollback',
   'cli',
   'portal',
 ]
@@ -39,12 +44,7 @@ test_env.prepend('GI_TYPELIB_PATH', tracker_sparql_uninstalled_dir)
 test_env.prepend('LD_LIBRARY_PATH', tracker_sparql_uninstalled_dir)
 test_env.prepend('PYTHONPATH', tracker_uninstalled_testutils_dir)
 test_env.set('TRACKER_FUNCTIONAL_TEST_CONFIG', config_json_full_path)
-
-if get_option('tests_tap_protocol')
-  protocol = 'tap'
-else
-  protocol = 'exitcode'
-endif
+test_env.set('GIO_USE_VFS', 'local')
 
 foreach test_name: functional_tests
   file = meson.current_source_dir() / '@0@.py'.format(test_name)
@@ -53,7 +53,7 @@ foreach test_name: functional_tests
     env: test_env,
     protocol: protocol,
     suite: ['functional'],
-    timeout: 60)
+    timeout: 30)
 endforeach
 
 subdir('ipc')

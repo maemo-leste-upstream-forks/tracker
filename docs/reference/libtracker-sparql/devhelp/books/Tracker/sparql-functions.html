@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Builtin SPARQL functions</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="gi-extension" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="sparql-functions.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']" data-hotdoc-meta-gi-language="c">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="builtin-sparql-functions">Builtin SPARQL functions</h1>
+<p>Besides the functions built in the SPARQL 1.1 syntax, type casts
+and functional properties, Tracker supports a number of SPARQL
+functions. Some of these functions have correspondences in XPath.</p>
+<h2 id="string-functions">String functions</h2>
+<h3 id="fnlowercase"><code>fn:lower-case</code></h3>
+<pre><code class="language-SPARQL">fn:lower-case (?string)
+</code></pre>
+<p>Converts a string to lowercase, equivalent to <code>LCASE</code>.</p>
+<h3 id="fnuppercase"><code>fn:upper-case</code></h3>
+<pre><code class="language-SPARQL">fn:upper-case (?string)
+</code></pre>
+<p>Converts a string to uppercase, equivalent to <code>UCASE</code>.</p>
+<h3 id="fncontains"><code>fn:contains</code></h3>
+<pre><code class="language-SPARQL">fn:contains (?haystack, ?needle)
+</code></pre>
+<p>Returns a boolean indicating whether <code>?needle</code> is
+found in <code>?haystack</code>. Equivalent to <code>CONTAINS</code>.</p>
+<h3 id="fnstartswith"><code>fn:starts-with</code></h3>
+<pre><code class="language-SPARQL">fn:starts-with (?string, ?prefix)
+</code></pre>
+<p>Returns a boolean indicating whether <code>?string</code>
+starts with <code>?prefix</code>. Equivalent to <code>STRSTARTS</code>.</p>
+<h3 id="fnendswith"><code>fn:ends-with</code></h3>
+<pre><code class="language-SPARQL">fn:ends-with (?string, ?suffix)
+</code></pre>
+<p>Returns a boolean indicating whether <code>?string</code>
+ends with <code>?suffix</code>. Equivalent to <code>STRENDS</code>.</p>
+<h3 id="fnsubstring"><code>fn:substring</code></h3>
+<pre><code class="language-SPARQL">fn:substring (?string, ?startLoc)
+fn:substring (?string, ?startLoc, ?endLoc)
+</code></pre>
+<p>Returns a substring delimited by the integer
+<code>?startLoc</code> and <code>?endLoc</code> arguments. If <code>?endLoc</code>
+is omitted, the end of the string is used.</p>
+<h3 id="fnconcat"><code>fn:concat</code></h3>
+<pre><code class="language-SPARQL">fn:concat (?string1, ?string2, ..., ?stringN)
+</code></pre>
+<p>Takes a variable number of arguments and returns a string concatenation
+of all its returned values. Equivalent to <code>CONCAT</code>.</p>
+<h3 id="fnstringjoin"><code>fn:string-join</code></h3>
+<pre><code class="language-SPARQL">fn:string-join ((?string1, ?string2, ...), ?separator)
+</code></pre>
+<p>Takes a variable number of arguments and returns a string concatenation
+using <code>?separator</code> to join all elements.</p>
+<h3 id="fnreplace"><code>fn:replace</code></h3>
+<pre><code class="language-SPARQL">fn:replace (?string, ?regex, ?replacement)
+fn:replace (?string, ?regex, ?replacement, ?flags)
+</code></pre>
+<p>Performs string replacement on <code>?string</code>. All
+matches of <code>?regex</code> are replaced by <code>?replacement</code> in
+the returned string. This function is similar to <code>REPLACE</code>.</p>
+<p>The <code>?flags</code> argument is optional, a case search
+is performed if not provided.</p>
+<p>If <code>?flags</code> contains the character <code>“s”</code>, a dot metacharacter (".") in
+<code>?regex</code> matches all characters, including newlines. Without it,
+newlines are excluded.</p>
+<p>If <code>?flags</code> contains the character <code>“m”</code>, the “start of line”
+(<code>^</code>) and “end of line” (<code>$</code>) constructs match immediately following or
+immediately before any newline in the string. If not set these constructs
+will respectively match the start and end of the full string.</p>
+<p>If <code>?flags</code> contains the character <code>“i”</code>, search is caseless.</p>
+<p>If <code>?flags</code> contains the character <code>“x”</code>, <code>?regex</code> is
+interpreted to be an extended regular expression.</p>
+<h3 id="trackercasefold"><code>tracker:case-fold</code></h3>
+<pre><code class="language-SPARQL">tracker:case-fold (?string)
+</code></pre>
+<p>Converts a string into a form that is independent of case.</p>
+<h3 id="trackertitleorder"><code>tracker:title-order</code></h3>
+<pre><code class="language-SPARQL">tracker:title-order (?string)
+</code></pre>
+<p>Manipulates a string to remove leading articles for sorting
+purposes, e.g. “Wall, The”. Best used in <code>ORDER BY</code> clauses.</p>
+<h3 id="trackerasciilowercase"><code>tracker:ascii-lower-case</code></h3>
+<pre><code class="language-SPARQL">tracker:ascii-lower-case (?string)
+</code></pre>
+<p>Converts an ASCII string to lowercase, equivalent to <code>LCASE</code>.</p>
+<h3 id="trackernormalize"><code>tracker:normalize</code></h3>
+<pre><code class="language-SPARQL">tracker:normalize (?string, ?option)
+</code></pre>
+<p>Normalizes <code>?string</code>. The <code>?option</code> string must be one of
+<code>nfc</code>, <code>nfd</code>, <code>nfkc</code> or <code>nfkd</code>.</p>
+<h3 id="trackerunaccent"><code>tracker:unaccent</code></h3>
+<pre><code class="language-SPARQL">tracker:unaccent (?string)
+</code></pre>
+<p>Removes accents from a string.</p>
+<h3 id="trackercoalesce"><code>tracker:coalesce</code></h3>
+<pre><code class="language-SPARQL">tracker:coalesce (?value1, ?value2, ..., ?valueN)
+</code></pre>
+<p>Picks the first non-null value. Equivalent to <code>COALESCE</code>.</p>
+<h3 id="trackerstrippunctuation"><code>tracker:strip-punctuation</code></h3>
+<pre><code class="language-SPARQL">tracker:strip-punctuation (?string)
+</code></pre>
+<p>Removes any Unicode character which has the General
+Category value of P (Punctuation) from the string.</p>
+<h2 id="datetime-functions">DateTime functions</h2>
+<h3 id="fnyearfromdatetime"><code>fn:year-from-dateTime</code></h3>
+<pre><code class="language-SPARQL">fn:year-from-dateTime (?date)
+</code></pre>
+<p>Returns the year from a <code>xsd:date</code> type, a <code>xsd:dateTime</code>
+type, or a ISO8601 date string. This function is equivalent
+to <code>YEAR</code>.</p>
+<h3 id="fnmonthfromdatetime"><code>fn:month-from-dateTime</code></h3>
+<pre><code class="language-SPARQL">fn:month-from-dateTime (?date)
+</code></pre>
+<p>Returns the month from a <code>xsd:date</code> type, a <code>xsd:dateTime</code>
+type, or a ISO8601 date string. This function is equivalent to <code>MONTH</code>.</p>
+<h3 id="fndayfromdatetime"><code>fn:day-from-dateTime</code></h3>
+<pre><code class="language-SPARQL">fn:day-from-dateTime (?date)
+</code></pre>
+<p>Returns the day from a <code>xsd:date</code> type, a <code>xsd:dateTime</code>
+type, or a ISO8601 date string. This function is equivalent to <code>DAY</code>.</p>
+<h3 id="fnhoursfromdatetime"><code>fn:hours-from-dateTime</code></h3>
+<pre><code class="language-SPARQL">fn:hours-from-dateTime (?date)
+</code></pre>
+<p>Returns the hours from a <code>xsd:dateTime</code> type or a ISO8601
+datetime string. This function is equivalent to <code>HOURS</code>.</p>
+<h3 id="fnminutesfromdatetime"><code>fn:minutes-from-dateTime</code></h3>
+<pre><code class="language-SPARQL">fn:minutes-from-dateTime (?date)
+</code></pre>
+<p>Returns the minutes from a <code>xsd:dateTime</code> type
+or a ISO8601 datetime string. This function is equivalent to
+<code>MINUTES</code>.</p>
+<h3 id="fnsecondsfromdatetime"><code>fn:seconds-from-dateTime</code></h3>
+<pre><code class="language-SPARQL">fn:seconds-from-dateTime (?date)
+</code></pre>
+<p>Returns the seconds from a <code>xsd:dateTime</code> type
+or a ISO8601 datetime string. This function is equivalent to
+<code>SECONDS</code>.</p>
+<h3 id="fntimezonefromdatetime"><code>fn:timezone-from-dateTime</code></h3>
+<pre><code class="language-SPARQL">fn:timezone-from-dateTime (?date)
+</code></pre>
+<p>Returns the timezone offset in minutes. This function is similar, but
+not equivalent to <code>TIMEZONE</code> or <code>TZ</code>.</p>
+<h2 id="fulltext-search-functions">Full-text search functions</h2>
+<h3 id="ftsrank"><code>fts:rank</code></h3>
+<pre><code class="language-SPARQL">fts:rank (?match)
+</code></pre>
+<p>Returns the rank of a full-text search match. Must be
+used in conjunction with <code>fts:match</code>.</p>
+<h3 id="ftsoffsets"><code>fts:offsets</code></h3>
+<pre><code class="language-SPARQL">fts:offsets (?match)
+</code></pre>
+<p>Returns a string describing the offsets of a full-text search
+match. Must be used in conjunction with <code>fts:match</code>. The returned
+string has the format:</p>
+<pre><code>prefix:property:offset prefix:property:offset prefix:property:offset
+</code></pre>
+<h3 id="ftssnippet"><code>fts:snippet</code></h3>
+<pre><code class="language-SPARQL">fts:snippet (?match)
+fts:snippet (?match, ?delimStart, ?delimEnd)
+fts:snippet (?match, ?delimStart, ?delimEnd, ?ellipsis)
+fts:snippet (?match, ?delimStart, ?delimEnd, ?ellipsis, ?numTokens)
+</code></pre>
+<p>Returns a snippet string in accordance to the full-text search string.
+Must be used in conjunction with <code>fts:match</code>.</p>
+<p>The <code>?delimStart</code> and <code>?delimEnd</code> parameters allow specifying the
+delimiters of the match strings inside the snippet.</p>
+<p>The <code>?ellipsis</code> parameter allows specifying
+the string used to separate distant matches in the snippet string.</p>
+<p>The <code>?numTokens</code> parameter specifies the number
+of tokens the returned string should containt at most.</p>
+<h2 id="uri-functions">URI functions</h2>
+<h3 id="trackeruriisparent"><code>tracker:uri-is-parent</code></h3>
+<pre><code class="language-SPARQL">tracker:uri-is-parent (?parent, ?uri)
+</code></pre>
+<p>Returns a boolean value expressing whether
+<code>?parent</code> is a parent of <code>?uri</code>.</p>
+<h3 id="trackeruriisdescendant"><code>tracker:uri-is-descendant</code></h3>
+<pre><code class="language-SPARQL">tracker:uri-is-descendant (?uri1, ?uri2, ..., ?uriN, ?child)
+</code></pre>
+<p>Returns a boolean value expressing whether one of the
+given URIs are a parent (direct or indirect) of
+<code>?child</code>.</p>
+<h3 id="trackerstringfromfilename"><code>tracker:string-from-filename</code></h3>
+<pre><code class="language-SPARQL">tracker:string-from-filename (?filename)
+</code></pre>
+<p>Returns a UTF-8 string from a filename.</p>
+<h2 id="geolocation-functions">Geolocation functions</h2>
+<h3 id="trackercartesiandistance"><code>tracker:cartesian-distance</code></h3>
+<pre><code class="language-SPARQL">tracker:cartesian-distance (?lat1, ?lat2, ?lon1, ?lon2)
+</code></pre>
+<p>Calculates the cartesian distance between 2 points expressed
+by <code>?lat1 / ?lon1</code> and <code>?lat2 / ?lon2</code>.</p>
+<h3 id="trackerhaversinedistance"><code>tracker:haversine-distance</code></h3>
+<pre><code class="language-SPARQL">tracker:haversine-distance (?lat1, ?lat2, ?lon1, ?lon2)
+</code></pre>
+<p>Calculates the haversine distance between 2 points expressed
+by <code>?lat1 / ?lon1</code> and <code>?lat2 / ?lon2</code>.</p>
+<h2 id="identification-functions">Identification functions</h2>
+<h3 id="trackerid"><code>tracker:id</code></h3>
+<pre><code class="language-SPARQL">tracker:id (?urn)
+</code></pre>
+<p>Returns the internal ID corresponding to a URN.
+Its inverse operation is <code>tracker:uri</code>.</p>
+<h3 id="trackeruri"><code>tracker:uri</code></h3>
+<pre><code class="language-SPARQL">tracker:uri (?id)
+</code></pre>
+<p>Returns the URN that corresponds to an ID.
+Its inverse operation is <code>tracker:id</code></p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

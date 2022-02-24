@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Nepomuk Information Element (NIE)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="nie-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="nepomuk-information-element-nie">Nepomuk Information Element (NIE)</h1>
+<pre><code class="language-turtle">@prefix nie: &lt;http://tracker.api.gnome.org/ontology/v3/nie#&gt;
+</code></pre>
+<h2 id="classes">
+<a name="nie.classes"></a>Classes</h2>
+<p><a href="nie-ontology.html#nie:DataObject">DataObject</a>, <a href="nie-ontology.html#nie:DataSource">DataSource</a>, <a href="nie-ontology.html#nie:InformationElement">InformationElement</a></p>
+<h1 id="overview">Overview</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The core of the NEPOMUK Information Element Ontology and the entire
+Ontology Framework revolves around the concepts of <a href="nie-ontology.html#nie:DataObject">nie:DataObject</a> and
+<a href="nie-ontology.html#nie:InformationElement">nie:InformationElement</a>. They express  the representation
+and content of a piece of data. Their specialized subclasses (defined
+in the other ontologies) can be used to classify
+a wide array of desktop resources and express them in RDF.</p>
+<p><a href="nie-ontology.html#nie:DataObject">nie:DataObject</a> class represents a bunch of
+bytes somewhere (local or remote), the physical entity that contain
+data. The <em>meaning</em> (interpretation) of that entity, the
+information for the user contained in those bytes (e.g. a music file,
+a picture) is represented on the
+<a href="nie-ontology.html#nie:InformationElement">nie:InformationElement</a> side of the
+ontology.</p>
+<p>Both sides are linked using the
+property <a href="nie-ontology.html#nie:interpretedAs">nie:interpretedAs</a> (and its reverse
+<a href="nie-ontology.html#nie:isStoredAs">nie:isStoredAs</a>), indicating the correspondence
+between the physical element and its interpretation. There is also a
+property to
+link <a href="nie-ontology.html#nie:InformationElement">nie:InformationElement</a>s,
+representing the logical containment between them (like a picture and
+its album).</p>
+<h2 id="common-properties">Common properties</h2>
+<p>Given that the classes defined in this ontology are the superclasses for almost
+everything in the Nepomuk set of ontologies, the
+properties defined here will be inherited for a lot of classes. It is
+worth to comment few of them with special relevance:</p>
+<ul>
+<li>
+<a href="nie-ontology.html#nie:title">nie:title</a>: Title or name or short text describing the item</li>
+<li>
+<a href="nie-ontology.html#nie:description">nie:description</a>: More verbose comment about the element</li>
+<li>
+<a href="nie-ontology.html#nie:language">nie:language</a>: To specify the language of the item.</li>
+<li>
+<a href="nie-ontology.html#nie:plainTextContent">nie:plainTextContent</a>: Just the raw content of the file, if it makes sense as text.</li>
+<li>
+<a href="nie-ontology.html#nie:generator">nie:generator</a>: Software/Agent that set/produced the information.</li>
+<li>
+<a href="nie-ontology.html#nie:usageCounter">nie:usageCounter</a>: Count number of accesses to the information. It can be an indicator of relevance for advanced searches</li>
+</ul>
+<h2 id="date-and-timestamp-representations">Date and timestamp representations</h2>
+<p>There are few important dates for the life-cycle of a resource. These dates are properties of the nie:InformationElement class, and inherited for its subclasses:</p>
+<ul>
+<li>
+<a href="nie-ontology.html#nie:informationElementDate">nie:informationElementDate</a>: This is an ''abstract'' property that act as superproperty of the other dates. Don't use it directly.</li>
+<li>
+<a href="nie-ontology.html#nie:contentLastModified">nie:contentLastModified</a>: Modification time of a resource. Usually the mtime of a local file, or information from the server for online resources.</li>
+<li>
+<a href="nie-ontology.html#nie:contentCreated">nie:contentCreated</a>: Creation time of the content. If the contents is created by an application, the same application should set the value of this property. Note that this property can be undefined for resources in the filesystem because the creation time is not available in the most common filesystem formats.</li>
+<li>
+<a href="nie-ontology.html#nie:contentAccessed">nie:contentAccessed</a>: For resources coming from the filesystem, this is the usual access time to the file. For other  kind of resources (online or virtual), the application accessing it should update its value.</li>
+<li>
+<a href="nie-ontology.html#nie:lastRefreshed">nie:lastRefreshed</a>: The time that the content was last refreshed. Usually for remote resources.</li>
+</ul>
+<h2 id="uris-and-full-representation-of-a-file">URIs and full representation of a file</h2>
+<p>One of the most common resources in a desktop is a file. Given the split between Data Objects and Information Elements, some times it is not clear how a real file is represented into Nepomuk. Here are some indications:</p>
+<ol>
+<li>Every file (local or remote) should generate one DataObject instance and an InformationElement instance.</li>
+<li>Even when Data Objects and Information Elements are different entities.</li>
+<li>The URI of the DataObject is the real location of the item (e.g. ''file://path/to/file.mp3'')</li>
+<li>The URI of the InformationElement(s) will be autogenerated IDs.</li>
+<li>Every DataObject must have the property <a href="nie-ontology.html#nie:url">nie:url</a>, that points to the location of the resource, and should be used by any program that wants to access it.</li>
+<li>The InformationElement and DataObject are related via the nie:isStoredAs / nie:interpretedAs properties.</li>
+</ol>
+<p>Here comes an example, for the image file /home/user/a.jpeg:</p>
+<pre><code># Properties as nmm:Photo
+&lt;urn:uuid:10293801928301293&gt; a nmm:Photo ;
+	nie:isStoredAs &lt;file:///home/user/a.jpeg&gt; ;
+	nfo:width 49 ;
+	nfo:height 36 ;
+	nmm:flash &amp;lt;nmm:flash-off&amp;gt;;
+	nmm:whiteBalance &lt;nmm:white-balance-automatic&gt; ;
+	nfo:equipment [ a nfo:Equipment ; nfo:make 'Nokia'; nfo:model 'N900'; nfo:equipmentSoftware 'Tracknon' ] .
+
+# Properties from nfo:FileDataObject
+&lt;file:///home/user/a.jpeg&gt; a nfo:FileDataObject ;
+	nie:interpretedAs &lt;urn:uuid:10293801928301293&gt; ;
+	nfo:fileSize 12341234 ;
+	# Mandatory for any nfo:DataObject
+	nie:url &lt;file:///home/user/a.jpeg&gt; .
+</code></pre>
+<h2 id="class-details">
+<a name="nie-classes"></a>Class Details</h2>
+<h3 id="dataobject">
+<a name="nie:DataObject"></a>DataObject</h3>
+<h5 id="description">Description</h5>
+<p>A unit of data that is created, annotated and processed on the user desktop. It represents a native structure the user works with. The usage of the term 'native'	is important. It means that a DataObject can be directly mapped to a data structure maintained by a native application.	This may be a file, a set of files or a part of a file. The granularity depends on the user. This class is not intended to be instantiated by itself. Use more specific subclasses.</p>
+<h4 id="class-hierarchy">
+<a name="nie:DataObject.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ├── nfo:SoftwareService 
+    ├── nfo:SoftwareItem 
+    ├── nfo:RemotePortAddress 
+    ├── nfo:MediaStream 
+    ├── nfo:HardDiskPartition 
+    ├── nfo:FileDataObject 
+    ╰── nco:ContactListDataObject 
+</code></pre>
+<h4 id="properties">
+<a name="nie:DataObject.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nfo:belongsToContainer"></a>belongsToContainer</td>
+<td> <a href="nfo-ontology.html#nfo:DataContainer">DataContainer</a>
+</td>
+<td> <a href="nie-ontology.html#nie:isPartOf"><img src="images/icon-superproperty.svg" alt="This property extends nie:isPartOf" title="This property extends nie:isPartOf" id="this-property-extends-nieispartof"></a>
+</td>
+<td> Models the containment relations between Files and Folders (or CompressedFiles).</td>
+</tr>
+<tr>
+<td> <a name="nie:byteSize"></a>byteSize</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> File size in bytes</td>
+</tr>
+<tr>
+<td> <a name="nie:created"></a>created</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td></td>
+<td> Date of creation of the DataObject. Note that this date refers to the creation of the DataObject itself (i.e. the physical representation). Compare with nie:contentCreated</td>
+</tr>
+<tr>
+<td> <a name="nie:dataSource"></a>dataSource</td>
+<td> <a href="nie-ontology.html#nie:DataSource">DataSource</a>
+</td>
+<td> <a href="dc-ontology.html#dc:source"><img src="images/icon-superproperty.svg" alt="This property extends dc:source" title="This property extends dc:source" id="this-property-extends-dcsource"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values"></a>
+</td>
+<td> Marks the provenance of a DataObject, what source does a data object come from</td>
+</tr>
+<tr>
+<td> <a name="nie:interpretedAs"></a>interpretedAs</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values1"></a>
+</td>
+<td> Links the DataObject with the InformationElement it is interpreted as</td>
+</tr>
+<tr>
+<td> <a name="nie:isPartOf"></a>isPartOf</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values2"></a>
+</td>
+<td> Generic property used to express containment relationships between DataObjects. NIE extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of DataObjects to use those specific subproperties. Note to the developers: Please be aware of the distinction between containment relation and provenance. The isPartOf relation models physical containment, a nie:DataObject (e.g. an nfo:Attachment) is a 'physical' part of an nie:InformationElement (a nmo:Message). Also, please note the difference between physical containment (isPartOf) and logical containment (isLogicalPartOf) the former has more strict meaning. They may occur independently of each other</td>
+</tr>
+<tr>
+<td> <a name="nie:lastRefreshed"></a>lastRefreshed</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="dc-ontology.html#dc:date"><img src="images/icon-superproperty.svg" alt="This property extends dc:date" title="This property extends dc:date" id="this-property-extends-dcdate"></a>
+</td>
+<td> Date when information about this data object was retrieved (for the first time) or last refreshed from the data source. This property is important for metadata extraction applications that don't receive any notifications of changes in the data source and have to poll it regularly. This may lead to information becoming out of date. In these cases this property may be used to determine the age of data, which is an important element of it's dependability</td>
+</tr>
+<tr>
+<td> <a name="nie:url"></a>url</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> URL pointing at the location of the resource. In cases where creating a simple file:// or http:// URL for a file is difficult (e.g. for files inside compressed archives) the applications are encouraged to use conventions defined by Apache Commons VFS Project at http://jakarta.apache.org/  commons/ vfs/ filesystems.html.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="datasource">
+<a name="nie:DataSource"></a>DataSource</h3>
+<h5 id="description1">Description</h5>
+<p>A superclass for all entities from which DataObjects can be extracted. Each entity represents a native application or some other system that manages information that may be of interest to the user of the Semantic Desktop. Subclasses may include FileSystems, Mailboxes, Calendars, websites etc. The exact choice of subclasses and their properties is considered application-specific. Each data extraction application is supposed to provide it's own DataSource ontology. Such an ontology should contain supported data source types coupled with properties necessary for the application to gain access to the data sources. (paths, urls, passwords etc...)</p>
+<h4 id="class-hierarchy1">
+<a name="nie:DataSource.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataSource 
+    ╰── tracker:IndexedFolder 
+</code></pre>
+<h4 id="predefined-instances">
+<a name="nie:DataSource.predefined-instances"></a>Predefined instances</h4>
+<p>nie:DataSource has the following predefined instances:</p>
+<ul>
+<li>tracker:extractor-data-source</li>
+</ul>
+<h3 id="informationelement">
+<a name="nie:InformationElement"></a>InformationElement</h3>
+<h5 id="description2">Description</h5>
+<p>A unit of content the user works with. This is a superclass for all interpretations of a DataObject.</p>
+<h4 id="class-hierarchy2">
+<a name="nie:InformationElement.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement ──┐──┐──┐
+    ├── tracker:ExternalReference   │  │  │
+    ├── slo:LandmarkCategory   │  │  │
+    ├── slo:Landmark         │  │  │
+    ├── slo:GeoLocation      │  │  │
+    │                        └── nmm:TVShow   │  │
+    ├── nmm:TVSeries            │  │
+    ├── nmm:TVSeason            │  │
+    ├── nmm:MusicAlbumDisc      │  │
+    │                           └── nmm:Movie   │
+    ├── nmm:Artist                 │
+    ├── nfo:Website                │
+    ├── nfo:WebHistory             │
+    │                              └── nfo:SoftwareCategory 
+    ├── nfo:Software 
+    ├── nfo:RegionOfInterestContent 
+    ├── nfo:RegionOfInterest 
+    ├── nfo:MediaList 
+    ├── nfo:Media 
+    ├── nfo:Font 
+    ├── nfo:Executable 
+    ├── nfo:Equipment 
+    ├── nfo:Document 
+    ├── nfo:DataContainer 
+    ├── nfo:BookmarkFolder 
+    ├── nfo:Bookmark 
+    ├── nco:IMAccount 
+    ├── nco:ContactList 
+    ├── nco:ContactGroup 
+    ├── nco:Contact 
+    ╰── mfo:FeedElement 
+</code></pre>
+<h4 id="predefined-instances1">
+<a name="nie:InformationElement.predefined-instances"></a>Predefined instances</h4>
+<p>nie:InformationElement has the following predefined instances:</p>
+<ul>
+<li>nfo:roi-content-undefined</li>
+<li>nfo:roi-content-barcode</li>
+<li>nfo:roi-content-focus</li>
+<li>nfo:roi-content-pet</li>
+<li>nfo:roi-content-face</li>
+<li>nfo:image-category-screenshot</li>
+<li>nco:default-contact-me</li>
+</ul>
+<h4 id="properties1">
+<a name="nie:InformationElement.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:contributor"></a>contributor</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td> <a href="dc-ontology.html#dc:contributor"><img src="images/icon-superproperty.svg" alt="This property extends dc:contributor" title="This property extends dc:contributor" id="this-property-extends-dccontributor"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values3"></a>
+</td>
+<td> An entity responsible for making contributions to the content of the InformationElement.</td>
+</tr>
+<tr>
+<td> <a name="nco:creator"></a>creator</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td> <a href="dc-ontology.html#dc:creator"><img src="images/icon-superproperty.svg" alt="This property extends dc:creator" title="This property extends dc:creator" id="this-property-extends-dccreator"></a><a href="nco-ontology.html#nco:contributor"><img src="images/icon-superproperty.svg" alt="This property extends nco:contributor" title="This property extends nco:contributor" id="this-property-extends-ncocontributor"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values4"></a>
+</td>
+<td> Creator of a data object, an entity primarily responsible for the creation of the content of the data object.</td>
+</tr>
+<tr>
+<td> <a name="nco:publisher"></a>publisher</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td> <a href="dc-ontology.html#dc:publisher"><img src="images/icon-superproperty.svg" alt="This property extends dc:publisher" title="This property extends dc:publisher" id="this-property-extends-dcpublisher"></a>
+</td>
+<td> An entity responsible for making the InformationElement available.</td>
+</tr>
+<tr>
+<td> <a name="nfo:isBootable"></a>isBootable</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> True when the file is bootable, for example like an ISO or other disc images</td>
+</tr>
+<tr>
+<td> <a name="nfo:isContentEncrypted"></a>isContentEncrypted</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Might change (IE of DataObject property?)</td>
+</tr>
+<tr>
+<td> <a name="nie:characterSet"></a>characterSet</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Characterset in which the content of the InformationElement was created. Example: ISO-8859-1, UTF-8. One of the registered character sets at http://www.iana.org/assignments/character-sets. This characterSet is used to interpret any textual parts of the content. If more than one characterSet is used within one data object, use more specific properties</td>
+</tr>
+<tr>
+<td> <a name="nie:comment"></a>comment</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch"></a>
+</td>
+<td> A user comment about an InformationElement</td>
+</tr>
+<tr>
+<td> <a name="nie:contentAccessed"></a>contentAccessed</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="nie-ontology.html#nie:informationElementDate"><img src="images/icon-superproperty.svg" alt="This property extends nie:informationElementDate" title="This property extends nie:informationElementDate" id="this-property-extends-nieinformationelementdate"></a>
+</td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nie:contentCreated"></a>contentCreated</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="nie-ontology.html#nie:informationElementDate"><img src="images/icon-superproperty.svg" alt="This property extends nie:informationElementDate" title="This property extends nie:informationElementDate" id="this-property-extends-nieinformationelementdate1"></a>
+</td>
+<td> The date of the content creation. This may not necessarily be equal to the date when the DataObject (i.e. the physical representation) itself was created. Compare with nie:created property</td>
+</tr>
+<tr>
+<td> <a name="nie:contentLastModified"></a>contentLastModified</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="nie-ontology.html#nie:informationElementDate"><img src="images/icon-superproperty.svg" alt="This property extends nie:informationElementDate" title="This property extends nie:informationElementDate" id="this-property-extends-nieinformationelementdate2"></a>
+</td>
+<td> The date of the last modification of the original content (not its corresponding DataObject or local copy). Compare with nie:lastModified</td>
+</tr>
+<tr>
+<td> <a name="nie:contentSize"></a>contentSize</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td> The size of the content. This property can be used whenever the size of the content of an InformationElement differs from the size of the DataObject. (e.g. because of compression, encoding, encryption or any other representation issues). The contentSize in expressed in bytes</td>
+</tr>
+<tr>
+<td> <a name="nie:copyright"></a>copyright</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:rights"><img src="images/icon-superproperty.svg" alt="This property extends dc:rights" title="This property extends dc:rights" id="this-property-extends-dcrights"></a><a href="nie-ontology.html#nie:legal"><img src="images/icon-superproperty.svg" alt="This property extends nie:legal" title="This property extends nie:legal" id="this-property-extends-nielegal"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values5"></a>
+</td>
+<td> Content copyright</td>
+</tr>
+<tr>
+<td> <a name="nie:depends"></a>depends</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td> <a href="nie-ontology.html#nie:relatedTo"><img src="images/icon-superproperty.svg" alt="This property extends nie:relatedTo" title="This property extends nie:relatedTo" id="this-property-extends-nierelatedto"></a>
+</td>
+<td> Dependency relation. A piece of content depends on another piece of data in order to be properly understood/used/interpreted</td>
+</tr>
+<tr>
+<td> <a name="nie:description"></a>description</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:description"><img src="images/icon-superproperty.svg" alt="This property extends dc:description" title="This property extends dc:description" id="this-property-extends-dcdescription"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch1"></a>
+</td>
+<td> A textual description of the resource. This property may be used for any metadata fields that provide some meta-information or comment about a resource in the form of a passage of text. This property is not to be confused with nie:plainTextContent. Use more specific subproperties wherever possible</td>
+</tr>
+<tr>
+<td> <a name="nie:disclaimer"></a>disclaimer</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nie-ontology.html#nie:legal"><img src="images/icon-superproperty.svg" alt="This property extends nie:legal" title="This property extends nie:legal" id="this-property-extends-nielegal1"></a>
+</td>
+<td> A disclaimer</td>
+</tr>
+<tr>
+<td> <a name="nie:generator"></a>generator</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Software used to 'generate' the contents. E.g. a word processor name</td>
+</tr>
+<tr>
+<td> <a name="nie:hasLogicalPart"></a>hasLogicalPart</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values6"></a>
+</td>
+<td> Generic property used to express 'logical' containment relationships between InformationElements. NIE extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of InformationElement to use those specific subproperties. Note the difference between 'physical' containment (hasPart) and logical containment (hasLogicalPart)</td>
+</tr>
+<tr>
+<td> <a name="nie:hasPart"></a>hasPart</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td> <a href="nie-ontology.html#nie:relatedTo"><img src="images/icon-superproperty.svg" alt="This property extends nie:relatedTo" title="This property extends nie:relatedTo" id="this-property-extends-nierelatedto1"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values7"></a>
+</td>
+<td> Generic property used to express 'physical' containment relationships between DataObjects. NIE extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of DataObjects to use those specific subproperties. Note to the developers: Please be aware of the distinction between containment relation and provenance. The hasPart relation models physical containment, an InformationElement (a nmo:Message) can have a 'physical' part (an nfo:Attachment). Also, please note the difference between physical containment (hasPart) and logical containment (hasLogicalPart) the former has more strict meaning. They may occur independently of each other</td>
+</tr>
+<tr>
+<td> <a name="nie:identifier"></a>identifier</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:identifier"><img src="images/icon-superproperty.svg" alt="This property extends dc:identifier" title="This property extends dc:identifier" id="this-property-extends-dcidentifier"></a>
+</td>
+<td> An unambiguous reference to the InformationElement within a given context. Recommended best practice is to identify the resource by means of a string conforming to a formal identification system</td>
+</tr>
+<tr>
+<td> <a name="nie:informationElementDate"></a>informationElementDate</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="dc-ontology.html#dc:date"><img src="images/icon-superproperty.svg" alt="This property extends dc:date" title="This property extends dc:date" id="this-property-extends-dcdate1"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values8"></a>
+</td>
+<td> A point or period of time associated with an event in the lifecycle of an Information Element. A common superproperty for all date-related properties of InformationElements in the NIE Framework</td>
+</tr>
+<tr>
+<td> <a name="nie:isLogicalPartOf"></a>isLogicalPartOf</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values9"></a>
+</td>
+<td> Generic property used to express 'logical' containment relationships between DataObjects. NIE extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of InformationElement to use those specific subproperties. Note the difference between 'physical' containment (isPartOf) and logical containment (isLogicalPartOf)</td>
+</tr>
+<tr>
+<td> <a name="nie:isStoredAs"></a>isStoredAs</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values10"></a>
+</td>
+<td> Links the information element with the DataObject it is stored in</td>
+</tr>
+<tr>
+<td> <a name="nie:keyword"></a>keyword</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values11"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch2"></a>
+</td>
+<td> Adapted DublinCore: The topic of the content of the resource, as keyword. No sentences here. Recommended best practice is to select a value from a controlled vocabulary or formal classification scheme</td>
+</tr>
+<tr>
+<td> <a name="nie:language"></a>language</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Language the InformationElement is expressed in. Users are encouraged to use the two-letter code specified in the RFC 3066</td>
+</tr>
+<tr>
+<td> <a name="nie:legal"></a>legal</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:rights"><img src="images/icon-superproperty.svg" alt="This property extends dc:rights" title="This property extends dc:rights" id="this-property-extends-dcrights1"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values12"></a>
+</td>
+<td> A common superproperty for all properties that point at legal information about an Information Element</td>
+</tr>
+<tr>
+<td> <a name="nie:license"></a>license</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:rights"><img src="images/icon-superproperty.svg" alt="This property extends dc:rights" title="This property extends dc:rights" id="this-property-extends-dcrights2"></a><a href="nie-ontology.html#nie:legal"><img src="images/icon-superproperty.svg" alt="This property extends nie:legal" title="This property extends nie:legal" id="this-property-extends-nielegal2"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values13"></a>
+</td>
+<td> Terms and intellectual property rights licensing conditions.</td>
+</tr>
+<tr>
+<td> <a name="nie:licenseType"></a>licenseType</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nie-ontology.html#nie:legal"><img src="images/icon-superproperty.svg" alt="This property extends nie:legal" title="This property extends nie:legal" id="this-property-extends-nielegal3"></a>
+</td>
+<td> The type of the license. Possible values for this field may include 'GPL', 'BSD', 'Creative Commons' etc.</td>
+</tr>
+<tr>
+<td> <a name="nie:links"></a>links</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td> <a href="nie-ontology.html#nie:relatedTo"><img src="images/icon-superproperty.svg" alt="This property extends nie:relatedTo" title="This property extends nie:relatedTo" id="this-property-extends-nierelatedto2"></a>
+</td>
+<td> A linking relation. A piece of content links/mentions a piece of data</td>
+</tr>
+<tr>
+<td> <a name="nie:mimeType"></a>mimeType</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> File Mime Type</td>
+</tr>
+<tr>
+<td> <a name="nie:plainTextContent"></a>plainTextContent</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch3"></a>
+</td>
+<td> Plain-text representation of the content of a InformationElement with all markup removed. The main purpose of this property is full-text indexing and search. Its exact content is considered application-specific. The user can make no assumptions about what is and what is not contained within. Applications should use more specific properties wherever possible.</td>
+</tr>
+<tr>
+<td> <a name="nie:relatedTo"></a>relatedTo</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td> <a href="dc-ontology.html#dc:relation"><img src="images/icon-superproperty.svg" alt="This property extends dc:relation" title="This property extends dc:relation" id="this-property-extends-dcrelation"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values14"></a>
+</td>
+<td> A common superproperty for all relations between a piece of content and other pieces of data (which may be interpreted as other pieces of content).</td>
+</tr>
+<tr>
+<td> <a name="nie:rootElementOf"></a>rootElementOf</td>
+<td> <a href="nie-ontology.html#nie:DataSource">DataSource</a>
+</td>
+<td></td>
+<td> DataObjects extracted from a single data source are organized into a containment tree. This property links the root of that tree with the datasource it has been extracted from</td>
+</tr>
+<tr>
+<td> <a name="nie:subject"></a>subject</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:subject"><img src="images/icon-superproperty.svg" alt="This property extends dc:subject" title="This property extends dc:subject" id="this-property-extends-dcsubject"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch4"></a>
+</td>
+<td> The subject or topic of the document</td>
+</tr>
+<tr>
+<td> <a name="nie:title"></a>title</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:title"><img src="images/icon-superproperty.svg" alt="This property extends dc:title" title="This property extends dc:title" id="this-property-extends-dctitle"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch5"></a>
+</td>
+<td> The title of the document</td>
+</tr>
+<tr>
+<td> <a name="nie:usageCounter"></a>usageCounter</td>
+<td> <a href="xsd-ontology.html#xsd:integer">integer</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nie:version"></a>version</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The current version of the given data object. Exact semantics is unspecified at this level. Use more specific subproperties if needed</td>
+</tr>
+<tr>
+<td> <a name="osinfo:id"></a>id</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="osinfo:mediaId"></a>mediaId</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="slo:location"></a>location</td>
+<td> <a href="slo-ontology.html#slo:GeoLocation">GeoLocation</a>
+</td>
+<td></td>
+<td> This can be subclassed to add semantics</td>
+</tr>
+<tr>
+<td> <a name="tracker:hasExternalReference"></a>hasExternalReference</td>
+<td> <a href="tracker-ontology.html#tracker:ExternalReference">ExternalReference</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values15"></a>
+</td>
+<td> Links the information element with the external reference</td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
+<li>Leo Sauermann, DFKI, &lt;leo.sauermann@dfki.de&gt;</li>
+<li>Ludger van Elst, DFKI, &lt;elst@dfki.uni-kl.de&gt;</li>
+<li>Michael Sintek, DFKI, &lt;michael.sintek@dfki.de&gt;</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
+</ul>
+<p>Contributors:</p>
+<ul>
+<li>Christiaan Fluit, Aduna, &lt;christiaan.fluit@aduna-software.com&gt;</li>
+<li>Evgeny 'phreedom' Egorochkin, KDE Strigi Developer, &lt;stexx@mail.ru&gt;</li>
+</ul>
+<p>Upstream: <a href="http://www.semanticdesktop.org/ontologies/nie/">Upstream version</a></p>
+<p>ChangeLog: <a href="hhttps://gitlab.gnome.org/GNOME/tracker/-/commits/master/src/ontologies/30-nie.ontology">Tracker changes</a></p>
+<p>Copyright:
+© 2007 <ulink url="http://www.dfki.de/">DFKI</ulink> © 2009 <ulink url="http://www.nokia.com/">Nokia</ulink>. The ontologies are made available under the terms of NEPOMUK <ulink url="http://www.semanticdesktop.org/ontologies/nfo/LICENSE.txt">software license</ulink> (FIXME verify)</p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

@@ -41,13 +41,27 @@ tests += {
   'suite': ['sparql'],
 }
 
+test_gresources = gnome.compile_resources('test_gresources', 'statement-queries.gresource.xml')
+
 tracker_statement_test = executable('tracker-statement-test',
   'tracker-statement-test.c',
+  test_gresources,
   dependencies: [tracker_common_dep, tracker_sparql_dep],
   c_args: libtracker_sparql_test_c_args + test_c_args)
 
 tests += {
   'name': 'statement',
   'exe': tracker_statement_test,
+  'suite': ['sparql'],
+}
+
+tracker_serialize_test = executable('tracker-serialize-test',
+  'tracker-serialize-test.c',
+  dependencies: [tracker_common_dep, tracker_sparql_dep],
+  c_args: libtracker_sparql_test_c_args + test_c_args)
+
+tests += {
+  'name': 'serialize',
+  'exe': tracker_serialize_test,
   'suite': ['sparql'],
 }

@@ -19,6 +19,9 @@
 
 #include "config.h"
 
+/* Allow usage of tracker_namespace_manager_get_default() */
+#define TRACKER_VERSION_MIN_REQUIRED TRACKER_VERSION_3_2
+
 #include <glib.h>
 #include <json-glib/json-glib.h>
 
@@ -42,7 +45,7 @@ typedef struct {
 	GHashTable *overwrite;
 } TrackerResourcePrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (TrackerResource, tracker_resource, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (TrackerResource, tracker_resource, G_TYPE_OBJECT)
 #define GET_PRIVATE(object)  (tracker_resource_get_instance_private (object))
 
 /**
@@ -52,10 +55,8 @@ G_DEFINE_TYPE_WITH_PRIVATE (TrackerResource, tracker_resource, G_TYPE_OBJECT);
  * @stability: Stable
  * @include: tracker-resource.h
  *
- * <para>
  * #TrackerResource keeps track of a set of properties for a given resource.
  * The resulting data can be serialized in several ways.
- * </para>
  */
 
 static char *
@@ -287,7 +288,7 @@ tracker_resource_set_gvalue (TrackerResource *self,
 	g_hash_table_insert (priv->properties, g_strdup (property_uri), our_value);
 
 	g_hash_table_insert (priv->overwrite, g_strdup (property_uri), GINT_TO_POINTER (TRUE));
-};
+}
 
 static gboolean
 validate_boolean (gboolean    value,
@@ -353,7 +354,7 @@ validate_pointer (const void *pointer,
 		g_hash_table_insert (priv->overwrite,                               \
 		                     g_strdup (property_uri),                       \
 		                     GINT_TO_POINTER (TRUE));                       \
-	};
+	}
 
 /**
  * tracker_resource_set_boolean:
@@ -363,7 +364,7 @@ validate_pointer (const void *pointer,
  *
  * Sets a single-valued boolean object.
  */
-SET_PROPERTY_FOR_GTYPE (tracker_resource_set_boolean, gboolean, G_TYPE_BOOLEAN, g_value_set_boolean, validate_boolean);
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_boolean, gboolean, G_TYPE_BOOLEAN, g_value_set_boolean, validate_boolean)
 
 /**
  * tracker_resource_set_double:
@@ -373,7 +374,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_boolean, gboolean, G_TYPE_BOOLEAN, 
  *
  * Sets a single-valued double object.
  */
-SET_PROPERTY_FOR_GTYPE (tracker_resource_set_double, double, G_TYPE_DOUBLE, g_value_set_double, validate_double);
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_double, double, G_TYPE_DOUBLE, g_value_set_double, validate_double)
 
 /**
  * tracker_resource_set_int:
@@ -383,7 +384,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_double, double, G_TYPE_DOUBLE, g_va
  *
  * Sets a single-valued integer object.
  */
-SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int, int, G_TYPE_INT, g_value_set_int, validate_int);
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int, int, G_TYPE_INT, g_value_set_int, validate_int)
 
 /**
  * tracker_resource_set_int64:
@@ -393,7 +394,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int, int, G_TYPE_INT, g_value_set_i
  *
  * Sets a single-valued integer object.
  */
-SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int64, gint64, G_TYPE_INT64, g_value_set_int64, validate_int64);
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int64, gint64, G_TYPE_INT64, g_value_set_int64, validate_int64)
 
 /**
  * tracker_resource_set_relation:
@@ -406,7 +407,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int64, gint64, G_TYPE_INT64, g_valu
  * although in this function the URI will depend on the identifier
  * set on @resource.
  */
-SET_PROPERTY_FOR_GTYPE (tracker_resource_set_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_set_object, validate_pointer);
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_set_object, validate_pointer)
 
 /**
  * tracker_resource_set_take_relation: (skip)
@@ -419,7 +420,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_relation, TrackerResource *, TRACKE
  * although in this function the URI will depend on the identifier
  * set on @resource. This function takes ownership of @resource.
  */
-SET_PROPERTY_FOR_GTYPE (tracker_resource_set_take_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_take_object, validate_pointer);
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_take_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_take_object, validate_pointer)
 
 /**
  * tracker_resource_set_string:
@@ -429,7 +430,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_take_relation, TrackerResource *, T
  *
  * Sets a single-valued string object.
  */
-SET_PROPERTY_FOR_GTYPE (tracker_resource_set_string, const char *, G_TYPE_STRING, g_value_set_string, validate_pointer);
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_string, const char *, G_TYPE_STRING, g_value_set_string, validate_pointer)
 
 /**
  * tracker_resource_set_uri:
@@ -441,7 +442,18 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_string, const char *, G_TYPE_STRING
  * produces similar RDF to tracker_resource_set_relation(), although
  * it requires that the URI is previously known.
  */
-SET_PROPERTY_FOR_GTYPE (tracker_resource_set_uri, const char *, TRACKER_TYPE_URI, g_value_set_string, validate_pointer);
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_uri, const char *, TRACKER_TYPE_URI, g_value_set_string, validate_pointer)
+
+/**
+ * tracker_resource_set_datetime:
+ * @self: the #TrackerResource
+ * @property_uri: a string identifying the property to modify
+ * @value: the property object
+ *
+ * Sets a single-valued GDateTime as a #TrackerResource
+ * Since: 3.2
+ */
+SET_PROPERTY_FOR_GTYPE (tracker_resource_set_datetime, GDateTime *, G_TYPE_DATE_TIME, g_value_set_boxed, validate_pointer)
 
 /**
  * tracker_resource_add_gvalue:
@@ -502,7 +514,7 @@ tracker_resource_add_gvalue (TrackerResource *self,
 	if (array_holder != existing_value) {
 		g_hash_table_insert (priv->properties, g_strdup (property_uri), array_holder);
 	}
-};
+}
 
 #define ADD_PROPERTY_FOR_GTYPE(name, ctype, gtype, set_function, validate_function)     \
 	void name (TrackerResource *self,                                               \
@@ -555,7 +567,7 @@ tracker_resource_add_gvalue (TrackerResource *self,
 			g_hash_table_insert (priv->properties,                          \
 			                     g_strdup (property_uri), array_holder);    \
 		}                                                                       \
-	};
+	}
 
 /**
  * tracker_resource_add_boolean:
@@ -565,7 +577,7 @@ tracker_resource_add_gvalue (TrackerResource *self,
  *
  * Adds a boolean object to a multi-valued property.
  */
-ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_boolean, gboolean, G_TYPE_BOOLEAN, g_value_set_boolean, validate_boolean);
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_boolean, gboolean, G_TYPE_BOOLEAN, g_value_set_boolean, validate_boolean)
 
 /**
  * tracker_resource_add_double:
@@ -575,7 +587,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_boolean, gboolean, G_TYPE_BOOLEAN, 
  *
  * Adds a double object to a multi-valued property.
  */
-ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_double, double, G_TYPE_DOUBLE, g_value_set_double, validate_double);
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_double, double, G_TYPE_DOUBLE, g_value_set_double, validate_double)
 
 /**
  * tracker_resource_add_int:
@@ -585,7 +597,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_double, double, G_TYPE_DOUBLE, g_va
  *
  * Adds an integer object to a multi-valued property.
  */
-ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int, int, G_TYPE_INT, g_value_set_int, validate_int);
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int, int, G_TYPE_INT, g_value_set_int, validate_int)
 
 /**
  * tracker_resource_add_int64:
@@ -595,7 +607,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int, int, G_TYPE_INT, g_value_set_i
  *
  * Adds an integer object to a multi-valued property.
  */
-ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int64, gint64, G_TYPE_INT64, g_value_set_int64, validate_int64);
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int64, gint64, G_TYPE_INT64, g_value_set_int64, validate_int64)
 
 /**
  * tracker_resource_add_relation:
@@ -608,7 +620,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int64, gint64, G_TYPE_INT64, g_valu
  * although in this function the URI will depend on the identifier
  * set on @resource.
  */
-ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_set_object, validate_pointer);
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_set_object, validate_pointer)
 
 /**
  * tracker_resource_add_take_relation: (skip)
@@ -621,7 +633,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_relation, TrackerResource *, TRACKE
  * although in this function the URI will depend on the identifier
  * set on @resource. This function takes ownership of @resource.
  */
-ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_take_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_take_object, validate_pointer);
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_take_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_take_object, validate_pointer)
 
 
 /**
@@ -632,7 +644,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_take_relation, TrackerResource *, T
  *
  * Adds a string object to a multi-valued property.
  */
-ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_string, const char *, G_TYPE_STRING, g_value_set_string, validate_pointer);
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_string, const char *, G_TYPE_STRING, g_value_set_string, validate_pointer)
 
 /**
  * tracker_resource_add_uri:
@@ -644,8 +656,18 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_string, const char *, G_TYPE_STRING
  * produces similar RDF to tracker_resource_add_relation(), although
  * it requires that the URI is previously known.
  */
-ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_uri, const char *, TRACKER_TYPE_URI, g_value_set_string, validate_pointer);
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_uri, const char *, TRACKER_TYPE_URI, g_value_set_string, validate_pointer)
 
+/**
+ * tracker_resource_add_datetime:
+ * @self: the #TrackerResource
+ * @property_uri: a string identifying the property to modify
+ * @value: the property object
+ *
+ * Adds GDateTime object to the multi-valued property.
+ * Since: 3.2
+ */
+ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_datetime, GDateTime *, G_TYPE_DATE_TIME, g_value_set_boxed, validate_pointer)
 
 /**
  * tracker_resource_get_values:
@@ -677,7 +699,7 @@ GList *tracker_resource_get_values (TrackerResource *self,
 	if (G_VALUE_HOLDS (value, G_TYPE_PTR_ARRAY)) {
 		GList *result = NULL;
 		GPtrArray *array;
-		int i;
+		guint i;
 
 		array = g_value_get_boxed (value);
 
@@ -721,7 +743,7 @@ GList *tracker_resource_get_values (TrackerResource *self,
 		}                                                             \
                                                                               \
 		return get_function (value);                                  \
-	};
+	}
 
 /**
  * tracker_resource_get_first_boolean:
@@ -732,7 +754,7 @@ GList *tracker_resource_get_values (TrackerResource *self,
  *
  * Returns: the first boolean object
  */
-GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_boolean, gboolean, G_TYPE_BOOLEAN, g_value_get_boolean, FALSE);
+GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_boolean, gboolean, G_TYPE_BOOLEAN, g_value_get_boolean, FALSE)
 
 /**
  * tracker_resource_get_first_double:
@@ -743,7 +765,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_boolean, gboolean, G_TYPE_BOO
  *
  * Returns: the first double object
  */
-GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_double, double, G_TYPE_DOUBLE, g_value_get_double, 0.0);
+GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_double, double, G_TYPE_DOUBLE, g_value_get_double, 0.0)
 
 /**
  * tracker_resource_get_first_int:
@@ -754,7 +776,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_double, double, G_TYPE_DOUBLE
  *
  * Returns: the first integer object
  */
-GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_int, int, G_TYPE_INT, g_value_get_int, 0);
+GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_int, int, G_TYPE_INT, g_value_get_int, 0)
 
 /**
  * tracker_resource_get_first_int64:
@@ -765,7 +787,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_int, int, G_TYPE_INT, g_value
  *
  * Returns: the first integer object
  */
-GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_int64, gint64, G_TYPE_INT64, g_value_get_int64, 0);
+GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_int64, gint64, G_TYPE_INT64, g_value_get_int64, 0)
 
 /**
  * tracker_resource_get_first_relation:
@@ -776,7 +798,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_int64, gint64, G_TYPE_INT64, 
  *
  * Returns: (transfer none): the first resource object
  */
-GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_get_object, NULL);
+GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_get_object, NULL)
 
 /**
  * tracker_resource_get_first_string:
@@ -787,7 +809,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_relation, TrackerResource *, 
  *
  * Returns: the first string object
  */
-GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_string, const char *, G_TYPE_STRING, g_value_get_string, NULL);
+GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_string, const char *, G_TYPE_STRING, g_value_get_string, NULL)
 
 /**
  * tracker_resource_get_first_uri:
@@ -798,7 +820,19 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_string, const char *, G_TYPE_
  *
  * Returns: the first resource object as an URI.
  */
-GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_uri, const char *, TRACKER_TYPE_URI, g_value_get_string, NULL);
+GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_uri, const char *, TRACKER_TYPE_URI, g_value_get_string, NULL)
+
+/**
+ * tracker_resource_get_first_datetime:
+ * @self: A #TrackerResource
+ * @property_uri: a string identifying the property to look up
+ *
+ * Returns the first resource object previously assigned to a property.
+ *
+ * Returns: the first GDateTime object
+ * Since: 3.2
+ */
+GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_datetime, GDateTime *, G_TYPE_DATE_TIME, g_value_get_boxed, NULL)
 
 /**
  * tracker_resource_get_identifier:
@@ -912,7 +946,7 @@ tracker_resource_compare (TrackerResource *a,
 	b_priv = GET_PRIVATE (b);
 
 	return strcmp (a_priv->identifier, b_priv->identifier);
-};
+}
 
 /**
  * tracker_resource_get_properties:
@@ -1055,7 +1089,7 @@ generate_turtle_resources_foreach (gpointer key,
 	const GValue *value = value_ptr;
 	GenerateTurtleData *data = user_data;
 	TrackerResource *resource;
-	int i;
+	guint i;
 
 	if (G_VALUE_HOLDS (value, TRACKER_TYPE_RESOURCE)) {
 		resource = g_value_get_object (value);
@@ -1178,7 +1212,7 @@ generate_turtle_property (const char              *property,
 
 	g_string_append (string, " ");
 	if (G_VALUE_HOLDS (value, G_TYPE_PTR_ARRAY)) {
-		int i;
+		guint i;
 		GPtrArray *array = g_value_get_boxed (value);
 		if (array->len > 0) {
 			generate_turtle_value (g_ptr_array_index (array, 0),
@@ -1235,7 +1269,7 @@ generate_turtle (TrackerResource    *resource,
  * tracker_resource_print_turtle:
  * @self: a #TrackerResource
  * @namespaces: (allow-none): a set of prefixed URLs, or %NULL to use the
- *     default set
+ *     Nepomuk set
  *
  * Serialize all the information in @resource as a Turtle document.
  *
@@ -1243,9 +1277,8 @@ generate_turtle (TrackerResource    *resource,
  * <https://www.w3.org/TR/2014/REC-turtle-20140225/>
  *
  * The @namespaces object is used to expand any compact URI values. In most
- * cases you should pass %NULL, which means the set of namespaces returned by
- * tracker_namespace_manager_get_default() will be used. This defines the
- * usual prefixes for all of the ontologies that Tracker ships with by default.
+ * cases you should pass the one returned by tracker_sparql_connection_get_namespace_manager()
+ * from the connection that is the intended recipient of this data.
  *
  * Returns: a newly-allocated string
  */
@@ -1307,7 +1340,7 @@ generate_sparql_relation_deletes_foreach (gpointer key,
 {
 	const GValue *value = value_ptr;
 	GenerateSparqlData *data = user_data;
-	int i;
+	guint i;
 
 	if (G_VALUE_HOLDS (value, TRACKER_TYPE_RESOURCE)) {
 		TrackerResource *relation = g_value_get_object (value);
@@ -1349,7 +1382,7 @@ generate_sparql_relation_inserts_foreach (gpointer key,
 		GPtrArray *array = g_value_get_boxed (value);
 		const GValue *array_value;
 		TrackerResource *relation;
-		gint i;
+		guint i;
 
 		for (i = 0; i < array->len; i++) {
 			array_value = g_ptr_array_index (array, i);
@@ -1490,7 +1523,7 @@ generate_sparql_insert_pattern (TrackerResource    *resource,
  * tracker_resource_print_sparql_update:
  * @self: a #TrackerResource
  * @namespaces: (allow-none): a set of prefixed URLs, or %NULL to use the
- *     default set
+ *     Nepomuk set
  * @graph_id: (allow-none): the URN of the graph the data should be added to,
  *     or %NULL
  *
@@ -1498,9 +1531,8 @@ generate_sparql_insert_pattern (TrackerResource    *resource,
  * stored in @resource.
  *
  * The @namespaces object is used to expand any compact URI values. In most
- * cases you should pass %NULL, which means the set of namespaces returned by
- * tracker_namespace_manager_get_default() will be used. This defines the
- * usual prefixes for all of the ontologies that Tracker ships with by default.
+ * cases you should pass the one returned by tracker_sparql_connection_get_namespace_manager()
+ * from the connection that is the intended recipient of this data.
  *
  * Returns: a newly-allocated string containing a SPARQL update command.
  */
@@ -1590,7 +1622,7 @@ tracker_resource_generate_jsonld (TrackerResource    *self,
 	}
 
 	g_hash_table_foreach (priv->properties, generate_jsonld_foreach, data);
-};
+}
 
 static void
 generate_jsonld_value (const GValue       *value,
@@ -1678,7 +1710,7 @@ generate_jsonld_namespace_mapping_foreach (gpointer key,
  * tracker_resource_print_jsonld:
  * @self: a #TrackerResource
  * @namespaces: (allow-none): a set of prefixed URLs, or %NULL to use the
- *     default set
+ *     Nepomuk set
  *
  * Serialize all the information in @resource as a JSON-LD document.
  *
@@ -1686,9 +1718,8 @@ generate_jsonld_namespace_mapping_foreach (gpointer key,
  * serialization format.
  *
  * The @namespaces object is used to expand any compact URI values. In most
- * cases you should pass %NULL, which means the set of namespaces returned by
- * tracker_namespace_manager_get_default() will be used. This defines the
- * usual prefixes for all of the ontologies that Tracker ships with by default.
+ * cases you should pass the one returned by tracker_sparql_connection_get_namespace_manager()
+ * from the connection that is the intended recipient of this data.
  *
  * Returns: a newly-allocated string containing JSON-LD data.
  */
