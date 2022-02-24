@@ -22,7 +22,6 @@ Build-Depends: debhelper-compat (= 13),
                uuid-dev,
                valac,
                bash-completion,
-               gtk-doc-tools,
                libglib2.0-doc,
                libgirepository1.0-dev (>= 0.10.7-1~),
                gobject-introspection (>= 0.10),
@@ -104,7 +103,7 @@ Breaks: libtracker-sparql-doc
 Replaces: libtracker-sparql-doc
 Provides: libtracker-sparql-doc (= ${binary:Version})
 Description: metadata database, indexer and search tool - API documentation
- This package contains the gtk-doc API documentation for libtracker-sparql-3
+ This package contains the API documentation for libtracker-sparql-3
  and ontology-3, as well as some example programs.
  .
  Tracker is an advanced framework for first class objects with associated
