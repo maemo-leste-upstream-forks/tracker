@@ -7,6 +7,9 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_batch_execute_finish@Base 3.1.1
  tracker_batch_get_connection@Base 3.1.1
  tracker_batch_get_type@Base 3.1.1
+ tracker_bus_batch_construct@Base 3.3.0~beta
+ tracker_bus_batch_get_type@Base 3.3.0~beta
+ tracker_bus_batch_new@Base 3.3.0~beta
  tracker_bus_connection_construct@Base 3.1.2
  tracker_bus_connection_construct_finish@Base 3.1.2
  tracker_bus_connection_get_bus_name@Base 3.1.2
@@ -16,6 +19,10 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_bus_connection_new_finish@Base 3.1.2
  tracker_bus_connection_perform_query_call@Base 3.1.2
  tracker_bus_connection_perform_query_call_finish@Base 3.1.2
+ tracker_bus_connection_perform_serialize@Base 3.3.0~beta
+ tracker_bus_connection_perform_serialize_finish@Base 3.3.0~beta
+ tracker_bus_connection_perform_update_array@Base 3.3.0~beta
+ tracker_bus_connection_perform_update_array_finish@Base 3.3.0~beta
  tracker_bus_fd_cursor_construct@Base 3.1.2
  tracker_bus_fd_cursor_get_type@Base 3.1.2
  tracker_bus_fd_cursor_new@Base 3.1.2
@@ -30,6 +37,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_endpoint_http_get_type@Base 3.1.1
  tracker_endpoint_http_new@Base 3.1.1
  tracker_namespace_manager_add_prefix@Base 1.9.1
+ tracker_namespace_manager_compress_uri@Base 3.3.0~beta
  tracker_namespace_manager_expand_uri@Base 1.9.1
  tracker_namespace_manager_foreach@Base 2.1.2
  tracker_namespace_manager_get_default@Base 1.9.1
@@ -46,16 +54,9 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_notifier_get_type@Base 1.12.0
  tracker_notifier_signal_subscribe@Base 3.1.1
  tracker_notifier_signal_unsubscribe@Base 3.1.1
- tracker_remote_connection_construct@Base 3.1.2
- tracker_remote_connection_get_type@Base 3.1.2
- tracker_remote_connection_new@Base 3.1.2
- tracker_remote_json_cursor_construct@Base 3.1.2
- tracker_remote_json_cursor_get_type@Base 3.1.2
- tracker_remote_json_cursor_new@Base 3.1.2
- tracker_remote_xml_cursor_construct@Base 3.1.2
- tracker_remote_xml_cursor_get_type@Base 3.1.2
- tracker_remote_xml_cursor_new@Base 3.1.2
+ tracker_rdf_format_get_type@Base 3.3.0~beta
  tracker_resource_add_boolean@Base 1.9.1
+ tracker_resource_add_datetime@Base 3.3.0~beta
  tracker_resource_add_double@Base 1.9.1
  tracker_resource_add_gvalue@Base 1.9.1
  tracker_resource_add_int64@Base 1.9.1
@@ -66,6 +67,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_resource_add_uri@Base 1.9.1
  tracker_resource_deserialize@Base 3.1.1
  tracker_resource_get_first_boolean@Base 1.9.1
+ tracker_resource_get_first_datetime@Base 3.3.0~beta
  tracker_resource_get_first_double@Base 1.9.1
  tracker_resource_get_first_int64@Base 1.9.1
  tracker_resource_get_first_int@Base 1.9.1
@@ -84,6 +86,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_resource_print_turtle@Base 1.9.1
  tracker_resource_serialize@Base 3.1.1
  tracker_resource_set_boolean@Base 1.9.1
+ tracker_resource_set_datetime@Base 3.3.0~beta
  tracker_resource_set_double@Base 1.9.1
  tracker_resource_set_gvalue@Base 1.9.1
  tracker_resource_set_identifier@Base 1.9.1
@@ -93,6 +96,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_resource_set_string@Base 1.9.1
  tracker_resource_set_take_relation@Base 1.99.1
  tracker_resource_set_uri@Base 1.9.1
+ tracker_serialize_flags_get_type@Base 3.3.0~beta
  tracker_sparql_connection_bus_new@Base 3.1.1
  tracker_sparql_connection_bus_new_async@Base 3.1.1
  tracker_sparql_connection_bus_new_finish@Base 3.1.1
@@ -104,6 +108,8 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_connection_flags_get_type@Base 1.99.1
  tracker_sparql_connection_get_namespace_manager@Base 1.99.1
  tracker_sparql_connection_get_type@Base 0.10.0
+ tracker_sparql_connection_load_statement_from_gresource@Base 3.3.0~beta
+ tracker_sparql_connection_map_connection@Base 3.3.0~beta
  tracker_sparql_connection_new@Base 3.1.1
  tracker_sparql_connection_new_async@Base 3.1.1
  tracker_sparql_connection_new_finish@Base 3.1.1
@@ -112,6 +118,8 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_connection_query_finish@Base 0.10.0
  tracker_sparql_connection_query_statement@Base 2.2.0
  tracker_sparql_connection_remote_new@Base 1.12.0
+ tracker_sparql_connection_serialize_async@Base 3.3.0~beta
+ tracker_sparql_connection_serialize_finish@Base 3.3.0~beta
  tracker_sparql_connection_update@Base 0.10.0
  tracker_sparql_connection_update_array_async@Base 0.10.0
  tracker_sparql_connection_update_array_finish@Base 0.10.0
@@ -126,6 +134,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_cursor_close@Base 0.12.0
  tracker_sparql_cursor_get_boolean@Base 0.10.0
  tracker_sparql_cursor_get_connection@Base 0.10.0
+ tracker_sparql_cursor_get_datetime@Base 3.3.0~beta
  tracker_sparql_cursor_get_double@Base 0.10.0
  tracker_sparql_cursor_get_integer@Base 0.10.0
  tracker_sparql_cursor_get_n_columns@Base 0.10.0
@@ -146,6 +155,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_get_ontology_nepomuk@Base 3.1.1
  tracker_sparql_get_uuid_urn@Base 0.10.0
  tracker_sparql_statement_bind_boolean@Base 2.2.0
+ tracker_sparql_statement_bind_datetime@Base 3.3.0~beta
  tracker_sparql_statement_bind_double@Base 2.2.0
  tracker_sparql_statement_bind_int@Base 2.2.0
  tracker_sparql_statement_bind_string@Base 2.2.0
@@ -156,3 +166,5 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_statement_get_connection@Base 2.2.0
  tracker_sparql_statement_get_sparql@Base 2.2.0
  tracker_sparql_statement_get_type@Base 2.2.0
+ tracker_sparql_statement_serialize_async@Base 3.3.0~beta
+ tracker_sparql_statement_serialize_finish@Base 3.3.0~beta
