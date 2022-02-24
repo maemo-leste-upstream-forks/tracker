@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>XML schema (XSD)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="xsd-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="xml-schema-xsd">XML schema (XSD)</h1>
+<pre><code class="language-turtle">@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+</code></pre>
+<h2 id="classes">
+<a name="xsd.classes"></a>Classes</h2>
+<p><a href="xsd-ontology.html#xsd:boolean">boolean</a>, <a href="xsd-ontology.html#xsd:date">date</a>, <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>, <a href="xsd-ontology.html#xsd:double">double</a>, <a href="xsd-ontology.html#xsd:integer">integer</a>, <a href="xsd-ontology.html#xsd:string">string</a></p>
+<h2 id="class-details">
+<a name="xsd-classes"></a>Class Details</h2>
+<h3 id="boolean">
+<a name="xsd:boolean"></a>boolean</h3>
+<h5 id="description">Description</h5>
+<p>The type of true / false properties.</p>
+<h3 id="specification">Specification</h3>
+<p><a href="https://www.w3.org/TR/xmlschema-2/#boolean">https://www.w3.org/TR/xmlschema-2/#boolean</a></p>
+<h4 id="class-hierarchy">
+<a name="xsd:boolean.hierarchy"></a>Class hierarchy</h4>
+<pre><code>xsd:boolean 
+</code></pre>
+<h3 id="date">
+<a name="xsd:date"></a>date</h3>
+<h5 id="description1">Description</h5>
+<p>The type of date properties.</p>
+<h3 id="specification1">Specification</h3>
+<p><a href="https://www.w3.org/TR/xmlschema-2/#date">https://www.w3.org/TR/xmlschema-2/#date</a></p>
+<h4 id="class-hierarchy1">
+<a name="xsd:date.hierarchy"></a>Class hierarchy</h4>
+<pre><code>xsd:date 
+</code></pre>
+<h3 id="datetime">
+<a name="xsd:dateTime"></a>dateTime</h3>
+<h5 id="description2">Description</h5>
+<p>The type of date-time properties.</p>
+<h3 id="specification2">Specification</h3>
+<p><a href="https://www.w3.org/TR/xmlschema-2/#dateTime">https://www.w3.org/TR/xmlschema-2/#dateTime</a></p>
+<h4 id="class-hierarchy2">
+<a name="xsd:dateTime.hierarchy"></a>Class hierarchy</h4>
+<pre><code>xsd:dateTime 
+</code></pre>
+<h3 id="double">
+<a name="xsd:double"></a>double</h3>
+<h5 id="description3">Description</h5>
+<p>The type of floating point properties.</p>
+<h3 id="specification3">Specification</h3>
+<p><a href="https://www.w3.org/TR/xmlschema-2/#double">https://www.w3.org/TR/xmlschema-2/#double</a></p>
+<h4 id="class-hierarchy3">
+<a name="xsd:double.hierarchy"></a>Class hierarchy</h4>
+<pre><code>xsd:double 
+</code></pre>
+<h3 id="integer">
+<a name="xsd:integer"></a>integer</h3>
+<h5 id="description4">Description</h5>
+<p>The type of integer properties.</p>
+<h3 id="specification4">Specification</h3>
+<p><a href="https://www.w3.org/TR/xmlschema-2/#integer">https://www.w3.org/TR/xmlschema-2/#integer</a></p>
+<h4 id="class-hierarchy4">
+<a name="xsd:integer.hierarchy"></a>Class hierarchy</h4>
+<pre><code>xsd:integer 
+</code></pre>
+<h3 id="string">
+<a name="xsd:string"></a>string</h3>
+<h5 id="description5">Description</h5>
+<p>The type of string properties.</p>
+<h3 id="specification5">Specification</h3>
+<p><a href="https://www.w3.org/TR/xmlschema-2/#string">https://www.w3.org/TR/xmlschema-2/#string</a></p>
+<h4 id="class-hierarchy5">
+<a name="xsd:string.hierarchy"></a>Class hierarchy</h4>
+<pre><code>xsd:string 
+</code></pre>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>W3C XML Schema Working group</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>David C. Fallside, IBM &lt;fallside@us.ibm.com&gt;</li>
+<li>Priscilla Walmsley &lt;pwalmsley@datypic.com&gt; - Second Edition</li>
+<li>Tracker developers (translation into turtle)</li>
+</ul>
+<p>Upstream: <em>Not available</em></p>
+<p>ChangeLog: <a href="http://git.gnome.org/cgit/tracker/log/src/ontologies/10-xsd.ontology">Tracker changes</a></p>
+<p>Copyright:
+© 2004 <ulink url="http://www.w3.org/">W3C</ulink><superscript>®</superscript> (<ulink url="http://www.csail.mit.edu/">MIT</ulink>, <ulink url="http://www.ercim.org/">ERCIM</ulink>, <ulink url="http://www.keio.ac.jp/">Keio</ulink>), All Rights Reserved. W3C <ulink url="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</ulink>, <ulink url="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</ulink> and <ulink url="http://www.w3.org/Consortium/Legal/copyright-documents">document use</ulink></p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

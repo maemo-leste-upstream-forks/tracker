@@ -32,6 +32,7 @@ typedef struct _TestInfo TestInfo;
 struct _TestInfo {
 	const gchar *test_name;
 	gboolean expect_query_error;
+	gboolean local_connection;
 };
 
 const TestInfo tests[] = {
@@ -41,6 +42,7 @@ const TestInfo tests[] = {
 	{ "service/service-local-filter-1", FALSE },
 	{ "service/service-union-with-local-1", FALSE },
 	{ "service/service-union-with-local-2", FALSE },
+	{ "service/service-union-with-local-3", FALSE },
 	{ "service/service-var-1", FALSE },
 	{ "service/service-var-2", FALSE },
 	{ "service/service-empty-1", FALSE },
@@ -182,7 +184,7 @@ test_sparql_query (TestInfo      *test_info,
 	GError *error = NULL;
 	gchar *query, *query_filename, *service_query;
 	gchar *results_filename;
-	gchar *prefix, *test_prefix;
+	gchar *prefix, *test_prefix, *uri;
 	GFile *ontology;
 	GThread *thread;
 
@@ -204,6 +206,10 @@ test_sparql_query (TestInfo      *test_info,
 		g_usleep (100);
 	}
 
+	tracker_sparql_connection_map_connection (local,
+	                                          "other-connection",
+	                                          remote);
+
 	query_filename = g_strconcat (test_prefix, ".rq", NULL);
 	g_file_get_contents (query_filename, &query, NULL, &error);
 	g_assert_no_error (error);
@@ -212,12 +218,19 @@ test_sparql_query (TestInfo      *test_info,
 	results_filename = g_strconcat (test_prefix, ".out", NULL);
 	g_free (test_prefix);
 
+	if (test_info->local_connection) {
+		uri = g_strdup_printf ("private:other-connection");
+	} else {
+		uri = g_strdup_printf ("dbus:%s",
+		                       g_dbus_connection_get_unique_name (dbus_conn));
+	}
+
 	/* perform actual query */
-	service_query = g_strdup_printf (query,
-					 g_dbus_connection_get_unique_name (dbus_conn));
+	service_query = g_strdup_printf (query, uri);
 	cursor = tracker_sparql_connection_query (local, service_query, NULL, &error);
 	g_free (service_query);
 	g_free (query);
+	g_free (uri);
 
 	check_result (cursor, test_info, results_filename, error);
 	g_free (results_filename);
@@ -244,6 +257,16 @@ setup (TestInfo      *info,
 }
 
 static void
+setup_local (TestInfo      *info,
+             gconstpointer  context)
+{
+	const TestInfo *test = context;
+
+	*info = *test;
+	info->local_connection = TRUE;
+}
+
+static void
 teardown (TestInfo      *info,
           gconstpointer  context)
 {
@@ -254,7 +277,7 @@ main (int argc, char **argv)
 {
 	GError *error = NULL;
 	gint result;
-	gint i;
+	guint i;
 
 	setlocale (LC_COLLATE, "en_US.utf8");
 
@@ -263,12 +286,21 @@ main (int argc, char **argv)
 	dbus_conn = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
 	g_assert_no_error (error);
 
-	/* add test cases */
+	/* add DBus test cases */
 	for (i = 0; i < G_N_ELEMENTS (tests); i++) {
 		gchar *testpath;
 
-		testpath = g_strconcat ("/libtracker-data/", tests[i].test_name, NULL);
+		testpath = g_strconcat ("/libtracker-data/dbus/", tests[i].test_name, NULL);
 		g_test_add (testpath, TestInfo, &tests[i], setup, test_sparql_query, teardown);
+		g_free (testpath);
+	}
+
+	/* add local test cases */
+	for (i = 0; i < G_N_ELEMENTS (tests); i++) {
+		gchar *testpath;
+
+		testpath = g_strconcat ("/libtracker-data/local/", tests[i].test_name, NULL);
+		g_test_add (testpath, TestInfo, &tests[i], setup_local, test_sparql_query, teardown);
 		g_free (testpath);
 	}
 

@@ -104,6 +104,11 @@ const TestInfo tests[] = {
 	{ "datetime/functions-timezone-2", "datetime/data-2", FALSE },
 	{ "datetime/functions-timezone-3", "datetime/data-2", FALSE },
 	{ "datetime/functions-tz-1", "datetime/data-2", FALSE },
+	{ "datetime/filter-1", "datetime/data-1", FALSE },
+	{ "datetime/filter-2", "datetime/data-1", FALSE },
+	{ "datetime/filter-3", "datetime/data-1", FALSE },
+	{ "datetime/filter-4", "datetime/data-1", FALSE },
+	{ "datetime/filter-5", "datetime/data-1", FALSE },
 	{ "describe/describe-single", "describe/data", FALSE },
 	{ "describe/describe-non-existent", "describe/data", FALSE },
 	{ "describe/describe-pattern", "describe/data", FALSE },
@@ -243,6 +248,7 @@ const TestInfo tests[] = {
 
 	{ "turtle/turtle-query-001", "turtle/turtle-data-001", FALSE },
 	{ "turtle/turtle-query-002", "turtle/turtle-data-002", FALSE },
+	{ "turtle-comments/turtle-query-001", "turtle-comments/turtle-data-001", FALSE },
 	/* Mixed cardinality tests */
 	{ "mixed-cardinality/insert-mixed-cardinality-query-1", "mixed-cardinality/insert-mixed-cardinality-1", FALSE, FALSE },
 	{ "mixed-cardinality/update-mixed-cardinality-query-1", "mixed-cardinality/update-mixed-cardinality-1", FALSE, FALSE },
@@ -262,8 +268,10 @@ const TestInfo tests[] = {
 	{ "property-paths/sequence-path-2", "property-paths/data", FALSE },
 	{ "property-paths/sequence-path-3", "property-paths/data", FALSE },
 	{ "property-paths/optional-path-1", "property-paths/data", FALSE },
+	{ "property-paths/optional-path-2", "property-paths/data", FALSE },
 	{ "property-paths/recursive-path-1", "property-paths/data", FALSE },
 	{ "property-paths/recursive-path-2", "property-paths/data", FALSE },
+	{ "property-paths/recursive-path-3", "property-paths/data", FALSE },
 	{ "property-paths/alternative-path-1", "property-paths/data", FALSE },
 	{ "property-paths/alternative-path-2", "property-paths/data", FALSE },
 	{ "property-paths/mixed-inverse-and-sequence-1", "property-paths/data", FALSE },
@@ -355,7 +363,7 @@ check_result (TrackerDBCursor *cursor,
 	test_results = g_string_new ("");
 
 	if (cursor) {
-		gint col;
+		guint col;
 
 		while (tracker_db_cursor_iter_next (cursor, NULL, &error)) {
 			GString *row_str = g_string_new (NULL);

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Nepomuk Annotation Ontology (NAO)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="nao-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="nepomuk-annotation-ontology-nao">Nepomuk Annotation Ontology (NAO)</h1>
+<pre><code class="language-turtle">@prefix nao: &lt;http://tracker.api.gnome.org/ontology/v3/nao#&gt;
+</code></pre>
+<h2 id="classes">
+<a name="nao.classes"></a>Classes</h2>
+<p><a href="nao-ontology.html#nao:Tag">Tag</a></p>
+<h2 id="additional-properties">
+<a name="nao.extra_properties"></a>Additional Properties</h2>
+<p><a href="nao-ontology.html#nao:deprecated">deprecated</a>, <a href="nao-ontology.html#nao:hasTag">hasTag</a>, <a href="nao-ontology.html#nao:identifier">identifier</a>, <a href="nao-ontology.html#nao:isRelated">isRelated</a>, <a href="nao-ontology.html#nao:lastModified">lastModified</a>, <a href="nao-ontology.html#nao:numericRating">numericRating</a></p>
+<h2 id="class-details">
+<a name="nao-classes"></a>Class Details</h2>
+<h3 id="tag">
+<a name="nao:Tag"></a>Tag</h3>
+<h5 id="description">Description</h5>
+<p>Represents a generic tag</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy">
+<a name="nao:Tag.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nao:Tag 
+</code></pre>
+<h4 id="predefined-instances">
+<a name="nao:Tag.predefined-instances"></a>Predefined instances</h4>
+<p>nao:Tag has the following predefined instances:</p>
+<ul>
+<li>nao:predefined-tag-favorite</li>
+</ul>
+<h4 id="properties">
+<a name="nao:Tag.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nao:description"></a>description</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="rdfs-ontology.html#rdfs:comment"><img src="images/icon-superproperty.svg" alt="This property extends rdfs:comment" title="This property extends rdfs:comment" id="this-property-extends-rdfscomment"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch"></a>
+</td>
+<td> In the context of the social semantic desktop the textual annotation provided via rdfs:comment is meant for technical users, the textual annotation here is aimed at average users and is meant to be used to define custom descriptions of resources on the desktop</td>
+</tr>
+<tr>
+<td> <a name="nao:prefLabel"></a>prefLabel</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch1"></a>
+</td>
+<td> A preferred label for a resource</td>
+</tr>
+<tr>
+<td> <a name="tracker:isDefaultTag"></a>isDefaultTag</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="tracker:tagRelatedTo"></a>tagRelatedTo</td>
+<td> <a href="rdfs-ontology.html#rdfs:Class">Class</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values"></a>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-details">
+<a name="nao-extra-properties"></a>Property Details</h2>
+<h3 id="additional-properties-for-rdfsresource">
+<a name="nao.rdfs:Resource"></a>Additional properties for rdfs:Resource</h3>
+<h4 id="description1">Description</h4>
+<p>Properties this ontology defines which can describe rdfs:Resource resources.</p>
+<h4 id="properties1">
+<a name="nao.rdfs:Resource.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nao:deprecated"></a>deprecated</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> If this property is assigned, the subject class, property, or resource, is deprecated and should not be used in production systems any longer. It may be removed without further notice.</td>
+</tr>
+<tr>
+<td> <a name="nao:hasTag"></a>hasTag</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values1"></a>
+</td>
+<td> Defines an existing tag for a resource</td>
+</tr>
+<tr>
+<td> <a name="nao:identifier"></a>identifier</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Defines a generic identifier for a resource</td>
+</tr>
+<tr>
+<td> <a name="nao:isRelated"></a>isRelated</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values2"></a>
+</td>
+<td> This property defines a symmetric relation between any two resources. In order for this property to be used legally, the relationship must be symmetric.</td>
+</tr>
+<tr>
+<td> <a name="nao:lastModified"></a>lastModified</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="dc-ontology.html#dc:date"><img src="images/icon-superproperty.svg" alt="This property extends dc:date" title="This property extends dc:date" id="this-property-extends-dcdate"></a>
+</td>
+<td> last modification date</td>
+</tr>
+<tr>
+<td> <a name="nao:numericRating"></a>numericRating</td>
+<td> <a href="xsd-ontology.html#xsd:double">double</a>
+</td>
+<td></td>
+<td> Annotation for a resource in the form of a numeric rating (float value), allowed values are between 1 and 10 whereas 0 is interpreted as not set</td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>Ludger van Elst, DFKI, &lt;elst@dfki.uni-kl.de&gt;</li>
+<li>Michael Sintek, DFKI, &lt;michael.sintek@dfki.de&gt;</li>
+<li>Siegfried Handschuh, DERI/NUIG, &lt;siegfried.handschuh@deri.org&gt;</li>
+<li>Simon Scerri, DERI/NUIG, &lt;simon.scerri@deri.org&gt;</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>Simon Scerri, DERI/NUIG, &lt;simon.scerri@deri.org&gt;</li>
+<li>Tracker developers (translation into turtle)</li>
+</ul>
+<p>Contributors:</p>
+<ul>
+<li>Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
+<li>Julien Gaugaz, L3S, &lt;gaugaz@l3s.de&gt;</li>
+<li>Knud Möller, DERI/NUIG, &lt;knud.moeller@deri.org&gt;</li>
+<li>Leo Sauermann, DFKI, &lt;leo.sauermann@dfki.de&gt;</li>
+<li>Max Völkel, FZI, &lt;voelkel@fzi.de&gt;</li>
+<li>Sebastian Trüg, EDGE-IT, &lt;strueg@mandriva.com&gt;</li>
+</ul>
+<p>Upstream: <a href="http://www.semanticdesktop.org/ontologies/nao/">Upstream version</a></p>
+<p>ChangeLog: <a href="hhttps://gitlab.gnome.org/GNOME/tracker/-/commits/master/src/ontologies/31-nao.ontology">Tracker changes</a></p>
+<p>Copyright:
+© 2007 <ulink url="http://nepomuk.semanticdesktop.org">NEPOMUK Consortium</ulink>®. This work is made available under the terms of NEPOMUK <ulink url="http://www.semanticdesktop.org/ontologies/nfo/LICENSE.txt">software license</ulink></p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

@@ -34,21 +34,28 @@ G_BEGIN_DECLS
 #error "only <libtracker-data/tracker-data.h> must be included directly."
 #endif
 
-gint                 tracker_data_query_resource_id   (TrackerDataManager  *manager,
+gchar *              tracker_data_query_resource_urn  (TrackerDataManager  *manager,
+                                                       TrackerDBInterface  *iface,
+                                                       TrackerRowid         id);
+TrackerRowid         tracker_data_query_resource_id   (TrackerDataManager  *manager,
                                                        TrackerDBInterface  *iface,
                                                        const gchar         *uri,
                                                        GError             **error);
-gchar               *tracker_data_query_unused_uuid   (TrackerDataManager  *manager,
-                                                       TrackerDBInterface  *iface);
-
 TrackerDBCursor     *tracker_data_query_sparql_cursor (TrackerDataManager  *manager,
                                                        const gchar         *query,
                                                        GError             **error);
 
 GPtrArray*           tracker_data_query_rdf_type      (TrackerDataManager  *manager,
                                                        const gchar         *graph,
-                                                       gint                 id,
+                                                       TrackerRowid         id,
                                                        GError             **error);
+
+gboolean             tracker_data_query_string_to_value (TrackerDataManager   *manager,
+                                                         const gchar          *value,
+                                                         const gchar          *langtag,
+                                                         TrackerPropertyType   type,
+                                                         GValue               *gvalue,
+                                                         GError              **error);
 
 G_END_DECLS
 

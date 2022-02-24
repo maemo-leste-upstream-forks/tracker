@@ -58,6 +58,8 @@ struct _TrackerTurtleReader {
 	gchar *object_lang;
 	gboolean object_is_uri;
 	ParserState state;
+	goffset line_no;
+	goffset column_no;
 };
 
 enum {
@@ -70,6 +72,8 @@ static GParamSpec *props[N_PROPS] = { 0 };
 G_DEFINE_TYPE (TrackerTurtleReader,
                tracker_turtle_reader,
                G_TYPE_OBJECT)
+
+static void advance_whitespace_and_comments (TrackerTurtleReader *reader);
 
 static void
 tracker_turtle_reader_finalize (GObject *object)
@@ -98,6 +102,8 @@ tracker_turtle_reader_constructed (GObject *object)
 
 	reader->buffered_stream =
 		G_BUFFERED_INPUT_STREAM (g_buffered_input_stream_new (reader->stream));
+	reader->line_no = 1;
+	reader->column_no = 1;
 
 	G_OBJECT_CLASS (tracker_turtle_reader_parent_class)->constructed (object);
 }
@@ -244,6 +250,53 @@ pop_stack (TrackerTurtleReader *reader)
 	g_array_remove_index (reader->parser_state, reader->parser_state->len - 1);
 }
 
+static void
+calculate_num_lines_and_columns (const gchar     *start,
+                                 gsize            count,
+                                 goffset         *num_lines,
+                                 goffset         *num_columns)
+{
+	*num_lines = 0;
+	*num_columns = 0;
+
+	for (size_t i = 0; i < count; i++)
+	{
+		if (*(start + i) == '\n') {
+			*num_lines += 1;
+			*num_columns = 1;
+		} else {
+			*num_columns += 1;
+		}
+	}
+}
+
+static gsize
+seek_input (TrackerTurtleReader *reader,
+            gsize                count)
+{
+	const gchar *buffer;
+	gsize size;
+	goffset num_lines;
+	goffset num_columns;
+
+	buffer = g_buffered_input_stream_peek_buffer (reader->buffered_stream,
+	                                              &size);
+	count = MIN (count, size);
+	if (!count)
+		return 0;
+
+	calculate_num_lines_and_columns (buffer, count, &num_lines, &num_columns);
+
+	reader->line_no += num_lines;
+	if (num_lines > 0) {
+		reader->column_no = num_columns;
+	} else {
+		reader->column_no += num_columns;
+	}
+	return g_input_stream_skip (G_INPUT_STREAM (reader->buffered_stream),
+	                            count, NULL, NULL);
+}
+
 static gboolean
 parse_token (TrackerTurtleReader *reader,
              const gchar         *token)
@@ -258,8 +311,7 @@ parse_token (TrackerTurtleReader *reader,
 		return FALSE;
 	if (strncasecmp (buffer, token, len) != 0)
 		return FALSE;
-	if (!g_input_stream_skip (G_INPUT_STREAM (reader->buffered_stream),
-	                          len, NULL, NULL))
+	if (!seek_input (reader, len))
 		return FALSE;
 
 	return TRUE;
@@ -288,8 +340,7 @@ parse_terminal (TrackerTurtleReader  *reader,
 
 	str = g_strndup (&buffer[padding], end - buffer - (2 * padding));
 
-	if (!g_input_stream_skip (G_INPUT_STREAM (reader->buffered_stream),
-	                          end - buffer, NULL, NULL)) {
+	if (!seek_input (reader, end - buffer)) {
 		g_free (str);
 		return FALSE;
 	}
@@ -323,7 +374,8 @@ generate_bnode (TrackerTurtleReader *reader,
 
 static gchar *
 expand_prefix (TrackerTurtleReader *reader,
-               const gchar         *shortname)
+               const gchar         *shortname,
+               GError             **error)
 {
 	GHashTableIter iter;
 	gpointer key, value;
@@ -340,6 +392,11 @@ expand_prefix (TrackerTurtleReader *reader,
 		}
 	}
 
+	g_set_error (error,
+	             TRACKER_SPARQL_ERROR,
+	             TRACKER_SPARQL_ERROR_PARSE,
+	             "Unknown prefix %s at line %" G_GOFFSET_FORMAT ", column %" G_GOFFSET_FORMAT,
+	             shortname, reader->line_no, reader->column_no - strlen(shortname));
 	return NULL;
 }
 
@@ -374,8 +431,7 @@ advance_whitespace (TrackerTurtleReader *reader)
 		if (!(WS))
 			break;
 
-		if (!g_input_stream_skip (G_INPUT_STREAM (reader->buffered_stream),
-		                          1, NULL, NULL))
+		if (!seek_input (reader, 1))
 			break;
 	}
 }
@@ -386,15 +442,15 @@ handle_prefix (TrackerTurtleReader  *reader,
 {
 	gchar *prefix = NULL, *uri = NULL;
 
-	advance_whitespace (reader);
+	advance_whitespace_and_comments(reader);
 	if (!parse_terminal (reader, terminal_PNAME_NS, 0, &prefix))
 		goto error;
 
-	advance_whitespace (reader);
+	advance_whitespace_and_comments(reader);
 	if (!parse_terminal (reader, terminal_IRIREF, 1, &uri))
 		goto error;
 
-	advance_whitespace (reader);
+	advance_whitespace_and_comments(reader);
 	if (!parse_token (reader, "."))
 		goto error;
 
@@ -416,11 +472,11 @@ handle_base (TrackerTurtleReader  *reader,
 {
 	gchar *base = NULL;
 
-	advance_whitespace (reader);
+	advance_whitespace_and_comments(reader);
 	if (!parse_terminal (reader, terminal_IRIREF, 0, &base))
 		goto error;
 
-	advance_whitespace (reader);
+	advance_whitespace_and_comments(reader);
 	if (!parse_token (reader, "."))
 		goto error;
 
@@ -458,12 +514,13 @@ handle_type_cast (TrackerTurtleReader  *reader,
 }
 
 static void
-skip_comments (TrackerTurtleReader *reader)
+advance_whitespace_and_comments (TrackerTurtleReader *reader)
 {
 	const gchar *buffer, *str;
 	gsize size;
 
 	while (TRUE) {
+		advance_whitespace (reader);
 		buffer = g_buffered_input_stream_peek_buffer (reader->buffered_stream,
 		                                              &size);
 		if (size == 0)
@@ -475,11 +532,8 @@ skip_comments (TrackerTurtleReader *reader)
 		if (!str)
 			break;
 
-		if (!g_input_stream_skip (G_INPUT_STREAM (reader->buffered_stream),
-		                          str + 1 - buffer, NULL, NULL))
+		if (!seek_input (reader, str + 1 - buffer))
 			break;
-
-		advance_whitespace (reader);
 	}
 }
 
@@ -490,7 +544,7 @@ tracker_turtle_reader_iterate_next (TrackerTurtleReader  *reader,
 	while (TRUE) {
 		gchar *str, *lang;
 
-		advance_whitespace (reader);
+		advance_whitespace_and_comments(reader);
 
 		if (g_buffered_input_stream_fill (reader->buffered_stream, -1, NULL, error) < 0)
 			return FALSE;
@@ -500,8 +554,6 @@ tracker_turtle_reader_iterate_next (TrackerTurtleReader  *reader,
 			reader->state = STATE_SUBJECT;
 			break;
 		case STATE_SUBJECT:
-			skip_comments (reader);
-
 			if (g_buffered_input_stream_get_available (reader->buffered_stream) == 0)
 				return FALSE;
 
@@ -529,8 +581,12 @@ tracker_turtle_reader_iterate_next (TrackerTurtleReader  *reader,
 				reader->subject = expand_base (reader, str);
 			} else if (parse_terminal (reader, terminal_PNAME_LN, 0, &str) ||
 			           parse_terminal (reader, terminal_PNAME_NS, 0, &str)) {
-				reader->subject = expand_prefix (reader, str);
+				reader->subject = expand_prefix (reader, str, error);
 				g_free (str);
+
+				if (*error) {
+					return FALSE;
+				}
 			} else if (parse_terminal (reader, terminal_BLANK_NODE_LABEL, 0, &str)) {
 				reader->subject = generate_bnode (reader, str);
 				g_free (str);
@@ -553,8 +609,12 @@ tracker_turtle_reader_iterate_next (TrackerTurtleReader  *reader,
 				reader->predicate = expand_base (reader, str);
 			} else if (parse_terminal (reader, terminal_PNAME_LN, 0, &str) ||
 			           parse_terminal (reader, terminal_PNAME_NS, 0, &str)) {
-				reader->predicate = expand_prefix (reader, str);
+				reader->predicate = expand_prefix (reader, str, error);
 				g_free (str);
+
+				if (*error) {
+					return FALSE;
+				}
 			} else {
 				g_set_error (error,
 				             TRACKER_SPARQL_ERROR,
@@ -583,9 +643,13 @@ tracker_turtle_reader_iterate_next (TrackerTurtleReader  *reader,
 				reader->object_is_uri = TRUE;
 			} else if (parse_terminal (reader, terminal_PNAME_LN, 0, &str) ||
 			           parse_terminal (reader, terminal_PNAME_NS, 0, &str)) {
-				reader->object = expand_prefix (reader, str);
+				reader->object = expand_prefix (reader, str, error);
 				reader->object_is_uri = TRUE;
 				g_free (str);
+
+				if (*error) {
+					return FALSE;
+				}
 			} else if (parse_terminal (reader, terminal_BLANK_NODE_LABEL, 0, &str)) {
 				reader->object = generate_bnode (reader, str);
 				reader->object_is_uri = TRUE;
@@ -597,7 +661,7 @@ tracker_turtle_reader_iterate_next (TrackerTurtleReader  *reader,
 				if (parse_terminal (reader, terminal_LANGTAG, 0, &lang)) {
 					reader->object_lang = lang;
 				} else if (!handle_type_cast (reader, error)) {
-						return FALSE;
+					return FALSE;
 				}
 			} else if (parse_terminal (reader, terminal_STRING_LITERAL1, 1, &str) ||
 			           parse_terminal (reader, terminal_STRING_LITERAL2, 1, &str)) {
@@ -606,7 +670,7 @@ tracker_turtle_reader_iterate_next (TrackerTurtleReader  *reader,
 				if (parse_terminal (reader, terminal_LANGTAG, 0, &lang)) {
 					reader->object_lang = lang;
 				} else if (!handle_type_cast (reader, error)) {
-						return FALSE;
+					return FALSE;
 				}
 			} else if (parse_terminal (reader, terminal_DOUBLE, 0, &str) ||
 			           parse_terminal (reader, terminal_INTEGER, 0, &str)) {
@@ -644,7 +708,7 @@ tracker_turtle_reader_iterate_next (TrackerTurtleReader  *reader,
 				reader->state = STATE_OBJECT;
 			} else if (parse_token (reader, ";")) {
 				/* Dot is allowed after semicolon */
-				advance_whitespace (reader);
+				advance_whitespace_and_comments(reader);
 				if (parse_token (reader, "."))
 					reader->state = STATE_SUBJECT;
 				else
@@ -671,15 +735,26 @@ tracker_turtle_reader_next (TrackerTurtleReader  *reader,
                             const gchar         **object,
                             const gchar         **object_lang,
                             gboolean             *object_is_uri,
+                            goffset              *last_parsed_line_no,
+                            goffset              *last_parsed_column_no,
                             GError              **error)
 {
+	gboolean ret;
+
 	g_return_val_if_fail (TRACKER_IS_TURTLE_READER (reader), FALSE);
 	g_return_val_if_fail (subject, FALSE);
 	g_return_val_if_fail (predicate, FALSE);
 	g_return_val_if_fail (object, FALSE);
 	g_return_val_if_fail (!error || !*error, FALSE);
 
-	if (!tracker_turtle_reader_iterate_next (reader, error))
+	ret = tracker_turtle_reader_iterate_next (reader, error);
+
+	if (last_parsed_line_no)
+		*last_parsed_line_no = reader->line_no;
+	if (last_parsed_column_no)
+		*last_parsed_column_no = reader->column_no;
+
+	if (!ret)
 		return FALSE;
 
 	*subject = reader->subject;

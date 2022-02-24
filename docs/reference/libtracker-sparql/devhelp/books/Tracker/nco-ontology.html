@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Nepomuk Contacts Ontology (NCO)</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="nco-ontology.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="nepomuk-contacts-ontology-nco">Nepomuk Contacts Ontology (NCO)</h1>
+<pre><code class="language-turtle">@prefix nco: &lt;http://tracker.api.gnome.org/ontology/v3/nco#&gt;
+</code></pre>
+<h2 id="classes">
+<a name="nco.classes"></a>Classes</h2>
+<p><a href="nco-ontology.html#nco:Affiliation">Affiliation</a>, <a href="nco-ontology.html#nco:AuthorizationStatus">AuthorizationStatus</a>, <a href="nco-ontology.html#nco:BbsNumber">BbsNumber</a>, <a href="nco-ontology.html#nco:CarPhoneNumber">CarPhoneNumber</a>, <a href="nco-ontology.html#nco:CellPhoneNumber">CellPhoneNumber</a>, <a href="nco-ontology.html#nco:Contact">Contact</a>, <a href="nco-ontology.html#nco:ContactGroup">ContactGroup</a>, <a href="nco-ontology.html#nco:ContactList">ContactList</a>, <a href="nco-ontology.html#nco:ContactListDataObject">ContactListDataObject</a>, <a href="nco-ontology.html#nco:ContactMedium">ContactMedium</a>, <a href="nco-ontology.html#nco:DomesticDeliveryAddress">DomesticDeliveryAddress</a>, <a href="nco-ontology.html#nco:EmailAddress">EmailAddress</a>, <a href="nco-ontology.html#nco:FaxNumber">FaxNumber</a>, <a href="nco-ontology.html#nco:Gender">Gender</a>, <a href="nco-ontology.html#nco:IMAccount">IMAccount</a>, <a href="nco-ontology.html#nco:IMAddress">IMAddress</a>, <a href="nco-ontology.html#nco:IMCapability">IMCapability</a>, <a href="nco-ontology.html#nco:InternationalDeliveryAddress">InternationalDeliveryAddress</a>, <a href="nco-ontology.html#nco:IsdnNumber">IsdnNumber</a>, <a href="nco-ontology.html#nco:MessagingNumber">MessagingNumber</a>, <a href="nco-ontology.html#nco:ModemNumber">ModemNumber</a>, <a href="nco-ontology.html#nco:OrganizationContact">OrganizationContact</a>, <a href="nco-ontology.html#nco:PagerNumber">PagerNumber</a>, <a href="nco-ontology.html#nco:ParcelDeliveryAddress">ParcelDeliveryAddress</a>, <a href="nco-ontology.html#nco:PcsNumber">PcsNumber</a>, <a href="nco-ontology.html#nco:PersonContact">PersonContact</a>, <a href="nco-ontology.html#nco:PhoneNumber">PhoneNumber</a>, <a href="nco-ontology.html#nco:PostalAddress">PostalAddress</a>, <a href="nco-ontology.html#nco:PresenceStatus">PresenceStatus</a>, <a href="nco-ontology.html#nco:Role">Role</a>, <a href="nco-ontology.html#nco:VideoTelephoneNumber">VideoTelephoneNumber</a>, <a href="nco-ontology.html#nco:VoicePhoneNumber">VoicePhoneNumber</a></p>
+<h2 id="additional-properties">
+<a name="nco.extra_properties"></a>Additional Properties</h2>
+<p><a href="nco-ontology.html#nco:contributor">contributor</a>, <a href="nco-ontology.html#nco:creator">creator</a>, <a href="nco-ontology.html#nco:publisher">publisher</a></p>
+<h1 id="overview">Overview</h1>
+<h2 id="introduction">Introduction</h2>
+<p>This is the ontology modelling contacts and postal addresses. It also extends the original nepomuk adding the Instant Messaging account details, because an 'identity' in an IM account can be consider also a contact.</p>
+<h2 id="class-details">
+<a name="nco-classes"></a>Class Details</h2>
+<h3 id="affiliation">
+<a name="nco:Affiliation"></a>Affiliation</h3>
+<h5 id="description">Description</h5>
+<p>Aggregates three properties defined in RFC2426. Originally all three were attached directly to a person. One person could have only one title and one role within one organization. This class is intended to lift this limitation.</p>
+<h4 id="class-hierarchy">
+<a name="nco:Affiliation.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:Role 
+    ╰── nco:Affiliation 
+</code></pre>
+<h4 id="properties">
+<a name="nco:Affiliation.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:department"></a>department</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch"></a>
+</td>
+<td> Department. The organizational unit within the organization.</td>
+</tr>
+<tr>
+<td> <a name="nco:org"></a>org</td>
+<td> <a href="nco-ontology.html#nco:OrganizationContact">OrganizationContact</a>
+</td>
+<td></td>
+<td> Name of an organization or a unit within an organization the object represented by a Contact is associated with. An equivalent of the 'ORG' property defined in RFC 2426 Sec. 3.5.5</td>
+</tr>
+<tr>
+<td> <a name="nco:role"></a>role</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch1"></a>
+</td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nco:title"></a>title</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch2"></a>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="authorizationstatus">
+<a name="nco:AuthorizationStatus"></a>AuthorizationStatus</h3>
+<h5 id="description1">Description</h5>
+<p>Predefined instances to indicate the auth status: yes, no, requested</p>
+<h4 id="class-hierarchy1">
+<a name="nco:AuthorizationStatus.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:AuthorizationStatus 
+</code></pre>
+<h4 id="predefined-instances">
+<a name="nco:AuthorizationStatus.predefined-instances"></a>Predefined instances</h4>
+<p>nco:AuthorizationStatus has the following predefined instances:</p>
+<ul>
+<li>nco:predefined-auth-status-requested</li>
+<li>nco:predefined-auth-status-no</li>
+<li>nco:predefined-auth-status-yes</li>
+</ul>
+<h3 id="bbsnumber">
+<a name="nco:BbsNumber"></a>BbsNumber</h3>
+<h5 id="description2">Description</h5>
+<p>A Bulletin Board System (BBS) phone number. Inspired by the (TYPE=bbsl) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
+<h4 id="class-hierarchy2">
+<a name="nco:BbsNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:ModemNumber 
+            ╰── nco:BbsNumber 
+</code></pre>
+<h3 id="carphonenumber">
+<a name="nco:CarPhoneNumber"></a>CarPhoneNumber</h3>
+<h5 id="description3">Description</h5>
+<p>A car phone number. Inspired by the (TYPE=car) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
+<h4 id="class-hierarchy3">
+<a name="nco:CarPhoneNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:VoicePhoneNumber 
+            ╰── nco:CarPhoneNumber 
+</code></pre>
+<h3 id="cellphonenumber">
+<a name="nco:CellPhoneNumber"></a>CellPhoneNumber</h3>
+<h5 id="description4">Description</h5>
+<p>A cellular phone number. Inspired by the (TYPE=cell) parameter of the TEL property as defined in RFC 2426 sec  3.3.1. Usually a cellular phone can accept voice calls as well as textual messages (SMS), therefore this class has two superclasses.</p>
+<h4 id="class-hierarchy4">
+<a name="nco:CellPhoneNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ├── nco:VoicePhoneNumber ──┐
+        ╰── nco:MessagingNumber ───┤
+                                   └── nco:CellPhoneNumber 
+</code></pre>
+<h3 id="contact">
+<a name="nco:Contact"></a>Contact</h3>
+<h5 id="description5">Description</h5>
+<p>A Contact. A piece of data that can provide means to identify or communicate with an entity.</p>
+<h4 id="class-hierarchy5">
+<a name="nco:Contact.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+├── nie:InformationElement ──┐
+╰── nco:Role ────────────────┤
+                             └── nco:Contact 
+            nco:PersonContact 
+                nco:OrganizationContact 
+</code></pre>
+<h4 id="predefined-instances1">
+<a name="nco:Contact.predefined-instances"></a>Predefined instances</h4>
+<p>nco:Contact has the following predefined instances:</p>
+<ul>
+<li>nco:default-contact-me</li>
+</ul>
+<h4 id="properties1">
+<a name="nco:Contact.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:belongsToGroup"></a>belongsToGroup</td>
+<td> <a href="nco-ontology.html#nco:ContactGroup">ContactGroup</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values"></a>
+</td>
+<td> Links a Contact with a ContactGroup it belongs to.</td>
+</tr>
+<tr>
+<td> <a name="nco:birthDate"></a>birthDate</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td> <a href="dc-ontology.html#dc:date"><img src="images/icon-superproperty.svg" alt="This property extends dc:date" title="This property extends dc:date" id="this-property-extends-dcdate"></a>
+</td>
+<td> Birth date of the object represented by this Contact. An equivalent of the 'BDAY' property as defined in RFC 2426 Sec. 3.1.5.</td>
+</tr>
+<tr>
+<td> <a name="nco:contactLocalUID"></a>contactLocalUID</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Unique ID for the contact in the local storage</td>
+</tr>
+<tr>
+<td> <a name="nco:contactUID"></a>contactUID</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nie-ontology.html#nie:identifier"><img src="images/icon-superproperty.svg" alt="This property extends nie:identifier" title="This property extends nie:identifier" id="this-property-extends-nieidentifier"></a>
+</td>
+<td> A value that represents a globally unique  identifier corresponding to the individual or resource associated with the Contact. An equivalent of the 'UID' property defined in RFC 2426 Sec. 3.6.7</td>
+</tr>
+<tr>
+<td> <a name="nco:fullname"></a>fullname</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:title"><img src="images/icon-superproperty.svg" alt="This property extends dc:title" title="This property extends dc:title" id="this-property-extends-dctitle"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch3"></a>
+</td>
+<td> To specify the formatted text corresponding to the name of the object the Contact represents. An equivalent of the FN property as defined in RFC 2426 Sec. 3.1.1.</td>
+</tr>
+<tr>
+<td> <a name="nco:hasLocation"></a>hasLocation</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td></td>
+<td> Geographical location of the contact. Inspired by the 'GEO' property specified in RFC 2426 Sec. 3.4.2</td>
+</tr>
+<tr>
+<td> <a name="nco:key"></a>key</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td></td>
+<td> An encryption key attached to a contact. Inspired by the KEY property defined in RFC 2426 sec. 3.7.2</td>
+</tr>
+<tr>
+<td> <a name="nco:nickname"></a>nickname</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch4"></a>
+</td>
+<td> A nickname of the Object represented by this Contact. This is an equivalen of the 'NICKNAME' property as defined in RFC 2426 Sec. 3.1.3.</td>
+</tr>
+<tr>
+<td> <a name="nco:note"></a>note</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values1"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch5"></a>
+</td>
+<td> A note about the object represented by this Contact. An equivalent for the 'NOTE' property defined in RFC 2426 Sec. 3.6.2</td>
+</tr>
+<tr>
+<td> <a name="nco:photo"></a>photo</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td></td>
+<td> Photograph attached to a Contact. The DataObject refered to by this property is usually interpreted as an nfo:Image. Inspired by the PHOTO property defined in RFC 2426 sec. 3.1.4</td>
+</tr>
+<tr>
+<td> <a name="nco:representative"></a>representative</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td></td>
+<td> An object that represent an object represented by this Contact. Usually this property is used to link a Contact to an organization, to a contact to the representative of this organization the user directly interacts with. An equivalent for the 'AGENT' property defined in RFC 2426 Sec. 3.5.4</td>
+</tr>
+<tr>
+<td> <a name="nco:sound"></a>sound</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td></td>
+<td> Sound clip attached to a Contact. The DataObject refered to by this property is usually interpreted as an nfo:Audio. Inspired by the SOUND property defined in RFC 2425 sec. 3.6.6.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="contactgroup">
+<a name="nco:ContactGroup"></a>ContactGroup</h3>
+<h5 id="description6">Description</h5>
+<p>A group of Contacts. Could be used to express a group in an addressbook or on a contact list of an IM application. One contact can belong to many groups.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy6">
+<a name="nco:ContactGroup.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nco:ContactGroup 
+</code></pre>
+<h4 id="properties2">
+<a name="nco:ContactGroup.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:contactGroupName"></a>contactGroupName</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="dc-ontology.html#dc:title"><img src="images/icon-superproperty.svg" alt="This property extends dc:title" title="This property extends dc:title" id="this-property-extends-dctitle1"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch6"></a>
+</td>
+<td> The name of the contact group. This property was NOT defined in the VCARD standard. See documentation of the 'ContactGroup' class for details</td>
+</tr>
+</tbody>
+</table>
+<h3 id="contactlist">
+<a name="nco:ContactList"></a>ContactList</h3>
+<h5 id="description7">Description</h5>
+<p>A contact list, this class represents an addressbook or a contact list of an IM application. Contacts inside a contact list can belong to contact groups.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon1"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy7">
+<a name="nco:ContactList.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nco:ContactList 
+</code></pre>
+<h4 id="properties3">
+<a name="nco:ContactList.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:containsContact"></a>containsContact</td>
+<td> <a href="nco-ontology.html#nco:ContactListDataObject">ContactListDataObject</a>
+</td>
+<td> <a href="nie-ontology.html#nie:hasPart"><img src="images/icon-superproperty.svg" alt="This property extends nie:hasPart" title="This property extends nie:hasPart" id="this-property-extends-niehaspart"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values2"></a>
+</td>
+<td> A property used to group contacts into contact groups. This property was NOT defined in the VCARD standard. See documentation for the 'ContactList' class for details</td>
+</tr>
+</tbody>
+</table>
+<h3 id="contactlistdataobject">
+<a name="nco:ContactListDataObject"></a>ContactListDataObject</h3>
+<h5 id="description8">Description</h5>
+<p>An entity occuring on a contact list (usually interpreted as an nco:Contact)</p>
+<h4 id="class-hierarchy8">
+<a name="nco:ContactListDataObject.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:DataObject 
+    ╰── nco:ContactListDataObject 
+</code></pre>
+<h3 id="contactmedium">
+<a name="nco:ContactMedium"></a>ContactMedium</h3>
+<h5 id="description9">Description</h5>
+<p>A superclass for all contact media - ways to contact an entity represented by a Contact instance. Some of the subclasses of this class (the various kinds of telephone numbers and postal addresses) have been inspired by the values of the TYPE parameter of ADR and TEL properties defined in RFC 2426 sec. 3.2.1. and 3.3.1 respectively. Each value is represented by an appropriate subclass with two major exceptions TYPE=home and TYPE=work. They are to be expressed by the roles these contact media are attached to i.e. contact media with TYPE=home parameter are to be attached to the default role (nco:Contact or nco:PersonContact), whereas media with TYPE=work parameter should be attached to nco:Affiliation or nco:OrganizationContact.</p>
+<h4 id="class-hierarchy9">
+<a name="nco:ContactMedium.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ├── nco:PostalAddress 
+    ├── nco:PhoneNumber 
+    ├── nco:IMAddress 
+    ╰── nco:EmailAddress 
+</code></pre>
+<h4 id="properties4">
+<a name="nco:ContactMedium.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:contactMediumComment"></a>contactMediumComment</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A comment about the contact medium.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="domesticdeliveryaddress">
+<a name="nco:DomesticDeliveryAddress"></a>DomesticDeliveryAddress</h3>
+<h5 id="description10">Description</h5>
+<p>Domestic Delivery Addresse. Class inspired by TYPE=dom parameter of the ADR property defined in RFC 2426 sec. 3.2.1</p>
+<h4 id="class-hierarchy10">
+<a name="nco:DomesticDeliveryAddress.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PostalAddress 
+        ╰── nco:DomesticDeliveryAddress 
+</code></pre>
+<h3 id="emailaddress">
+<a name="nco:EmailAddress"></a>EmailAddress</h3>
+<h5 id="description11">Description</h5>
+<p>An email address. The recommended best practice is to use mailto: uris for instances of this class.</p>
+<h4 id="class-hierarchy11">
+<a name="nco:EmailAddress.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:EmailAddress 
+</code></pre>
+<h4 id="properties5">
+<a name="nco:EmailAddress.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:emailAddress"></a>emailAddress</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch7"></a>
+</td>
+<td> Email address</td>
+</tr>
+</tbody>
+</table>
+<h3 id="faxnumber">
+<a name="nco:FaxNumber"></a>FaxNumber</h3>
+<h5 id="description12">Description</h5>
+<p>A fax number. Inspired by the (TYPE=fax) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
+<h4 id="class-hierarchy12">
+<a name="nco:FaxNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:FaxNumber 
+</code></pre>
+<h3 id="gender">
+<a name="nco:Gender"></a>Gender</h3>
+<h5 id="description13">Description</h5>
+<p>Gender. Instances of this class may include male and female.</p>
+<h4 id="class-hierarchy13">
+<a name="nco:Gender.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:Gender 
+</code></pre>
+<h4 id="predefined-instances2">
+<a name="nco:Gender.predefined-instances"></a>Predefined instances</h4>
+<p>nco:Gender has the following predefined instances:</p>
+<ul>
+<li>nco:gender-other</li>
+<li>nco:gender-female</li>
+<li>nco:gender-male</li>
+</ul>
+<h3 id="imaccount">
+<a name="nco:IMAccount"></a>IMAccount</h3>
+<h5 id="description14">Description</h5>
+<p>An account in an Instant Messaging system. This refers to IM accounts of the user 'me'.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon2"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy14">
+<a name="nco:IMAccount.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nie:InformationElement 
+    ╰── nco:IMAccount 
+</code></pre>
+<h4 id="properties6">
+<a name="nco:IMAccount.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:hasIMContact"></a>hasIMContact</td>
+<td> <a href="nco-ontology.html#nco:IMAddress">IMAddress</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values3"></a>
+</td>
+<td> Indicates that this Instant Messaging account has the specified Instant Messaging address in the contact list.</td>
+</tr>
+<tr>
+<td> <a name="nco:imAccountAddress"></a>imAccountAddress</td>
+<td> <a href="nco-ontology.html#nco:IMAddress">IMAddress</a>
+</td>
+<td></td>
+<td> Instant Messaging address of this IM account. The user 'me' can send and receive messages from this IM address.</td>
+</tr>
+<tr>
+<td> <a name="nco:imAccountType"></a>imAccountType</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Type of the IM account. This may be the name of the service that provides the IM functionality. Examples might include Jabber, ICQ, MSN etc</td>
+</tr>
+<tr>
+<td> <a name="nco:imDisplayName"></a>imDisplayName</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> The user-visible name of this account. This SHOULD be chosen by the user at account creation time. The account creation user interface is responsible for setting a reasonable default value in the user's locale; something like	'Jabber (bob@example.com)' would be sensible.</td>
+</tr>
+<tr>
+<td> <a name="nco:imEnabled"></a>imEnabled</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="imaddress">
+<a name="nco:IMAddress"></a>IMAddress</h3>
+<h5 id="description15">Description</h5>
+<p>An instant messaging address such as xmpp:foo@bar.com.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon3"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy15">
+<a name="nco:IMAddress.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:IMAddress 
+</code></pre>
+<h4 id="properties7">
+<a name="nco:IMAddress.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:imAddressAuthStatusFrom"></a>imAddressAuthStatusFrom</td>
+<td> <a href="nco-ontology.html#nco:AuthorizationStatus">AuthorizationStatus</a>
+</td>
+<td></td>
+<td> Has the other end authorize to receive information about his changes</td>
+</tr>
+<tr>
+<td> <a name="nco:imAddressAuthStatusTo"></a>imAddressAuthStatusTo</td>
+<td> <a href="nco-ontology.html#nco:AuthorizationStatus">AuthorizationStatus</a>
+</td>
+<td></td>
+<td> Do i authorize this im Account to receive my information</td>
+</tr>
+<tr>
+<td> <a name="nco:imAvatar"></a>imAvatar</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td></td>
+<td> A picture attached to a particular IM address.</td>
+</tr>
+<tr>
+<td> <a name="nco:imCapability"></a>imCapability</td>
+<td> <a href="nco-ontology.html#nco:IMCapability">IMCapability</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values4"></a>
+</td>
+<td> Capabilities of an IM Contact, what can we interact with him</td>
+</tr>
+<tr>
+<td> <a name="nco:imID"></a>imID</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nao-ontology.html#nao:identifier"><img src="images/icon-superproperty.svg" alt="This property extends nao:identifier" title="This property extends nao:identifier" id="this-property-extends-naoidentifier"></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch8"></a>
+</td>
+<td> Identifier of the IM account. Examples of such identifier might include ICQ UINs, Jabber IDs, Skype names etc.</td>
+</tr>
+<tr>
+<td> <a name="nco:imNickname"></a>imNickname</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch9"></a>
+</td>
+<td> A nickname attached to a particular IM address.</td>
+</tr>
+<tr>
+<td> <a name="nco:imPresence"></a>imPresence</td>
+<td> <a href="nco-ontology.html#nco:PresenceStatus">PresenceStatus</a>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td> <a name="nco:imProtocol"></a>imProtocol</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> Protocol of the account ('skype', 'gtalk', 'icq', ...)</td>
+</tr>
+<tr>
+<td> <a name="nco:imStatusMessage"></a>imStatusMessage</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A feature common in most IM systems. A message left by the user for all his/her contacts to see.</td>
+</tr>
+<tr>
+<td> <a name="nco:presenceLastModified"></a>presenceLastModified</td>
+<td> <a href="xsd-ontology.html#xsd:dateTime">dateTime</a>
+</td>
+<td></td>
+<td> Timestamp of the last change in the presence status</td>
+</tr>
+</tbody>
+</table>
+<h3 id="imcapability">
+<a name="nco:IMCapability"></a>IMCapability</h3>
+<h5 id="description16">Description</h5>
+<p>Features of a certain IM connection (depends on the IMAccount implementation used by the Contact)</p>
+<h4 id="class-hierarchy16">
+<a name="nco:IMCapability.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:IMCapability 
+</code></pre>
+<h4 id="predefined-instances3">
+<a name="nco:IMCapability.predefined-instances"></a>Predefined instances</h4>
+<p>nco:IMCapability has the following predefined instances:</p>
+<ul>
+<li>nco:im-capability-dbus-tubes</li>
+<li>nco:im-capability-stream-tubes</li>
+<li>nco:im-capability-file-transfers</li>
+<li>nco:im-capability-upgrading-calls</li>
+<li>nco:im-capability-video-calls</li>
+<li>nco:im-capability-audio-calls</li>
+<li>nco:im-capability-media-calls</li>
+<li>nco:im-capability-text-chat</li>
+</ul>
+<h3 id="internationaldeliveryaddress">
+<a name="nco:InternationalDeliveryAddress"></a>InternationalDeliveryAddress</h3>
+<h5 id="description17">Description</h5>
+<p>International Delivery Addresse. Class inspired by TYPE=intl parameter of the ADR property defined in RFC 2426 sec. 3.2.1</p>
+<h4 id="class-hierarchy17">
+<a name="nco:InternationalDeliveryAddress.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PostalAddress 
+        ╰── nco:InternationalDeliveryAddress 
+</code></pre>
+<h3 id="isdnnumber">
+<a name="nco:IsdnNumber"></a>IsdnNumber</h3>
+<h5 id="description18">Description</h5>
+<p>An ISDN phone number. Inspired by the (TYPE=isdn) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
+<h4 id="class-hierarchy18">
+<a name="nco:IsdnNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:VoicePhoneNumber 
+            ╰── nco:IsdnNumber 
+</code></pre>
+<h3 id="messagingnumber">
+<a name="nco:MessagingNumber"></a>MessagingNumber</h3>
+<h5 id="description19">Description</h5>
+<p>A number that can accept textual messages.</p>
+<h4 id="class-hierarchy19">
+<a name="nco:MessagingNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:MessagingNumber 
+            ├── nco:PagerNumber 
+            ╰── nco:CellPhoneNumber 
+</code></pre>
+<h3 id="modemnumber">
+<a name="nco:ModemNumber"></a>ModemNumber</h3>
+<h5 id="description20">Description</h5>
+<p>A modem phone number. Inspired by the (TYPE=modem) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
+<h4 id="class-hierarchy20">
+<a name="nco:ModemNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:ModemNumber 
+            ╰── nco:BbsNumber 
+</code></pre>
+<h3 id="organizationcontact">
+<a name="nco:OrganizationContact"></a>OrganizationContact</h3>
+<h5 id="description21">Description</h5>
+<p>A Contact that denotes on Organization.</p>
+<h4 id="class-hierarchy21">
+<a name="nco:OrganizationContact.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+├── nie:InformationElement ──┐
+╰── nco:Role ────────────────┤
+                             └── nco:Contact 
+            nco:OrganizationContact 
+</code></pre>
+<h4 id="properties8">
+<a name="nco:OrganizationContact.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:logo"></a>logo</td>
+<td> <a href="nie-ontology.html#nie:DataObject">DataObject</a>
+</td>
+<td></td>
+<td> Logo of a company. Inspired by the LOGO property defined in RFC 2426 sec. 3.5.3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pagernumber">
+<a name="nco:PagerNumber"></a>PagerNumber</h3>
+<h5 id="description22">Description</h5>
+<p>A pager phone number. Inspired by the (TYPE=pager) parameter of the TEL property as defined in RFC 2426 sec  3.3.1.</p>
+<h4 id="class-hierarchy22">
+<a name="nco:PagerNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:MessagingNumber 
+            ╰── nco:PagerNumber 
+</code></pre>
+<h3 id="parceldeliveryaddress">
+<a name="nco:ParcelDeliveryAddress"></a>ParcelDeliveryAddress</h3>
+<h5 id="description23">Description</h5>
+<p>Parcel Delivery Addresse. Class inspired by TYPE=parcel parameter of the ADR property defined in RFC 2426 sec. 3.2.1</p>
+<h4 id="class-hierarchy23">
+<a name="nco:ParcelDeliveryAddress.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PostalAddress 
+        ╰── nco:ParcelDeliveryAddress 
+</code></pre>
+<h3 id="pcsnumber">
+<a name="nco:PcsNumber"></a>PcsNumber</h3>
+<h5 id="description24">Description</h5>
+<p>Personal Communication Services Number. A class inspired by the TYPE=pcs parameter of the TEL property defined in RFC 2426 sec. 3.3.1</p>
+<h4 id="class-hierarchy24">
+<a name="nco:PcsNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:VoicePhoneNumber 
+            ╰── nco:PcsNumber 
+</code></pre>
+<h3 id="personcontact">
+<a name="nco:PersonContact"></a>PersonContact</h3>
+<h5 id="description25">Description</h5>
+<p>A Contact that denotes a Person. A person can have multiple Affiliations.</p>
+<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img src="images/icon-notify.svg" alt="Notify icon" title="Notify icon" id="notify-icon4"></a>This class emits notifications about changes, and can be monitored using <code>TrackerNotifier</code>.</p>
+<h4 id="class-hierarchy25">
+<a name="nco:PersonContact.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+├── nie:InformationElement ──┐
+╰── nco:Role ────────────────┤
+                             └── nco:Contact 
+            nco:PersonContact 
+</code></pre>
+<h4 id="predefined-instances4">
+<a name="nco:PersonContact.predefined-instances"></a>Predefined instances</h4>
+<p>nco:PersonContact has the following predefined instances:</p>
+<ul>
+<li>nco:default-contact-me</li>
+</ul>
+<h4 id="properties9">
+<a name="nco:PersonContact.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:gender"></a>gender</td>
+<td> <a href="nco-ontology.html#nco:Gender">Gender</a>
+</td>
+<td></td>
+<td> Gender of the given contact.</td>
+</tr>
+<tr>
+<td> <a name="nco:hasAffiliation"></a>hasAffiliation</td>
+<td> <a href="nco-ontology.html#nco:Affiliation">Affiliation</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values5"></a>
+</td>
+<td> Links a PersonContact with an Affiliation.</td>
+</tr>
+<tr>
+<td> <a name="nco:hobby"></a>hobby</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A hobby associated with a PersonContact. This property can be used to express hobbies and interests.</td>
+</tr>
+<tr>
+<td> <a name="nco:nameAdditional"></a>nameAdditional</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch10"></a>
+</td>
+<td> Additional given name of an object represented by this contact. See documentation for 'nameFamily' property for details.</td>
+</tr>
+<tr>
+<td> <a name="nco:nameFamily"></a>nameFamily</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch11"></a>
+</td>
+<td> The family name of an Object represented by this Contact. These applies to people that have more than one given name. The 'first' one is considered 'the' given name (see nameGiven) property. All additional ones are considered 'additional' names. The name inherited from parents is the 'family name'. e.g. For Dr. John Phil Paul Stevenson Jr. M.D. A.C.P. we have contact with: honorificPrefix: 'Dr.', nameGiven: 'John', nameAdditional: 'Phil', nameAdditional: 'Paul', nameFamily: 'Stevenson', honorificSuffix: 'Jr.', honorificSuffix: 'M.D.', honorificSuffix: 'A.C.P.'. These properties form an equivalent of the compound 'N' property as defined in RFC 2426 Sec. 3.1.2</td>
+</tr>
+<tr>
+<td> <a name="nco:nameGiven"></a>nameGiven</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch12"></a>
+</td>
+<td> The given name for the object represented by this Contact. See documentation for 'nameFamily' property for details.</td>
+</tr>
+<tr>
+<td> <a name="nco:nameHonorificPrefix"></a>nameHonorificPrefix</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A prefix for the name of the object represented by this Contact. See documentation for the 'nameFamily' property for details.</td>
+</tr>
+<tr>
+<td> <a name="nco:nameHonorificSuffix"></a>nameHonorificSuffix</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td></td>
+<td> A suffix for the name of the Object represented by the given object. See documentation for the 'nameFamily' for details.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phonenumber">
+<a name="nco:PhoneNumber"></a>PhoneNumber</h3>
+<h5 id="description26">Description</h5>
+<p>A telephone number.</p>
+<h4 id="class-hierarchy26">
+<a name="nco:PhoneNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ├── nco:VoicePhoneNumber 
+        ├── nco:ModemNumber 
+        ├── nco:MessagingNumber 
+        ╰── nco:FaxNumber 
+</code></pre>
+<h4 id="properties10">
+<a name="nco:PhoneNumber.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:phoneNumber"></a>phoneNumber</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch13"></a>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="postaladdress">
+<a name="nco:PostalAddress"></a>PostalAddress</h3>
+<h5 id="description27">Description</h5>
+<p>A postal address. A class aggregating the various parts of a value for the 'ADR' property as defined in RFC 2426 Sec. 3.2.1.</p>
+<h4 id="class-hierarchy27">
+<a name="nco:PostalAddress.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PostalAddress 
+        ├── nco:ParcelDeliveryAddress 
+        ├── nco:InternationalDeliveryAddress 
+        ╰── nco:DomesticDeliveryAddress 
+</code></pre>
+<h4 id="properties11">
+<a name="nco:PostalAddress.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:addressLocation"></a>addressLocation</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td></td>
+<td> The geographical location of a postal address.</td>
+</tr>
+<tr>
+<td> <a name="nco:country"></a>country</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch14"></a>
+</td>
+<td> A part of an address specifying the country. Inspired by the seventh part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</td>
+</tr>
+<tr>
+<td> <a name="nco:county"></a>county</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch15"></a>
+</td>
+<td> Regional division between state and city. Not in RFC 2426 sec 3.2.1. Added for API compatibility</td>
+</tr>
+<tr>
+<td> <a name="nco:district"></a>district</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch16"></a>
+</td>
+<td> Local division inside a city. Not in RFC 2426 sec 3.2.1. Added for API compatibility</td>
+</tr>
+<tr>
+<td> <a name="nco:extendedAddress"></a>extendedAddress</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch17"></a>
+</td>
+<td> An extended part of an address. This field might be used to express parts of an address that aren't include in the name of the Contact but also aren't part of the actual location. Usually the streed address and following fields are enough for a postal letter to arrive. Examples may include ('University of California Campus building 45', 'Sears Tower 34th floor' etc.) Inspired by the second part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</td>
+</tr>
+<tr>
+<td> <a name="nco:locality"></a>locality</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch18"></a>
+</td>
+<td> Locality or City. Inspired by the fourth part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</td>
+</tr>
+<tr>
+<td> <a name="nco:pobox"></a>pobox</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch19"></a>
+</td>
+<td> Post office box. This is the first part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</td>
+</tr>
+<tr>
+<td> <a name="nco:postalcode"></a>postalcode</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch20"></a>
+</td>
+<td> Postal Code. Inspired by the sixth part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</td>
+</tr>
+<tr>
+<td> <a name="nco:region"></a>region</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch21"></a>
+</td>
+<td> Region. Inspired by the fifth part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</td>
+</tr>
+<tr>
+<td> <a name="nco:streetAddress"></a>streetAddress</td>
+<td> <a href="xsd-ontology.html#xsd:string">string</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:fulltextIndexed"><img src="images/icon-fulltextindexed.svg" alt="This property is full-text-indexed, and can be looked up through fts:match" title="This property is full-text-indexed, and can be looked up through `fts:match`" id="this-property-is-fulltextindexed-and-can-be-looked-up-through-ftsmatch22"></a>
+</td>
+<td> The streed address. Inspired by the third part of the value of the 'ADR' property as defined in RFC 2426, sec. 3.2.1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="presencestatus">
+<a name="nco:PresenceStatus"></a>PresenceStatus</h3>
+<h5 id="description28">Description</h5>
+<p>Predefined set of status level instances</p>
+<h4 id="class-hierarchy28">
+<a name="nco:PresenceStatus.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:PresenceStatus 
+</code></pre>
+<h4 id="predefined-instances5">
+<a name="nco:PresenceStatus.predefined-instances"></a>Predefined instances</h4>
+<p>nco:PresenceStatus has the following predefined instances:</p>
+<ul>
+<li>nco:presence-status-error</li>
+<li>nco:presence-status-unknown</li>
+<li>nco:presence-status-busy</li>
+<li>nco:presence-status-hidden</li>
+<li>nco:presence-status-extended-away</li>
+<li>nco:presence-status-away</li>
+<li>nco:presence-status-available</li>
+<li>nco:presence-status-offline</li>
+<li>nco:presence-status-unset</li>
+</ul>
+<h3 id="role">
+<a name="nco:Role"></a>Role</h3>
+<h5 id="description29">Description</h5>
+<p>A role played by a contact. Contacts that denote people, can have many roles (e.g. see the hasAffiliation property and Affiliation class). Contacts that denote Organizations or other Agents usually have one role.  Each role can introduce additional contact media.</p>
+<h4 id="class-hierarchy29">
+<a name="nco:Role.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:Role 
+    ├── nmm:Artist 
+    ├── nco:Contact 
+    ╰── nco:Affiliation 
+</code></pre>
+<h4 id="predefined-instances6">
+<a name="nco:Role.predefined-instances"></a>Predefined instances</h4>
+<p>nco:Role has the following predefined instances:</p>
+<ul>
+<li>nco:default-contact-me</li>
+</ul>
+<h4 id="properties12">
+<a name="nco:Role.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:blogUrl"></a>blogUrl</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nco-ontology.html#nco:url"><img src="images/icon-superproperty.svg" alt="This property extends nco:url" title="This property extends nco:url" id="this-property-extends-ncourl"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values6"></a>
+</td>
+<td> A Blog url.</td>
+</tr>
+<tr>
+<td> <a name="nco:foafUrl"></a>foafUrl</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nco-ontology.html#nco:url"><img src="images/icon-superproperty.svg" alt="This property extends nco:url" title="This property extends nco:url" id="this-property-extends-ncourl1"></a>
+</td>
+<td> The URL of the FOAF file.</td>
+</tr>
+<tr>
+<td> <a name="nco:hasContactMedium"></a>hasContactMedium</td>
+<td> <a href="nco-ontology.html#nco:ContactMedium">ContactMedium</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values7"></a>
+</td>
+<td> A superProperty for all properties linking a Contact to an instance of a contact medium.</td>
+</tr>
+<tr>
+<td> <a name="nco:hasEmailAddress"></a>hasEmailAddress</td>
+<td> <a href="nco-ontology.html#nco:EmailAddress">EmailAddress</a>
+</td>
+<td> <a href="nco-ontology.html#nco:hasContactMedium"><img src="images/icon-superproperty.svg" alt="This property extends nco:hasContactMedium" title="This property extends nco:hasContactMedium" id="this-property-extends-ncohascontactmedium"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values8"></a>
+</td>
+<td> An address for electronic mail communication with the object specified by this contact. An equivalent of the 'EMAIL' property as defined in RFC 2426 Sec. 3.3.1.</td>
+</tr>
+<tr>
+<td> <a name="nco:hasIMAddress"></a>hasIMAddress</td>
+<td> <a href="nco-ontology.html#nco:IMAddress">IMAddress</a>
+</td>
+<td> <a href="nco-ontology.html#nco:hasContactMedium"><img src="images/icon-superproperty.svg" alt="This property extends nco:hasContactMedium" title="This property extends nco:hasContactMedium" id="this-property-extends-ncohascontactmedium1"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values9"></a>
+</td>
+<td> An address for communication using instant messages with the object specified by this contact.</td>
+</tr>
+<tr>
+<td> <a name="nco:hasPhoneNumber"></a>hasPhoneNumber</td>
+<td> <a href="nco-ontology.html#nco:PhoneNumber">PhoneNumber</a>
+</td>
+<td> <a href="nco-ontology.html#nco:hasContactMedium"><img src="images/icon-superproperty.svg" alt="This property extends nco:hasContactMedium" title="This property extends nco:hasContactMedium" id="this-property-extends-ncohascontactmedium2"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values10"></a>
+</td>
+<td> A number for telephony communication with the object represented by this Contact. An equivalent of the 'TEL' property defined in RFC 2426 Sec. 3.3.1</td>
+</tr>
+<tr>
+<td> <a name="nco:hasPostalAddress"></a>hasPostalAddress</td>
+<td> <a href="nco-ontology.html#nco:PostalAddress">PostalAddress</a>
+</td>
+<td> <a href="nco-ontology.html#nco:hasContactMedium"><img src="images/icon-superproperty.svg" alt="This property extends nco:hasContactMedium" title="This property extends nco:hasContactMedium" id="this-property-extends-ncohascontactmedium3"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values11"></a>
+</td>
+<td> The default Address for a Contact. An equivalent of the 'ADR' property as defined in RFC 2426 Sec. 3.2.1.</td>
+</tr>
+<tr>
+<td> <a name="nco:url"></a>url</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values12"></a>
+</td>
+<td> A uniform resource locator associated with the given role of a Contact. Inspired by the 'URL' property defined in RFC 2426 Sec. 3.6.8.</td>
+</tr>
+<tr>
+<td> <a name="nco:video"></a>video</td>
+<td> <a href="nie-ontology.html#nie:InformationElement">InformationElement</a>
+</td>
+<td></td>
+<td> Video avatar of a contact. Note that is an icon/avatar, not a generic 'present in video' property</td>
+</tr>
+<tr>
+<td> <a name="nco:websiteUrl"></a>websiteUrl</td>
+<td> <a href="rdfs-ontology.html#rdfs:Resource">Resource</a>
+</td>
+<td> <a href="nco-ontology.html#nco:url"><img src="images/icon-superproperty.svg" alt="This property extends nco:url" title="This property extends nco:url" id="this-property-extends-ncourl2"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values13"></a>
+</td>
+<td> A url of a website.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="videotelephonenumber">
+<a name="nco:VideoTelephoneNumber"></a>VideoTelephoneNumber</h3>
+<h5 id="description30">Description</h5>
+<p>A Video telephone number. A class inspired by the TYPE=video parameter of the TEL property defined in RFC 2426 sec. 3.3.1</p>
+<h4 id="class-hierarchy30">
+<a name="nco:VideoTelephoneNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:VoicePhoneNumber 
+            ╰── nco:VideoTelephoneNumber 
+</code></pre>
+<h3 id="voicephonenumber">
+<a name="nco:VoicePhoneNumber"></a>VoicePhoneNumber</h3>
+<h5 id="description31">Description</h5>
+<p>A telephone number with voice communication capabilities. Class inspired by the TYPE=voice parameter of the TEL property defined in RFC 2426 sec. 3.3.1</p>
+<h4 id="class-hierarchy31">
+<a name="nco:VoicePhoneNumber.hierarchy"></a>Class hierarchy</h4>
+<pre><code>rdfs:Resource 
+╰── nco:ContactMedium 
+    ╰── nco:PhoneNumber 
+        ╰── nco:VoicePhoneNumber 
+            ├── nco:VideoTelephoneNumber 
+            ├── nco:PcsNumber 
+            ├── nco:IsdnNumber 
+            ├── nco:CellPhoneNumber 
+            ╰── nco:CarPhoneNumber 
+</code></pre>
+<h4 id="properties13">
+<a name="nco:VoicePhoneNumber.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:voiceMail"></a>voiceMail</td>
+<td> <a href="xsd-ontology.html#xsd:boolean">boolean</a>
+</td>
+<td></td>
+<td> Indicates if the given number accepts voice mail. (e.g. there is an answering machine). Inspired by TYPE=msg parameter of the TEL property defined in RFC 2426 sec. 3.3.1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="property-details">
+<a name="nco-extra-properties"></a>Property Details</h2>
+<h3 id="additional-properties-for-nieinformationelement">
+<a name="nco.nie:InformationElement"></a>Additional properties for nie:InformationElement</h3>
+<h4 id="description32">Description</h4>
+<p>Properties this ontology defines which can describe nie:InformationElement resources.</p>
+<h4 id="properties14">
+<a name="nco.nie:InformationElement.properties"></a>Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a name="nco:contributor"></a>contributor</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td> <a href="dc-ontology.html#dc:contributor"><img src="images/icon-superproperty.svg" alt="This property extends dc:contributor" title="This property extends dc:contributor" id="this-property-extends-dccontributor"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values14"></a>
+</td>
+<td> An entity responsible for making contributions to the content of the InformationElement.</td>
+</tr>
+<tr>
+<td> <a name="nco:creator"></a>creator</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td> <a href="dc-ontology.html#dc:creator"><img src="images/icon-superproperty.svg" alt="This property extends dc:creator" title="This property extends dc:creator" id="this-property-extends-dccreator"></a><a href="nco-ontology.html#nco:contributor"><img src="images/icon-superproperty.svg" alt="This property extends nco:contributor" title="This property extends nco:contributor" id="this-property-extends-ncocontributor"></a><a href="nrl-ontology.html#nrl:maxCardinality"><img src="images/icon-multivalue.svg" alt="This property can have multiple values." title="This property can have multiple values." id="this-property-can-have-multiple-values15"></a>
+</td>
+<td> Creator of a data object, an entity primarily responsible for the creation of the content of the data object.</td>
+</tr>
+<tr>
+<td> <a name="nco:publisher"></a>publisher</td>
+<td> <a href="nco-ontology.html#nco:Contact">Contact</a>
+</td>
+<td> <a href="dc-ontology.html#dc:publisher"><img src="images/icon-superproperty.svg" alt="This property extends dc:publisher" title="This property extends dc:publisher" id="this-property-extends-dcpublisher"></a>
+</td>
+<td> An entity responsible for making the InformationElement available.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="credits-and-copyright">Credits and Copyright</h2>
+<p>Authors:</p>
+<ul>
+<li>Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
+<li>Leo Sauermann, DFKI,  &lt;leo.sauermann@dfki.de&gt;</li>
+<li>Ludger van Elst, DFKI,  &lt;elst@dfki.uni-kl.de&gt;</li>
+<li>Michael Sintek, DFKI,  &lt;michael.sintek@dfki.de&gt;</li>
+<li>Tracker Developers</li>
+</ul>
+<p>Editors:</p>
+<ul>
+<li>Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
+<li>Tracker developers (translation into turtle)</li>
+</ul>
+<p>Contributors:</p>
+<ul>
+<li>Christiaan Fluit, Aduna, &lt;christiaan.fluit@aduna-software.com&gt;</li>
+<li>Evgeny 'phreedom' Egorochkin, KDE Strigi Developer, &lt;stexx@mail.ru&gt;</li>
+</ul>
+<p>Upstream: <a href="http://www.semanticdesktop.org/ontologies/nco/">Upstream version</a></p>
+<p>ChangeLog: <a href="hhttps://gitlab.gnome.org/GNOME/tracker/-/commits/master/src/ontologies/32-nco.ontology">Tracker changes</a></p>
+<p>Copyright:
+© 2007 <ulink url="http://www.dfki.de/">DFKI</ulink> © 2009 <ulink url="http://www.nokia.com/">Nokia</ulink>. The ontologies are made available under the terms of NEPOMUK <ulink url="http://www.semanticdesktop.org/ontologies/nfo/LICENSE.txt">software license</ulink> (FIXME verify)</p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

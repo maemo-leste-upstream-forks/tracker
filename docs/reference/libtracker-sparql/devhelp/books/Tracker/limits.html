@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Limits</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="limits.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="limits">Limits</h1>
+<p>Tracker is implemented on top of SQLite, and all of its benefits and
+<a href="https://www.sqlite.org/limits.html">limits</a> apply. This
+document will break down how those limits apply to Tracker. Depending on
+your distributor, the limits might be changed via SQLite build-time
+options.</p>
+<h2 id="maximum-string-length">Maximum string length</h2>
+<p>Tracker can store by default up to 1 GiB in a text field by default. This
+limit is controlled by <code>SQLITE_MAX_LENGTH</code></p>
+<h2 id="maximum-number-of-properties-and-select-columns">Maximum number of properties and select columns</h2>
+<p>The maximum amount of properties in the domain of a single class, and
+the maximum number of global fulltext-search properties in the ontology
+are limited by <code>SQLITE_MAX_COLUMN</code> (defaults to 2000).</p>
+<p>Each column in the result set of a SELECT query contains additional
+information included as an additional column, so the limit of columns
+that can be retrieved in a single SELECT query is effectively half
+of <code>SQLITE_MAX_COLUMN</code> (1000 with the default settings).</p>
+<h2 id="underlying-parser-limits">Underlying parser limits</h2>
+<p>SQLite defines some limits to its parser. Maximum query length is 1 MiB,
+its maximum expression tree depth is 1000, and it allows up to 500
+elements in <code>UNION / INTERSECT / EXCEPT</code> statements.</p>
+<p>There is no straightforward relation between the SPARQL query and the
+SQL one, so it is undefined how this limit applies to SPARQL queries.
+Query and ontology simplifications may help reduce its likelyhood.</p>
+<p>These SQLite limits are controlled by
+<code>SQLITE_MAX_SQL_LENGTH</code>, <code>SQLITE_MAX_EXPR_DEPTH</code> and
+<code>SQLITE_MAX_COMPOUND_SELECT</code>. The SPARQL parser
+is not affected in itself by these limits.</p>
+<h2 id="maximum-number-of-tables-in-a-join">Maximum number of tables in a <code>JOIN</code>
+</h2>
+<p>SQLite does not allow Join operations containing more than 64 tables.
+This limit may impact complex Tracker queries in various ways, most
+likely culprits are operations across the whole union graph, and
+access to multi-valued properties.</p>
+<p>Such queries can be tweaked (e.g. specifying a graph, or reducing
+the amount of accessed properties) or split into multiple ones to
+bypass this limit.</p>
+<h2 id="maximum-number-or-arguments-in-a-function">Maximum number or arguments in a function</h2>
+<p>SQLite defines a limit of 100, controlled by <code>SQLITE_MAX_FUNCTION_ARG</code>.
+This affects all builtin and extra functions with variable arguments,
+e.g. <code>coalesce</code>.</p>
+<h2 id="limits-on-the-number-of-graphs">Limits on the number of graphs</h2>
+<p>SQLite has a limit on the number of databases that can be attached,
+defined by <code>SQLITE_MAX_LIMIT_ATTACHED</code> (defaults to 10, maximum 128).</p>
+<p>Tracker uses attached databases to implement its support for multiple
+graphs, so the maximum amount of graphs for a given <a href="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-href-javascript="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-javascript="Tracker.SparqlConnection" data-gi-href-python="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-python="Tracker.SparqlConnection">TrackerSparqlConnection</a>
+is equally restricted.</p>
+<h2 id="limits-on-glob-search">Limits on glob search</h2>
+<p>SQLite defines a maximum length of 50 KiB for GLOB patterns. This
+reflects in <code>CONTAINS / STRSTARTS / STRENDS</code>.
+SPARQL syntax.</p>
+<h2 id="limits-on-the-number-of-parameters-in-a-statement">Limits on the number of parameters in a statement</h2>
+<p>SQLite defines a maximum of 999 parameters to be passed as arguments
+to a statement, controlled by <code>SQLITE_MAX_VARIABLE_NUMBER</code>.
+<a href="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-href-javascript="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-title-javascript="Tracker.SparqlStatement" data-gi-href-python="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-title-python="Tracker.SparqlStatement">TrackerSparqlStatement</a> has the same limit.</p>
+<h2 id="maximum-number-of-pages-in-a-database">Maximum number of pages in a database</h2>
+<p>SQLite sets a default restriction of 1073741823 pages to
+database file size (about 8 TB with Tracker settings). This limit
+applies per graph.</p>
+<h2 id="type-formats-and-precision">Type formats and precision</h2>
+<p>Integers are 64 bit wide. Floating point numbers have IEEE764
+double precision. Dates/times have microsecond precision, and may
+range between 0001-01-01 00:00:00 and 9999-12-31 23:59:59.</p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

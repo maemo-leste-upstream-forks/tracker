@@ -19,16 +19,18 @@
 
 /**
  * SECTION: tracker-notifier
+ * @title: TrackerNotifier
  * @short_description: Listen to changes in the Tracker database
+ * @stability: Stable
  * @include: libtracker-sparql/tracker-sparql.h
  *
  * #TrackerNotifier is an object that receives notifications about
  * changes to the Tracker database. A #TrackerNotifier is created
  * through tracker_sparql_connection_create_notifier(), after the notifier
  * is created, events can be listened for by connecting to the
- * #TrackerNotifier::events signal. This object was added in Tracker 1.12.
+ * #TrackerNotifier::events signal.
  *
- * # Known caveats # {#trackernotifier-caveats}
+ * # Known caveats
  *
  * * The %TRACKER_NOTIFIER_EVENT_DELETE events will be received after the
  *   resource has been deleted. At that time queries on those elements will
@@ -54,7 +56,6 @@
 
 typedef struct _TrackerNotifierPrivate TrackerNotifierPrivate;
 typedef struct _TrackerNotifierSubscription TrackerNotifierSubscription;
-typedef struct _TrackerNotifierEventCache TrackerNotifierEventCache;
 
 struct _TrackerNotifierSubscription {
 	GDBusConnection *connection;
@@ -399,13 +400,14 @@ create_extra_info_query (TrackerNotifier           *notifier,
 
 	g_string_append (sparql,
 	                 "  } ."
-	                 "  BIND (tracker:uri(xsd:integer(?id)) AS ?uri)"
+	                 "  BIND (tracker:uri(xsd:integer(?id)) AS ?uri) ."
+	                 "  FILTER (?id > 0) ."
 	                 "} ");
 
 	if (service)
 		g_string_append (sparql, "} ");
 
-	g_string_append (sparql, "ORDER BY ?id");
+	g_string_append (sparql, "ORDER BY xsd:integer(?id)");
 
 	g_free (service);
 
@@ -472,9 +474,6 @@ handle_cursor (GTask        *task,
 	 */
 	while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
 		id = tracker_sparql_cursor_get_integer (cursor, 0);
-		if (id == 0)
-			continue;
-
 		event = g_sequence_get (iter);
 		iter = g_sequence_iter_next (iter);
 

@@ -1,0 +1,8155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>TrackerResource</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="gi-extension" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="tracker-resource.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']" data-hotdoc-meta-gi-language="c">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="trackerresource-page">TrackerResource</h1>
+<p><a href="tracker-resource.html#TrackerResource" data-gi-href-javascript="tracker-resource.html#TrackerResource" data-gi-title-javascript="Tracker.Resource" data-gi-href-python="tracker-resource.html#TrackerResource" data-gi-title-python="Tracker.Resource">TrackerResource</a> keeps track of a set of properties for a given resource.
+The resulting data can be serialized in several ways.</p>
+
+    </div>
+        
+        
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TrackerResource">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h2 data-hotdoc-id="TrackerResource">
+	<i>TrackerResource</i>
+</h2>
+
+
+<div class="hierarchy_container">
+	<div class="hierarchy_details">
+<pre>
+<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span>TrackerResource
+</pre>
+
+</div>
+
+</div>
+
+<div class="class_details">
+	<p>The <structname>TrackerResource</structname> object represents information
+about a given resource.</p>
+
+</div>
+
+
+
+	<div class="members-container">
+		<h3>Members</h3>
+					
+<div class="symbol-detail" data-hotdoc-id="TrackerResource.parent_instance">
+	<div>
+		<i><em><code>parent_instance</code></em></i>
+		(<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>)
+		–
+	</div>
+			<i>No description available</i>
+	</div>
+
+			</div>
+
+
+
+<hr>
+<h3>Class structure</h3>
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="TrackerResourceClass">
+	<i>TrackerResourceClass</i>
+</h4>
+
+
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h3>
+	Tracker.ResourceClass
+</h3>
+
+
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h3>
+	Tracker.ResourceClass
+</h3>
+
+
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h2 data-hotdoc-id="TrackerResource">
+	<i>Tracker.Resource</i>
+</h2>
+
+
+<div class="hierarchy_container">
+	<div class="hierarchy_details">
+<pre>
+<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+    <span class="lineart">╰──</span>Tracker.Resource
+</pre>
+
+</div>
+
+</div>
+
+<div class="class_details">
+	<p>The <structname>TrackerResource</structname> object represents information
+about a given resource.</p>
+
+</div>
+
+
+
+	<div class="members-container">
+		<h3>Members</h3>
+					
+<div class="symbol-detail" data-hotdoc-id="TrackerResource.parent_instance">
+	<div>
+		<i><em><code>parent_instance</code></em></i>
+		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		–
+	</div>
+			<i>No description available</i>
+	</div>
+
+			</div>
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h2 data-hotdoc-id="TrackerResource">
+	<i>Tracker.Resource</i>
+</h2>
+
+
+<div class="hierarchy_container">
+	<div class="hierarchy_details">
+<pre>
+<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+    <span class="lineart">╰──</span>Tracker.Resource
+</pre>
+
+</div>
+
+</div>
+
+<div class="class_details">
+	<p>The <structname>TrackerResource</structname> object represents information
+about a given resource.</p>
+
+</div>
+
+
+
+	<div class="members-container">
+		<h3>Members</h3>
+					
+<div class="symbol-detail" data-hotdoc-id="TrackerResource.parent_instance">
+	<div>
+		<i><em><code>parent_instance</code></em></i>
+		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		–
+	</div>
+			<i>No description available</i>
+	</div>
+
+			</div>
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h3 class="symbol_section">Constructors</h3>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_new">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_new">
+	<i>tracker_resource_new</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> *
+tracker_resource_new (const char* identifier)</pre>
+
+<p>Creates a TrackerResource instance.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
+–
+</div>
+<p>A string containing a URI, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a>.</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>a newly created <a href="tracker-resource.html#TrackerResource">TrackerResource</a>. Free with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref">g_object_unref</a> when done</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_new">
+	<i>Tracker.Resource.prototype.new</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.new(identifier: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_new'
+}</code></pre>
+
+<p>Creates a TrackerResource instance.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>A string containing a URI, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a>.</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+			</div>
+							<p>a newly created <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a>. Free with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref">GObject.Object.prototype.unref</a> when done</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_new">
+	<i>Tracker.Resource.new</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.new (identifier):
+    #python wrapper for 'tracker_resource_new'</code></pre>
+
+<p>Creates a TrackerResource instance.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>A string containing a URI, or <a href="https://docs.python.org/3/library/constants.html#None">None</a>.</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+			</div>
+							<p>a newly created <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a>. Free with <a href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref">GObject.Object.unref</a> when done</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h3 class="symbol_section">Methods</h3>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_boolean">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_boolean">
+	<i>tracker_resource_add_boolean</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_boolean (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                              const char* property_uri,
+                              <a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a> value)</pre>
+
+<p>Adds a boolean object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_boolean">
+	<i>Tracker.Resource.prototype.add_boolean</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_boolean(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_resource_add_boolean'
+}</code></pre>
+
+<p>Adds a boolean object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_boolean">
+	<i>Tracker.Resource.add_boolean</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_boolean (self, property_uri, value):
+    #python wrapper for 'tracker_resource_add_boolean'</code></pre>
+
+<p>Adds a boolean object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.2;" id="tracker_resource_add_datetime">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_datetime">
+	<i>tracker_resource_add_datetime</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_datetime (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                               const char* property_uri,
+                               <a title="GDateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GDateTime</a> * value)</pre>
+
+<p>Adds GDateTime object to the multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_datetime">
+	<i>Tracker.Resource.prototype.add_datetime</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_datetime(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a>): {
+    // javascript wrapper for 'tracker_resource_add_datetime'
+}</code></pre>
+
+<p>Adds GDateTime object to the multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_datetime">
+	<i>Tracker.Resource.add_datetime</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_datetime (self, property_uri, value):
+    #python wrapper for 'tracker_resource_add_datetime'</code></pre>
+
+<p>Adds GDateTime object to the multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_double">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_double">
+	<i>tracker_resource_add_double</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_double (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                             const char* property_uri,
+                             double value)</pre>
+
+<p>Adds a double object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_double">
+	<i>Tracker.Resource.prototype.add_double</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_double(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_resource_add_double'
+}</code></pre>
+
+<p>Adds a double object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_double">
+	<i>Tracker.Resource.add_double</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_double (self, property_uri, value):
+    #python wrapper for 'tracker_resource_add_double'</code></pre>
+
+<p>Adds a double object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="float" href="https://docs.python.org/3/library/functions.html#float">float</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_gvalue">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_gvalue">
+	<i>tracker_resource_add_gvalue</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_gvalue (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                             const char* property_uri,
+                             const <a title="GValue" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GValue</a> * value)</pre>
+
+<p>Add 'value' to the list of values for given property.</p>
+<p>You can pass any kind of GValue for <em>value</em>, but serialization functions will
+normally only be able to serialize URIs/relationships and fundamental value
+types (string, int, etc.).</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>an initialised <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GValue</a></p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_gvalue">
+	<i>Tracker.Resource.prototype.add_gvalue</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_gvalue(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="GObject.Value" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a>): {
+    // javascript wrapper for 'tracker_resource_add_gvalue'
+}</code></pre>
+
+<p>Add 'value' to the list of values for given property.</p>
+<p>You can pass any kind of GValue for <em>value</em>, but serialization functions will
+normally only be able to serialize URIs/relationships and fundamental value
+types (string, int, etc.).</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="GObject.Value" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a><span>)</span>
+–
+</div>
+<p>an initialised <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a></p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_gvalue">
+	<i>Tracker.Resource.add_gvalue</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_gvalue (self, property_uri, value):
+    #python wrapper for 'tracker_resource_add_gvalue'</code></pre>
+
+<p>Add 'value' to the list of values for given property.</p>
+<p>You can pass any kind of GValue for <em>value</em>, but serialization functions will
+normally only be able to serialize URIs/relationships and fundamental value
+types (string, int, etc.).</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="GObject.Value" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a><span>)</span>
+–
+</div>
+<p>an initialised <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a></p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_int">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_int">
+	<i>tracker_resource_add_int</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_int (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                          const char* property_uri,
+                          int value)</pre>
+
+<p>Adds an integer object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_int">
+	<i>Tracker.Resource.prototype.add_int</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_int(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_resource_add_int'
+}</code></pre>
+
+<p>Adds an integer object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_int">
+	<i>Tracker.Resource.add_int</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_int (self, property_uri, value):
+    #python wrapper for 'tracker_resource_add_int'</code></pre>
+
+<p>Adds an integer object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_int64">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_int64">
+	<i>tracker_resource_add_int64</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_int64 (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                            const char* property_uri,
+                            <a title="gint64" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a> value)</pre>
+
+<p>Adds an integer object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_int64">
+	<i>Tracker.Resource.prototype.add_int64</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_int64(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_resource_add_int64'
+}</code></pre>
+
+<p>Adds an integer object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_int64">
+	<i>Tracker.Resource.add_int64</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_int64 (self, property_uri, value):
+    #python wrapper for 'tracker_resource_add_int64'</code></pre>
+
+<p>Adds an integer object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_relation">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_relation">
+	<i>tracker_resource_add_relation</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_relation (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                               const char* property_uri,
+                               <a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource)</pre>
+
+<p>Adds a resource object to a multi-valued property. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_uri">tracker_resource_add_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_relation">
+	<i>Tracker.Resource.prototype.add_relation</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_relation(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, resource: <a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a>): {
+    // javascript wrapper for 'tracker_resource_add_relation'
+}</code></pre>
+
+<p>Adds a resource object to a multi-valued property. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_uri">Tracker.Resource.prototype.add_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_relation">
+	<i>Tracker.Resource.add_relation</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_relation (self, property_uri, resource):
+    #python wrapper for 'tracker_resource_add_relation'</code></pre>
+
+<p>Adds a resource object to a multi-valued property. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_uri">Tracker.Resource.add_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_string">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_string">
+	<i>tracker_resource_add_string</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_string (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                             const char* property_uri,
+                             const char* value)</pre>
+
+<p>Adds a string object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_string">
+	<i>Tracker.Resource.prototype.add_string</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_string(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_add_string'
+}</code></pre>
+
+<p>Adds a string object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_string">
+	<i>Tracker.Resource.add_string</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_string (self, property_uri, value):
+    #python wrapper for 'tracker_resource_add_string'</code></pre>
+
+<p>Adds a string object to a multi-valued property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_take_relation">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_take_relation">
+	<i>tracker_resource_add_take_relation</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_take_relation (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                    const char* property_uri,
+                                    <a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource)</pre>
+
+<p>Adds a resource object to a multi-valued property. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_uri">tracker_resource_add_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+</div>
+<div class="gi-symbol gi-symbol-python">
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_add_uri">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_uri">
+	<i>tracker_resource_add_uri</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_add_uri (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                          const char* property_uri,
+                          const char* value)</pre>
+
+<p>Adds a resource object to a multi-valued property. This function
+produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_relation">tracker_resource_add_relation</a>, although
+it requires that the URI is previously known.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_uri">
+	<i>Tracker.Resource.prototype.add_uri</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_uri(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_add_uri'
+}</code></pre>
+
+<p>Adds a resource object to a multi-valued property. This function
+produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_relation">Tracker.Resource.prototype.add_relation</a>, although
+it requires that the URI is previously known.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_uri">
+	<i>Tracker.Resource.add_uri</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_uri (self, property_uri, value):
+    #python wrapper for 'tracker_resource_add_uri'</code></pre>
+
+<p>Adds a resource object to a multi-valued property. This function
+produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_relation">Tracker.Resource.add_relation</a>, although
+it requires that the URI is previously known.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_first_boolean">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_boolean">
+	<i>tracker_resource_get_first_boolean</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+tracker_resource_get_first_boolean (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                    const char* property_uri)</pre>
+
+<p>Returns the first boolean object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>the first boolean object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_boolean">
+	<i>Tracker.Resource.prototype.get_first_boolean</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_first_boolean(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_first_boolean'
+}</code></pre>
+
+<p>Returns the first boolean object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>the first boolean object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_boolean">
+	<i>Tracker.Resource.get_first_boolean</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_first_boolean (self, property_uri):
+    #python wrapper for 'tracker_resource_get_first_boolean'</code></pre>
+
+<p>Returns the first boolean object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
+–
+			</div>
+							<p>the first boolean object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.2;" id="tracker_resource_get_first_datetime">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_datetime">
+	<i>tracker_resource_get_first_datetime</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="GDateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GDateTime</a> *
+tracker_resource_get_first_datetime (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                     const char* property_uri)</pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>the first GDateTime object</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_datetime">
+	<i>Tracker.Resource.prototype.get_first_datetime</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_first_datetime(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_first_datetime'
+}</code></pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+–
+			</div>
+							<p>the first GDateTime object</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_datetime">
+	<i>Tracker.Resource.get_first_datetime</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_first_datetime (self, property_uri):
+    #python wrapper for 'tracker_resource_get_first_datetime'</code></pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+–
+			</div>
+							<p>the first GDateTime object</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_first_double">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_double">
+	<i>tracker_resource_get_first_double</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+double
+tracker_resource_get_first_double (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                   const char* property_uri)</pre>
+
+<p>Returns the first double object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>the first double object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_double">
+	<i>Tracker.Resource.prototype.get_first_double</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_first_double(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_first_double'
+}</code></pre>
+
+<p>Returns the first double object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>the first double object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_double">
+	<i>Tracker.Resource.get_first_double</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_first_double (self, property_uri):
+    #python wrapper for 'tracker_resource_get_first_double'</code></pre>
+
+<p>Returns the first double object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="float" href="https://docs.python.org/3/library/functions.html#float">float</a><span>)</span>
+–
+			</div>
+							<p>the first double object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_first_int">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_int">
+	<i>tracker_resource_get_first_int</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+int
+tracker_resource_get_first_int (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                const char* property_uri)</pre>
+
+<p>Returns the first integer object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>the first integer object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_int">
+	<i>Tracker.Resource.prototype.get_first_int</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_first_int(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_first_int'
+}</code></pre>
+
+<p>Returns the first integer object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>the first integer object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_int">
+	<i>Tracker.Resource.get_first_int</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_first_int (self, property_uri):
+    #python wrapper for 'tracker_resource_get_first_int'</code></pre>
+
+<p>Returns the first integer object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+			</div>
+							<p>the first integer object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_first_int64">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_int64">
+	<i>tracker_resource_get_first_int64</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="gint64" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a>
+tracker_resource_get_first_int64 (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                  const char* property_uri)</pre>
+
+<p>Returns the first integer object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>the first integer object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_int64">
+	<i>Tracker.Resource.prototype.get_first_int64</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_first_int64(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_first_int64'
+}</code></pre>
+
+<p>Returns the first integer object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>the first integer object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_int64">
+	<i>Tracker.Resource.get_first_int64</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_first_int64 (self, property_uri):
+    #python wrapper for 'tracker_resource_get_first_int64'</code></pre>
+
+<p>Returns the first integer object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+			</div>
+							<p>the first integer object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_first_relation">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_relation">
+	<i>tracker_resource_get_first_relation</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> *
+tracker_resource_get_first_relation (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                     const char* property_uri)</pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="Don't free data after the code is done"><span class="acronym">transfer: none</span></abbr>]</span><span>)</span>
+–
+			</div>
+							<p>the first resource object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_relation">
+	<i>Tracker.Resource.prototype.get_first_relation</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_first_relation(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_first_relation'
+}</code></pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+			</div>
+							<p>the first resource object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_relation">
+	<i>Tracker.Resource.get_first_relation</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_first_relation (self, property_uri):
+    #python wrapper for 'tracker_resource_get_first_relation'</code></pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+			</div>
+							<p>the first resource object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_first_string">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_string">
+	<i>tracker_resource_get_first_string</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+const char*
+tracker_resource_get_first_string (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                   const char* property_uri)</pre>
+
+<p>Returns the first string object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>the first string object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_string">
+	<i>Tracker.Resource.prototype.get_first_string</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_first_string(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_first_string'
+}</code></pre>
+
+<p>Returns the first string object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+			</div>
+							<p>the first string object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_string">
+	<i>Tracker.Resource.get_first_string</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_first_string (self, property_uri):
+    #python wrapper for 'tracker_resource_get_first_string'</code></pre>
+
+<p>Returns the first string object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+			</div>
+							<p>the first string object</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_first_uri">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_uri">
+	<i>tracker_resource_get_first_uri</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+const char*
+tracker_resource_get_first_uri (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                const char* property_uri)</pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>the first resource object as an URI.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_uri">
+	<i>Tracker.Resource.prototype.get_first_uri</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_first_uri(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_first_uri'
+}</code></pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+			</div>
+							<p>the first resource object as an URI.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_first_uri">
+	<i>Tracker.Resource.get_first_uri</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_first_uri (self, property_uri):
+    #python wrapper for 'tracker_resource_get_first_uri'</code></pre>
+
+<p>Returns the first resource object previously assigned to a property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+			</div>
+							<p>the first resource object as an URI.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_identifier">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_identifier">
+	<i>tracker_resource_get_identifier</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+const char*
+tracker_resource_get_identifier (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self)</pre>
+
+<p>Returns the identifier of a resource.</p>
+<p>If the identifier was set to NULL, the identifier returned will be a unique
+SPARQL blank node identifier, such as "_:123".</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>a string owned by the resource</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_identifier">
+	<i>Tracker.Resource.prototype.get_identifier</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_identifier(): {
+    // javascript wrapper for 'tracker_resource_get_identifier'
+}</code></pre>
+
+<p>Returns the identifier of a resource.</p>
+<p>If the identifier was set to NULL, the identifier returned will be a unique
+SPARQL blank node identifier, such as "_:123".</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+			</div>
+							<p>a string owned by the resource</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_identifier">
+	<i>Tracker.Resource.get_identifier</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_identifier (self):
+    #python wrapper for 'tracker_resource_get_identifier'</code></pre>
+
+<p>Returns the identifier of a resource.</p>
+<p>If the identifier was set to NULL, the identifier returned will be a unique
+SPARQL blank node identifier, such as "_:123".</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+			</div>
+							<p>a string owned by the resource</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.0;" id="tracker_resource_get_properties">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_properties">
+	<i>tracker_resource_get_properties</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="GList" href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#GList">GList</a> *
+tracker_resource_get_properties (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource)</pre>
+
+<p>Gets the list of properties defined in <em>resource</em></p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="Free data container after the code is done"><span class="acronym">transfer: container</span></abbr>]</span><span class="annotation">[<abbr title="Generic and defining element of containers and arrays"><span class="acronym">element-type</span></abbr>utf8]</span><span>)</span>
+–
+			</div>
+							<p>The list of properties.
+The list should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free">g_list_free</a>.</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_properties">
+	<i>Tracker.Resource.prototype.get_properties</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_properties(): {
+    // javascript wrapper for 'tracker_resource_get_properties'
+}</code></pre>
+
+<p>Gets the list of properties defined in <em>resource</em></p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>[ <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a> ]<span>)</span>
+–
+			</div>
+							<p>The list of properties.
+The list should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free">g_list_free (not introspectable)</a>.</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_properties">
+	<i>Tracker.Resource.get_properties</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_properties (self):
+    #python wrapper for 'tracker_resource_get_properties'</code></pre>
+
+<p>Gets the list of properties defined in <em>resource</em></p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>[ <a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a> ]<span>)</span>
+–
+			</div>
+							<p>The list of properties.
+The list should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free">g_list_free (not introspectable)</a>.</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.0
+		</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.1;" id="tracker_resource_get_property_overwrite">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_property_overwrite">
+	<i>tracker_resource_get_property_overwrite</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+tracker_resource_get_property_overwrite (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource,
+                                         const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * property_uri)</pre>
+
+<p>Returns whether the prior values for this property would be deleted
+in the SPARQL issued by <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to query</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p><a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a> if the property would be overwritten</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.1
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_property_overwrite">
+	<i>Tracker.Resource.prototype.get_property_overwrite</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_property_overwrite(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_property_overwrite'
+}</code></pre>
+
+<p>Returns whether the prior values for this property would be deleted
+in the SPARQL issued by <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to query</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a> if the property would be overwritten</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.1
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_property_overwrite">
+	<i>Tracker.Resource.get_property_overwrite</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_property_overwrite (self, property_uri):
+    #python wrapper for 'tracker_resource_get_property_overwrite'</code></pre>
+
+<p>Returns whether the prior values for this property would be deleted
+in the SPARQL issued by <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to query</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
+–
+			</div>
+							<p><a href="https://docs.python.org/3/library/constants.html#True">True</a> if the property would be overwritten</p>
+
+					</div>
+	</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.1
+		</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_get_values">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_values">
+	<i>tracker_resource_get_values</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="GList" href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#GList">GList</a> *
+tracker_resource_get_values (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                             const char* property_uri)</pre>
+
+<p>Returns the list of all known values of the given property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="Free data container after the code is done"><span class="acronym">transfer: container</span></abbr>]</span><span class="annotation">[<abbr title="Generic and defining element of containers and arrays"><span class="acronym">element-type</span></abbr>GValue]</span><span>)</span>
+–
+			</div>
+							<p>a <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#GList">GList</a> of <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GValue</a>
+instances. The list should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free">g_list_free</a></p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_values">
+	<i>Tracker.Resource.prototype.get_values</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.get_values(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_get_values'
+}</code></pre>
+
+<p>Returns the list of all known values of the given property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>[ <a title="GObject.Value" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a> ]<span>)</span>
+–
+			</div>
+							<p>a <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#GList">GLib.List</a> of <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a>
+instances. The list should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free">g_list_free (not introspectable)</a></p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_get_values">
+	<i>Tracker.Resource.get_values</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.get_values (self, property_uri):
+    #python wrapper for 'tracker_resource_get_values'</code></pre>
+
+<p>Returns the list of all known values of the given property.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to look up</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>[ <a title="GObject.Value" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a> ]<span>)</span>
+–
+			</div>
+							<p>a <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#GList">GLib.List</a> of <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a>
+instances. The list should be freed with <a href="https://developer.gnome.org/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free">g_list_free (not introspectable)</a></p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_identifier_compare_func">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_identifier_compare_func">
+	<i>tracker_resource_identifier_compare_func</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a>
+tracker_resource_identifier_compare_func (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource,
+                                          const char* identifier)</pre>
+
+<p>A helper function that compares a <a href="tracker-resource.html#TrackerResource">TrackerResource</a> by its identifier
+string.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+–
+</div>
+<p>a string identifying the resource</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>an integer less than, equal to, or greater than zero, if the
+resource identifier is &lt;, == or &gt; than <em>identifier</em></p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_identifier_compare_func">
+	<i>Tracker.Resource.prototype.identifier_compare_func</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.identifier_compare_func(identifier: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_identifier_compare_func'
+}</code></pre>
+
+<p>A helper function that compares a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a> by its identifier
+string.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the resource</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>an integer less than, equal to, or greater than zero, if the
+resource identifier is &lt;, == or &gt; than <em>identifier</em></p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_identifier_compare_func">
+	<i>Tracker.Resource.identifier_compare_func</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.identifier_compare_func (self, identifier):
+    #python wrapper for 'tracker_resource_identifier_compare_func'</code></pre>
+
+<p>A helper function that compares a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a> by its identifier
+string.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the resource</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+			</div>
+							<p>an integer less than, equal to, or greater than zero, if the
+resource identifier is &lt;, == or &gt; than <em>identifier</em></p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_print_jsonld">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_jsonld">
+	<i>tracker_resource_print_jsonld</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+char*
+tracker_resource_print_jsonld (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                               <a title="TrackerNamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a> * namespaces)</pre>
+
+<p>Serialize all the information in <em>resource</em> as a JSON-LD document.</p>
+<p>See <a href="http://www.jsonld.org/">http://www.jsonld.org/</a> for more information on the JSON-LD
+serialization format.</p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">tracker_sparql_connection_get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL is OK, both for passing and returning"><span class="acronym">allow-none</span></abbr>]</span><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> to use the
+Nepomuk set</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>a newly-allocated string containing JSON-LD data.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_jsonld">
+	<i>Tracker.Resource.prototype.print_jsonld</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.print_jsonld(namespaces: <a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>): {
+    // javascript wrapper for 'tracker_resource_print_jsonld'
+}</code></pre>
+
+<p>Serialize all the information in <em>resource</em> as a JSON-LD document.</p>
+<p>See <a href="http://www.jsonld.org/">http://www.jsonld.org/</a> for more information on the JSON-LD
+serialization format.</p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">Tracker.SparqlConnection.prototype.get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span><a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> to use the
+Nepomuk set</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+			</div>
+							<p>a newly-allocated string containing JSON-LD data.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_jsonld">
+	<i>Tracker.Resource.print_jsonld</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.print_jsonld (self, namespaces):
+    #python wrapper for 'tracker_resource_print_jsonld'</code></pre>
+
+<p>Serialize all the information in <em>resource</em> as a JSON-LD document.</p>
+<p>See <a href="http://www.jsonld.org/">http://www.jsonld.org/</a> for more information on the JSON-LD
+serialization format.</p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">Tracker.SparqlConnection.get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span><a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://docs.python.org/3/library/constants.html#None">None</a> to use the
+Nepomuk set</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+			</div>
+							<p>a newly-allocated string containing JSON-LD data.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_print_sparql_update">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_sparql_update">
+	<i>tracker_resource_print_sparql_update</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+char*
+tracker_resource_print_sparql_update (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                      <a title="TrackerNamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a> * namespaces,
+                                      const char* graph_id)</pre>
+
+<p>Generates a SPARQL command to update a database with the information
+stored in <em>resource</em>.</p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">tracker_sparql_connection_get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL is OK, both for passing and returning"><span class="acronym">allow-none</span></abbr>]</span><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> to use the
+Nepomuk set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph_id</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL is OK, both for passing and returning"><span class="acronym">allow-none</span></abbr>]</span><span>)</span>
+–
+</div>
+<p>the URN of the graph the data should be added to,
+or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>a newly-allocated string containing a SPARQL update command.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_sparql_update">
+	<i>Tracker.Resource.prototype.print_sparql_update</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.print_sparql_update(namespaces: <a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>, graph_id: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_print_sparql_update'
+}</code></pre>
+
+<p>Generates a SPARQL command to update a database with the information
+stored in <em>resource</em>.</p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">Tracker.SparqlConnection.prototype.get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span><a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> to use the
+Nepomuk set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph_id</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>the URN of the graph the data should be added to,
+or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+			</div>
+							<p>a newly-allocated string containing a SPARQL update command.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_sparql_update">
+	<i>Tracker.Resource.print_sparql_update</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.print_sparql_update (self, namespaces, graph_id):
+    #python wrapper for 'tracker_resource_print_sparql_update'</code></pre>
+
+<p>Generates a SPARQL command to update a database with the information
+stored in <em>resource</em>.</p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">Tracker.SparqlConnection.get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span><a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://docs.python.org/3/library/constants.html#None">None</a> to use the
+Nepomuk set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>graph_id</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>the URN of the graph the data should be added to,
+or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+			</div>
+							<p>a newly-allocated string containing a SPARQL update command.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_print_turtle">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_turtle">
+	<i>tracker_resource_print_turtle</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+char*
+tracker_resource_print_turtle (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                               <a title="TrackerNamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a> * namespaces)</pre>
+
+<p>Serialize all the information in <em>resource</em> as a Turtle document.</p>
+<p>The generated Turtle should correspond to this standard:
+<a href="https://www.w3.org/TR/2014/REC-turtle-20140225/">https://www.w3.org/TR/2014/REC-turtle-20140225/</a></p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">tracker_sparql_connection_get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL is OK, both for passing and returning"><span class="acronym">allow-none</span></abbr>]</span><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> to use the
+Nepomuk set</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>a newly-allocated string</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_turtle">
+	<i>Tracker.Resource.prototype.print_turtle</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.print_turtle(namespaces: <a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>): {
+    // javascript wrapper for 'tracker_resource_print_turtle'
+}</code></pre>
+
+<p>Serialize all the information in <em>resource</em> as a Turtle document.</p>
+<p>The generated Turtle should correspond to this standard:
+<a href="https://www.w3.org/TR/2014/REC-turtle-20140225/">https://www.w3.org/TR/2014/REC-turtle-20140225/</a></p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">Tracker.SparqlConnection.prototype.get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span><a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> to use the
+Nepomuk set</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+			</div>
+							<p>a newly-allocated string</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_print_turtle">
+	<i>Tracker.Resource.print_turtle</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.print_turtle (self, namespaces):
+    #python wrapper for 'tracker_resource_print_turtle'</code></pre>
+
+<p>Serialize all the information in <em>resource</em> as a Turtle document.</p>
+<p>The generated Turtle should correspond to this standard:
+<a href="https://www.w3.org/TR/2014/REC-turtle-20140225/">https://www.w3.org/TR/2014/REC-turtle-20140225/</a></p>
+<p>The <em>namespaces</em> object is used to expand any compact URI values. In most
+cases you should pass the one returned by <a href="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager">Tracker.SparqlConnection.get_namespace_manager</a>
+from the connection that is the intended recipient of this data.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>namespaces</code></em></i>
+<span>(</span><a title="Tracker.NamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a><span>)</span>
+–
+</div>
+<p>a set of prefixed URLs, or <a href="https://docs.python.org/3/library/constants.html#None">None</a> to use the
+Nepomuk set</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+			</div>
+							<p>a newly-allocated string</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_serialize">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_serialize">
+	<i>tracker_resource_serialize</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="GVariant" href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GVariant</a> *
+tracker_resource_serialize (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource)</pre>
+
+<p>Serializes a <a href="tracker-resource.html#TrackerResource">TrackerResource</a> to a <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GVariant</a> in a lossless way.
+All child resources are subsequently serialized. It is implied
+that both ends use a common <a href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span>)</span>
+–
+			</div>
+							<p>A variant describing the resource,
+the reference is floating.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_serialize">
+	<i>Tracker.Resource.prototype.serialize</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.serialize(): {
+    // javascript wrapper for 'tracker_resource_serialize'
+}</code></pre>
+
+<p>Serializes a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a> to a <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GLib.Variant</a> in a lossless way.
+All child resources are subsequently serialized. It is implied
+that both ends use a common <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="GLib.Variant" href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GLib.Variant</a><span>)</span>
+–
+			</div>
+							<p>A variant describing the resource,
+the reference is floating.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_serialize">
+	<i>Tracker.Resource.serialize</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.serialize (self):
+    #python wrapper for 'tracker_resource_serialize'</code></pre>
+
+<p>Serializes a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a> to a <a href="https://developer.gnome.org/glib/stable/glib-GVariant.html">GLib.Variant</a> in a lossless way.
+All child resources are subsequently serialized. It is implied
+that both ends use a common <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>A <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="GLib.Variant" href="https://developer.gnome.org/glib/stable/glib-GVariant.html">GLib.Variant</a><span>)</span>
+–
+			</div>
+							<p>A variant describing the resource,
+the reference is floating.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_boolean">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_boolean">
+	<i>tracker_resource_set_boolean</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_boolean (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                              const char* property_uri,
+                              <a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a> value)</pre>
+
+<p>Sets a single-valued boolean object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_boolean">
+	<i>Tracker.Resource.prototype.set_boolean</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_boolean(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_resource_set_boolean'
+}</code></pre>
+
+<p>Sets a single-valued boolean object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_boolean">
+	<i>Tracker.Resource.set_boolean</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_boolean (self, property_uri, value):
+    #python wrapper for 'tracker_resource_set_boolean'</code></pre>
+
+<p>Sets a single-valued boolean object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.2;" id="tracker_resource_set_datetime">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_datetime">
+	<i>tracker_resource_set_datetime</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_datetime (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                               const char* property_uri,
+                               <a title="GDateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GDateTime</a> * value)</pre>
+
+<p>Sets a single-valued GDateTime as a <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_datetime">
+	<i>Tracker.Resource.prototype.set_datetime</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_datetime(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a>): {
+    // javascript wrapper for 'tracker_resource_set_datetime'
+}</code></pre>
+
+<p>Sets a single-valued GDateTime as a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_datetime">
+	<i>Tracker.Resource.set_datetime</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_datetime (self, property_uri, value):
+    #python wrapper for 'tracker_resource_set_datetime'</code></pre>
+
+<p>Sets a single-valued GDateTime as a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+	<p>
+	<b>Since</b>			: 3.2
+		</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_double">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_double">
+	<i>tracker_resource_set_double</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_double (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                             const char* property_uri,
+                             double value)</pre>
+
+<p>Sets a single-valued double object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_double">
+	<i>Tracker.Resource.prototype.set_double</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_double(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_resource_set_double'
+}</code></pre>
+
+<p>Sets a single-valued double object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_double">
+	<i>Tracker.Resource.set_double</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_double (self, property_uri, value):
+    #python wrapper for 'tracker_resource_set_double'</code></pre>
+
+<p>Sets a single-valued double object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="float" href="https://docs.python.org/3/library/functions.html#float">float</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_gvalue">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_gvalue">
+	<i>tracker_resource_set_gvalue</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_gvalue (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                             const char* property_uri,
+                             const <a title="GValue" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GValue</a> * value)</pre>
+
+<p>State that the only value for the given property is 'value'. Any existing
+values for 'property' will be removed.</p>
+<p>When serialising to SPARQL, any properties that were set with this function
+will get a corresponding DELETE statement to remove any existing values in
+the database.</p>
+<p>You can pass any kind of GValue for <em>value</em>, but serialization functions will
+normally only be able to serialize URIs/relationships and fundamental value
+types (string, int, etc.).</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>an initialised <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GValue</a></p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_gvalue">
+	<i>Tracker.Resource.prototype.set_gvalue</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_gvalue(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="GObject.Value" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a>): {
+    // javascript wrapper for 'tracker_resource_set_gvalue'
+}</code></pre>
+
+<p>State that the only value for the given property is 'value'. Any existing
+values for 'property' will be removed.</p>
+<p>When serialising to SPARQL, any properties that were set with this function
+will get a corresponding DELETE statement to remove any existing values in
+the database.</p>
+<p>You can pass any kind of GValue for <em>value</em>, but serialization functions will
+normally only be able to serialize URIs/relationships and fundamental value
+types (string, int, etc.).</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="GObject.Value" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a><span>)</span>
+–
+</div>
+<p>an initialised <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a></p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_gvalue">
+	<i>Tracker.Resource.set_gvalue</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_gvalue (self, property_uri, value):
+    #python wrapper for 'tracker_resource_set_gvalue'</code></pre>
+
+<p>State that the only value for the given property is 'value'. Any existing
+values for 'property' will be removed.</p>
+<p>When serialising to SPARQL, any properties that were set with this function
+will get a corresponding DELETE statement to remove any existing values in
+the database.</p>
+<p>You can pass any kind of GValue for <em>value</em>, but serialization functions will
+normally only be able to serialize URIs/relationships and fundamental value
+types (string, int, etc.).</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to set</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="GObject.Value" href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a><span>)</span>
+–
+</div>
+<p>an initialised <a href="https://developer.gnome.org/gobject/unstable/gobject-Generic-values.html#GValue-struct">GObject.Value</a></p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_identifier">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_identifier">
+	<i>tracker_resource_set_identifier</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_identifier (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                 const char* identifier)</pre>
+
+<p>Changes the identifier of a <a href="tracker-resource.html#TrackerResource">TrackerResource</a>. The identifier should be a
+URI or compact URI, but this is not necessarily enforced. Invalid
+identifiers may cause errors when serializing the resource or trying to
+insert the results in a database.</p>
+<p>If the identifier is set to NULL, a SPARQL blank node identifier such as
+"_:123" is assigned to the resource.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL is OK, both for passing and returning"><span class="acronym">allow-none</span></abbr>]</span><span>)</span>
+–
+</div>
+<p>a string identifying the resource</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_identifier">
+	<i>Tracker.Resource.prototype.set_identifier</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_identifier(identifier: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_set_identifier'
+}</code></pre>
+
+<p>Changes the identifier of a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a>. The identifier should be a
+URI or compact URI, but this is not necessarily enforced. Invalid
+identifiers may cause errors when serializing the resource or trying to
+insert the results in a database.</p>
+<p>If the identifier is set to NULL, a SPARQL blank node identifier such as
+"_:123" is assigned to the resource.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the resource</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_identifier">
+	<i>Tracker.Resource.set_identifier</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_identifier (self, identifier):
+    #python wrapper for 'tracker_resource_set_identifier'</code></pre>
+
+<p>Changes the identifier of a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a>. The identifier should be a
+URI or compact URI, but this is not necessarily enforced. Invalid
+identifiers may cause errors when serializing the resource or trying to
+insert the results in a database.</p>
+<p>If the identifier is set to NULL, a SPARQL blank node identifier such as
+"_:123" is assigned to the resource.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>identifier</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the resource</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_int">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_int">
+	<i>tracker_resource_set_int</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_int (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                          const char* property_uri,
+                          int value)</pre>
+
+<p>Sets a single-valued integer object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_int">
+	<i>Tracker.Resource.prototype.set_int</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_int(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_resource_set_int'
+}</code></pre>
+
+<p>Sets a single-valued integer object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_int">
+	<i>Tracker.Resource.set_int</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_int (self, property_uri, value):
+    #python wrapper for 'tracker_resource_set_int'</code></pre>
+
+<p>Sets a single-valued integer object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_int64">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_int64">
+	<i>tracker_resource_set_int64</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_int64 (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                            const char* property_uri,
+                            <a title="gint64" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a> value)</pre>
+
+<p>Sets a single-valued integer object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_int64">
+	<i>Tracker.Resource.prototype.set_int64</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_int64(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>): {
+    // javascript wrapper for 'tracker_resource_set_int64'
+}</code></pre>
+
+<p>Sets a single-valued integer object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_int64">
+	<i>Tracker.Resource.set_int64</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_int64 (self, property_uri, value):
+    #python wrapper for 'tracker_resource_set_int64'</code></pre>
+
+<p>Sets a single-valued integer object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_relation">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_relation">
+	<i>tracker_resource_set_relation</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_relation (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                               const char* property_uri,
+                               <a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource)</pre>
+
+<p>Sets a single-valued resource object as a <a href="tracker-resource.html#TrackerResource">TrackerResource</a>. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_uri">tracker_resource_set_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_relation">
+	<i>Tracker.Resource.prototype.set_relation</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_relation(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, resource: <a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a>): {
+    // javascript wrapper for 'tracker_resource_set_relation'
+}</code></pre>
+
+<p>Sets a single-valued resource object as a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a>. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_uri">Tracker.Resource.prototype.set_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_relation">
+	<i>Tracker.Resource.set_relation</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_relation (self, property_uri, resource):
+    #python wrapper for 'tracker_resource_set_relation'</code></pre>
+
+<p>Sets a single-valued resource object as a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a>. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_uri">Tracker.Resource.set_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_string">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_string">
+	<i>tracker_resource_set_string</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_string (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                             const char* property_uri,
+                             const char* value)</pre>
+
+<p>Sets a single-valued string object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_string">
+	<i>Tracker.Resource.prototype.set_string</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_string(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_set_string'
+}</code></pre>
+
+<p>Sets a single-valued string object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_string">
+	<i>Tracker.Resource.set_string</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_string (self, property_uri, value):
+    #python wrapper for 'tracker_resource_set_string'</code></pre>
+
+<p>Sets a single-valued string object.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_take_relation">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_take_relation">
+	<i>tracker_resource_set_take_relation</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_take_relation (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                                    const char* property_uri,
+                                    <a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource)</pre>
+
+<p>Sets a single-valued resource object as a <a href="tracker-resource.html#TrackerResource">TrackerResource</a>. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_uri">tracker_resource_set_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+</div>
+<div class="gi-symbol gi-symbol-python">
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_set_uri">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_uri">
+	<i>tracker_resource_set_uri</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_resource_set_uri (<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * self,
+                          const char* property_uri,
+                          const char* value)</pre>
+
+<p>Sets a single-valued resource object as a string URI. This function
+produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_relation">tracker_resource_set_relation</a>, although
+it requires that the URI is previously known.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">TrackerResource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_uri">
+	<i>Tracker.Resource.prototype.set_uri</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_uri(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+    // javascript wrapper for 'tracker_resource_set_uri'
+}</code></pre>
+
+<p>Sets a single-valued resource object as a string URI. This function
+produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_relation">Tracker.Resource.prototype.set_relation</a>, although
+it requires that the URI is previously known.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_uri">
+	<i>Tracker.Resource.set_uri</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_uri (self, property_uri, value):
+    #python wrapper for 'tracker_resource_set_uri'</code></pre>
+
+<p>Sets a single-valued resource object as a string URI. This function
+produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_relation">Tracker.Resource.set_relation</a>, although
+it requires that the URI is previously known.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>value</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h3 class="symbol_section">Functions</h3>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_deserialize">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_deserialize">
+	<i>tracker_resource_deserialize</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+<a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> *
+tracker_resource_deserialize (<a title="GVariant" href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GVariant</a> * variant)</pre>
+
+<p>Deserializes a <a href="tracker-resource.html#TrackerResource">TrackerResource</a> previously serialized with
+<a href="tracker-resource.html#tracker_resource_serialize">tracker_resource_serialize</a>. It is implied that both ends
+use a common <a href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>variant</code></em></i>
+–
+</div>
+<p>a <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GVariant</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span>)</span>
+–
+			</div>
+							<p>A TrackerResource, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> if
+deserialization fails.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_deserialize">
+	<i>Tracker.Resource.prototype.deserialize</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.deserialize(variant: <a title="GLib.Variant" href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GLib.Variant</a>): {
+    // javascript wrapper for 'tracker_resource_deserialize'
+}</code></pre>
+
+<p>Deserializes a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a> previously serialized with
+<a href="tracker-resource.html#tracker_resource_serialize">Tracker.Resource.prototype.serialize</a>. It is implied that both ends
+use a common <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>variant</code></em></i>
+<span>(</span><a title="GLib.Variant" href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GLib.Variant</a><span>)</span>
+–
+</div>
+<p>a <a href="https://developer.gnome.org/glib/unstable/glib-GVariant.html#GVariant">GLib.Variant</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+			</div>
+							<p>A TrackerResource, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> if
+deserialization fails.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_deserialize">
+	<i>Tracker.Resource.deserialize</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.deserialize (variant):
+    #python wrapper for 'tracker_resource_deserialize'</code></pre>
+
+<p>Deserializes a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a> previously serialized with
+<a href="tracker-resource.html#tracker_resource_serialize">Tracker.Resource.serialize</a>. It is implied that both ends
+use a common <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>variant</code></em></i>
+<span>(</span><a title="GLib.Variant" href="https://developer.gnome.org/glib/stable/glib-GVariant.html">GLib.Variant</a><span>)</span>
+–
+</div>
+<p>a <a href="https://developer.gnome.org/glib/stable/glib-GVariant.html">GLib.Variant</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+			</div>
+							<p>A TrackerResource, or <a href="https://docs.python.org/3/library/constants.html#None">None</a> if
+deserialization fails.</p>
+
+					</div>
+	</div>
+
+
+
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+            <h3 class="symbol_section">Properties</h3>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TrackerResource:identifier">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="TrackerResource:identifier">
+	<i>identifier</i>
+</h4>
+
+
+<pre class="property_signature">
+“identifier” <span class="type"><a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *</span>
+</pre>
+
+<p>The URI identifier for this class, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> for a
+blank node.</p>
+
+
+<p>
+	Flags :	
+	
+		
+				Read
+			
+				/		
+				Write
+			
+</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="TrackerResource:identifier">
+	<i>identifier</i>
+</h4>
+
+
+<pre class="property_signature">
+“identifier” <span class="type"><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>
+</pre>
+
+<p>The URI identifier for this class, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> for a
+blank node.</p>
+
+
+<p>
+	Flags :	
+	
+		
+				Read
+			
+				/		
+				Write
+			
+</p>
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="TrackerResource:identifier">
+	<i>identifier</i>
+</h4>
+
+
+<pre class="property_signature">
+“self.props.identifier” <span class="type"><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a></span>
+</pre>
+
+<p>The URI identifier for this class, or <a href="https://docs.python.org/3/library/constants.html#None">None</a> for a
+blank node.</p>
+
+
+<p>
+	Flags :	
+	
+		
+				Read
+			
+				/		
+				Write
+			
+</p>
+
+
+<hr>
+
+</div>
+
+</div>
+
+
+        
+
+            <h2 class="symbol_section">Constants</h2>
+                    
+
+<div class="base_symbol_container" data-hotdoc-tags="" id="TRACKER_TYPE_RESOURCE">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h3 data-hotdoc-id="TRACKER_TYPE_RESOURCE">
+	<i>TRACKER_TYPE_RESOURCE</i>
+</h3>
+
+
+<pre class="raw_code">
+#define TRACKER_TYPE_RESOURCE tracker_resource_get_type()
+</pre>
+
+
+
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+</div>
+<div class="gi-symbol gi-symbol-python">
+</div>
+
+</div>
+
+
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>

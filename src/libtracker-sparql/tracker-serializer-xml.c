@@ -29,6 +29,9 @@
 
 #include <libxml/xmlwriter.h>
 
+/* Make required type casts a bit more descriptive. */
+#define XML(x) ((const xmlChar *) x)
+
 struct _TrackerSerializerXml
 {
 	TrackerSerializer parent_instance;
@@ -75,15 +78,20 @@ serialize_up_to_position (TrackerSerializerXml  *serializer_xml,
 
 	if (!serializer_xml->head_printed) {
 		xmlTextWriterStartDocument (serializer_xml->writer, "1.0", "UTF-8", NULL);
-		xmlTextWriterStartElement (serializer_xml->writer, "sparql");
 
-		xmlTextWriterStartElement (serializer_xml->writer, "head");
+		if (xmlTextWriterStartElement (serializer_xml->writer, XML ("sparql")) < 0)
+			goto error;
+
+		if (xmlTextWriterStartElement (serializer_xml->writer, XML ("head")) < 0)
+			goto error;
 
 		for (i = 0; i < tracker_sparql_cursor_get_n_columns (cursor); i++) {
 			const gchar *var;
 
 			var = tracker_sparql_cursor_get_variable_name (cursor, i);
-			xmlTextWriterStartElement (serializer_xml->writer, "variable");
+
+			if (xmlTextWriterStartElement (serializer_xml->writer, XML ("variable")) < 0)
+				goto error;
 
 			if (var && *var) {
 				g_ptr_array_add (serializer_xml->vars,
@@ -93,20 +101,25 @@ serialize_up_to_position (TrackerSerializerXml  *serializer_xml,
 				                 g_strdup_printf ("var%d", i + 1));
 			}
 
-			xmlTextWriterWriteFormatAttribute (serializer_xml->writer,
-			                                   "name",
-			                                   "%s",
-			                                   (gchar *) g_ptr_array_index (serializer_xml->vars, i));
+			if (xmlTextWriterWriteFormatAttribute (serializer_xml->writer,
+			                                       XML ("name"),
+			                                       "%s",
+			                                       (char *) g_ptr_array_index (serializer_xml->vars, i)) < 0)
+				goto error;
+
 			xmlTextWriterEndElement (serializer_xml->writer);
 		}
 
 		xmlTextWriterEndElement (serializer_xml->writer);
-		xmlTextWriterStartElement (serializer_xml->writer, "results");
+
+		if (xmlTextWriterStartElement (serializer_xml->writer, XML ("results")) < 0)
+			goto error;
+
 		serializer_xml->head_printed = TRUE;
 	}
 
 	while (!serializer_xml->cursor_finished &&
-	       xmlBufferLength (serializer_xml->buffer) < pos) {
+	       (gsize) xmlBufferLength (serializer_xml->buffer) < pos) {
 		if (!tracker_sparql_cursor_next (cursor, cancellable, &inner_error)) {
 			if (inner_error) {
 				g_propagate_error (error, inner_error);
@@ -122,21 +135,11 @@ serialize_up_to_position (TrackerSerializerXml  *serializer_xml,
 			serializer_xml->cursor_started = TRUE;
 		}
 
-		xmlTextWriterStartElement (serializer_xml->writer, "result");
+		if (xmlTextWriterStartElement (serializer_xml->writer, XML ("result")) < 0)
+			goto error;
 
 		for (i = 0; i < tracker_sparql_cursor_get_n_columns (cursor); i++) {
 			const gchar *var, *str, *type = NULL, *datatype = NULL;
-
-			if (tracker_sparql_cursor_get_value_type (cursor, i) == TRACKER_SPARQL_VALUE_TYPE_UNBOUND)
-				continue;
-
-			var = g_ptr_array_index (serializer_xml->vars, i);
-
-			xmlTextWriterStartElement (serializer_xml->writer, "binding");
-			xmlTextWriterWriteFormatAttribute (serializer_xml->writer,
-			                                   "name",
-			                                   "%s",
-			                                   var);
 
 			switch (tracker_sparql_cursor_get_value_type (cursor, i)) {
 			case TRACKER_SPARQL_VALUE_TYPE_URI:
@@ -162,24 +165,37 @@ serialize_up_to_position (TrackerSerializerXml  *serializer_xml,
 			case TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE:
 				type = "bnode";
 				break;
-			default:
-				g_warn_if_reached ();
-				break;
+			case TRACKER_SPARQL_VALUE_TYPE_UNBOUND:
+                                continue;
 			}
 
-			xmlTextWriterStartElement (serializer_xml->writer, type);
+			var = g_ptr_array_index (serializer_xml->vars, i);
+
+			if (xmlTextWriterStartElement (serializer_xml->writer, XML ("binding")) < 0)
+				goto error;
+
+			if (xmlTextWriterWriteFormatAttribute (serializer_xml->writer,
+			                                       XML ("name"),
+			                                       "%s",
+			                                       var) < 0)
+				goto error;
+
+			if (xmlTextWriterStartElement (serializer_xml->writer, XML (type)) < 0)
+				goto error;
 
 			if (datatype) {
-				xmlTextWriterWriteFormatAttribute (serializer_xml->writer,
-				                                   "datatype",
-				                                   "%s",
-				                                   datatype);
+				if (xmlTextWriterWriteFormatAttribute (serializer_xml->writer,
+				                                       XML ("datatype"),
+				                                       "%s",
+				                                       datatype) < 0)
+					goto error;
 			}
 
 			str = tracker_sparql_cursor_get_string (cursor, i, NULL);
 
 			if (str) {
-				xmlTextWriterWriteRaw (serializer_xml->writer, str);
+				if (xmlTextWriterWriteRaw (serializer_xml->writer, XML (str)) < 0)
+					goto error;
 			}
 
 			xmlTextWriterEndElement (serializer_xml->writer);
@@ -190,6 +206,13 @@ serialize_up_to_position (TrackerSerializerXml  *serializer_xml,
 	}
 
 	return TRUE;
+
+ error:
+	g_set_error_literal (error,
+	                     TRACKER_SPARQL_ERROR,
+	                     TRACKER_SPARQL_ERROR_INTERNAL,
+	                     "Error writing XML cursor content");
+	return FALSE;
 }
 
 static gssize

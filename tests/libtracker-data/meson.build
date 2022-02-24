@@ -5,6 +5,7 @@ data_test_c_args = test_c_args + [
 libtracker_data_tests = [
     'crc32',
     'ontology-change',
+    'ontology-error',
     'sparql-blank',
     'insert-or-replace',
     'service',
@@ -44,6 +45,6 @@ foreach base_name: libtracker_data_slow_tests
         'name': base_name,
         'exe': binary,
         'suite': ['data', 'slow'],
-        'timeout': 280
+        'timeout': 100
     }
 endforeach

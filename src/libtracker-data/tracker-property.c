@@ -38,7 +38,27 @@
 #define XSD_STRING   TRACKER_PREFIX_XSD "string"
 #define RDF_LANGSTRING TRACKER_PREFIX_RDF "langString"
 
-typedef struct _TrackerPropertyPrivate TrackerPropertyPrivate;
+const gchar *tracker_property_types[] =
+{
+        [TRACKER_PROPERTY_TYPE_STRING] = XSD_STRING,
+        [TRACKER_PROPERTY_TYPE_BOOLEAN] = XSD_BOOLEAN,
+        [TRACKER_PROPERTY_TYPE_INTEGER] = XSD_INTEGER,
+        [TRACKER_PROPERTY_TYPE_DOUBLE] = XSD_DOUBLE,
+        [TRACKER_PROPERTY_TYPE_DATE] = XSD_DATE,
+        [TRACKER_PROPERTY_TYPE_DATETIME] = XSD_DATETIME,
+        [TRACKER_PROPERTY_TYPE_LANGSTRING] = RDF_LANGSTRING,
+};
+
+static TrackerPropertyType
+tracker_uri_to_property_type(const gchar *uri)
+{
+        for (size_t i = 0; i < G_N_ELEMENTS(tracker_property_types); i++) {
+                if (tracker_property_types[i] && (strcmp (uri, tracker_property_types[i]) == 0)) {
+                        return i;
+                }
+        }
+        return TRACKER_PROPERTY_TYPE_RESOURCE;
+}
 
 struct _TrackerPropertyPrivate {
 	gchar         *uri;
@@ -51,7 +71,7 @@ struct _TrackerPropertyPrivate {
 	TrackerClass   *domain_index;
 	TrackerClass   *range;
 	gint           weight;
-	gint           id;
+	TrackerRowid   id;
 	guint          use_gvdb : 1;
 	guint          indexed : 1;
 	guint          orig_fulltext_indexed : 1;
@@ -65,6 +85,10 @@ struct _TrackerPropertyPrivate {
 	guint          force_journal : 1;
 	guint          cardinality_changed : 1;
 	guint          orig_multiple_values : 1;
+
+	gchar         *ontology_path;
+	goffset        definition_line_no;
+	goffset        definition_column_no;
 
 	TrackerProperty *secondary_index;
 	GPtrArray     *is_new_domain_index;
@@ -121,7 +145,7 @@ tracker_property_type_get_type (void)
 	return etype;
 }
 
-G_DEFINE_TYPE_WITH_PRIVATE (TrackerProperty, tracker_property, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (TrackerProperty, tracker_property, G_TYPE_OBJECT)
 
 static void
 tracker_property_class_init (TrackerPropertyClass *klass)
@@ -170,6 +194,10 @@ property_finalize (GObject *object)
 
 	if (priv->range) {
 		g_object_unref (priv->range);
+	}
+
+	if (priv->ontology_path) {
+		g_free (priv->ontology_path);
 	}
 
 	if (priv->secondary_index) {
@@ -231,23 +259,7 @@ tracker_property_maybe_sync_from_gvdb (TrackerProperty *property)
 
 	/* Data type */
 	range_uri = tracker_ontologies_get_property_string_gvdb (priv->ontologies, priv->uri, "range");
-	if (strcmp (range_uri, XSD_STRING) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_STRING;
-	} else if (strcmp (range_uri, RDF_LANGSTRING) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_LANGSTRING;
-	} else if (strcmp (range_uri, XSD_BOOLEAN) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_BOOLEAN;
-	} else if (strcmp (range_uri, XSD_INTEGER) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_INTEGER;
-	} else if (strcmp (range_uri, XSD_DOUBLE) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_DOUBLE;
-	} else if (strcmp (range_uri, XSD_DATE) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_DATE;
-	} else if (strcmp (range_uri, XSD_DATETIME) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_DATETIME;
-	} else {
-		priv->data_type = TRACKER_PROPERTY_TYPE_RESOURCE;
-	}
+        priv->data_type = tracker_uri_to_property_type (range_uri);
 
 	/* Range */
 	priv->range = g_object_ref (tracker_ontologies_get_class_by_uri (priv->ontologies, range_uri));
@@ -457,7 +469,7 @@ tracker_property_get_weight (TrackerProperty *property)
 	return priv->weight;
 }
 
-gint
+TrackerRowid
 tracker_property_get_id (TrackerProperty *property)
 {
 	TrackerPropertyPrivate *priv;
@@ -631,6 +643,42 @@ tracker_property_get_orig_multiple_values (TrackerProperty *property)
 	priv = tracker_property_get_instance_private (property);
 
 	return priv->orig_multiple_values;
+}
+
+const gchar *
+tracker_property_get_ontology_path (TrackerProperty *property)
+{
+	TrackerPropertyPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_PROPERTY (property), FALSE);
+
+	priv = tracker_property_get_instance_private (property);
+
+	return priv->ontology_path;
+}
+
+goffset
+tracker_property_get_definition_line_no (TrackerProperty *property)
+{
+	TrackerPropertyPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_PROPERTY (property), FALSE);
+
+	priv = tracker_property_get_instance_private (property);
+
+	return priv->definition_line_no;
+}
+
+goffset
+tracker_property_get_definition_column_no (TrackerProperty *property)
+{
+	TrackerPropertyPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_PROPERTY (property), FALSE);
+
+	priv = tracker_property_get_instance_private (property);
+
+	return priv->definition_column_no;
 }
 
 gboolean
@@ -813,23 +861,7 @@ tracker_property_set_range (TrackerProperty *property,
 	priv->range = g_object_ref (value);
 
 	range_uri = tracker_class_get_uri (priv->range);
-	if (strcmp (range_uri, XSD_STRING) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_STRING;
-	} else if (strcmp (range_uri, RDF_LANGSTRING) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_LANGSTRING;
-	} else if (strcmp (range_uri, XSD_BOOLEAN) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_BOOLEAN;
-	} else if (strcmp (range_uri, XSD_INTEGER) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_INTEGER;
-	} else if (strcmp (range_uri, XSD_DOUBLE) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_DOUBLE;
-	} else if (strcmp (range_uri, XSD_DATE) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_DATE;
-	} else if (strcmp (range_uri, XSD_DATETIME) == 0) {
-		priv->data_type = TRACKER_PROPERTY_TYPE_DATETIME;
-	} else {
-		priv->data_type = TRACKER_PROPERTY_TYPE_RESOURCE;
-	}
+        priv->data_type = tracker_uri_to_property_type (range_uri);
 }
 
 void
@@ -847,7 +879,7 @@ tracker_property_set_weight (TrackerProperty *property,
 
 void
 tracker_property_set_id (TrackerProperty *property,
-                         gint             value)
+                         TrackerRowid     value)
 {
 	TrackerPropertyPrivate *priv;
 	g_return_if_fail (TRACKER_IS_PROPERTY (property));
@@ -1035,6 +1067,47 @@ tracker_property_set_orig_multiple_values (TrackerProperty *property,
 	priv->orig_multiple_values = !!value;
 }
 
+void
+tracker_property_set_ontology_path (TrackerProperty *property,
+                                    const gchar     *value)
+{
+	TrackerPropertyPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_PROPERTY (property));
+
+	priv = tracker_property_get_instance_private (property);
+
+	if (priv->ontology_path)
+		g_free (priv->ontology_path);
+
+	priv->ontology_path = g_strdup (value);
+}
+
+void
+tracker_property_set_definition_line_no (TrackerProperty *property,
+                                         goffset          value)
+{
+	TrackerPropertyPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_PROPERTY (property));
+
+	priv = tracker_property_get_instance_private (property);
+
+	priv->definition_line_no = value;
+}
+
+void
+tracker_property_set_definition_column_no (TrackerProperty *property,
+                                           goffset          value)
+{
+	TrackerPropertyPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_PROPERTY (property));
+
+	priv = tracker_property_get_instance_private (property);
+
+	priv->definition_column_no = value;
+}
 
 void
 tracker_property_set_is_inverse_functional_property (TrackerProperty *property,

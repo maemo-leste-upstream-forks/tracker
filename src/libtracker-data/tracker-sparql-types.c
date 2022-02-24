@@ -28,6 +28,7 @@ enum {
 	TOKEN_TYPE_VARIABLE,
 	TOKEN_TYPE_PARAMETER,
 	TOKEN_TYPE_PATH,
+	TOKEN_TYPE_BNODE,
 };
 
 /* Helper structs */
@@ -182,6 +183,14 @@ tracker_token_path_init (TrackerToken       *token,
 }
 
 void
+tracker_token_bnode_init (TrackerToken *token,
+                          gint64        bnode_id)
+{
+	token->type = TOKEN_TYPE_BNODE;
+	token->content.bnode = bnode_id;
+}
+
+void
 tracker_token_unset (TrackerToken *token)
 {
 	if (token->type == TOKEN_TYPE_LITERAL)
@@ -227,6 +236,14 @@ tracker_token_get_path (TrackerToken *token)
 	if (token->type == TOKEN_TYPE_PATH)
 		return token->content.path;
 	return NULL;
+}
+
+gint64
+tracker_token_get_bnode (TrackerToken *token)
+{
+	if (token->type == TOKEN_TYPE_BNODE)
+		return token->content.bnode;
+	return 0;
 }
 
 const gchar *
@@ -296,12 +313,12 @@ GHashTable *
 tracker_solution_get_bindings (TrackerSolution *solution)
 {
 	GHashTable *ht;
-	gint i;
+	guint i;
 
 	ht = g_hash_table_new (g_str_hash, g_str_equal);
 
 	for (i = 0; i < solution->columns->len; i++) {
-		gint values_pos = solution->solution_index * solution->n_cols + i;
+		guint values_pos = solution->solution_index * solution->n_cols + i;
 		gchar *name, *value;
 
 		if (values_pos >= solution->values->len)
@@ -809,7 +826,7 @@ void
 tracker_select_context_add_literal_binding (TrackerSelectContext  *context,
                                             TrackerLiteralBinding *binding)
 {
-	gint i;
+	guint i;
 
 	/* Literal bindings are reserved to the root context */
 	g_assert (TRACKER_CONTEXT (context)->parent == NULL);

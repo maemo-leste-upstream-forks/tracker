@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>SPARQL as understood by Tracker</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="sparql-and-tracker.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="sparql-as-understood-by-tracker">SPARQL as understood by Tracker</h1>
+<p>This section describes the choices made by Tracker in its interpretation
+of the SPARQL documents, as well as its extensions and divergences.</p>
+<h2 id="the-default-graph">The default graph</h2>
+<p>The <a href="https://www.w3.org/TR/sparql11-update/#graphStore">SPARQL documentation</a>
+says:</p>
+<pre><code>Operations may specify graphs to be modified, or they may rely on a
+default graph for that operation. […] The unnamed graph for the store
+will be the default graph for any operations on that store. Depending
+on implementation, the unnamed graph may refer to a separate graph, a
+graph describing the named graphs, a representation of a union of
+other graphs, etc.
+</code></pre>
+<p>Tracker defines the default graph to be the union of the unnamed graph
+and all known named graphs. Updates without specified graph are still
+performed only on the unnamed graph.</p>
+<h2 id="blank-nodes">Blank nodes</h2>
+<p>The <a href="https://www.w3.org/TR/2004/REC-rdf-concepts-20040210/#section-URI-Vocabulary">RDF documentation</a>
+says:</p>
+<pre><code>A blank node is a node that is not a URI reference or a literal. In
+the RDF abstract syntax, a blank node is just a unique node that can
+be used in one or more RDF statements, but has no intrinsic name.
+</code></pre>
+<p>By default Tracker treats blank nodes as an URI generator instead. The
+string referencing a blank node (e.g. as returned by cursors) permanently
+identifies that blank node and can be used as an URI reference in
+future queries.</p>
+<p>The blank node behavior defined in the RDF/SPARQL specifications can
+be enabled with the <a href="tracker-sparql-connection.html#TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES" data-gi-href-javascript="tracker-sparql-connection.html#TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES" data-gi-title-javascript="Tracker.SparqlConnectionFlags.ANONYMOUS_BNODES" data-gi-href-python="tracker-sparql-connection.html#TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES" data-gi-title-python="Tracker.SparqlConnectionFlags.ANONYMOUS_BNODES">TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES</a>
+flag.</p>
+<h2 id="property-functions">Property functions</h2>
+<p>The <a href="https://www.w3.org/TR/sparql11-query/#expressions">SPARQL documentation</a>
+says:</p>
+<pre><code>In addition, SPARQL provides the ability to invoke arbitrary functions
+[…]. These functions are invoked by name (an IRI) within a SPARQL query.
+</code></pre>
+<p>Tracker allows using all defined <code>rdf:Property</code>
+instances as functions. If the property has multiple values, it will
+propagate to the cursor as the <code>GROUP_CONCAT</code>
+(with comma separator) of the multiple values.</p>
+<h2 id="syntax-extensions">Syntax extensions</h2>
+<p>Tracker offers some SPARQL syntax extensions. These predate the
+existence of SPARQL 1.1 and stay for legacy reasons. These
+extensions should be used sparingly, if at all.</p>
+<h3 id="group_concat">GROUP_CONCAT</h3>
+<p>The SPARQL specifications define the following syntax to use
+a specific separator for the GROUP_CONCAT operation:</p>
+<pre><code class="language-SPARQL">GROUP_CONCAT (?var, separator=;)
+</code></pre>
+<p>Tracker additionally accepts a simplified syntax:</p>
+<pre><code class="language-SPARQL">GROUP_CONCAT (?u, ';')
+</code></pre>
+<h3 id="bound">BOUND</h3>
+<p>The BOUND function, as defined in the SPARQL specification,
+only accepts variables as its single argument. Tracker additionally
+allows this function to deal with expressions, mainly allowing the
+nesting of other functions, e.g. functional properties:</p>
+<pre><code class="language-SPARQL">SELECT BOUND (nfo:fileName (?u)) { ?u a nfo:FileDataObject }
+</code></pre>
+<h3 id="subselects-in-expressions">Subselects in expressions</h3>
+<p>Tracker accepts subselects in place of expressions, these subselects
+should return a single variable in order to act as a expression.
+E.g. this query:</p>
+<pre><code class="language-SPARQL">SELECT (SELECT ?ret { ?u nie:hasPart ?elem }) { ?elem a nfo:Folder }
+</code></pre>
+<p>Would be equivalent to this:</p>
+<pre><code class="language-SPARQL">SELECT nie:hasPart(?elem) { ?elem a nfo:Folder }
+</code></pre>
+<h3 id="insertdelete-silent">INSERT/DELETE SILENT</h3>
+<p>Tracker allows the use of SILENT after INSERT and DELETE
+keywords. Errors will be consequently silenced.</p>
+<h3 id="insert-or-replace">INSERT OR REPLACE</h3>
+<p>Tracker adds a special <code>INSERT OR REPLACE</code>
+operation. This form of update will overwrite any existing values.</p>
+<pre><code class="language-SPARQL">INSERT OR REPLACE { &lt;file:///&gt; nfo:fileName 'root' }
+</code></pre>
+<p>This operation works the same independently of the cardinality,
+multi-valued properties are cleared before the insertion.</p>
+<p>If clearing a property is desired within the operation, the
+value list may also contain the NULL keyword, e.g.:</p>
+<pre><code class="language-SPARQL">INSERT OR REPLACE { &lt;file:///&gt; nie:hasPart &lt;a&gt;, &lt;b&gt;, NULL, &lt;c&gt; }
+</code></pre>
+<p>Note that the <code>DELETE { … } INSERT { … } WHERE { … }</code>
+syntax available in SPARQL 1.1 is a more versatile replacement.</p>
+<h3 id="expressions-in-order-by">Expressions in ORDER BY</h3>
+<p>Tracker allows the use of expressions in
+<code>ORDER BY</code> clauses, e.g.:</p>
+<pre><code class="language-SPARQL">SELECT {
+  # …
+}
+ORDER BY (?a - ?b)
+</code></pre>
+<h3 id="variable-names-in-select-clauses">Variable names in SELECT clauses</h3>
+<p>The SPARQL 1.1 specifications enforce that all expressions
+returned in a <code>SELECT</code> clause are set a variable name, e.g.:</p>
+<pre><code class="language-SPARQL">SELECT ((?a - ?b) AS ?sub) {
+  # …
+}
+</code></pre>
+<p>Tracker relaxes this restriction, and does not enforce that
+expressions are surrounded by parentheses, e.g.:</p>
+<pre><code class="language-SPARQL">SELECT ?a + ?b ?a - ?b AS ?sub {
+  # …
+}
+</code></pre>
+<p>Note that this hinders query readability (e.g. the example above
+returns 2 values, an unnamed sum expression, and a named subtraction),
+so its use is not recommended.</p>
+<h3 id="separator-of-update-queries">Separator of update queries</h3>
+<p>Tracker makes the use of the <code>;</code> separator
+between update clauses optional. Its use is still recommended for
+readability.</p>
+<h3 id="constraint-syntax">CONSTRAINT syntax</h3>
+<p>Tracker supports <code>CONSTRAINT GRAPH</code> and <code>CONSTRAINT SERVICE</code> clauses
+in the query prologue. These clauses limit the access outside of the
+specified graphs and services.</p>
+<pre><code class="language-SPARQL"># Only triples in the tracker:Audio graph will be returned
+CONSTRAINT GRAPH tracker:Audio
+SELECT * { ?s ?p ?o }
+</code></pre>
+<p>If a graph is specified within the query, but not allowed by a
+<code>CONSTRAINT GRAPH</code> clause, it will be
+effectively interpreted as an empty graph.</p>
+<p>If a service is accessed within the query, but not allowed by a
+<code>CONSTRAINT SERVICE</code> clause, it will be interpreted as an error, unless
+<code>SERVICE SILENT</code> syntax is used. In that
+case it will be interpreted as an empty graph.</p>
+<p>The <code>CONSTRAINT</code> clauses cannot be
+contradicted, multiple <code>CONSTRAINT</code> clauses
+effectively intersect the set of allowed graphs/services with
+previous clauses.</p>
+<pre><code class="language-SPARQL">CONSTRAINT GRAPH tracker:Video, tracker:Audio
+CONSTRAINT GRAPH tracker:Video
+# Only tracker:Video graph can be accessed
+SELECT * { ?s ?p ?o }
+</code></pre>
+<pre><code class="language-SPARQL">CONSTRAINT GRAPH tracker:Video
+CONSTRAINT GRAPH tracker:Video, tracker:Audio
+# Only tracker:Video graph can be accessed
+SELECT * { ?s ?p ?o }
+</code></pre>
+<p>Disjoint sets result in an empty set of accessible graphs and services.</p>
+<pre><code class="language-SPARQL">CONSTRAINT GRAPH tracker:Video
+CONSTRAINT GRAPH tracker:Audio
+# There are no accessible graphs, this query returns no results
+SELECT * { ?s ?p ?o }
+</code></pre>
+<h2 id="mapping-ids-and-iris">Mapping IDs and IRIs</h2>
+<p>Tracker provides the <code>tracker:id</code> and <code>tracker:uri</code> SPARQL
+functions, that allow converting an URI reference to a numeric
+identifier, and back.</p>
+<p>These identifiers are expected to be valid a long as the URI is
+referenced in the store. The existence of these SPARQL functions
+mostly obey legacy reasons and its use is not recommended.</p>
+<h2 id="parameters-and-prepared-statements">Parameters and prepared statements</h2>
+<p>Tracker accepts <code>~</code> prefixed variables in place of literals
+throughout most of the SPARQL select syntax. These variables
+are treated as parameters at query time, so it is possible
+to prepare a query statement once and reuse it many times
+assigning different values to those parameters at query time.</p>
+<p>See <a href="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-href-javascript="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-title-javascript="Tracker.SparqlStatement" data-gi-href-python="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-title-python="Tracker.SparqlStatement">TrackerSparqlStatement</a> documentation for more information.</p>
+<h2 id="fulltext-search">Full-text search</h2>
+<p>Tracker provides full-text search capabilities, these are exposed
+as a <code>fts:match</code> pseudo-property that will match the resources
+matching the given text string.</p>
+<p>To complement this pseudo property, Tracker provides the
+<code>fts:snippet</code>, <code>fts:offsets</code> and <code>fts:rank</code> SPARQL functions that
+can be used on the matches.</p>
+<p>The ontology needs to define the properties that are matched via
+this full-text search mechanism, by toggling the
+<code>tracker:fulltextIndexed</code> property on in the
+text <code>rdf:Property</code> instances. See the documentation
+on <a href="ontologies.html">defining ontologies</a>.</p>
+<h2 id="describe-queries">DESCRIBE queries</h2>
+<p>The <a href="https://www.w3.org/TR/sparql11-query/#describe">SPARQL documentation</a>
+says:</p>
+<pre><code>The DESCRIBE form returns a single result RDF graph containing RDF data about resources.
+</code></pre>
+<p>In order to allow serialization to RDF formats that allow expressing graph information
+(e.g. Trig), DESCRIBE resultsets have 4 columns for subject / predicate / object / graph
+information.</p>
+
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>
