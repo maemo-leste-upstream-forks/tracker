@@ -1,5 +1,5 @@
 project('tracker', 'c', 'vala',
-        version: '3.3.0.beta',
+        version: '3.3.0.rc',
         meson_version: '>=0.51',
         default_options: [
           'c_std=c99',
@@ -53,11 +53,21 @@ json_glib = dependency('json-glib-1.0', version: '>= 1.4', required: true)
 libxml2 = dependency('libxml-2.0', version: '> 2.6')
 sqlite = dependency('sqlite3', version: '>' + sqlite_required)
 dbus = dependency('dbus-1')
-libsoup2 = dependency('libsoup-2.4', version: '> 2.40', required: false)
-libsoup3 = dependency('libsoup-3.0', version: '>= 2.99.2', required: false)
 
-libmath = cc.find_library('m', required: false)
-libdl = cc.find_library('dl')
+soup = get_option('soup')
+if soup.contains('soup2') or soup.contains('auto')
+  libsoup2 = dependency('libsoup-2.4', version: '> 2.40',
+                        required: soup.contains('soup2'))
+else
+  libsoup2 = disabler()
+endif
+
+if soup.contains('soup3') or soup.contains('auto')
+  libsoup3 = dependency('libsoup-3.0', version: '>= 2.99.2',
+                        required: soup.contains('soup3'))
+else
+  libsoup3 = disabler()
+endif
 
 soup_backends = ''
 if libsoup2.found()
@@ -71,14 +81,19 @@ if not libsoup2.found() and not libsoup3.found()
   error('At least one of libsoup2 or libsoup3 is required')
 endif
 
+libmath = cc.find_library('m', required: false)
+libdl = cc.find_library('dl')
+
 if get_option('man')
-  asciidoc = find_program('asciidoc')
-  xsltproc = find_program('xsltproc')
+  a2x = find_program('a2x')
 endif
 
-py_modules = ['gi']
-if get_option('tests_tap_protocol')
-  py_modules += 'tap'
+py_modules = []
+if get_option('tests')
+  py_modules += 'gi'
+  if get_option('tests_tap_protocol')
+    py_modules += 'tap'
+  endif
 endif
 python = import('python').find_installation('python3', modules: py_modules)
 
@@ -359,7 +374,9 @@ tracker_uninstalled_nepomuk_ontologies_dir = join_paths(meson.current_source_dir
 tracker_uninstalled_stop_words_dir = join_paths(meson.current_source_dir(), 'src', 'libtracker-common', 'stop-words')
 tracker_uninstalled_testutils_dir = join_paths(meson.current_source_dir(), 'utils')
 
-subdir('tests')
+if get_option('tests')
+  subdir('tests')
+endif
 subdir('examples')
 
 subdir('po')
