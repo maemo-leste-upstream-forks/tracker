@@ -1,8 +1,10 @@
-tracker (3.3.0~rc-1) UNRELEASED; urgency=medium
+tracker (3.3.0~rc-1) experimental; urgency=medium
 
   * New upstream release
+  * debian/rules: Explicitly only build the libsoup2 version for now
+  * debian/control.in: Build-Depend on asciidoc-base instead of asciidoc
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 16 Mar 2022 11:35:48 -0400
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 16 Mar 2022 11:40:36 -0400
 
 tracker (3.3.0~beta-1) experimental; urgency=medium
 
