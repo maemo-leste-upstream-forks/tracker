@@ -130,6 +130,7 @@ times with different parameters with potentially significant performance gains.<
 main loop is not blocked while these operations are executed.</p>
 <p>Once you end up with the query, remember to call <a href="tracker-sparql-cursor.html#tracker_sparql_cursor_close" data-gi-href-javascript="tracker-sparql-cursor.html#tracker_sparql_cursor_close" data-gi-title-javascript="Tracker.SparqlCursor.prototype.close" data-gi-href-python="tracker-sparql-cursor.html#tracker_sparql_cursor_close" data-gi-title-python="Tracker.SparqlCursor.close">tracker_sparql_cursor_close</a>.
 The same applies to <a href="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-title-javascript="Tracker.SparqlConnection.prototype.close" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-title-python="Tracker.SparqlConnection.close">tracker_sparql_connection_close</a> when no longer needed.</p>
+<div class="gi-lang-c">
 <pre><code class="language-c">#include &lt;libtracker-sparql/tracker-sparql.h&gt;
 
 #define REMOTE_NAME "org.freedesktop.Tracker3.Miner.Files"
@@ -192,6 +193,80 @@ int main (int argc, const char **argv)
 }
 
 </code></pre>
+</div>
+<div class="gi-lang-python">
+<pre><code class="language-python">#!/usr/bin/python3
+
+import gi, sys
+from gi.repository import GLib, Gio, Tracker
+
+try:
+    connection = Tracker.SparqlConnection.bus_new(
+        'org.freedesktop.Tracker3.Miner.Files',
+        None, None)
+
+    stmt = connection.query_statement (
+        'SELECT DISTINCT nie:url(?u) WHERE { ' +
+        '  ?u a nfo:FileDataObject ; ' +
+        '     nfo:fileName ~name ' +
+        '}', None)
+
+    stmt.bind_string('name', sys.argv[1])
+
+    cursor = stmt.execute()
+    i = 0;
+
+    while cursor.next():
+        i += 1
+        print('Result {0}: {1}'.format(i, cursor.get_string(0)[0]))
+
+    print('A total of {0} results were found\n'.format(i))
+
+    cursor.close()
+    connection.close()
+
+except Exception as e:
+    print('Error: {0}'.format(e))
+    sys.exit(-1)
+
+</code></pre>
+</div>
+<div class="gi-lang-javascript">
+<pre><code class="language-javascript">#!/usr/bin/gjs
+
+const { GLib, Gio, Tracker } = imports.gi
+
+try {
+    let connection = Tracker.SparqlConnection.bus_new(
+        'org.freedesktop.Tracker3.Miner.Files',
+        null, null);
+
+    let stmt = connection.query_statement (
+        'SELECT DISTINCT nie:url(?u) WHERE { ' +
+        '  ?u a nfo:FileDataObject ; ' +
+        '     nfo:fileName ~name ' +
+        '}', null);
+
+    stmt.bind_string('name', ARGV[0]);
+
+    let cursor = stmt.execute(null);
+    let i = 0;
+
+    while (cursor.next(null)) {
+        i++;
+        print(`Result ${i}: ${cursor.get_string(0)[0]}`);
+    }
+
+    print(`A total of ${i} results were found`);
+
+    cursor.close();
+    connection.close();
+} catch (e) {
+    printerr(`Error: ${e.message}`)
+}
+
+</code></pre>
+</div>
 <h2 id="creating-a-private-database">Creating a private database</h2>
 <p>Applications may create private stores via the <a href="tracker-sparql-connection.html#tracker_sparql_connection_new" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_new" data-gi-title-javascript="Tracker.SparqlConnection.prototype.new" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_new" data-gi-title-python="Tracker.SparqlConnection.new">tracker_sparql_connection_new</a>
 constructor.</p>
@@ -206,6 +281,7 @@ strings via <a href="tracker-sparql-connection.html#tracker_sparql_connection_up
 main loop is not blocked while these operations are executed.</p>
 <p>Once you no longer need the connection, remember to call
 <a href="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-title-javascript="Tracker.SparqlConnection.prototype.close" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_close" data-gi-title-python="Tracker.SparqlConnection.close">tracker_sparql_connection_close</a> on the <a href="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-href-javascript="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-javascript="Tracker.SparqlConnection" data-gi-href-python="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-python="Tracker.SparqlConnection">TrackerSparqlConnection</a>.</p>
+<div class="gi-lang-c">
 <pre><code class="language-c">#include &lt;libtracker-sparql/tracker-sparql.h&gt;
 
 int main (int argc, const char **argv)
@@ -249,6 +325,69 @@ int main (int argc, const char **argv)
 }
 
 </code></pre>
+</div>
+<div class="gi-lang-python">
+<pre><code class="language-python">#!/usr/bin/python3
+
+import gi, sys
+from gi.repository import GLib, Gio, Tracker
+
+try:
+    connection = Tracker.SparqlConnection.new(
+        Tracker.SparqlConnectionFlags.NONE,
+        None, # Database location, None creates it in-memory
+        Tracker.sparql_get_ontology_nepomuk(), # Ontology location
+        None)
+
+    # Create a resource containing RDF data
+    resource = Tracker.Resource.new(None)
+    resource.set_uri('rdf:type', 'nmm:MusicPiece')
+
+    # Create a batch, and add the resource to it
+    batch = connection.create_batch()
+    batch.add_resource(None, resource)
+
+    # Execute the batch to insert the data
+    batch.execute()
+
+    connection.close()
+
+except Exception as e:
+    print('Error: {0}'.format(e))
+    sys.exit(-1)
+
+</code></pre>
+</div>
+<div class="gi-lang-javascript">
+<pre><code class="language-javascript">#!/usr/bin/gjs
+
+const { GLib, Gio, Tracker } = imports.gi
+
+try {
+    let connection = Tracker.SparqlConnection.new(
+        Tracker.SparqlConnectionFlags.NONE,
+        null, // Database location, None creates it in-memory
+        Tracker.sparql_get_ontology_nepomuk(), // Ontology location
+        null);
+
+    // Create a resource containing RDF data
+    let resource = Tracker.Resource.new(null)
+    resource.set_uri('rdf:type', 'nmm:MusicPiece')
+
+    // Create a batch, and add the resource to it
+    let batch = connection.create_batch()
+    batch.add_resource(null, resource)
+
+    // Execute the batch to insert the data
+    batch.execute(null)
+
+    connection.close();
+} catch (e) {
+    printerr(`Error: ${e.message}`)
+}
+
+</code></pre>
+</div>
 <h2 id="creating-a-sparql-endpoint">Creating a SPARQL endpoint</h2>
 <p>For some applications and services, it might be desirable to export a
 SPARQL store as an endpoint. Making it possible for other applications to
@@ -257,6 +396,7 @@ query the data they hold.</p>
 concretely the creation of a D-Bus endpoint, that other applications
 may query e.g. through a connection created with
 <a href="tracker-sparql-connection.html#tracker_sparql_connection_bus_new" data-gi-href-javascript="tracker-sparql-connection.html#tracker_sparql_connection_bus_new" data-gi-title-javascript="Tracker.SparqlConnection.prototype.bus_new" data-gi-href-python="tracker-sparql-connection.html#tracker_sparql_connection_bus_new" data-gi-title-python="Tracker.SparqlConnection.bus_new">tracker_sparql_connection_bus_new</a>.</p>
+<div class="gi-lang-c">
 <pre><code class="language-c">#include &lt;libtracker-sparql/tracker-sparql.h&gt;
 
 int main (int argc, const char **argv)
@@ -296,6 +436,63 @@ int main (int argc, const char **argv)
 }
 
 </code></pre>
+</div>
+<div class="gi-lang-python">
+<pre><code class="language-python">#!/usr/bin/python3
+
+import gi, sys
+from gi.repository import GLib, Gio, Tracker
+
+try:
+    connection = Tracker.SparqlConnection.new(
+        Tracker.SparqlConnectionFlags.NONE,
+        None, # Database location, None creates it in-memory
+        Tracker.sparql_get_ontology_nepomuk(), # Ontology location
+        None)
+
+    bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+
+    endpoint = Tracker.EndpointDBus.new(
+        connection, bus, None, None)
+
+    loop = GLib.MainLoop.new(None, False)
+    loop.run()
+
+    connection.close()
+
+except Exception as e:
+    print('Error: {0}'.format(e))
+    sys.exit(-1)
+
+</code></pre>
+</div>
+<div class="gi-lang-javascript">
+<pre><code class="language-javascript">#!/usr/bin/gjs
+
+const { GLib, Gio, Tracker } = imports.gi
+
+try {
+    let connection = Tracker.SparqlConnection.new(
+        Tracker.SparqlConnectionFlags.NONE,
+        null, // Database location, None creates it in-memory
+        Tracker.sparql_get_ontology_nepomuk(), // Ontology location
+        null);
+
+    let bus = Gio.bus_get_sync(Gio.BusType.SESSION, null)
+
+    let endpoint = Tracker.EndpointDBus.new(
+        connection, bus, null, null);
+
+    let loop = GLib.MainLoop.new(null, false);
+    loop.run();
+
+    connection.close();
+} catch (e) {
+    printerr(`Error: ${e.message}`)
+}
+
+</code></pre>
+</div>
 <h2 id="receiving-notification-on-changes">Receiving notification on changes</h2>
 <p>As an additional feature over SPARQL endpoints, Tracker allows for
 users of private and D-Bus SPARQL connections to receive notifications
@@ -304,6 +501,7 @@ on changes of certain RDF classes (Those with the
 <a href="nmm-ontology.html#nmm:MusicPiece">nmm:MusicPiece</a>).</p>
 <p>This example demonstrates the use of <a href="tracker-notifier.html#TrackerNotifier" data-gi-href-javascript="tracker-notifier.html#TrackerNotifier" data-gi-title-javascript="Tracker.Notifier" data-gi-href-python="tracker-notifier.html#TrackerNotifier" data-gi-title-python="Tracker.Notifier">TrackerNotifier</a> to receive
 notifications on database updates.</p>
+<div class="gi-lang-c">
 <pre><code class="language-c">#include &lt;libtracker-sparql/tracker-sparql.h&gt;
 
 #define REMOTE_NAME "org.freedesktop.Tracker3.Miner.Files"
@@ -354,6 +552,63 @@ int main (int   argc,
 }
 
 </code></pre>
+</div>
+<div class="gi-lang-python">
+<pre><code class="language-python">#!/usr/bin/python3
+
+import gi, sys
+from gi.repository import GLib, Gio, Tracker
+
+def callback(service, graph, events):
+    for event in events:
+        print('Event {0} on {1}\n'.format(
+            event.get_event_type(), event.get_urn()))
+
+try:
+    connection = Tracker.SparqlConnection.bus_new(
+        'org.freedesktop.Tracker3.Miner.Files',
+        None, None)
+
+    notifier = connection.create_notifier()
+    notifier.connect('events', callback)
+
+    loop = GLib.MainLoop.new(None, False)
+    loop.run()
+
+    connection.close()
+
+except Exception as e:
+    print('Error: {0}'.format(e))
+    sys.exit(-1)
+
+</code></pre>
+</div>
+<div class="gi-lang-javascript">
+<pre><code class="language-javascript">#!/usr/bin/gjs
+
+const { GLib, Gio, Tracker } = imports.gi
+
+try {
+    let connection = Tracker.SparqlConnection.bus_new(
+        'org.freedesktop.Tracker3.Miner.Files',
+        null, null);
+
+    let notifier = connection.create_notifier();
+    notifier.connect('events', (service, graph, events) =&gt; {
+        for (let event in events)
+            print (`Event ${event.get_event_type()} on ${event.get_urn()}`);
+    });
+
+    let loop = GLib.MainLoop.new(null, false);
+    loop.run();
+
+    connection.close();
+} catch (e) {
+    printerr(`Error: ${e.message}`)
+}
+
+</code></pre>
+</div>
 
     </div>
         
