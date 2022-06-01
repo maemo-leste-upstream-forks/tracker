@@ -114,7 +114,15 @@ requests.</p>
 <p>Access to these endpoints may be managed via the
 <a href="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-href-javascript="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-title-javascript="block-remote-address" data-gi-href-python="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-title-python="block-remote-address">block-remote-address</a> signal, the boolean
 return value expressing whether the connection is blocked or not.
-Inspection of the requester address is left up to the user.</p>
+Inspection of the requester address is left up to the user. The
+default value allows all requests independently of their provenance,
+users are encouraged to add a handler.</p>
+<p>If the provided <a href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct" data-gi-href-javascript="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct" data-gi-title-javascript="Gio.TlsCertificate" data-gi-href-python="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct" data-gi-title-python="Gio.TlsCertificate">GTlsCertificate</a> is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS" data-gi-href-javascript="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" data-gi-title-javascript="null" data-gi-href-python="https://docs.python.org/3/library/constants.html#None" data-gi-title-python="None">NULL</a>, the endpoint will allow
+plain HTTP connections. Users are encouraged to provide a certificate
+in order to use HTTPS.</p>
+<p>As a security measure, and in compliance with the SPARQL 1.1 specifications,
+the HTTP endpoint does not support database updates or modifications in any
+way. The database is completely owned by the host.</p>
 <p>A <a href="tracker-endpoint-http.html#TrackerEndpointHttp" data-gi-href-javascript="tracker-endpoint-http.html#TrackerEndpointHttp" data-gi-title-javascript="Tracker.EndpointHttp" data-gi-href-python="tracker-endpoint-http.html#TrackerEndpointHttp" data-gi-title-python="Tracker.EndpointHttp">TrackerEndpointHttp</a> may be created on a different thread/main
 context than the one creating the <a href="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-href-javascript="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-javascript="Tracker.SparqlConnection" data-gi-href-python="tracker-sparql-connection.html#TrackerSparqlConnection" data-gi-title-python="Tracker.SparqlConnection">TrackerSparqlConnection</a>.</p>
 

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<base href=".">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Security</title>
+
+<link rel="stylesheet" href="assets/css/custom_bootstrap.css" type="text/css">
+<link rel="stylesheet" href="assets/css/bootstrap-toc.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/frontend.css" type="text/css">
+<link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="assets/js/search/enable_search.css" type="text/css">
+
+<link rel="stylesheet" href="assets/css/tracker-custom.css" type="text/css">
+<link rel="stylesheet" href="assets/css/prism.css" type="text/css">
+<link rel="stylesheet" href="assets/css/devhelp.css" type="text/css">
+
+<script src="assets/js/mustache.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/scrollspy.js"></script>
+<script src="assets/js/typeahead.jquery.min.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/compare-versions.js"></script>
+<script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="assets/js/bootstrap-toc.min.js"></script>
+<script src="assets/js/jquery.touchSwipe.min.js"></script>
+<script src="assets/js/anchor.min.js"></script>
+<script src="assets/js/tag_filtering.js"></script>
+<script src="assets/js/language_switching.js"></script>
+
+<script src="assets/js/lines_around_headings.js"></script>
+
+<script src="assets/js/prism-core.js"></script>
+<script src="assets/js/prism-autoloader.js"></script>
+<script src="assets/js/prism_autoloader_path_override.js"></script>
+<script src="assets/js/trie.js"></script>
+
+
+</head>
+
+<body class="no-script
+">
+
+<script>
+$('body').removeClass('no-script');
+</script>
+
+<nav class="navbar navbar-fixed-top navbar-default" id="topnav">
+	<div class="container-fluid">
+		<div class="navbar-right">
+			<a id="toc-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-wrapper" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<form class="navbar-form pull-right" id="navbar-search-form">
+                               <div class="form-group has-feedback">
+                                       <input type="text" class="form-control input-sm" name="search" id="sidenav-lookup-field" placeholder="search" disabled>
+				       <span class="glyphicon glyphicon-search form-control-feedback" id="search-mgn-glass"></span>
+                               </div>
+                        </form>
+		</div>
+		<div class="navbar-header">
+			<a id="sidenav-toggle">
+				<span class="glyphicon glyphicon-menu-right"></span>
+				<span class="glyphicon glyphicon-menu-left"></span>
+			</a>
+			<a id="home-link" href="index.html" class="hotdoc-navbar-brand">
+				<img src="assets/images/home.svg" alt="Home">
+			</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar-wrapper">
+			<ul class="nav navbar-nav" id="menu">
+				
+<li>
+    <a href="https://gnome.pages.gitlab.gnome.org/tracker/">Website</a>
+</li>
+
+			</ul>
+			<div class="hidden-xs hidden-sm navbar-text navbar-center">
+							</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+<div data-extension="core" data-hotdoc-in-toplevel="True" data-hotdoc-project="Tracker" data-hotdoc-ref="security.html" class="page_container" id="page-wrapper" data-hotdoc-meta-gi-languages="['c', 'javascript', 'python']">
+<script src="assets/js/utils.js"></script>
+
+<div class="panel panel-collapse oc-collapsed" id="sidenav" data-hotdoc-role="navigation">
+	<script src="assets/js/navigation.js"></script>
+	<script src="assets/js/sitemap.js"></script>
+</div>
+
+<div id="body">
+	<div id="main">
+				    <div id="page-description" data-hotdoc-role="main">
+        <h1 id="security-considerations">Security considerations</h1>
+<p>The SPARQL 1.1 specifications have a number of informative <code>Security considerations</code> sections. This section describes how those possibly
+apply to the implementation of Tracker.</p>
+<p>Note that most of these considerations derive from situations where
+a SPARQL store is exposed through a public endpoint, while Tracker
+does not do that by default. Users should be careful about creating
+endpoints. For D-Bus endpoints, access through the portal is encouraged.</p>
+<h2 id="queries">Queries</h2>
+<p>(From <a href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#security">https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#security</a>)</p>
+<pre><code>SPARQL queries using FROM, FROM NAMED, or GRAPH may cause the specified URI to
+be dereferenced. This may cause additional use of network, disk or CPU resources
+along with associated secondary issues such as denial of service. The security
+issues of Uniform Resource Identifier (URI): Generic Syntax [RFC3986] Section 7
+should be considered. In addition, the contents of file: URIs can in some cases
+be accessed, processed and returned as results, providing unintended access to
+local resources.
+
+SPARQL requests may cause additional requests to be issued from the SPARQL
+endpoint, such as FROM NAMED. The endpoint is potentially within an
+organisations firewall or DMZ, and so such queries may be a source of
+indirection attacks.
+</code></pre>
+<p>Graph URIs are virtual in Tracker and do not cause any access outside of
+database resources. The only SPARQL syntax capable of dereferencing or accessing
+external resources are the <code>SERVICE &lt;uri&gt;</code> and <code>LOAD &lt;rdf-file&gt;</code> features.</p>
+<p>(From <a href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#security">https://www.w3.org/TR/2013/REC-sparql11-query-20130321/#security</a>)</p>
+<pre><code>The SPARQL language permits extensions, which will have their own security
+implications.
+</code></pre>
+<p>Tracker SPARQL extensions have no special security considerations, other than
+being code that runs on silicon.</p>
+<h2 id="federated-queries">Federated queries</h2>
+<p>(From <a href="https://www.w3.org/TR/2013/REC-sparql11-federated-query-20130321/#security">https://www.w3.org/TR/2013/REC-sparql11-federated-query-20130321/#security</a>)</p>
+<pre><code>SPARQL queries using SERVICE imply that a URI will be dereferenced, and that the
+result will be incorporated into a working data set.
+</code></pre>
+<p>(From <a href="https://www.w3.org/TR/sparql11-protocol/#policy-security">https://www.w3.org/TR/sparql11-protocol/#policy-security</a>)</p>
+<pre><code>Since a SPARQL protocol service may make HTTP requests of other origin servers
+on behalf of its clients, it may be used as a vector of attacks against other
+sites or services. Thus, SPARQL protocol services may effectively act as proxies
+for third-party clients. Such services may place restrictions on the resources
+that they retrieve or on the rate at which external resources can be retrieved.
+SPARQL protocol services may log client requests in such a way as to facilitate
+tracing them with regard to third-party origin servers or services.
+
+SPARQL protocol services may choose to detect these and other costly, or
+otherwise unsafe, queries, impose time or memory limits on queries, or impose
+other restrictions to reduce the service's (and other service's) vulnerability
+to denial-of-service attacks. They also may refuse to process such query
+requests.
+</code></pre>
+<p>Tracker offers 2 types of endpoint that are susceptible to this vector:</p>
+<ul>
+<li>D-Bus endpoints accessed outside a sandbox.</li>
+<li>HTTP endpoints</li>
+</ul>
+<p>Particularly, requests on a D-Bus endpoint happening through the portal from a
+sandboxed process have all SERVICE access restricted.</p>
+<p>Tracker developers encourage that all access to endpoints created on D-Bus
+happen through the portal, and that all HTTP endpoints validate the provenance
+of the requests through the <a href="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-href-javascript="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-title-javascript="block-remote-address" data-gi-href-python="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-title-python="block-remote-address">block-remote-address</a>
+signal to limit access to resources.</p>
+<p>(From <a href="https://www.w3.org/TR/sparql11-protocol/#policy-security">https://www.w3.org/TR/sparql11-protocol/#policy-security</a>)</p>
+<pre><code>There are at least two possible sources of denial-of-service attacks against
+SPARQL protocol services. First, under-constrained queries can result in very
+large numbers of results, which may require large expenditures of computing
+resources to process, assemble, or return. Another possible source are queries
+containing very complex — either because of resource size, the number of
+resources to be retrieved, or a combination of size and number — RDF Dataset
+descriptions, which the service may be unable to assemble without significant
+expenditure of resources, including bandwidth, CPU, or secondary storage. In
+some cases such expenditures may effectively constitute a denial-of-service
+attack. A SPARQL protocol service may place restrictions on the resources that
+it retrieves or on the rate at which external resources are retrieved. There
+may be other sources of denial-of-service attacks against SPARQL query
+processing services.
+</code></pre>
+<p>Tracker does not perform any time or frequency rate limits to queries. HTTP
+endpoints may perform the latter through the
+<a href="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-href-javascript="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-title-javascript="block-remote-address" data-gi-href-python="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address" data-gi-title-python="block-remote-address">block-remote-address</a> signal.</p>
+<h2 id="updates">Updates</h2>
+<p>(From <a href="https://www.w3.org/TR/2013/REC-sparql11-update-20130321/#security">https://www.w3.org/TR/2013/REC-sparql11-update-20130321/#security</a>)</p>
+<pre><code>Write access to data makes it inherently vulnerable to malicious access.
+Standard access and authentication techniques should be used in any networked
+environment. In particular, HTTPS should be used, especially when implementing
+the SPARQL HTTP-based protocols. (i.e., encryption with challenge/response based
+password presentation, encrypted session tokens, etc). Some of the weak points
+addressed by HTTPS are: authentication, active session integrity between client
+and server, preventing replays, preventing continuation of defunct sessions.
+</code></pre>
+<p>(From <a href="https://www.w3.org/TR/sparql11-protocol/#policy-security">https://www.w3.org/TR/sparql11-protocol/#policy-security</a>)</p>
+<pre><code>SPARQL protocol services may remove, insert, and change underlying data via the
+update operation. To protect against malicious or destructive updates,
+implementations may choose not to implement the update operation. Alternatively,
+implementations may choose to use HTTP authentication mechanisms or other
+implementation-defined mechanisms to prevent unauthorized invocations of the
+update operation.
+</code></pre>
+<p>Tracker HTTP endpoints do not implement any update mechanisms. D-Bus endpoints
+accessed through the portal from inside a sandbox are likewise read-only.</p>
+<p>(From <a href="https://www.w3.org/TR/2013/REC-sparql11-update-20130321/#security">https://www.w3.org/TR/2013/REC-sparql11-update-20130321/#security</a>)</p>
+<pre><code>Systems that provide both read-only and writable interfaces can be subject to
+injection attacks in the read-only interface. In particular, a SPARQL endpoint
+with a Query service should be careful of injection attacks aimed at interacting
+with an Update service on the same SPARQL endpoint. Like any client code,
+interaction between the query service and the update service should ensure
+correct escaping of strings provided by the user.
+
+While SPARQL Update and SPARQL Query are separate languages, some
+implementations may choose to offer both at the same SPARQL endpoint. In this
+case, it is important to consider that an Update operation may be obscured to
+masquerade as a query. For instance, a string of unicode escapes in a PREFIX
+clause could be used to hide an Update Operation. Therefore, simple syntactic
+tests are inadequate to determine if a string describes a query or an update.
+</code></pre>
+<p>Following the SPARQL 1.1 spec, Tracker implements updates and queries as two
+different languages with different parser entry points, this separation happens
+all the way to the public API. As an additional layer of security, readonly
+queries happen on readonly database connections. It is essentially not possible
+to perform any data change from the query APIs.</p>
+<h1 id="api-user-considerations">API user considerations</h1>
+<p>Users of the Tracker API and SPARQL interface are encouraged to make some
+considerations and take some precautions:</p>
+<ul>
+<li>
+<p>Do not expose any endpoints that does not need exposing.</p>
+</li>
+<li>
+<p>For local D-Bus endpoints, consider using a graph partitioning scheme that
+makes it easy to policy the access to the data when accessed through the
+portal.</p>
+</li>
+<li>
+<p>Avoid the possibility of injection attacks. Use <a href="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-href-javascript="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-title-javascript="Tracker.SparqlStatement" data-gi-href-python="tracker-sparql-statement.html#TrackerSparqlStatement" data-gi-title-python="Tracker.SparqlStatement">TrackerSparqlStatement</a>
+and avoid string-based approaches to build SPARQL queries from user input.</p>
+</li>
+<li>
+<p>Consider that IRIs are susceptible to homograph attacks. Quoting
+https://www.w3.org/TR/sparql11-protocol/#policy-security:</p>
+<pre><code>Different IRIs may have the same appearance. Characters in different scripts
+may look similar (a Cyrillic "о" may appear similar to a Latin "o"). A
+character followed by combining characters may have the same visual
+representation as another character (LATIN SMALL LETTER E followed by
+COMBINING ACUTE ACCENT has the same visual representation as LATIN SMALL
+LETTER E WITH ACUTE). Users of SPARQL must take care to construct queries
+with IRIs that match the IRIs in the data. Further information about matching
+of similar characters can be found in Unicode Security Considerations
+[UNISEC] and Internationalized Resource Identifiers (IRIs) [RFC3987]
+Section 8.
+</code></pre>
+<p>The situations where this might be a source of confusion or mischief, or even
+be possible depends on how those IRIs are created, used, displayed or
+inserted.</p>
+</li>
+</ul>
+<h1 id="feature-grid">Feature grid</h1>
+<p>This is a quick reference of the features offered by the different types of
+endpoint.</p>
+<table>
+<thead>
+<tr>
+<th> Endpoint</th>
+<th> Query</th>
+<th> Update</th>
+<th> Graph Constraints</th>
+<th> Service Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> D-Bus (portal)</td>
+<td> ✓</td>
+<td> ✗</td>
+<td> ✓</td>
+<td> ✓</td>
+</tr>
+<tr>
+<td> D-Bus</td>
+<td> ✓</td>
+<td> ✓</td>
+<td> ✗</td>
+<td> ✗</td>
+</tr>
+<tr>
+<td> HTTP</td>
+<td> ✓</td>
+<td> ✗</td>
+<td> ✗</td>
+<td> ✗</td>
+</tr>
+</tbody>
+</table>
+    </div>
+        
+
+
+
+
+		
+	</div>
+	<div id="search_results">
+		<p>The results of the search are</p>
+	</div>
+	<div id="footer">
+		    
+
+	</div>
+</div>
+
+<div id="toc-column">
+	
+		<div class="edit-button">
+		
+
+	</div>
+		<div id="toc-wrapper">
+		<nav id="toc"></nav>
+	</div>
+</div>
+</div>
+</main>
+
+
+<script src="assets/js/navbar_offset_scroller.js"></script>
+</body>
+</html>
