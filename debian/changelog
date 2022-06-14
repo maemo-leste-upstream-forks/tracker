@@ -1,3 +1,9 @@
+tracker (3.3.1-2) experimental; urgency=medium
+
+  * Cherry-pick patch to fix starred feature in Nautilus
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 14 Jun 2022 13:26:18 -0400
+
 tracker (3.3.1-1) experimental; urgency=medium
 
   * Team upload
