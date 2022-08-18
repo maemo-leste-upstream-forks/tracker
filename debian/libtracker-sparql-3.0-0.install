@@ -1,4 +1,4 @@
 usr/lib/*/libtracker-sparql-3.0.so.*
-usr/lib/*/tracker-3.0/libtracker-remote-soup2.so
+usr/lib/*/tracker-3.0/libtracker-remote-soup3.so
 
 usr/share/tracker3

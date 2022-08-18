@@ -17,7 +17,7 @@ override_dh_auto_configure:
 		-Ddocs=true \
 		-Dbash_completion=true \
 		-Dbash_completion_dir=/usr/share/bash-completion/completions \
-		-Dsoup=soup2 \
+		-Dsoup=soup3 \
 		-Dsystemd_user_services=true \
 		-Dsystemd_user_services_dir=/usr/lib/systemd/user
 
