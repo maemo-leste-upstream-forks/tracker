@@ -1,0 +1,64 @@
+Description: in the autopkgtest setup some tests fail that pass during
+ build. Ideally we figure out how to set it up correctly, but until
+ then, let's skip these tests.
+Author: Paul Gevers <elbrus@debian.org>
+Debian-Bug: https://bugs.debian.org/903374
+
+Index: tracker/tests/functional-tests/cli.py
+===================================================================
+--- tracker.orig/tests/functional-tests/cli.py
++++ tracker/tests/functional-tests/cli.py
+@@ -24,6 +24,7 @@ import unittest
+ 
+ import configuration
+ import fixtures
++import os
+ import random
+ 
+ 
+@@ -37,6 +38,7 @@ class TestCli(fixtures.TrackerCommandLin
+         expected_version_line = 'Tracker %s' % configuration.tracker_version()
+         self.assertEqual(version_line, expected_version_line)
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_create_local_database(self):
+         """Create a database using `tracker3 endpoint` for local testing"""
+ 
+@@ -53,6 +55,7 @@ class TestCli(fixtures.TrackerCommandLin
+                 ['tracker3', 'sparql', '--database', tmpdir,
+                  '--query', 'ASK { ?u a rdfs:Resource }'])
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_export(self):
+         """Export contents of a Tracker database."""
+ 
+@@ -69,6 +72,7 @@ class TestCli(fixtures.TrackerCommandLin
+             self.run_cli(
+                 ['tracker3', 'export', '--database', tmpdir, '--show-graphs']);
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_import(self):
+         """Import a Turtle file into a Tracker database."""
+ 
+@@ -83,6 +87,7 @@ class TestCli(fixtures.TrackerCommandLin
+             self.run_cli(
+                 ['tracker3', 'import', '--database', tmpdir, testdata]);
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_http_endpoint(self):
+         """Create a HTTP endpoint for local testing"""
+ 
+Index: tracker/tests/functional-tests/portal.py
+===================================================================
+--- tracker.orig/tests/functional-tests/portal.py
++++ tracker/tests/functional-tests/portal.py
+@@ -30,7 +30,9 @@ import unittest
+ 
+ import configuration
+ import fixtures
++import os
+ 
++@unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+ class TestPortal(fixtures.TrackerPortalTest):
+     def test_01_forbidden(self):
+         self.start_service('org.freedesktop.Inaccessible')
