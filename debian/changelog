@@ -1,3 +1,15 @@
+tracker (3.3.2-2) UNRELEASED; urgency=medium
+
+  [ Jeremy Bicha ]
+  * Build with libsoup3
+  * debian/control.in: Build-Depend on libxml2-dev
+
+  [ Paul Gevers ]
+  * tests: conditionally skip some tests under autopkgtest as they fail
+    (Closes: #903374)
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Fri, 19 Aug 2022 12:02:41 -0400
+
 tracker (3.3.2-1) unstable; urgency=high
 
   * New upstream release
