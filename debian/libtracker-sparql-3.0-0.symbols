@@ -7,29 +7,8 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_batch_execute_finish@Base 3.1.1
  tracker_batch_get_connection@Base 3.1.1
  tracker_batch_get_type@Base 3.1.1
- tracker_bus_batch_construct@Base 3.3.0~beta
- tracker_bus_batch_get_type@Base 3.3.0~beta
- tracker_bus_batch_new@Base 3.3.0~beta
- tracker_bus_connection_construct@Base 3.1.2
- tracker_bus_connection_construct_finish@Base 3.1.2
- tracker_bus_connection_get_bus_name@Base 3.1.2
- tracker_bus_connection_get_bus_object_path@Base 3.1.2
- tracker_bus_connection_get_type@Base 3.1.2
- tracker_bus_connection_new@Base 3.1.2
- tracker_bus_connection_new_finish@Base 3.1.2
- tracker_bus_connection_perform_query_call@Base 3.1.2
- tracker_bus_connection_perform_query_call_finish@Base 3.1.2
- tracker_bus_connection_perform_serialize@Base 3.3.0~beta
- tracker_bus_connection_perform_serialize_finish@Base 3.3.0~beta
- tracker_bus_connection_perform_update_array@Base 3.3.0~beta
- tracker_bus_connection_perform_update_array_finish@Base 3.3.0~beta
- tracker_bus_fd_cursor_construct@Base 3.1.2
- tracker_bus_fd_cursor_get_type@Base 3.1.2
- tracker_bus_fd_cursor_new@Base 3.1.2
- tracker_bus_statement_construct@Base 3.1.2
- tracker_bus_statement_get_type@Base 3.1.2
- tracker_bus_statement_new@Base 3.1.2
  tracker_check_version@Base 3.1.1
+ tracker_deserialize_flags_get_type@Base 3.4.0~beta
  tracker_endpoint_dbus_get_type@Base 3.1.1
  tracker_endpoint_dbus_new@Base 3.1.1
  tracker_endpoint_get_sparql_connection@Base 3.1.1
@@ -82,6 +61,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_resource_identifier_compare_func@Base 1.9.1
  tracker_resource_new@Base 1.9.1
  tracker_resource_print_jsonld@Base 2.1.2
+ tracker_resource_print_rdf@Base 3.4.0~beta
  tracker_resource_print_sparql_update@Base 1.9.1
  tracker_resource_print_turtle@Base 1.9.1
  tracker_resource_serialize@Base 3.1.1
@@ -105,6 +85,8 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_connection_close_finish@Base 3.1.1
  tracker_sparql_connection_create_batch@Base 3.1.1
  tracker_sparql_connection_create_notifier@Base 3.1.1
+ tracker_sparql_connection_deserialize_async@Base 3.4.0~beta
+ tracker_sparql_connection_deserialize_finish@Base 3.4.0~beta
  tracker_sparql_connection_flags_get_type@Base 1.99.1
  tracker_sparql_connection_get_namespace_manager@Base 1.99.1
  tracker_sparql_connection_get_type@Base 0.10.0
