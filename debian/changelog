@@ -1,8 +1,10 @@
-tracker (3.4.0~beta-1) UNRELEASED; urgency=medium
+tracker (3.4.0~beta-1) experimental; urgency=medium
 
   * New upstream release
+  * debian/libtrakcer-sparql-3.0-0.install: Update
+  * debian/libtracker-sparql-3.0-0.symbols: Update
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 24 Aug 2022 09:59:28 -0400
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Wed, 24 Aug 2022 10:27:03 -0400
 
 tracker (3.3.3-1) unstable; urgency=medium
 
