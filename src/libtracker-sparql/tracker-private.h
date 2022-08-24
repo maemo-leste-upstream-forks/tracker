@@ -23,6 +23,8 @@
 #include <libtracker-sparql/tracker-version-generated.h>
 #include <libtracker-sparql/tracker-cursor.h>
 #include <libtracker-sparql/tracker-endpoint-dbus.h>
+#include <libtracker-sparql/tracker-enums-private.h>
+#include <libtracker-sparql/tracker-deserializer.h>
 
 struct _TrackerSparqlConnectionClass
 {
@@ -121,6 +123,17 @@ struct _TrackerSparqlConnectionClass
 	GInputStream * (* serialize_finish) (TrackerSparqlConnection  *connection,
 	                                     GAsyncResult             *res,
 	                                     GError                  **error);
+	void (* deserialize_async) (TrackerSparqlConnection *connection,
+	                            TrackerDeserializeFlags  flags,
+	                            TrackerRdfFormat         format,
+	                            const gchar             *default_graph,
+	                            GInputStream            *stream,
+	                            GCancellable            *cancellable,
+	                            GAsyncReadyCallback      callback,
+	                            gpointer                 user_data);
+	gboolean (* deserialize_finish) (TrackerSparqlConnection  *connection,
+	                                 GAsyncResult             *res,
+	                                 GError                  **error);
 	void (* map_connection) (TrackerSparqlConnection  *connection,
 	                         const gchar              *handle_name,
 	                         TrackerSparqlConnection  *service_connection);
@@ -279,6 +292,26 @@ struct _TrackerSerializerClass {
 	GInputStreamClass parent_class;
 };
 
+struct _TrackerDeserializerClass {
+	TrackerSparqlCursorClass parent_class;
+
+	gboolean (* get_parser_location) (TrackerDeserializer *deserializer,
+	                                  goffset             *line_no,
+	                                  goffset             *column_no);
+};
+
+struct _TrackerNamespaceManager {
+	GObject parent;
+};
+
+typedef struct {
+	GHashTableIter prop_iter;
+	TrackerResource *cur_resource;
+	const gchar *cur_prop;
+	GPtrArray *cur_values;
+	guint idx;
+} TrackerResourceIterator;
+
 gboolean
 tracker_sparql_connection_lookup_dbus_service (TrackerSparqlConnection  *connection,
                                                const gchar              *dbus_name,
@@ -290,5 +323,11 @@ void tracker_sparql_cursor_set_connection (TrackerSparqlCursor     *cursor,
 GError * _translate_internal_error (GError *error);
 
 void tracker_namespace_manager_seal (TrackerNamespaceManager *namespaces);
+
+void tracker_resource_iterator_init (TrackerResourceIterator *iter,
+                                     TrackerResource         *resource);
+gboolean tracker_resource_iterator_next (TrackerResourceIterator  *iter,
+                                         const gchar             **property,
+                                         const GValue            **value);
 
 #endif /* __TRACKER_PRIVATE_H__ */

@@ -52,16 +52,25 @@
 #include "config.h"
 
 #include "tracker-endpoint-http.h"
+
+#include "tracker-deserializer-resource.h"
 #include "tracker-serializer.h"
 #include "tracker-private.h"
 
-#include <libsoup/soup.h>
+#include "remote/tracker-http.h"
 
-#define SERVER_HEADER "Tracker " PACKAGE_VERSION " (https://gitlab.gnome.org/GNOME/tracker/issues/)"
+const gchar *supported_formats[] = {
+	"http://www.w3.org/ns/formats/SPARQL_Results_JSON",
+	"http://www.w3.org/ns/formats/SPARQL_Results_XML",
+	"http://www.w3.org/ns/formats/Turtle",
+	"http://www.w3.org/ns/formats/TriG",
+};
+
+G_STATIC_ASSERT (G_N_ELEMENTS (supported_formats) == TRACKER_N_SERIALIZER_FORMATS);
 
 struct _TrackerEndpointHttp {
 	TrackerEndpoint parent_instance;
-	SoupServer *server;
+	TrackerHttpServer *server;
 	GTlsCertificate *certificate;
 	guint port;
 	GCancellable *cancellable;
@@ -69,11 +78,7 @@ struct _TrackerEndpointHttp {
 
 typedef struct {
 	TrackerEndpoint *endpoint;
-#if SOUP_CHECK_VERSION (2, 99, 2)
-        SoupServerMessage *message;
-#else
-	SoupMessage *message;
-#endif
+	TrackerHttpRequest *request;
 	GInputStream *istream;
 	GTask *task;
 	TrackerSerializerFormat format;
@@ -91,11 +96,6 @@ enum {
 	N_PROPS
 };
 
-#define XML_TYPE "application/sparql-results+xml"
-#define JSON_TYPE "application/sparql-results+json"
-#define TTL_TYPE "text/turtle"
-#define TRIG_TYPE "application/trig"
-
 static GParamSpec *props[N_PROPS];
 static guint signals[N_SIGNALS];
 
@@ -112,232 +112,185 @@ request_free (Request *request)
 }
 
 static void
-handle_request_in_thread (GTask        *task,
-                          gpointer      source_object,
-                          gpointer      task_data,
-                          GCancellable *cancellable)
-{
-	Request *request = task_data;
-	gchar buffer[1000];
-	SoupMessageBody *message_body;
-	GError *error = NULL;
-	gssize count;
-
-#if SOUP_CHECK_VERSION (2, 99, 2)
-        message_body = soup_server_message_get_response_body (request->message);
-#else
-        message_body = request->message->response_body;
-#endif
-
-	for (;;) {
-		count = g_input_stream_read (request->istream,
-		                             buffer, sizeof (buffer),
-		                             cancellable, &error);
-		if (count < 0) {
-			g_task_return_error (task, error);
-			break;
-		}
-
-		soup_message_body_append (message_body,
-		                          SOUP_MEMORY_COPY,
-		                          buffer, count);
-
-		if ((gsize) count < sizeof (buffer)) {
-			break;
-		}
-	}
-
-	g_input_stream_close (request->istream, cancellable, NULL);
-	soup_message_body_complete (message_body);
-	g_task_return_boolean (task, TRUE);
-}
-
-static void
-request_finished_cb (GObject      *object,
-                     GAsyncResult *result,
-                     gpointer      user_data)
-{
-	Request *request = user_data;
-	TrackerEndpointHttp *endpoint_http;
-	GError *error = NULL;
-
-	endpoint_http = TRACKER_ENDPOINT_HTTP (request->endpoint);
-
-	if (!g_task_propagate_boolean (G_TASK (result), &error)) {
-#if SOUP_CHECK_VERSION (2, 99, 2)
-                soup_server_message_set_status (request->message, 500,
-                                                error ? error->message :
-                                                "No error message");
-#else
-		soup_message_set_status_full (request->message, 500,
-		                              error ? error->message :
-		                              "No error message");
-#endif
-		g_clear_error (&error);
-	} else {
-#if SOUP_CHECK_VERSION (2, 99, 2)
-                soup_server_message_set_status (request->message, 200, NULL);
-#else
-		soup_message_set_status (request->message, 200);
-#endif
-	}
-
-	soup_server_unpause_message (endpoint_http->server, request->message);
-	request_free (request);
-}
-
-static void
 query_async_cb (GObject      *object,
                 GAsyncResult *result,
                 gpointer      user_data)
 {
 	TrackerEndpointHttp *endpoint_http;
 	TrackerSparqlCursor *cursor;
+	TrackerSparqlConnection *conn;
 	Request *request = user_data;
+	GInputStream *stream;
 	GError *error = NULL;
 
 	endpoint_http = TRACKER_ENDPOINT_HTTP (request->endpoint);
 	cursor = tracker_sparql_connection_query_finish (TRACKER_SPARQL_CONNECTION (object),
 	                                                 result, &error);
 	if (error) {
-#if SOUP_CHECK_VERSION (2, 99, 2)
-                soup_server_message_set_status (request->message, 500, error->message);
-#else
-		soup_message_set_status_full (request->message, 500, error->message);
-#endif
-		soup_server_unpause_message (endpoint_http->server, request->message);
+		tracker_http_server_error (endpoint_http->server,
+		                           request->request,
+		                           500,
+		                           error->message);
 		request_free (request);
+		g_error_free (error);
 		return;
 	}
 
-	request->istream = tracker_serializer_new (cursor, request->format);
-	request->task = g_task_new (endpoint_http, endpoint_http->cancellable,
-	                            request_finished_cb, request);
-	g_task_set_task_data (request->task, request, NULL);
-	g_object_unref (cursor);
-
-	g_task_run_in_thread (request->task, handle_request_in_thread);
+	conn = tracker_sparql_cursor_get_connection (cursor);
+	stream = tracker_serializer_new (cursor,
+	                                 tracker_sparql_connection_get_namespace_manager (conn),
+	                                 request->format);
+	/* Consumes the input stream */
+	tracker_http_server_response (endpoint_http->server,
+	                              request->request,
+	                              request->format,
+	                              stream);
+	request_free (request);
 }
 
-#if SOUP_CHECK_VERSION (2, 99, 2)
 static gboolean
-pick_format (SoupServerMessage       *message,
+pick_format (guint                    formats,
              TrackerSerializerFormat *format)
-#else
-static gboolean
-pick_format (SoupMessage             *message,
-             TrackerSerializerFormat *format)
-#endif
 {
-	SoupMessageHeaders *request_headers, *response_headers;
+	TrackerSerializerFormat i;
+	const gchar *test_format;
 
-#if SOUP_CHECK_VERSION (2, 99, 2)
-        request_headers = soup_server_message_get_request_headers (message);
-        response_headers = soup_server_message_get_response_headers (message);
-#else
-        request_headers = message->request_headers;
-        response_headers = message->response_headers;
-#endif
+	test_format = g_getenv ("TRACKER_TEST_PREFERRED_CURSOR_FORMAT");
+	if (test_format && g_ascii_isdigit (*test_format)) {
+		int f = atoi (test_format);
 
-	if (soup_message_headers_header_contains (request_headers, "Accept", JSON_TYPE)) {
-		soup_message_headers_set_content_type (response_headers, JSON_TYPE, NULL);
-		*format = TRACKER_SERIALIZER_FORMAT_JSON;
-		return TRUE;
-	} else if (soup_message_headers_header_contains (request_headers, "Accept", XML_TYPE)) {
-		soup_message_headers_set_content_type (response_headers, XML_TYPE, NULL);
-		*format = TRACKER_SERIALIZER_FORMAT_XML;
-		return TRUE;
-	} else if (soup_message_headers_header_contains (request_headers, "Accept", TTL_TYPE)) {
-		soup_message_headers_set_content_type (response_headers, TTL_TYPE, NULL);
-		*format = TRACKER_SERIALIZER_FORMAT_TTL;
-		return TRUE;
-	} else if (soup_message_headers_header_contains (request_headers, "Accept", TRIG_TYPE)) {
-		soup_message_headers_set_content_type (response_headers, TRIG_TYPE, NULL);
-		*format = TRACKER_SERIALIZER_FORMAT_TRIG;
-		return TRUE;
-	} else {
-		return FALSE;
+		if ((formats & (1 << f)) != 0) {
+			*format = f;
+			return TRUE;
+		}
+	}
+
+	for (i = 0; i < TRACKER_N_SERIALIZER_FORMATS; i++) {
+		if ((formats & (1 << i)) != 0) {
+			*format = i;
+			return TRUE;
+		}
 	}
 
 	return FALSE;
 }
 
-#if SOUP_CHECK_VERSION (2, 99, 2)
 static void
-server_callback (SoupServer        *server,
-	         SoupServerMessage *message,
-                 const char        *path,
-	         GHashTable        *query,
-                 gpointer           user_data)
-#else
+add_supported_formats (TrackerResource *resource,
+                       const gchar     *property)
+{
+	gint i;
+
+	for (i = 0; i < TRACKER_N_SERIALIZER_FORMATS; i++)
+		tracker_resource_add_uri (resource, property, supported_formats[i]);
+}
+
+static TrackerResource *
+create_service_description (TrackerEndpointHttp      *endpoint,
+                            TrackerNamespaceManager **manager)
+{
+	TrackerResource *resource;
+
+	*manager = tracker_namespace_manager_new ();
+	tracker_namespace_manager_add_prefix (*manager, "rdf",
+	                                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+	tracker_namespace_manager_add_prefix (*manager, "sd",
+	                                      "http://www.w3.org/ns/sparql-service-description#");
+	tracker_namespace_manager_add_prefix (*manager, "format",
+	                                      "http://www.w3.org/ns/formats/");
+
+	resource = tracker_resource_new (NULL);
+	tracker_resource_set_uri (resource, "rdf:type", "sd:Service");
+	/* tracker_resource_set_uri (resource, "sd:endpoint", endpoint_uri); */
+	tracker_resource_set_uri (resource, "sd:supportedLanguage", "sd:SPARQL11Query");
+
+	tracker_resource_add_uri (resource, "sd:feature", "sd:EmptyGraphs");
+	tracker_resource_add_uri (resource, "sd:feature", "sd:BasicFederatedQuery");
+	tracker_resource_add_uri (resource, "sd:feature", "sd:UnionDefaultGraph");
+
+	add_supported_formats (resource, "sd:resultFormat");
+	add_supported_formats (resource, "sd:inputFormat");
+
+	return resource;
+}
+
 static void
-server_callback (SoupServer        *server,
-                 SoupMessage       *message,
-                 const char        *path,
-                 GHashTable        *query,
-                 SoupClientContext *client,
-                 gpointer           user_data)
-#endif
+http_server_request_cb (TrackerHttpServer  *server,
+                        GSocketAddress     *remote_address,
+                        const gchar        *path,
+                        GHashTable         *params,
+                        guint               formats,
+                        TrackerHttpRequest *request,
+                        gpointer            user_data)
 {
 	TrackerEndpoint *endpoint = user_data;
 	TrackerSparqlConnection *conn;
 	TrackerSerializerFormat format;
-	GSocketAddress *remote_address;
 	gboolean block = FALSE;
-	const gchar *sparql;
-	Request *request;
+	const gchar *sparql = NULL;
+	Request *data;
 
-#if SOUP_CHECK_VERSION (2, 99, 2)
-        remote_address = soup_server_message_get_remote_address (message);
-#else
-	remote_address = soup_client_context_get_remote_address (client);
-#endif
 	if (remote_address) {
 		g_signal_emit (endpoint, signals[BLOCK_REMOTE_ADDRESS], 0,
 		               remote_address, &block);
 	}
 
 	if (block) {
-#if SOUP_CHECK_VERSION (2, 99, 2)
-                soup_server_message_set_status (message, 500, "Remote address disallowed");
-#else
-		soup_message_set_status_full (message, 500, "Remote address disallowed");
-#endif
+		tracker_http_server_error (server, request, 500,
+		                           "Remote address disallowed");
 		return;
 	}
 
-	sparql = g_hash_table_lookup (query, "query");
-	if (!sparql) {
-#if SOUP_CHECK_VERSION (2, 99, 2)
-                soup_server_message_set_status (message, 500, "No query given");
-#else
-		soup_message_set_status_full (message, 500, "No query given");
-#endif
-		return;
+	if (params)
+		sparql = g_hash_table_lookup (params, "query");
+
+	if (sparql) {
+		if (!pick_format (formats, &format)) {
+			tracker_http_server_error (server, request, 500,
+			                           "No recognized accepted formats");
+			return;
+		}
+
+		data = g_new0 (Request, 1);
+		data->endpoint = endpoint;
+		data->request = request;
+		data->format = format;
+
+		conn = tracker_endpoint_get_sparql_connection (endpoint);
+		tracker_sparql_connection_query_async (conn,
+		                                       sparql,
+		                                       NULL,
+		                                       query_async_cb,
+		                                       data);
+	} else {
+		TrackerNamespaceManager *namespaces;
+		TrackerResource *description;
+		TrackerSparqlCursor *deserializer;
+		GInputStream *serializer;
+
+		if (!pick_format (formats, &format))
+			format = TRACKER_SERIALIZER_FORMAT_TTL;
+
+		/* Requests to with no query return a RDF description
+		 * about the HTTP endpoint.
+		 */
+		description = create_service_description (TRACKER_ENDPOINT_HTTP (endpoint),
+		                                          &namespaces);
+
+		deserializer = tracker_deserializer_resource_new (description,
+		                                                  namespaces, NULL);
+		serializer = tracker_serializer_new (TRACKER_SPARQL_CURSOR (deserializer),
+		                                     namespaces, format);
+		g_object_unref (deserializer);
+		g_object_unref (description);
+		g_object_unref (namespaces);
+
+		/* Consumes the serializer */
+		tracker_http_server_response (server,
+		                              request,
+		                              format,
+		                              serializer);
 	}
-
-	if (!pick_format (message, &format)) {
-#if SOUP_CHECK_VERSION (2, 99, 2)
-                soup_server_message_set_status (message, 500, "No recognized accepted formats");
-#else
-		soup_message_set_status_full (message, 500, "No recognized accepted formats");
-#endif
-		return;
-	}
-
-	request = g_new0 (Request, 1);
-	request->endpoint = endpoint;
-	request->message = message;
-	request->format = format;
-
-	conn = tracker_endpoint_get_sparql_connection (endpoint);
-	tracker_sparql_connection_query_async (conn,
-	                                       sparql,
-	                                       NULL,
-	                                       query_async_cb,
-	                                       request);
-
-	soup_server_pause_message (server, message);
 }
 
 static gboolean
@@ -349,18 +302,16 @@ tracker_endpoint_http_initable_init (GInitable     *initable,
 	TrackerEndpointHttp *endpoint_http = TRACKER_ENDPOINT_HTTP (endpoint);
 
 	endpoint_http->server =
-		soup_server_new ("tls-certificate", endpoint_http->certificate,
-		                 "server-header", SERVER_HEADER,
-		                 NULL);
-	soup_server_add_handler (endpoint_http->server,
-	                         "/sparql",
-	                         server_callback,
-	                         initable,
-	                         NULL);
+		tracker_http_server_new (endpoint_http->port,
+		                         endpoint_http->certificate,
+		                         cancellable,
+		                         error);
+	if (!endpoint_http->server)
+		return FALSE;
 
-	return soup_server_listen_all (endpoint_http->server,
-	                               endpoint_http->port,
-	                               0, error);
+	g_signal_connect (endpoint_http->server, "request",
+	                  G_CALLBACK (http_server_request_cb), initable);
+	return TRUE;
 }
 
 static void

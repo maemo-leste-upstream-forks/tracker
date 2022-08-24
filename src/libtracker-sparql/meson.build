@@ -1,10 +1,17 @@
+libtracker_sparql_modules = []
+
+subdir('core')
+subdir('bus')
+subdir('direct')
+subdir('remote')
+
 version_header = configure_file(
     input: 'tracker-version-generated.h.meson.in',
     output: 'tracker-version-generated.h',
     configuration: conf)
 
 enum_types = gnome.mkenums('tracker-sparql-enum-types',
-    sources: ['tracker-notifier.h', 'tracker-connection.h'],
+    sources: ['tracker-notifier.h', 'tracker-connection.h', 'tracker-enums.h'],
     c_template: 'tracker-sparql-enum-types.c.template',
     h_template: 'tracker-sparql-enum-types.h.template',
     install_dir: join_paths(get_option('prefix'), get_option('includedir'), 'tracker-@0@'.format(tracker_api_version), 'libtracker-sparql'),
@@ -12,14 +19,20 @@ enum_types = gnome.mkenums('tracker-sparql-enum-types',
 )
 
 tracker_sparql_vapi = files('tracker-sparql.vapi')
-tracker_sparql_vapi_dep = meson.get_compiler('vala').find_library('tracker-sparql', dirs: meson.current_source_dir())
 
-libtracker_sparql_c_sources = files(
+libtracker_sparql_sources = files(
     'tracker-batch.c',
     'tracker-connection.c',
     'tracker-cursor.c',
+    'tracker-deserializer.c',
+    'tracker-deserializer-rdf.c',
+    'tracker-deserializer-turtle.c',
+    'tracker-deserializer-json.c',
+    'tracker-deserializer-resource.c',
+    'tracker-deserializer-xml.c',
     'tracker-endpoint.c',
     'tracker-endpoint-dbus.c',
+    'tracker-endpoint-http.c',
     'tracker-error.c',
     'tracker-namespace-manager.c',
     'tracker-notifier.c',
@@ -35,13 +48,14 @@ libtracker_sparql_c_sources = files(
     'tracker-version.c',
 )
 
-libtracker_sparql_c_public_headers = files(
+libtracker_sparql_public_headers = files(
     'tracker-batch.h',
     'tracker-connection.h',
     'tracker-cursor.h',
     'tracker-endpoint.h',
     'tracker-endpoint-dbus.h',
     'tracker-endpoint-http.h',
+    'tracker-enums.h',
     'tracker-error.h',
     'tracker-namespace-manager.h',
     'tracker-notifier.h',
@@ -52,24 +66,10 @@ libtracker_sparql_c_public_headers = files(
     'tracker-version.h',
 )
 
-libtracker_sparql_intermediate = static_library('tracker-sparql-intermediate',
-    enum_types,
-    libtracker_sparql_c_sources,
-    dependencies: [tracker_common_dep, json_glib, libxml2],
-    gnu_symbol_visibility: 'hidden',
-)
-
 sparqlinc = [include_directories('.'), meson.current_build_dir()]
 
-tracker_sparql_intermediate_dep = declare_dependency(
-    link_with: [libtracker_sparql_intermediate],
-    include_directories: [srcinc, include_directories('.')],
-    dependencies: [ tracker_sparql_vapi_dep, tracker_data_dep ],
-    sources: enum_types[1],
-)
-
 install_headers(
-    libtracker_sparql_c_public_headers,
+    libtracker_sparql_public_headers,
     'tracker-ontologies.h',
     'tracker-sparql.h',
     version_header,
@@ -87,18 +87,46 @@ install_data(
     install_dir: vapi_dir,
 )
 
-subdir('bus')
-subdir('direct')
+libtracker_sparql_dependencies = [
+    tracker_common_dep,
+    gmodule,
+    libdl,
+    json_glib,
+    libxml2,
+    tracker_data_dependencies
+]
 
-libtracker_sparql = library('tracker-sparql-' + tracker_api_version,
-    '../libtracker-common/libtracker-common.vapi',
-    '../libtracker-data/libtracker-data.vapi',
-    'direct/tracker-direct.vapi',
-    'tracker-backend.vala',
-    'tracker-remote-module.c',
+libtracker_sparql_private = static_library('tracker-sparql-private',
+    enum_types,
+    libtracker_sparql_sources,
+    core_files,
+    bus_files,
+    direct_files,
+    remote_files,
     tracker_gresources,
 
+    c_args: [
+	'-include', 'libtracker-sparql/tracker-private.h',
+        '-DPRIVATE_LIBDIR="@0@"'.format(tracker_internal_libs_dir),
+        '-DBUILD_LIBDIR="@0@"'.format(meson.current_build_dir()),
+        '-DBUILDROOT="@0@"'.format(meson.build_root()),
+    ] + tracker_c_args,
+
+    dependencies: [libtracker_sparql_dependencies],
     gnu_symbol_visibility: 'hidden',
+)
+
+tracker_sparql_private_dep = declare_dependency(
+    link_with: [libtracker_sparql_private],
+    include_directories: [srcinc, include_directories('.')],
+    sources: enum_types[1],
+    dependencies: [glib, gio],
+)
+
+libtracker_sparql = library('tracker-sparql-' + tracker_api_version,
+    gnu_symbol_visibility: 'hidden',
+
+    link_whole: [libtracker_sparql_private],
 
     soversion: soversion,
     version: libversion,
@@ -106,89 +134,15 @@ libtracker_sparql = library('tracker-sparql-' + tracker_api_version,
     install: true,
     install_rpath: tracker_internal_libs_dir,
 
-    c_args: [
-	'-include', 'libtracker-sparql/tracker-private.h',
-        '-DPRIVATE_LIBDIR="@0@"'.format(tracker_internal_libs_dir),
-        '-DBUILD_LIBDIR="@0@"'.format(meson.current_build_dir()),
-        '-DBUILDROOT="@0@"'.format(meson.build_root()),
-    ],
-
-    link_whole: [libtracker_sparql_intermediate],
-
-    dependencies: [tracker_common_dep, tracker_sparql_bus_dep, tracker_sparql_direct_dep, tracker_sparql_vapi_dep, gmodule, libdl],
+    dependencies: [libtracker_sparql_dependencies],
 )
 
 tracker_sparql_dep = declare_dependency(
     link_with: libtracker_sparql,
     include_directories: srcinc,
     dependencies: [glib, gio],
+    sources: enum_types[1],
 )
-
-libtracker_sparql_remote_c_sources = files(
-    'tracker-endpoint-http.c',
-    'remote/tracker-remote-statement.c',
-    'tracker-serializer.c',
-    'tracker-serializer-json.c',
-    'tracker-serializer-trig.c',
-    'tracker-serializer-turtle.c',
-    'tracker-serializer-xml.c',
-)
-
-libtracker_sparql_remote_vala_sources = files(
-    'remote/tracker-remote.vapi',
-    'remote/tracker-json-cursor.vala',
-    'remote/tracker-xml-cursor.vala',
-    'remote/tracker-remote.vala',
-)
-
-libtracker_sparql_modules = []
-
-if libsoup2.found()
-    libtracker_remote_soup2 = shared_module('tracker-remote-soup2',
-        libtracker_sparql_remote_c_sources, libtracker_sparql_remote_vala_sources,
-        dependencies: [json_glib, libxml2, tracker_common_dep, tracker_sparql_dep,
-                       tracker_sparql_vapi_dep, tracker_data_dep, libsoup2],
-        c_args: tracker_c_args + [
-            '-include', 'config.h',
-            '-include', 'libtracker-sparql/tracker-private.h',
-        ],
-        vala_args: [
-            '--debug',
-            '--pkg', 'posix',
-            # FIXME: Meson has code to add --target-glib automatically, but it
-            # doesn't seem to work here.
-            '--target-glib', glib_required,
-            '--define=SOUP2',
-        ],
-        install: true,
-        install_dir: tracker_internal_libs_dir,
-        name_suffix: 'so',
-    )
-    libtracker_sparql_modules += libtracker_remote_soup2
-endif
-
-if libsoup3.found()
-    libtracker_remote_soup3 = shared_module('tracker-remote-soup3',
-        libtracker_sparql_remote_c_sources, libtracker_sparql_remote_vala_sources,
-        dependencies: [json_glib, libxml2, tracker_common_dep, tracker_sparql_dep,
-                       tracker_sparql_vapi_dep, tracker_data_dep, libsoup3],
-        c_args: tracker_c_args + [
-            '-include', 'config.h',
-            '-include', 'libtracker-sparql/tracker-private.h',
-        ],
-        vala_args: [
-            '--debug',
-            '--pkg', 'posix',
-            # FIXME: Meson has code to add --target-glib automatically, but it
-            # doesn't seem to work here.
-            '--target-glib', glib_required,
-        ],
-        install: true,
-        install_dir: tracker_internal_libs_dir,
-        name_suffix: 'so',
-    )
-    libtracker_sparql_modules += libtracker_remote_soup3
-endif
 
 pkg.generate(libtracker_sparql,
     description: 'Tracker : A SPARQL triple store library',
@@ -224,8 +178,8 @@ if get_option('introspection').enabled()
 
     tracker_sparql_gir = gnome.generate_gir(libtracker_sparql,
         sources: [
-            libtracker_sparql_c_sources,
-            libtracker_sparql_c_public_headers,
+            libtracker_sparql_sources,
+            libtracker_sparql_public_headers,
             introspection_extra_sources,
         ],
         dependencies: introspection_extra_deps,

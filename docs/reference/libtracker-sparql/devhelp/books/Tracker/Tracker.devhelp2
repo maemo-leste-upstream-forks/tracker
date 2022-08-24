@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<book xmlns="http://www.devhelp.net/book" title="Tracker 3.3.3" link="index.html" author="hotdoc" name="Tracker" version="2" language="C" online="https://gnome.pages.gitlab.gnome.org/tracker/docs/developer/">
+<book xmlns="http://www.devhelp.net/book" title="Tracker 3.4.0.beta" link="index.html" author="hotdoc" name="Tracker" version="2" language="C" online="https://gnome.pages.gitlab.gnome.org/tracker/docs/developer/">
   <chapters>
     <sub name="Overview" link="overview.html"/>
     <sub name="Examples" link="examples.html"/>
@@ -32,6 +32,7 @@
       <sub name="TrackerSparqlCursor" link="tracker-sparql-cursor.html"/>
       <sub name="TrackerEndpoint" link="tracker-endpoint.html"/>
       <sub name="TrackerEndpointDBus" link="tracker-endpoint-dbus.html"/>
+      <sub name="TrackerEndpointHttp" link="tracker-endpoint-http.html"/>
       <sub name="TrackerNamespaceManager" link="tracker-namespace-manager.html"/>
       <sub name="TrackerNotifier" link="tracker-notifier.html"/>
       <sub name="TrackerResource" link="tracker-resource.html"/>
@@ -41,7 +42,7 @@
       <sub name="Version Information" link="tracker-version.html"/>
       <sub name="TrackerSparqlError" link="tracker-sparql-error.html"/>
       <sub name="Utility Ontology Defines" link="tracker-ontologies.html"/>
-      <sub name="TrackerEndpointHttp" link="tracker-endpoint-http.html"/>
+      <sub name="tracker enums" link="tracker-enums.html"/>
     </sub>
     <sub name="Implementation details" link="implementation.html">
       <sub name="Limits" link="limits.html"/>
@@ -62,9 +63,7 @@
     <keyword type="function" name="tracker_batch_execute_async" link="tracker-batch.html#tracker_batch_execute_async"/>
     <keyword type="function" name="tracker_batch_execute_finish" link="tracker-batch.html#tracker_batch_execute_finish"/>
     <keyword type="function" name="tracker_batch_get_connection" link="tracker-batch.html#tracker_batch_get_connection"/>
-    <keyword type="member" name="TRACKER_N_RDF_FORMATS" link="tracker-sparql-connection.html#TRACKER_N_RDF_FORMATS"/>
-    <keyword type="member" name="TRACKER_RDF_FORMAT_TRIG" link="tracker-sparql-connection.html#TRACKER_RDF_FORMAT_TRIG"/>
-    <keyword type="member" name="TRACKER_RDF_FORMAT_TURTLE" link="tracker-sparql-connection.html#TRACKER_RDF_FORMAT_TURTLE"/>
+    <keyword type="member" name="TRACKER_DESERIALIZE_FLAGS_NONE" link="tracker-sparql-connection.html#TRACKER_DESERIALIZE_FLAGS_NONE"/>
     <keyword type="member" name="TRACKER_SERIALIZE_FLAGS_NONE" link="tracker-sparql-connection.html#TRACKER_SERIALIZE_FLAGS_NONE"/>
     <keyword type="member" name="TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES" link="tracker-sparql-connection.html#TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES"/>
     <keyword type="member" name="TRACKER_SPARQL_CONNECTION_FLAGS_FTS_ENABLE_STEMMER" link="tracker-sparql-connection.html#TRACKER_SPARQL_CONNECTION_FLAGS_FTS_ENABLE_STEMMER"/>
@@ -75,7 +74,7 @@
     <keyword type="member" name="TRACKER_SPARQL_CONNECTION_FLAGS_READONLY" link="tracker-sparql-connection.html#TRACKER_SPARQL_CONNECTION_FLAGS_READONLY"/>
     <keyword type="macro" name="TRACKER_SPARQL_TYPE_CONNECTION" link="tracker-sparql-connection.html#TRACKER_SPARQL_TYPE_CONNECTION"/>
     <keyword type="macro" name="TRACKER_TYPE_SPARQL_CONNECTION" link="tracker-sparql-connection.html#TRACKER_TYPE_SPARQL_CONNECTION"/>
-    <keyword type="enum" name="TrackerRdfFormat" link="tracker-sparql-connection.html#TrackerRdfFormat"/>
+    <keyword type="enum" name="TrackerDeserializeFlags" link="tracker-sparql-connection.html#TrackerDeserializeFlags"/>
     <keyword type="enum" name="TrackerSerializeFlags" link="tracker-sparql-connection.html#TrackerSerializeFlags"/>
     <keyword type="class" name="TrackerSparqlConnection" link="tracker-sparql-connection.html#TrackerSparqlConnection"/>
     <keyword type="field" name="parent_instance" link="tracker-sparql-connection.html#TrackerSparqlConnection.parent_instance"/>
@@ -88,6 +87,8 @@
     <keyword type="function" name="tracker_sparql_connection_close_finish" link="tracker-sparql-connection.html#tracker_sparql_connection_close_finish"/>
     <keyword type="function" name="tracker_sparql_connection_create_batch" link="tracker-sparql-connection.html#tracker_sparql_connection_create_batch"/>
     <keyword type="function" name="tracker_sparql_connection_create_notifier" link="tracker-sparql-connection.html#tracker_sparql_connection_create_notifier"/>
+    <keyword type="function" name="tracker_sparql_connection_deserialize_async" link="tracker-sparql-connection.html#tracker_sparql_connection_deserialize_async"/>
+    <keyword type="function" name="tracker_sparql_connection_deserialize_finish" link="tracker-sparql-connection.html#tracker_sparql_connection_deserialize_finish"/>
     <keyword type="function" name="tracker_sparql_connection_get_namespace_manager" link="tracker-sparql-connection.html#tracker_sparql_connection_get_namespace_manager"/>
     <keyword type="function" name="tracker_sparql_connection_load_statement_from_gresource" link="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource"/>
     <keyword type="function" name="tracker_sparql_connection_map_connection" link="tracker-sparql-connection.html#tracker_sparql_connection_map_connection"/>
@@ -151,6 +152,11 @@
     <keyword type="property" name="dbus-connection" link="tracker-endpoint-dbus.html#TrackerEndpointDBus:dbus-connection"/>
     <keyword type="property" name="object-path" link="tracker-endpoint-dbus.html#TrackerEndpointDBus:object-path"/>
     <keyword type="function" name="tracker_endpoint_dbus_new" link="tracker-endpoint-dbus.html#tracker_endpoint_dbus_new"/>
+    <keyword type="class" name="TrackerEndpointHttp" link="tracker-endpoint-http.html#TrackerEndpointHttp"/>
+    <keyword type="signal" name="block-remote-address" link="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address"/>
+    <keyword type="property" name="http-certificate" link="tracker-endpoint-http.html#TrackerEndpointHttp:http-certificate"/>
+    <keyword type="property" name="http-port" link="tracker-endpoint-http.html#TrackerEndpointHttp:http-port"/>
+    <keyword type="function" name="tracker_endpoint_http_new" link="tracker-endpoint-http.html#tracker_endpoint_http_new"/>
     <keyword type="class" name="TrackerNamespaceManager" link="tracker-namespace-manager.html#TrackerNamespaceManager"/>
     <keyword type="field" name="parent_class" link="tracker-namespace-manager.html#TrackerNamespaceManagerClass.parent_class"/>
     <keyword type="function" name="tracker_namespace_manager_add_prefix" link="tracker-namespace-manager.html#tracker_namespace_manager_add_prefix"/>
@@ -206,6 +212,7 @@
     <keyword type="function" name="tracker_resource_identifier_compare_func" link="tracker-resource.html#tracker_resource_identifier_compare_func"/>
     <keyword type="function" name="tracker_resource_new" link="tracker-resource.html#tracker_resource_new"/>
     <keyword type="function" name="tracker_resource_print_jsonld" link="tracker-resource.html#tracker_resource_print_jsonld"/>
+    <keyword type="function" name="tracker_resource_print_rdf" link="tracker-resource.html#tracker_resource_print_rdf"/>
     <keyword type="function" name="tracker_resource_print_sparql_update" link="tracker-resource.html#tracker_resource_print_sparql_update"/>
     <keyword type="function" name="tracker_resource_print_turtle" link="tracker-resource.html#tracker_resource_print_turtle"/>
     <keyword type="function" name="tracker_resource_serialize" link="tracker-resource.html#tracker_resource_serialize"/>
@@ -248,6 +255,7 @@
     <keyword type="macro" name="TRACKER_AVAILABLE_IN_3_1" link="tracker-version.html#TRACKER_AVAILABLE_IN_3_1"/>
     <keyword type="macro" name="TRACKER_AVAILABLE_IN_3_2" link="tracker-version.html#TRACKER_AVAILABLE_IN_3_2"/>
     <keyword type="macro" name="TRACKER_AVAILABLE_IN_3_3" link="tracker-version.html#TRACKER_AVAILABLE_IN_3_3"/>
+    <keyword type="macro" name="TRACKER_AVAILABLE_IN_3_4" link="tracker-version.html#TRACKER_AVAILABLE_IN_3_4"/>
     <keyword type="macro" name="TRACKER_AVAILABLE_IN_ALL" link="tracker-version.html#TRACKER_AVAILABLE_IN_ALL"/>
     <keyword type="macro" name="TRACKER_CHECK_VERSION" link="tracker-version.html#TRACKER_CHECK_VERSION"/>
     <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_1" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_1"/>
@@ -256,10 +264,13 @@
     <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_2_FOR" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_2_FOR"/>
     <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_3" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_3"/>
     <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_3_FOR" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_3_FOR"/>
+    <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_4" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_4"/>
+    <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_4_FOR" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_4_FOR"/>
     <keyword type="macro" name="TRACKER_VERSION_3_0" link="tracker-version.html#TRACKER_VERSION_3_0"/>
     <keyword type="macro" name="TRACKER_VERSION_3_1" link="tracker-version.html#TRACKER_VERSION_3_1"/>
     <keyword type="macro" name="TRACKER_VERSION_3_2" link="tracker-version.html#TRACKER_VERSION_3_2"/>
     <keyword type="macro" name="TRACKER_VERSION_3_3" link="tracker-version.html#TRACKER_VERSION_3_3"/>
+    <keyword type="macro" name="TRACKER_VERSION_3_4" link="tracker-version.html#TRACKER_VERSION_3_4"/>
     <keyword type="macro" name="TRACKER_VERSION_CUR" link="tracker-version.html#TRACKER_VERSION_CUR"/>
     <keyword type="macro" name="TRACKER_VERSION_MAX_ALLOWED" link="tracker-version.html#TRACKER_VERSION_MAX_ALLOWED"/>
     <keyword type="macro" name="TRACKER_VERSION_MIN_REQUIRED" link="tracker-version.html#TRACKER_VERSION_MIN_REQUIRED"/>
@@ -300,11 +311,10 @@
     <keyword type="macro" name="TRACKER_PREFIX_SLO" link="tracker-ontologies.html#TRACKER_PREFIX_SLO"/>
     <keyword type="macro" name="TRACKER_PREFIX_TRACKER" link="tracker-ontologies.html#TRACKER_PREFIX_TRACKER"/>
     <keyword type="macro" name="TRACKER_PREFIX_XSD" link="tracker-ontologies.html#TRACKER_PREFIX_XSD"/>
-    <keyword type="class" name="TrackerEndpointHttp" link="tracker-endpoint-http.html#TrackerEndpointHttp"/>
-    <keyword type="signal" name="block-remote-address" link="tracker-endpoint-http.html#TrackerEndpointHttp::block-remote-address"/>
-    <keyword type="property" name="http-certificate" link="tracker-endpoint-http.html#TrackerEndpointHttp:http-certificate"/>
-    <keyword type="property" name="http-port" link="tracker-endpoint-http.html#TrackerEndpointHttp:http-port"/>
-    <keyword type="function" name="tracker_endpoint_http_new" link="tracker-endpoint-http.html#tracker_endpoint_http_new"/>
+    <keyword type="member" name="TRACKER_N_RDF_FORMATS" link="tracker-enums.html#TRACKER_N_RDF_FORMATS"/>
+    <keyword type="member" name="TRACKER_RDF_FORMAT_TRIG" link="tracker-enums.html#TRACKER_RDF_FORMAT_TRIG"/>
+    <keyword type="member" name="TRACKER_RDF_FORMAT_TURTLE" link="tracker-enums.html#TRACKER_RDF_FORMAT_TURTLE"/>
+    <keyword type="enum" name="TrackerRdfFormat" link="tracker-enums.html#TrackerRdfFormat"/>
   
 
   <keyword type="rdf-property" name="dc:contributor" link="dc-ontology.html#dc:contributor"/>

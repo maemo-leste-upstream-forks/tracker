@@ -60,10 +60,11 @@
 
 #include "tracker-connection.h"
 #include "tracker-private.h"
-#include "tracker-serializer-json.h"
-#include "tracker-serializer-trig.h"
-#include "tracker-serializer-turtle.h"
-#include "tracker-serializer-xml.h"
+#include "tracker-debug.h"
+
+#include "bus/tracker-bus.h"
+#include "direct/tracker-direct.h"
+#include "remote/tracker-remote.h"
 
 G_DEFINE_ABSTRACT_TYPE (TrackerSparqlConnection, tracker_sparql_connection,
                         G_TYPE_OBJECT)
@@ -88,13 +89,8 @@ tracker_sparql_connection_class_init (TrackerSparqlConnectionClass *klass)
 
 	object_class->dispose = tracker_sparql_connection_dispose;
 
-	/* Ensure serializer types, we want all of these initialized before
-	 * the remote soup 2/3 modules gets to initialize them.
-	 */
-	g_type_ensure (TRACKER_TYPE_SERIALIZER_XML);
-	g_type_ensure (TRACKER_TYPE_SERIALIZER_JSON);
-	g_type_ensure (TRACKER_TYPE_SERIALIZER_TURTLE);
-	g_type_ensure (TRACKER_TYPE_SERIALIZER_TRIG);
+	/* Initialize debug flags */
+	tracker_get_debug_flags ();
 }
 
 gboolean
@@ -120,125 +116,6 @@ tracker_sparql_connection_lookup_dbus_service (TrackerSparqlConnection  *connect
 	                                                                              path);
 }
 
-/* The constructor functions are defined in the libtracker-sparql-backend, but
- * documented here. */
-
-/**
- * tracker_sparql_connection_new:
- * @flags: values from #TrackerSparqlConnectionFlags
- * @store: (nullable): the directory that contains the database as a #GFile, or %NULL
- * @ontology: (nullable): the directory that contains the database schemas as a #GFile, or %NULL
- * @cancellable: (nullable): a #GCancellable, or %NULL
- * @error: pointer to a #GError
- *
- * Creates or opens a database.
- *
- * This method should only be used for databases owned by the current process.
- * To connect to databases managed by other processes, use
- * tracker_sparql_connection_bus_new().
- *
- * If @store is %NULL, the database will be created in memory.
- *
- * The @ontologies parameter must point to a location containing suitable
- * `.ontology` files in Turtle format. These control the database schema that
- * is used. You can use the default Nepomuk ontologies by calling
- * tracker_sparql_get_ontology_nepomuk ().
- *
- * If you open an existing database using a different @ontology to the one it
- * was created with, Tracker will attempt to migrate the existing data to the
- * new schema. This may raise an error. In particular, not all migrations are
- * possible without causing data loss and Tracker will refuse to delete data
- * during a migration.
- *
- * You can also pass %NULL for @ontologies to mean "use the ontologies that the
- * database was created with". This will fail if the database doesn't already
- * exist.
- *
- * Returns: (transfer full): a new #TrackerSparqlConnection. Call
- * g_object_unref() on the object when no longer used.
- *
- * Since: 3.0
- */
-
-/**
- * tracker_sparql_connection_new_async:
- * @flags: values from #TrackerSparqlConnectionFlags
- * @store: (nullable): the directory that contains the database as a #GFile, or %NULL
- * @ontology: (nullable): the directory that contains the database schemas as a #GFile, or %NULL
- * @cancellable: (nullable): a #GCancellable, or %NULL
- * @callback: the #GAsyncReadyCallback called when the operation completes
- * @user_data: data passed to @callback
- *
- * Asynchronous version of tracker_sparql_connection_new().
- *
- * Since: 3.0
- */
-
-/**
- * tracker_sparql_connection_new_finish:
- * @result: the #GAsyncResult
- * @error: pointer to a #GError
- *
- * Completion function for tracker_sparql_connection_new_async().
- *
- * Since: 3.0
- */
-
-/**
- * tracker_sparql_connection_bus_new:
- * @service_name: The name of the D-Bus service to connect to.
- * @object_path: (nullable): The path to the object, or %NULL to use the default.
- * @dbus_connection: (nullable): The #GDBusConnection to use, or %NULL to use the session bus
- * @error: pointer to a #GError
- *
- * Connects to a database owned by another process on the
- * local machine.
- *
- * Returns: (transfer full): a new #TrackerSparqlConnection. Call g_object_unref() on the
- * object when no longer used.
- *
- * Since: 3.0
- */
-
-/**
- * tracker_sparql_connection_bus_new_async:
- * @service_name: The name of the D-Bus service to connect to.
- * @object_path: (nullable): The path to the object, or %NULL to use the default.
- * @dbus_connection: (nullable): The #GDBusConnection to use, or %NULL to use the session bus
- * @cancellable: (nullable): a #GCancellable, or %NULL
- * @callback: the #GAsyncReadyCallback called when the operation completes
- * @user_data: data passed to @callback
- *
- * Connects to a database owned by another process on the
- * local machine. This is an asynchronous operation.
- *
- * Since: 3.1
- */
-
-/**
- * tracker_sparql_connection_bus_new_finish:
- * @result: the #GAsyncResult
- * @error: pointer to a #GError
- *
- * Completion function for tracker_sparql_connection_bus_new_async().
- *
- * Returns: (transfer full): a new #TrackerSparqlConnection. Call g_object_unref() on the
- * object when no longer used.
- *
- * Since: 3.1
- */
-
-/**
- * tracker_sparql_connection_remote_new:
- * @uri_base: Base URI of the remote connection
- *
- * Connects to a remote SPARQL endpoint. The connection is made using the libsoup
- * HTTP library. The connection will normally use the http:// or https:// protocol.
- *
- * Returns: (transfer full): a new remote #TrackerSparqlConnection. Call
- * g_object_unref() on the object when no longer used.
- */
-
 /**
  * tracker_sparql_connection_query:
  * @connection: a #TrackerSparqlConnection
@@ -263,15 +140,21 @@ tracker_sparql_connection_query (TrackerSparqlConnection  *connection,
                                  GCancellable             *cancellable,
                                  GError                  **error)
 {
+	TrackerSparqlCursor *cursor;
+
 	g_return_val_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection), NULL);
 	g_return_val_if_fail (sparql != NULL, NULL);
 	g_return_val_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable), NULL);
 	g_return_val_if_fail (!error || !*error, NULL);
 
-	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->query (connection,
-	                                                                sparql,
-	                                                                cancellable,
-	                                                                error);
+	cursor = TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->query (connection,
+	                                                                  sparql,
+	                                                                  cancellable,
+	                                                                  error);
+	if (cursor)
+		tracker_sparql_cursor_set_connection (cursor, connection);
+
+	return cursor;
 }
 
 /**
@@ -320,13 +203,19 @@ tracker_sparql_connection_query_finish (TrackerSparqlConnection  *connection,
                                         GAsyncResult             *res,
                                         GError                  **error)
 {
+	TrackerSparqlCursor *cursor;
+
 	g_return_val_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection), NULL);
 	g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 	g_return_val_if_fail (!error || !*error, NULL);
 
-	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->query_finish (connection,
-	                                                                       res,
-	                                                                       error);
+	cursor = TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->query_finish (connection,
+	                                                                         res,
+	                                                                         error);
+	if (cursor)
+		tracker_sparql_cursor_set_connection (cursor, connection);
+
+	return cursor;
 }
 
 /**
@@ -946,6 +835,86 @@ tracker_sparql_connection_serialize_finish (TrackerSparqlConnection  *connection
 }
 
 /**
+ * tracker_sparql_connection_deserialize_async:
+ * @connection: a #TrackerSparqlConnection
+ * @flags: deserialization flags
+ * @format: RDF format of data in stream
+ * @default_graph: default graph that will receive the RDF data
+ * @stream: input stream with RDF data
+ * @cancellable: a #GCancellable
+ * @callback: the #GAsyncReadyCallback called when the operation completes
+ * @user_data: data passed to @callback
+ *
+ * Incorporates the contents of the RDF data contained in @stream into the
+ * data stored by @connection. This is an asynchronous operation,
+ * @callback will be invoked when the data has been fully inserted to
+ * @connection.
+ *
+ * RDF data will be inserted in the given @default_graph if one is provided,
+ * or the default graph if @default_graph is %NULL. Any RDF data that has a
+ * graph specified (e.g. using the `GRAPH` clause in the Trig format) will
+ * be inserted in the specified graph instead of @default_graph.
+ *
+ * The @flags argument is reserved for future expansions, currently
+ * %TRACKER_DESERIALIZE_FLAGS_NONE must be passed.
+ *
+ * Since: 3.4
+ **/
+void
+tracker_sparql_connection_deserialize_async (TrackerSparqlConnection *connection,
+                                             TrackerDeserializeFlags  flags,
+                                             TrackerRdfFormat         format,
+                                             const gchar             *default_graph,
+                                             GInputStream            *stream,
+                                             GCancellable            *cancellable,
+                                             GAsyncReadyCallback      callback,
+                                             gpointer                 user_data)
+{
+	g_return_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection));
+	g_return_if_fail (flags == TRACKER_DESERIALIZE_FLAGS_NONE);
+	g_return_if_fail (format < TRACKER_N_RDF_FORMATS);
+	g_return_if_fail (G_IS_INPUT_STREAM (stream));
+	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
+	g_return_if_fail (callback != NULL);
+
+	TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->deserialize_async (connection,
+	                                                                     flags,
+	                                                                     format,
+	                                                                     default_graph,
+	                                                                     stream,
+	                                                                     cancellable,
+	                                                                     callback,
+	                                                                     user_data);
+}
+
+/**
+ * tracker_sparql_connection_deserialize_finish:
+ * @connection: a #TrackerSparqlConnection
+ * @result: the #GAsyncResult
+ * @error: location for returned errors, or %NULL
+ *
+ * Finishes a tracker_sparql_connection_deserialize_async() operation.
+ * In case of error, %NULL will be returned and @error will be set.
+ *
+ * Returns: %TRUE if all data was inserted successfully.
+ *
+ * Since: 3.4
+ **/
+gboolean
+tracker_sparql_connection_deserialize_finish (TrackerSparqlConnection  *connection,
+                                              GAsyncResult             *result,
+                                              GError                  **error)
+{
+	g_return_val_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection), FALSE);
+	g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+	g_return_val_if_fail (!error || !*error, FALSE);
+
+	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->deserialize_finish (connection,
+	                                                                             result,
+	                                                                             error);
+}
+
+/**
  * tracker_sparql_connection_map_connection:
  * @connection: a #TrackerSparqlConnection
  * @handle_name: handle name for @service_connection
@@ -987,4 +956,258 @@ tracker_sparql_connection_map_connection (TrackerSparqlConnection *connection,
 	TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->map_connection (connection,
 	                                                                  handle_name,
 	                                                                  service_connection);
+}
+
+/**
+ * tracker_sparql_connection_remote_new:
+ * @uri_base: Base URI of the remote connection
+ *
+ * Connects to a remote SPARQL endpoint. The connection is made using the libsoup
+ * HTTP library. The connection will normally use the http:// or https:// protocol.
+ *
+ * Returns: (transfer full): a new remote #TrackerSparqlConnection. Call
+ * g_object_unref() on the object when no longer used.
+ */
+TrackerSparqlConnection *
+tracker_sparql_connection_remote_new (const gchar *uri_base)
+{
+	return TRACKER_SPARQL_CONNECTION (tracker_remote_connection_new (uri_base));
+}
+
+/**
+ * tracker_sparql_connection_new:
+ * @flags: values from #TrackerSparqlConnectionFlags
+ * @store: (nullable): the directory that contains the database as a #GFile, or %NULL
+ * @ontology: (nullable): the directory that contains the database schemas as a #GFile, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @error: pointer to a #GError
+ *
+ * Creates or opens a database.
+ *
+ * This method should only be used for databases owned by the current process.
+ * To connect to databases managed by other processes, use
+ * tracker_sparql_connection_bus_new().
+ *
+ * If @store is %NULL, the database will be created in memory.
+ *
+ * The @ontologies parameter must point to a location containing suitable
+ * `.ontology` files in Turtle format. These control the database schema that
+ * is used. You can use the default Nepomuk ontologies by calling
+ * tracker_sparql_get_ontology_nepomuk ().
+ *
+ * If you open an existing database using a different @ontology to the one it
+ * was created with, Tracker will attempt to migrate the existing data to the
+ * new schema. This may raise an error. In particular, not all migrations are
+ * possible without causing data loss and Tracker will refuse to delete data
+ * during a migration.
+ *
+ * You can also pass %NULL for @ontologies to mean "use the ontologies that the
+ * database was created with". This will fail if the database doesn't already
+ * exist.
+ *
+ * Returns: (transfer full): a new #TrackerSparqlConnection. Call
+ * g_object_unref() on the object when no longer used.
+ *
+ * Since: 3.0
+ */
+TrackerSparqlConnection *
+tracker_sparql_connection_new (TrackerSparqlConnectionFlags   flags,
+                               GFile                         *store,
+                               GFile                         *ontology,
+                               GCancellable                  *cancellable,
+                               GError                       **error)
+{
+	g_return_val_if_fail (!store || G_IS_FILE (store), NULL);
+	g_return_val_if_fail (!ontology || G_IS_FILE (ontology), NULL);
+	g_return_val_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable), NULL);
+	g_return_val_if_fail (!error || !*error, NULL);
+
+	return tracker_direct_connection_new (flags, store, ontology, error);
+}
+
+static void
+new_async_cb (GObject      *source,
+              GAsyncResult *res,
+              gpointer      user_data)
+{
+	TrackerSparqlConnection *conn;
+	GTask *task = user_data;
+	GError *error = NULL;
+
+	conn = tracker_direct_connection_new_finish (res, &error);
+
+	if (conn)
+		g_task_return_pointer (task, conn, g_object_unref);
+	else
+		g_task_return_error (task, error);
+}
+
+/**
+ * tracker_sparql_connection_new_async:
+ * @flags: values from #TrackerSparqlConnectionFlags
+ * @store: (nullable): the directory that contains the database as a #GFile, or %NULL
+ * @ontology: (nullable): the directory that contains the database schemas as a #GFile, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @callback: the #GAsyncReadyCallback called when the operation completes
+ * @user_data: data passed to @callback
+ *
+ * Asynchronous version of tracker_sparql_connection_new().
+ *
+ * Since: 3.0
+ */
+
+void
+tracker_sparql_connection_new_async (TrackerSparqlConnectionFlags  flags,
+                                     GFile                        *store,
+                                     GFile                        *ontology,
+                                     GCancellable                 *cancellable,
+                                     GAsyncReadyCallback           callback,
+                                     gpointer                      user_data)
+{
+	GTask *task;
+
+	g_return_if_fail (!store || G_IS_FILE (store));
+	g_return_if_fail (!ontology || G_IS_FILE (ontology));
+	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
+
+	task = g_task_new (NULL, cancellable, callback, user_data);
+	g_task_set_source_tag (task, tracker_sparql_connection_new_async);
+
+	tracker_direct_connection_new_async (flags, store, ontology, cancellable,
+	                                     new_async_cb, task);
+}
+
+/**
+ * tracker_sparql_connection_new_finish:
+ * @result: the #GAsyncResult
+ * @error: pointer to a #GError
+ *
+ * Completion function for tracker_sparql_connection_new_async().
+ *
+ * Since: 3.0
+ */
+TrackerSparqlConnection *
+tracker_sparql_connection_new_finish (GAsyncResult  *res,
+                                      GError       **error)
+{
+	g_return_val_if_fail (G_IS_TASK (res), NULL);
+	g_return_val_if_fail (g_task_get_source_tag (G_TASK (res)) ==
+	                      tracker_sparql_connection_new_async,
+	                      NULL);
+
+	return g_task_propagate_pointer (G_TASK (res), error);
+}
+
+/**
+ * tracker_sparql_connection_bus_new:
+ * @service_name: The name of the D-Bus service to connect to.
+ * @object_path: (nullable): The path to the object, or %NULL to use the default.
+ * @dbus_connection: (nullable): The #GDBusConnection to use, or %NULL to use the session bus
+ * @error: pointer to a #GError
+ *
+ * Connects to a database owned by another process on the
+ * local machine.
+ *
+ * Returns: (transfer full): a new #TrackerSparqlConnection. Call g_object_unref() on the
+ * object when no longer used.
+ *
+ * Since: 3.0
+ */
+TrackerSparqlConnection *
+tracker_sparql_connection_bus_new (const gchar      *service,
+                                   const gchar      *object_path,
+                                   GDBusConnection  *conn,
+                                   GError          **error)
+{
+	g_return_val_if_fail (service != NULL, NULL);
+	g_return_val_if_fail (!conn || G_IS_DBUS_CONNECTION (conn), NULL);
+	g_return_val_if_fail (!error || !*error, NULL);
+
+	if (!object_path)
+		object_path = "/org/freedesktop/Tracker3/Endpoint";
+
+	return tracker_bus_connection_new (service, object_path, conn, error);
+}
+
+static void
+bus_new_cb (GObject      *source,
+            GAsyncResult *res,
+            gpointer      user_data)
+{
+	TrackerSparqlConnection *conn;
+	GTask *task = user_data;
+	GError *error = NULL;
+
+	conn = tracker_bus_connection_new_finish (res, &error);
+
+	if (conn)
+		g_task_return_pointer (task, conn, g_object_unref);
+	else
+		g_task_return_error (task, error);
+
+	g_object_unref (task);
+}
+
+/**
+ * tracker_sparql_connection_bus_new_async:
+ * @service_name: The name of the D-Bus service to connect to.
+ * @object_path: (nullable): The path to the object, or %NULL to use the default.
+ * @dbus_connection: (nullable): The #GDBusConnection to use, or %NULL to use the session bus
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @callback: the #GAsyncReadyCallback called when the operation completes
+ * @user_data: data passed to @callback
+ *
+ * Connects to a database owned by another process on the
+ * local machine. This is an asynchronous operation.
+ *
+ * Since: 3.1
+ */
+void
+tracker_sparql_connection_bus_new_async (const gchar         *service,
+                                         const gchar         *object_path,
+                                         GDBusConnection     *conn,
+                                         GCancellable        *cancellable,
+                                         GAsyncReadyCallback  callback,
+                                         gpointer             user_data)
+{
+	GTask *task;
+
+	g_return_if_fail (service != NULL);
+	g_return_if_fail (!conn || G_IS_DBUS_CONNECTION (conn));
+	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
+
+	task = g_task_new (NULL, cancellable, callback, user_data);
+	g_task_set_source_tag (task, tracker_sparql_connection_bus_new_async);
+
+	if (!object_path)
+		object_path = "/org/freedesktop/Tracker3/Endpoint";
+
+	tracker_bus_connection_new_async (service, object_path, conn,
+	                                  cancellable, bus_new_cb,
+	                                  task);
+}
+
+/**
+ * tracker_sparql_connection_bus_new_finish:
+ * @result: the #GAsyncResult
+ * @error: pointer to a #GError
+ *
+ * Completion function for tracker_sparql_connection_bus_new_async().
+ *
+ * Returns: (transfer full): a new #TrackerSparqlConnection. Call g_object_unref() on the
+ * object when no longer used.
+ *
+ * Since: 3.1
+ */
+TrackerSparqlConnection *
+tracker_sparql_connection_bus_new_finish (GAsyncResult  *result,
+                                          GError       **error)
+{
+	g_return_val_if_fail (G_IS_TASK (result), NULL);
+	g_return_val_if_fail (!error || !*error, NULL);
+	g_return_val_if_fail (g_task_get_source_tag (G_TASK (result)) ==
+	                      tracker_sparql_connection_bus_new_async,
+	                      NULL);
+
+	return g_task_propagate_pointer (G_TASK (result), error);
 }

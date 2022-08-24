@@ -23,6 +23,7 @@
 #error "only <libtracker-sparql/tracker-sparql.h> must be included directly."
 #endif
 
+#include <libtracker-sparql/tracker-enums.h>
 #include <libtracker-sparql/tracker-error.h>
 #include <libtracker-sparql/tracker-notifier.h>
 #include <libtracker-sparql/tracker-resource.h>
@@ -55,14 +56,18 @@ typedef enum {
 } TrackerSparqlConnectionFlags;
 
 typedef enum {
-	TRACKER_RDF_FORMAT_TURTLE,
-	TRACKER_RDF_FORMAT_TRIG,
-	TRACKER_N_RDF_FORMATS
-} TrackerRdfFormat;
-
-typedef enum {
 	TRACKER_SERIALIZE_FLAGS_NONE = 0,
 } TrackerSerializeFlags;
+
+/**
+ * TrackerDeserializeFlags:
+ * @TRACKER_DESERIALIZE_FLAGS_NONE: No flags.
+ *
+ * Flags affecting deserialization of RDF.
+ */
+typedef enum {
+	TRACKER_DESERIALIZE_FLAGS_NONE = 0,
+} TrackerDeserializeFlags;
 
 /**
  * TrackerSparqlConnection:
@@ -226,6 +231,20 @@ TRACKER_AVAILABLE_IN_3_3
 GInputStream * tracker_sparql_connection_serialize_finish (TrackerSparqlConnection  *connection,
                                                            GAsyncResult             *result,
                                                            GError                  **error);
+
+TRACKER_AVAILABLE_IN_3_4
+void tracker_sparql_connection_deserialize_async (TrackerSparqlConnection *connection,
+                                                  TrackerDeserializeFlags  flags,
+                                                  TrackerRdfFormat         format,
+                                                  const gchar             *default_graph,
+                                                  GInputStream            *stream,
+                                                  GCancellable            *cancellable,
+                                                  GAsyncReadyCallback      callback,
+                                                  gpointer                 user_data);
+TRACKER_AVAILABLE_IN_3_4
+gboolean tracker_sparql_connection_deserialize_finish (TrackerSparqlConnection  *connection,
+                                                       GAsyncResult             *result,
+                                                       GError                  **error);
 
 TRACKER_AVAILABLE_IN_ALL
 void tracker_sparql_connection_close_async (TrackerSparqlConnection *connection,
