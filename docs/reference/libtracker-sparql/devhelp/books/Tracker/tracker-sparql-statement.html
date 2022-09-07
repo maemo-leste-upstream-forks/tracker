@@ -144,7 +144,7 @@ at any given time.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+GObject
     <span class="lineart">╰──</span>TrackerSparqlStatement
 </pre>
 
@@ -166,7 +166,7 @@ a prepared query statement.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerSparqlStatement.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>)
+		(GObject)
 		–
 	</div>
 			<i>No description available</i>
@@ -247,7 +247,7 @@ a prepared query statement.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.SparqlStatement
 </pre>
 
@@ -269,7 +269,7 @@ a prepared query statement.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerSparqlStatement.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		(GObject.Object)
 		–
 	</div>
 			<i>No description available</i>
@@ -295,7 +295,7 @@ a prepared query statement.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.SparqlStatement
 </pre>
 
@@ -317,7 +317,7 @@ a prepared query statement.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerSparqlStatement.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		(GObject.Object)
 		–
 	</div>
 			<i>No description available</i>
@@ -353,8 +353,8 @@ a prepared query statement.</p>
 
 <pre class="c-prototype language-c">
 tracker_sparql_statement_bind_boolean (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                       const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * name,
-                                       <a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a> value)</pre>
+                                       const gchar* name,
+                                       gboolean value)</pre>
 
 <p>Binds the boolean <em>value</em> to variable <em>name</em>.</p>
 
@@ -547,8 +547,8 @@ tracker_sparql_statement_bind_boolean (<a title="TrackerSparqlStatement" href="t
 
 <pre class="c-prototype language-c">
 tracker_sparql_statement_bind_datetime (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                        const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * name,
-                                        <a title="GDateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GDateTime</a> * value)</pre>
+                                        const gchar* name,
+                                        GDateTime* value)</pre>
 
 <p>Binds the GDateTime <em>value</em> to variable <em>name</em>.</p>
 
@@ -609,7 +609,7 @@ tracker_sparql_statement_bind_datetime (<a title="TrackerSparqlStatement" href="
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlStatement.prototype.bind_datetime(name: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: <a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a>): {
+<code>function Tracker.SparqlStatement.prototype.bind_datetime(name: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, value: GLib.DateTime): {
     // javascript wrapper for 'tracker_sparql_statement_bind_datetime'
 }</code></pre>
 
@@ -645,7 +645,7 @@ tracker_sparql_statement_bind_datetime (<a title="TrackerSparqlStatement" href="
 <div class="symbol-detail">
 	<div>
 		<i><em><code>value</code></em></i>
-<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+<span>(</span>GLib.DateTime<span>)</span>
 –
 </div>
 <p>value</p>
@@ -710,7 +710,7 @@ tracker_sparql_statement_bind_datetime (<a title="TrackerSparqlStatement" href="
 <div class="symbol-detail">
 	<div>
 		<i><em><code>value</code></em></i>
-<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+<span>(</span>GLib.DateTime<span>)</span>
 –
 </div>
 <p>value</p>
@@ -750,8 +750,8 @@ tracker_sparql_statement_bind_datetime (<a title="TrackerSparqlStatement" href="
 
 <pre class="c-prototype language-c">
 tracker_sparql_statement_bind_double (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                      const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * name,
-                                      <a title="gdouble" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble">gdouble</a> value)</pre>
+                                      const gchar* name,
+                                      gdouble value)</pre>
 
 <p>Binds the double <em>value</em> to variable <em>name</em>.</p>
 
@@ -944,8 +944,8 @@ tracker_sparql_statement_bind_double (<a title="TrackerSparqlStatement" href="tr
 
 <pre class="c-prototype language-c">
 tracker_sparql_statement_bind_int (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                   const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * name,
-                                   <a title="gint64" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a> value)</pre>
+                                   const gchar* name,
+                                   gint64 value)</pre>
 
 <p>Binds the integer <em>value</em> to variable <em>name</em>.</p>
 
@@ -1138,8 +1138,8 @@ tracker_sparql_statement_bind_int (<a title="TrackerSparqlStatement" href="track
 
 <pre class="c-prototype language-c">
 tracker_sparql_statement_bind_string (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                      const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * name,
-                                      const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * value)</pre>
+                                      const gchar* name,
+                                      const gchar* value)</pre>
 
 <p>Binds the string <em>value</em> to variable <em>name</em>.</p>
 
@@ -1470,8 +1470,8 @@ tracker_sparql_statement_clear_bindings (<a title="TrackerSparqlStatement" href=
 <pre class="c-prototype language-c">
 <a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> *
 tracker_sparql_statement_execute (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                  <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                                  <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                                  GCancellable* cancellable,
+                                  GError** error)</pre>
 
 <p>Executes the SPARQL query with the currently bound values.</p>
 
@@ -1495,7 +1495,7 @@ tracker_sparql_statement_execute (<a title="TrackerSparqlStatement" href="tracke
 		<i><em><code>cancellable</code></em></i>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -1505,7 +1505,7 @@ tracker_sparql_statement_execute (<a title="TrackerSparqlStatement" href="tracke
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> for error reporting.</p>
+<p>GError for error reporting.</p>
 
 </div>
 
@@ -1542,7 +1542,7 @@ tracker_sparql_statement_execute (<a title="TrackerSparqlStatement" href="tracke
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlStatement.prototype.execute(cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>): {
+<code>function Tracker.SparqlStatement.prototype.execute(cancellable: Gio.Cancellable): {
     // javascript wrapper for 'tracker_sparql_statement_execute'
 }</code></pre>
 
@@ -1567,10 +1567,10 @@ tracker_sparql_statement_execute (<a title="TrackerSparqlStatement" href="tracke
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -1631,10 +1631,10 @@ def Tracker.SparqlStatement.execute (self, cancellable):
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -1680,9 +1680,9 @@ def Tracker.SparqlStatement.execute (self, cancellable):
 
 <pre class="c-prototype language-c">
 tracker_sparql_statement_execute_async (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                        <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                                        <a title="GAsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">GAsyncReadyCallback</a> callback,
-                                        <a title="gpointer" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer">gpointer</a> user_data)</pre>
+                                        GCancellable* cancellable,
+                                        GAsyncReadyCallback callback,
+                                        gpointer user_data)</pre>
 
 <p>Asynchronously executes the SPARQL query with the currently bound values.</p>
 
@@ -1706,7 +1706,7 @@ tracker_sparql_statement_execute_async (<a title="TrackerSparqlStatement" href="
 		<i><em><code>cancellable</code></em></i>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -1716,7 +1716,7 @@ tracker_sparql_statement_execute_async (<a title="TrackerSparqlStatement" href="
 		<i><em><code>callback</code></em></i>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">GAsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -1751,7 +1751,7 @@ asynchronous operation is finished.</p>
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlStatement.prototype.execute_async(cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, callback: <a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a>, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
+<code>function Tracker.SparqlStatement.prototype.execute_async(cancellable: Gio.Cancellable, callback: Gio.AsyncReadyCallback, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
     // javascript wrapper for 'tracker_sparql_statement_execute_async'
 }</code></pre>
 
@@ -1776,10 +1776,10 @@ asynchronous operation is finished.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -1787,10 +1787,10 @@ asynchronous operation is finished.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>callback</code></em></i>
-<span>(</span><a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a><span>)</span>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -1850,10 +1850,10 @@ asynchronous operation is finished.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -1861,10 +1861,10 @@ asynchronous operation is finished.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>callback</code></em></i>
-<span>(</span><a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a><span>)</span>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -1911,8 +1911,8 @@ asynchronous operation is finished.</p>
 <pre class="c-prototype language-c">
 <a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> *
 tracker_sparql_statement_execute_finish (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                         <a title="GAsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">GAsyncResult</a> * res,
-                                         <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                                         GAsyncResult* res,
+                                         GError** error)</pre>
 
 <p>Finishes the asynchronous operation started through
 <a href="tracker-sparql-statement.html#tracker_sparql_statement_execute_async">tracker_sparql_statement_execute_async</a>.</p>
@@ -1937,7 +1937,7 @@ tracker_sparql_statement_execute_finish (<a title="TrackerSparqlStatement" href=
 		<i><em><code>res</code></em></i>
 –
 </div>
-<p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">GAsyncResult</a> from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a></p>
+<p>The GAsyncResult from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a></p>
 
 </div>
 
@@ -1947,7 +1947,7 @@ tracker_sparql_statement_execute_finish (<a title="TrackerSparqlStatement" href=
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p>The error which occurred or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>The error which occurred or NULL</p>
 
 </div>
 
@@ -1984,7 +1984,7 @@ tracker_sparql_statement_execute_finish (<a title="TrackerSparqlStatement" href=
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlStatement.prototype.execute_finish(res: <a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a>): {
+<code>function Tracker.SparqlStatement.prototype.execute_finish(res: Gio.AsyncResult): {
     // javascript wrapper for 'tracker_sparql_statement_execute_finish'
 }</code></pre>
 
@@ -2010,10 +2010,10 @@ tracker_sparql_statement_execute_finish (<a title="TrackerSparqlStatement" href=
 <div class="symbol-detail">
 	<div>
 		<i><em><code>res</code></em></i>
-<span>(</span><a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a><span>)</span>
+<span>(</span>Gio.AsyncResult<span>)</span>
 –
 </div>
-<p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a> from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">Tracker.SparqlCursor</a></p>
+<p>The GAsyncResult from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">Tracker.SparqlCursor</a></p>
 
 </div>
 
@@ -2075,10 +2075,10 @@ def Tracker.SparqlStatement.execute_finish (self, res):
 <div class="symbol-detail">
 	<div>
 		<i><em><code>res</code></em></i>
-<span>(</span><a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a><span>)</span>
+<span>(</span>Gio.AsyncResult<span>)</span>
 –
 </div>
-<p>The <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a> from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">Tracker.SparqlCursor</a></p>
+<p>The GAsyncResult from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">Tracker.SparqlCursor</a></p>
 
 </div>
 
@@ -2289,7 +2289,7 @@ tracker_sparql_statement_get_connection (<a title="TrackerSparqlStatement" href=
 
 
 <pre class="c-prototype language-c">
-const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *
+const gchar*
 tracker_sparql_statement_get_sparql (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt)</pre>
 
 <p>Returns the SPARQL string that this prepared statement holds.</p>
@@ -2456,9 +2456,9 @@ tracker_sparql_statement_get_sparql (<a title="TrackerSparqlStatement" href="tra
 tracker_sparql_statement_serialize_async (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
                                           <a title="TrackerSerializeFlags" href="tracker-sparql-connection.html#TrackerSerializeFlags">TrackerSerializeFlags</a> flags,
                                           <a title="TrackerRdfFormat" href="tracker-enums.html#TrackerRdfFormat">TrackerRdfFormat</a> format,
-                                          <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                                          <a title="GAsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">GAsyncReadyCallback</a> callback,
-                                          <a title="gpointer" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer">gpointer</a> user_data)</pre>
+                                          GCancellable* cancellable,
+                                          GAsyncReadyCallback callback,
+                                          gpointer user_data)</pre>
 
 <p>Serializes data into the specified RDF format. The query <em>stmt</em> was
 created from must be either a <code>DESCRIBE</code> or <code>CONSTRUCT</code> query, an
@@ -2512,7 +2512,7 @@ an error will be raised.</p>
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2522,7 +2522,7 @@ an error will be raised.</p>
 		<i><em><code>callback</code></em></i>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">GAsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -2560,7 +2560,7 @@ asynchronous operation is finished.</p>
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlStatement.prototype.serialize_async(flags: <a title="Tracker.SerializeFlags" href="tracker-sparql-connection.html#TrackerSerializeFlags">Tracker.SerializeFlags</a>, format: <a title="Tracker.RdfFormat" href="tracker-enums.html#TrackerRdfFormat">Tracker.RdfFormat</a>, cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, callback: <a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a>, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
+<code>function Tracker.SparqlStatement.prototype.serialize_async(flags: <a title="Tracker.SerializeFlags" href="tracker-sparql-connection.html#TrackerSerializeFlags">Tracker.SerializeFlags</a>, format: <a title="Tracker.RdfFormat" href="tracker-enums.html#TrackerRdfFormat">Tracker.RdfFormat</a>, cancellable: Gio.Cancellable, callback: Gio.AsyncReadyCallback, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
     // javascript wrapper for 'tracker_sparql_statement_serialize_async'
 }</code></pre>
 
@@ -2615,10 +2615,10 @@ an error will be raised.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2626,10 +2626,10 @@ an error will be raised.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>callback</code></em></i>
-<span>(</span><a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a><span>)</span>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -2722,10 +2722,10 @@ an error will be raised.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2733,10 +2733,10 @@ an error will be raised.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>callback</code></em></i>
-<span>(</span><a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a><span>)</span>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -2784,13 +2784,13 @@ asynchronous operation is finished.</p>
 
 
 <pre class="c-prototype language-c">
-<a title="GInputStream" href="https://developer.gnome.org/gio/unstable/GInputStream.html#GInputStream-struct">GInputStream</a> *
+GInputStream*
 tracker_sparql_statement_serialize_finish (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
-                                           <a title="GAsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">GAsyncResult</a> * result,
-                                           <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                                           GAsyncResult* result,
+                                           GError** error)</pre>
 
 <p>Finishes a <a href="tracker-sparql-statement.html#tracker_sparql_statement_serialize_async">tracker_sparql_statement_serialize_async</a> operation.
-In case of error, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> will be returned and <em>error</em> will be set.</p>
+In case of error, NULL will be returned and <em>error</em> will be set.</p>
 
 
 
@@ -2812,7 +2812,7 @@ In case of error, <a href="https://developer.gnome.org/glib/unstable/glib-Standa
 		<i><em><code>result</code></em></i>
 –
 </div>
-<p>the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">GAsyncResult</a></p>
+<p>the GAsyncResult</p>
 
 </div>
 
@@ -2822,7 +2822,7 @@ In case of error, <a href="https://developer.gnome.org/glib/unstable/glib-Standa
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p>location for returned errors, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>location for returned errors, or NULL</p>
 
 </div>
 
@@ -2836,7 +2836,7 @@ In case of error, <a href="https://developer.gnome.org/glib/unstable/glib-Standa
 <span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/gio/unstable/GInputStream.html#GInputStream-struct">GInputStream</a> to read RDF content.</p>
+							<p>a GInputStream to read RDF content.</p>
 
 					</div>
 	</div>
@@ -2862,12 +2862,12 @@ In case of error, <a href="https://developer.gnome.org/glib/unstable/glib-Standa
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlStatement.prototype.serialize_finish(result: <a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a>): {
+<code>function Tracker.SparqlStatement.prototype.serialize_finish(result: Gio.AsyncResult): {
     // javascript wrapper for 'tracker_sparql_statement_serialize_finish'
 }</code></pre>
 
 <p>Finishes a <a href="tracker-sparql-statement.html#tracker_sparql_statement_serialize_async">Tracker.SparqlStatement.prototype.serialize_async</a> operation.
-In case of error, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> will be returned and <em>error</em> will be set.</p>
+In case of error, NULL will be returned and <em>error</em> will be set.</p>
 
 
 
@@ -2888,10 +2888,10 @@ In case of error, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScri
 <div class="symbol-detail">
 	<div>
 		<i><em><code>result</code></em></i>
-<span>(</span><a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a><span>)</span>
+<span>(</span>Gio.AsyncResult<span>)</span>
 –
 </div>
-<p>the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a></p>
+<p>the GAsyncResult</p>
 
 </div>
 
@@ -2901,10 +2901,10 @@ In case of error, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScri
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
-<span>(</span><a title="Gio.InputStream" href="https://developer.gnome.org/gio/unstable/GInputStream.html#GInputStream-struct">Gio.InputStream</a><span>)</span>
+<span>(</span>Gio.InputStream<span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/gio/unstable/GInputStream.html#GInputStream-struct">Gio.InputStream</a> to read RDF content.</p>
+							<p>a GInputStream to read RDF content.</p>
 
 					</div>
 	</div>
@@ -2935,7 +2935,7 @@ def Tracker.SparqlStatement.serialize_finish (self, result):
     #python wrapper for 'tracker_sparql_statement_serialize_finish'</code></pre>
 
 <p>Finishes a <a href="tracker-sparql-statement.html#tracker_sparql_statement_serialize_async">Tracker.SparqlStatement.serialize_async</a> operation.
-In case of error, <a href="https://docs.python.org/3/library/constants.html#None">None</a> will be returned and <em>error</em> will be set.</p>
+In case of error, NULL will be returned and <em>error</em> will be set.</p>
 
 
 
@@ -2956,10 +2956,10 @@ In case of error, <a href="https://docs.python.org/3/library/constants.html#None
 <div class="symbol-detail">
 	<div>
 		<i><em><code>result</code></em></i>
-<span>(</span><a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a><span>)</span>
+<span>(</span>Gio.AsyncResult<span>)</span>
 –
 </div>
-<p>the <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a></p>
+<p>the GAsyncResult</p>
 
 </div>
 
@@ -2969,10 +2969,10 @@ In case of error, <a href="https://docs.python.org/3/library/constants.html#None
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
-<span>(</span><a title="Gio.InputStream" href="https://developer.gnome.org/gio/unstable/GInputStream.html#GInputStream-struct">Gio.InputStream</a><span>)</span>
+<span>(</span>Gio.InputStream<span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/gio/unstable/GInputStream.html#GInputStream-struct">Gio.InputStream</a> to read RDF content.</p>
+							<p>a GInputStream to read RDF content.</p>
 
 					</div>
 	</div>
@@ -3119,7 +3119,7 @@ In case of error, <a href="https://docs.python.org/3/library/constants.html#None
 
 
 <pre class="property_signature">
-“sparql” <span class="type"><a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *</span>
+“sparql” <span class="type">gchar*</span>
 </pre>
 
 <p>SPARQL query stored in this statement.</p>

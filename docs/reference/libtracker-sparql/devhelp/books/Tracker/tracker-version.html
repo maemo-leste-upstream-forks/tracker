@@ -134,10 +134,10 @@ the features described here.</p>
 
 
 <pre class="c-prototype language-c">
-const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *
-tracker_check_version (<a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a> required_major,
-                       <a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a> required_minor,
-                       <a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a> required_micro)</pre>
+const gchar*
+tracker_check_version (guint required_major,
+                       guint required_minor,
+                       guint required_micro)</pre>
 
 <p>Checks that the Tracker library in use is compatible with the
 given version. Generally you would pass in the constants
@@ -195,7 +195,7 @@ version <em>required_major</em>.required_minor.@required_micro
 				<b>Returns</b>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> if the Tracker library is compatible with the
+							<p>NULL if the Tracker library is compatible with the
 given version, or a string describing the version mismatch.
 The returned string is owned by Tracker and must not be modified
 or freed.</p>
@@ -285,7 +285,7 @@ version <em>required_major</em>.required_minor.@required_micro
 <span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
 –
 			</div>
-							<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> if the Tracker library is compatible with the
+							<p>NULL if the Tracker library is compatible with the
 given version, or a string describing the version mismatch.
 The returned string is owned by Tracker and must not be modified
 or freed.</p>
@@ -374,7 +374,7 @@ version <em>required_major</em>.required_minor.@required_micro
 <span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
 –
 			</div>
-							<p><a href="https://docs.python.org/3/library/constants.html#None">None</a> if the Tracker library is compatible with the
+							<p>NULL if the Tracker library is compatible with the
 given version, or a string describing the version mismatch.
 The returned string is owned by Tracker and must not be modified
 or freed.</p>

@@ -132,8 +132,8 @@ $('body').removeClass('no-script');
 
 
 <pre class="c-prototype language-c">
-<a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *
-tracker_sparql_escape_string (const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * literal)</pre>
+gchar*
+tracker_sparql_escape_string (const gchar* literal)</pre>
 
 <p>Escapes <em>literal</em> so it is suitable for insertion in
 SPARQL queries as string literals. Manual construction
@@ -310,7 +310,7 @@ instead.</p>
 
 
 <pre class="c-prototype language-c">
-<a title="GFile" href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct">GFile</a> *
+GFile*
 tracker_sparql_get_ontology_nepomuk ()</pre>
 
 <p>Returns a path to the built-in Nepomuk ontologies.</p>
@@ -326,7 +326,7 @@ tracker_sparql_get_ontology_nepomuk ()</pre>
 <span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct">GFile</a> instance.</p>
+							<p>a GFile instance.</p>
 
 					</div>
 	</div>
@@ -362,10 +362,10 @@ tracker_sparql_get_ontology_nepomuk ()</pre>
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
-<span>(</span><a title="Gio.File" href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct">Gio.File</a><span>)</span>
+<span>(</span>Gio.File<span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct">Gio.File</a> instance.</p>
+							<p>a GFile instance.</p>
 
 					</div>
 	</div>
@@ -400,10 +400,10 @@ tracker_sparql_get_ontology_nepomuk ()</pre>
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
-<span>(</span><a title="Gio.File" href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct">Gio.File</a><span>)</span>
+<span>(</span>Gio.File<span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/gio/unstable/GFile.html#GFile-struct">Gio.File</a> instance.</p>
+							<p>a GFile instance.</p>
 
 					</div>
 	</div>
@@ -435,7 +435,7 @@ tracker_sparql_get_ontology_nepomuk ()</pre>
 
 
 <pre class="c-prototype language-c">
-<a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *
+gchar*
 tracker_sparql_get_uuid_urn ()</pre>
 
 <p>Creates a fresh UUID-based URN.</p>

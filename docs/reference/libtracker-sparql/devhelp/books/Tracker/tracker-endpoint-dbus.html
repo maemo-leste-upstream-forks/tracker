@@ -138,7 +138,7 @@ context than the one creating the <a href="tracker-sparql-connection.html#Tracke
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+GObject
     <span class="lineart">╰──</span><a title="TrackerEndpoint" href="tracker-endpoint.html#TrackerEndpoint">TrackerEndpoint</a>
         <span class="lineart">╰──</span>TrackerEndpointDBus
 </pre>
@@ -173,7 +173,7 @@ connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection"
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span><a title="Tracker.Endpoint" href="tracker-endpoint.html#TrackerEndpoint">Tracker.Endpoint</a>
         <span class="lineart">╰──</span>Tracker.EndpointDBus
 </pre>
@@ -208,7 +208,7 @@ connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection"
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span><a title="Tracker.Endpoint" href="tracker-endpoint.html#TrackerEndpoint">Tracker.Endpoint</a>
         <span class="lineart">╰──</span>Tracker.EndpointDBus
 </pre>
@@ -254,10 +254,10 @@ connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection"
 <pre class="c-prototype language-c">
 <a title="TrackerEndpointDBus" href="tracker-endpoint-dbus.html#TrackerEndpointDBus">TrackerEndpointDBus</a> *
 tracker_endpoint_dbus_new (<a title="TrackerSparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> * sparql_connection,
-                           <a title="GDBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">GDBusConnection</a> * dbus_connection,
-                           const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * object_path,
-                           <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                           <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                           GDBusConnection* dbus_connection,
+                           const gchar* object_path,
+                           GCancellable* cancellable,
+                           GError** error)</pre>
 
 <p>Registers a Tracker endpoint object at <em>object_path</em> on <em>dbus_connection</em>.
 The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
@@ -282,7 +282,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 		<i><em><code>dbus_connection</code></em></i>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">GDBusConnection</a></p>
+<p>a GDBusConnection</p>
 
 </div>
 
@@ -294,7 +294,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>the object path to use, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> for the default</p>
+<p>the object path to use, or NULL for the default</p>
 
 </div>
 
@@ -306,7 +306,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -316,7 +316,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p>pointer to a <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a></p>
+<p>pointer to a GError</p>
 
 </div>
 
@@ -353,7 +353,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.EndpointDBus.prototype.new(sparql_connection: <a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a>, dbus_connection: <a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a>, object_path: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>): {
+<code>function Tracker.EndpointDBus.prototype.new(sparql_connection: <a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a>, dbus_connection: Gio.DBusConnection, object_path: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, cancellable: Gio.Cancellable): {
     // javascript wrapper for 'tracker_endpoint_dbus_new'
 }</code></pre>
 
@@ -379,10 +379,10 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>dbus_connection</code></em></i>
-<span>(</span><a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a><span>)</span>
+<span>(</span>Gio.DBusConnection<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a></p>
+<p>a GDBusConnection</p>
 
 </div>
 
@@ -393,7 +393,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 <span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
 –
 </div>
-<p>the object path to use, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> for the default</p>
+<p>the object path to use, or NULL for the default</p>
 
 </div>
 
@@ -401,10 +401,10 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -466,10 +466,10 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>dbus_connection</code></em></i>
-<span>(</span><a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a><span>)</span>
+<span>(</span>Gio.DBusConnection<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a></p>
+<p>a GDBusConnection</p>
 
 </div>
 
@@ -480,7 +480,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 <span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
 –
 </div>
-<p>the object path to use, or <a href="https://docs.python.org/3/library/constants.html#None">None</a> for the default</p>
+<p>the object path to use, or NULL for the default</p>
 
 </div>
 
@@ -488,10 +488,10 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -536,7 +536,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 
 
 <pre class="property_signature">
-“dbus-connection” <span class="type"><a title="GDBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">GDBusConnection</a> *</span>
+“dbus-connection” <span class="type">GDBusConnection*</span>
 </pre>
 
 
@@ -570,7 +570,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 
 
 <pre class="property_signature">
-“dbus-connection” <span class="type"><a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a></span>
+“dbus-connection” <span class="type">Gio.DBusConnection</span>
 </pre>
 
 
@@ -604,7 +604,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 
 
 <pre class="property_signature">
-“self.props.dbus_connection” <span class="type"><a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a></span>
+“self.props.dbus_connection” <span class="type">Gio.DBusConnection</span>
 </pre>
 
 
@@ -645,7 +645,7 @@ The default object path is "/org/freedesktop/Tracker3/Endpoint".</p>
 
 
 <pre class="property_signature">
-“object-path” <span class="type"><a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *</span>
+“object-path” <span class="type">gchar*</span>
 </pre>
 
 

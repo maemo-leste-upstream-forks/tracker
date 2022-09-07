@@ -746,7 +746,7 @@ ensure_inverse_functional_property (TrackerDataManager  *manager,
 	g_free (query);
 
 	if (cursor && tracker_db_cursor_iter_next (cursor, NULL, error)) {
-		if (!tracker_sparql_cursor_get_boolean (cursor, 0)) {
+		if (!tracker_sparql_cursor_get_boolean (TRACKER_SPARQL_CURSOR (cursor), 0)) {
 			handle_unsupported_ontology_change (manager,
 			                                    NULL, -1, -1,
 			                                    property_uri,
@@ -4194,6 +4194,25 @@ tracker_data_manager_update_from_version (TrackerDataManager  *manager,
 			goto error;
 	}
 
+	if (version < TRACKER_DB_VERSION_3_4) {
+		GHashTableIter iter;
+		const gchar *graph;
+
+		if (!tracker_db_interface_sqlite_fts_delete_table (iface, "main", &internal_error))
+			goto error;
+		if (!tracker_data_manager_update_fts (manager, iface, "main", &internal_error))
+			goto error;
+
+		g_hash_table_iter_init (&iter, manager->graphs);
+
+		while (g_hash_table_iter_next (&iter, (gpointer *) &graph, NULL)) {
+			if (!tracker_db_interface_sqlite_fts_delete_table (iface, graph, &internal_error))
+				goto error;
+			if (!tracker_data_manager_update_fts (manager, iface, graph, &internal_error))
+				goto error;
+		}
+	}
+
 	tracker_db_manager_update_version (manager->db_manager);
 	return TRUE;
 
@@ -4948,6 +4967,8 @@ tracker_data_manager_dispose (GObject *object)
 	GError *error = NULL;
 	gboolean readonly = TRUE;
 
+	g_clear_object (&manager->data_update);
+
 	if (manager->db_manager) {
 		readonly = (tracker_db_manager_get_flags (manager->db_manager, NULL, NULL) & TRACKER_DB_MANAGER_READONLY) != 0;
 
@@ -4980,7 +5001,8 @@ tracker_data_manager_finalize (GObject *object)
 	TrackerDataManager *manager = TRACKER_DATA_MANAGER (object);
 
 	g_clear_object (&manager->ontologies);
-	g_clear_object (&manager->data_update);
+	g_clear_object (&manager->ontology_location);
+	g_clear_object (&manager->cache_location);
 	g_clear_pointer (&manager->graphs, g_hash_table_unref);
 	g_free (manager->status);
 	g_mutex_clear (&manager->connections_lock);
@@ -5450,7 +5472,7 @@ tracker_data_manager_expand_prefix (TrackerDataManager  *manager,
 
 	if (expanded) {
 		if (sep) {
-			*expanded = g_strdup_printf ("%s%s", expanded_ns, sep);
+			*expanded = g_strconcat (expanded_ns, sep, NULL);
 		} else {
 			*expanded = g_strdup (expanded_ns);
 		}
