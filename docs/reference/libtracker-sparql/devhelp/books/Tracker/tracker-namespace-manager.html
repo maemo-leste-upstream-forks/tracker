@@ -136,7 +136,7 @@ prefixes predefined.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+GObject
     <span class="lineart">╰──</span>TrackerNamespaceManager
 </pre>
 
@@ -175,7 +175,7 @@ mapping of prefixes and namespaces.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerNamespaceManagerClass.parent_class">
 	<div>
 		<i><em><code>parent_class</code></em></i>
-		(<a title="GObjectClass" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObjectClass">GObjectClass</a>)
+		(GObjectClass)
 		–
 	</div>
 			<i>No description available</i>
@@ -207,7 +207,7 @@ mapping of prefixes and namespaces.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerNamespaceManagerClass.parent_class">
 	<div>
 		<i><em><code>parent_class</code></em></i>
-		(<a title="GObject.ObjectClass" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObjectClass">GObject.ObjectClass</a>)
+		(GObject.ObjectClass)
 		–
 	</div>
 			<i>No description available</i>
@@ -239,7 +239,7 @@ mapping of prefixes and namespaces.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerNamespaceManagerClass.parent_class">
 	<div>
 		<i><em><code>parent_class</code></em></i>
-		(<a title="GObject.ObjectClass" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObjectClass">GObject.ObjectClass</a>)
+		(GObject.ObjectClass)
 		–
 	</div>
 			<i>No description available</i>
@@ -267,7 +267,7 @@ mapping of prefixes and namespaces.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.NamespaceManager
 </pre>
 
@@ -301,7 +301,7 @@ mapping of prefixes and namespaces.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.NamespaceManager
 </pre>
 
@@ -684,7 +684,7 @@ tracker_namespace_manager_compress_uri (<a title="TrackerNamespaceManager" href=
 
 <p>If <em>uri</em> begins with one of the namespaces known to this
 <a href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a>, then the return value will be the
-compressed URI. Otherwise, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> will be returned.</p>
+compressed URI. Otherwise, NULL will be returned.</p>
 
 
 
@@ -752,7 +752,7 @@ compressed URI. Otherwise, <a href="https://developer.gnome.org/glib/unstable/gl
 
 <p>If <em>uri</em> begins with one of the namespaces known to this
 <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>, then the return value will be the
-compressed URI. Otherwise, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> will be returned.</p>
+compressed URI. Otherwise, NULL will be returned.</p>
 
 
 
@@ -820,7 +820,7 @@ compressed URI. Otherwise, <a href="https://developer.mozilla.org/en-US/docs/Web
 
 <p>If <em>uri</em> begins with one of the namespaces known to this
 <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>, then the return value will be the
-compressed URI. Otherwise, <a href="https://docs.python.org/3/library/constants.html#None">None</a> will be returned.</p>
+compressed URI. Otherwise, NULL will be returned.</p>
 
 
 
@@ -1096,8 +1096,8 @@ expanded URI. Otherwise, a copy of <em>compact_uri</em> will be returned.</p>
 
 <pre class="c-prototype language-c">
 tracker_namespace_manager_foreach (<a title="TrackerNamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a> * self,
-                                   <a title="GHFunc" href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#GHFunc">GHFunc</a> func,
-                                   <a title="gpointer" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer">gpointer</a> user_data)</pre>
+                                   GHFunc func,
+                                   gpointer user_data)</pre>
 
 <p>Calls <em>func</em> for each known prefix / URI pair.</p>
 
@@ -1157,7 +1157,7 @@ tracker_namespace_manager_foreach (<a title="TrackerNamespaceManager" href="trac
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.NamespaceManager.prototype.foreach(func: <a title="GLib.HFunc" href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#GHFunc">GLib.HFunc</a>, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
+<code>function Tracker.NamespaceManager.prototype.foreach(func: GLib.HFunc, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
     // javascript wrapper for 'tracker_namespace_manager_foreach'
 }</code></pre>
 
@@ -1182,7 +1182,7 @@ tracker_namespace_manager_foreach (<a title="TrackerNamespaceManager" href="trac
 <div class="symbol-detail">
 	<div>
 		<i><em><code>func</code></em></i>
-<span>(</span><a title="GLib.HFunc" href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#GHFunc">GLib.HFunc</a><span>)</span>
+<span>(</span>GLib.HFunc<span>)</span>
 –
 </div>
 <p>the function to call for each prefix / URI pair</p>
@@ -1244,7 +1244,7 @@ tracker_namespace_manager_foreach (<a title="TrackerNamespaceManager" href="trac
 <div class="symbol-detail">
 	<div>
 		<i><em><code>func</code></em></i>
-<span>(</span><a title="GLib.HFunc" href="https://developer.gnome.org/glib/unstable/glib-Hash-Tables.html#GHFunc">GLib.HFunc</a><span>)</span>
+<span>(</span>GLib.HFunc<span>)</span>
 –
 </div>
 <p>the function to call for each prefix / URI pair</p>
@@ -1291,7 +1291,7 @@ tracker_namespace_manager_foreach (<a title="TrackerNamespaceManager" href="trac
 
 
 <pre class="c-prototype language-c">
-<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+gboolean
 tracker_namespace_manager_has_prefix (<a title="TrackerNamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a> * self,
                                       const char* prefix)</pre>
 
@@ -1329,7 +1329,7 @@ tracker_namespace_manager_has_prefix (<a title="TrackerNamespaceManager" href="t
 				<b>Returns</b>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a> if the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a> knows about <em>prefix</em>, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a> otherwise</p>
+							<p>TRUE if the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a> knows about <em>prefix</em>, FALSE otherwise</p>
 
 					</div>
 	</div>
@@ -1393,7 +1393,7 @@ tracker_namespace_manager_has_prefix (<a title="TrackerNamespaceManager" href="t
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a> if the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a> knows about <em>prefix</em>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">false</a> otherwise</p>
+							<p>TRUE if the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a> knows about <em>prefix</em>, FALSE otherwise</p>
 
 					</div>
 	</div>
@@ -1456,7 +1456,7 @@ tracker_namespace_manager_has_prefix (<a title="TrackerNamespaceManager" href="t
 <span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
 –
 			</div>
-							<p><a href="https://docs.python.org/3/library/constants.html#True">True</a> if the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a> knows about <em>prefix</em>, <a href="https://docs.python.org/3/library/constants.html#False">False</a> otherwise</p>
+							<p>TRUE if the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a> knows about <em>prefix</em>, FALSE otherwise</p>
 
 					</div>
 	</div>
@@ -1492,7 +1492,7 @@ const char*
 tracker_namespace_manager_lookup_prefix (<a title="TrackerNamespaceManager" href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a> * self,
                                          const char* prefix)</pre>
 
-<p>Looks up the namespace URI corresponding to <em>prefix</em>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> if the prefix
+<p>Looks up the namespace URI corresponding to <em>prefix</em>, or NULL if the prefix
 is not known.</p>
 
 
@@ -1529,7 +1529,7 @@ is not known.</p>
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
-							<p>a string owned by the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+							<p>a string owned by the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">TrackerNamespaceManager</a>, or NULL</p>
 
 					</div>
 	</div>
@@ -1556,7 +1556,7 @@ is not known.</p>
     // javascript wrapper for 'tracker_namespace_manager_lookup_prefix'
 }</code></pre>
 
-<p>Looks up the namespace URI corresponding to <em>prefix</em>, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> if the prefix
+<p>Looks up the namespace URI corresponding to <em>prefix</em>, or NULL if the prefix
 is not known.</p>
 
 
@@ -1594,7 +1594,7 @@ is not known.</p>
 <span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
 –
 			</div>
-							<p>a string owned by the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+							<p>a string owned by the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>, or NULL</p>
 
 					</div>
 	</div>
@@ -1620,7 +1620,7 @@ is not known.</p>
 <code>def Tracker.NamespaceManager.lookup_prefix (self, prefix):
     #python wrapper for 'tracker_namespace_manager_lookup_prefix'</code></pre>
 
-<p>Looks up the namespace URI corresponding to <em>prefix</em>, or <a href="https://docs.python.org/3/library/constants.html#None">None</a> if the prefix
+<p>Looks up the namespace URI corresponding to <em>prefix</em>, or NULL if the prefix
 is not known.</p>
 
 
@@ -1658,7 +1658,7 @@ is not known.</p>
 <span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
 –
 			</div>
-							<p>a string owned by the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+							<p>a string owned by the <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tracker.NamespaceManager</a>, or NULL</p>
 
 					</div>
 	</div>

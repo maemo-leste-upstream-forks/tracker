@@ -117,7 +117,7 @@ return value expressing whether the connection is blocked or not.
 Inspection of the requester address is left up to the user. The
 default value allows all requests independently of their provenance,
 users are encouraged to add a handler.</p>
-<p>If the provided <a href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct" data-gi-href-javascript="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct" data-gi-title-javascript="Gio.TlsCertificate" data-gi-href-python="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct" data-gi-title-python="Gio.TlsCertificate">GTlsCertificate</a> is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS" data-gi-href-javascript="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" data-gi-title-javascript="null" data-gi-href-python="https://docs.python.org/3/library/constants.html#None" data-gi-title-python="None">NULL</a>, the endpoint will allow
+<p>If the provided GTlsCertificate is NULL, the endpoint will allow
 plain HTTP connections. Users are encouraged to provide a certificate
 in order to use HTTPS.</p>
 <p>As a security measure, and in compliance with the SPARQL 1.1 specifications,
@@ -146,7 +146,7 @@ context than the one creating the <a href="tracker-sparql-connection.html#Tracke
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+GObject
     <span class="lineart">╰──</span><a title="TrackerEndpoint" href="tracker-endpoint.html#TrackerEndpoint">TrackerEndpoint</a>
         <span class="lineart">╰──</span>TrackerEndpointHttp
 </pre>
@@ -181,7 +181,7 @@ connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection"
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span><a title="Tracker.Endpoint" href="tracker-endpoint.html#TrackerEndpoint">Tracker.Endpoint</a>
         <span class="lineart">╰──</span>Tracker.EndpointHttp
 </pre>
@@ -216,7 +216,7 @@ connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection"
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span><a title="Tracker.Endpoint" href="tracker-endpoint.html#TrackerEndpoint">Tracker.Endpoint</a>
         <span class="lineart">╰──</span>Tracker.EndpointHttp
 </pre>
@@ -262,13 +262,13 @@ connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection"
 <pre class="c-prototype language-c">
 <a title="TrackerEndpointHttp" href="tracker-endpoint-http.html#TrackerEndpointHttp">TrackerEndpointHttp</a> *
 tracker_endpoint_http_new (<a title="TrackerSparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> * sparql_connection,
-                           <a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a> port,
-                           <a title="GTlsCertificate" href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct">GTlsCertificate</a> * certificate,
-                           <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                           <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                           guint port,
+                           GTlsCertificate* certificate,
+                           GCancellable* cancellable,
+                           GError** error)</pre>
 
 <p>Sets up a Tracker endpoint to listen via HTTP, in the given <em>port</em>.
-If <em>certificate</em> is not <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a>, HTTPS may be used to connect to the
+If <em>certificate</em> is not NULL, HTTPS may be used to connect to the
 endpoint.</p>
 
 
@@ -303,7 +303,7 @@ endpoint.</p>
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>certificate to use for encription, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>certificate to use for encription, or NULL</p>
 
 </div>
 
@@ -315,7 +315,7 @@ endpoint.</p>
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -325,7 +325,7 @@ endpoint.</p>
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p>pointer to a <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a></p>
+<p>pointer to a GError</p>
 
 </div>
 
@@ -365,12 +365,12 @@ endpoint.</p>
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.EndpointHttp.prototype.new(sparql_connection: <a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a>, port: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>, certificate: <a title="Gio.TlsCertificate" href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct">Gio.TlsCertificate</a>, cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>): {
+<code>function Tracker.EndpointHttp.prototype.new(sparql_connection: <a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a>, port: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>, certificate: Gio.TlsCertificate, cancellable: Gio.Cancellable): {
     // javascript wrapper for 'tracker_endpoint_http_new'
 }</code></pre>
 
 <p>Sets up a Tracker endpoint to listen via HTTP, in the given <em>port</em>.
-If <em>certificate</em> is not <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a>, HTTPS may be used to connect to the
+If <em>certificate</em> is not NULL, HTTPS may be used to connect to the
 endpoint.</p>
 
 
@@ -403,10 +403,10 @@ endpoint.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>certificate</code></em></i>
-<span>(</span><a title="Gio.TlsCertificate" href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct">Gio.TlsCertificate</a><span>)</span>
+<span>(</span>Gio.TlsCertificate<span>)</span>
 –
 </div>
-<p>certificate to use for encription, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+<p>certificate to use for encription, or NULL</p>
 
 </div>
 
@@ -414,10 +414,10 @@ endpoint.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -461,7 +461,7 @@ def Tracker.EndpointHttp.new (sparql_connection, port, certificate, cancellable)
     #python wrapper for 'tracker_endpoint_http_new'</code></pre>
 
 <p>Sets up a Tracker endpoint to listen via HTTP, in the given <em>port</em>.
-If <em>certificate</em> is not <a href="https://docs.python.org/3/library/constants.html#None">None</a>, HTTPS may be used to connect to the
+If <em>certificate</em> is not NULL, HTTPS may be used to connect to the
 endpoint.</p>
 
 
@@ -494,10 +494,10 @@ endpoint.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>certificate</code></em></i>
-<span>(</span><a title="Gio.TlsCertificate" href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct">Gio.TlsCertificate</a><span>)</span>
+<span>(</span>Gio.TlsCertificate<span>)</span>
 –
 </div>
-<p>certificate to use for encription, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+<p>certificate to use for encription, or NULL</p>
 
 </div>
 
@@ -505,10 +505,10 @@ endpoint.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -558,16 +558,16 @@ endpoint.</p>
 
 
 <pre class="c-prototype language-c">
-<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+gboolean
 block_remote_address_callback (<a title="TrackerEndpointHttp" href="tracker-endpoint-http.html#TrackerEndpointHttp">TrackerEndpointHttp</a> * self,
-                               <a title="GSocketAddress" href="https://developer.gnome.org/gio/unstable/GSocketAddress.html#GSocketAddress-struct">GSocketAddress</a> * address,
-                               <a title="gpointer" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer">gpointer</a> user_data)</pre>
+                               GSocketAddress* address,
+                               gpointer user_data)</pre>
 
 <p>Allows control over the connections stablished. The given
 address is that of the requesting peer.</p>
-<p>Returning <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a> in this handler allows the connection,
-returning <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a> blocks it. The default with no signal
-handlers connected is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a>.</p>
+<p>Returning FALSE in this handler allows the connection,
+returning TRUE blocks it. The default with no signal
+handlers connected is FALSE.</p>
 
 
 
@@ -636,15 +636,15 @@ handlers connected is <a href="https://developer.gnome.org/glib/unstable/glib-St
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function block_remote_address_callback(self: <a title="Tracker.EndpointHttp" href="tracker-endpoint-http.html#TrackerEndpointHttp">Tracker.EndpointHttp</a>, address: <a title="Gio.SocketAddress" href="https://developer.gnome.org/gio/unstable/GSocketAddress.html#GSocketAddress-struct">Gio.SocketAddress</a>, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
+<code>function block_remote_address_callback(self: <a title="Tracker.EndpointHttp" href="tracker-endpoint-http.html#TrackerEndpointHttp">Tracker.EndpointHttp</a>, address: Gio.SocketAddress, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
     // javascript callback for the 'block-remote-address' signal
 }</code></pre>
 
 <p>Allows control over the connections stablished. The given
 address is that of the requesting peer.</p>
-<p>Returning <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">false</a> in this handler allows the connection,
-returning <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a> blocks it. The default with no signal
-handlers connected is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">false</a>.</p>
+<p>Returning FALSE in this handler allows the connection,
+returning TRUE blocks it. The default with no signal
+handlers connected is FALSE.</p>
 
 
 
@@ -665,7 +665,7 @@ handlers connected is <a href="https://developer.mozilla.org/en-US/docs/Web/Java
 <div class="symbol-detail">
 	<div>
 		<i><em><code>address</code></em></i>
-<span>(</span><a title="Gio.SocketAddress" href="https://developer.gnome.org/gio/unstable/GSocketAddress.html#GSocketAddress-struct">Gio.SocketAddress</a><span>)</span>
+<span>(</span>Gio.SocketAddress<span>)</span>
 –
 </div>
 <p>The socket address of the remote connection</p>
@@ -722,9 +722,9 @@ handlers connected is <a href="https://developer.mozilla.org/en-US/docs/Web/Java
 
 <p>Allows control over the connections stablished. The given
 address is that of the requesting peer.</p>
-<p>Returning <a href="https://docs.python.org/3/library/constants.html#False">False</a> in this handler allows the connection,
-returning <a href="https://docs.python.org/3/library/constants.html#True">True</a> blocks it. The default with no signal
-handlers connected is <a href="https://docs.python.org/3/library/constants.html#False">False</a>.</p>
+<p>Returning FALSE in this handler allows the connection,
+returning TRUE blocks it. The default with no signal
+handlers connected is FALSE.</p>
 
 
 
@@ -745,7 +745,7 @@ handlers connected is <a href="https://docs.python.org/3/library/constants.html#
 <div class="symbol-detail">
 	<div>
 		<i><em><code>address</code></em></i>
-<span>(</span><a title="Gio.SocketAddress" href="https://developer.gnome.org/gio/unstable/GSocketAddress.html#GSocketAddress-struct">Gio.SocketAddress</a><span>)</span>
+<span>(</span>Gio.SocketAddress<span>)</span>
 –
 </div>
 <p>The socket address of the remote connection</p>
@@ -806,7 +806,7 @@ handlers connected is <a href="https://docs.python.org/3/library/constants.html#
 
 
 <pre class="property_signature">
-“http-certificate” <span class="type"><a title="GTlsCertificate" href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct">GTlsCertificate</a> *</span>
+“http-certificate” <span class="type">GTlsCertificate*</span>
 </pre>
 
 
@@ -840,7 +840,7 @@ handlers connected is <a href="https://docs.python.org/3/library/constants.html#
 
 
 <pre class="property_signature">
-“http-certificate” <span class="type"><a title="Gio.TlsCertificate" href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct">Gio.TlsCertificate</a></span>
+“http-certificate” <span class="type">Gio.TlsCertificate</span>
 </pre>
 
 
@@ -874,7 +874,7 @@ handlers connected is <a href="https://docs.python.org/3/library/constants.html#
 
 
 <pre class="property_signature">
-“self.props.http_certificate” <span class="type"><a title="Gio.TlsCertificate" href="https://developer.gnome.org/gio/unstable/GTlsCertificate.html#GTlsCertificate-struct">Gio.TlsCertificate</a></span>
+“self.props.http_certificate” <span class="type">Gio.TlsCertificate</span>
 </pre>
 
 
@@ -915,7 +915,7 @@ handlers connected is <a href="https://docs.python.org/3/library/constants.html#
 
 
 <pre class="property_signature">
-“http-port” <span class="type"><a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a></span>
+“http-port” <span class="type">guint</span>
 </pre>
 
 

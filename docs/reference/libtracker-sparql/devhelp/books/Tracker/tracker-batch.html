@@ -143,7 +143,7 @@ a batch will resolve to the same resource.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+GObject
     <span class="lineart">╰──</span>TrackerBatch
 </pre>
 
@@ -160,7 +160,7 @@ a batch will resolve to the same resource.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerBatch.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>)
+		(GObject)
 		–
 	</div>
 			<i>No description available</i>
@@ -241,7 +241,7 @@ a batch will resolve to the same resource.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.Batch
 </pre>
 
@@ -258,7 +258,7 @@ a batch will resolve to the same resource.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerBatch.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		(GObject.Object)
 		–
 	</div>
 			<i>No description available</i>
@@ -284,7 +284,7 @@ a batch will resolve to the same resource.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.Batch
 </pre>
 
@@ -301,7 +301,7 @@ a batch will resolve to the same resource.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerBatch.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		(GObject.Object)
 		–
 	</div>
 			<i>No description available</i>
@@ -337,7 +337,7 @@ a batch will resolve to the same resource.</p>
 
 <pre class="c-prototype language-c">
 tracker_batch_add_resource (<a title="TrackerBatch" href="tracker-batch.html#TrackerBatch">TrackerBatch</a> * batch,
-                            const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * graph,
+                            const gchar* graph,
                             <a title="TrackerResource" href="tracker-resource.html#TrackerResource">TrackerResource</a> * resource)</pre>
 
 <p>Adds the RDF represented by <em>resource</em> to <em>batch</em>.</p>
@@ -542,7 +542,7 @@ tracker_batch_add_resource (<a title="TrackerBatch" href="tracker-batch.html#Tra
 
 <pre class="c-prototype language-c">
 tracker_batch_add_sparql (<a title="TrackerBatch" href="tracker-batch.html#TrackerBatch">TrackerBatch</a> * batch,
-                          const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * sparql)</pre>
+                          const gchar* sparql)</pre>
 
 <p>Adds an SPARQL update string to <em>batch</em>.</p>
 
@@ -711,10 +711,10 @@ tracker_batch_add_sparql (<a title="TrackerBatch" href="tracker-batch.html#Track
 
 
 <pre class="c-prototype language-c">
-<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+gboolean
 tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerBatch">TrackerBatch</a> * batch,
-                       <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                       <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                       GCancellable* cancellable,
+                       GError** error)</pre>
 
 <p>Executes the batch. This operations happens synchronously.</p>
 
@@ -740,7 +740,7 @@ tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerB
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -750,7 +750,7 @@ tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerB
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p>location for a <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>location for a GError, or NULL</p>
 
 </div>
 
@@ -762,7 +762,7 @@ tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerB
 				<b>Returns</b>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a> of there were no errors, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a> otherwise</p>
+							<p>TRUE of there were no errors, FALSE otherwise</p>
 
 					</div>
 	</div>
@@ -788,7 +788,7 @@ tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerB
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.Batch.prototype.execute(cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>): {
+<code>function Tracker.Batch.prototype.execute(cancellable: Gio.Cancellable): {
     // javascript wrapper for 'tracker_batch_execute'
 }</code></pre>
 
@@ -813,10 +813,10 @@ tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerB
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -829,7 +829,7 @@ tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerB
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a> of there were no errors, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">false</a> otherwise</p>
+							<p>TRUE of there were no errors, FALSE otherwise</p>
 
 					</div>
 	</div>
@@ -880,10 +880,10 @@ def Tracker.Batch.execute (self, cancellable):
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -896,7 +896,7 @@ def Tracker.Batch.execute (self, cancellable):
 <span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
 –
 			</div>
-							<p><a href="https://docs.python.org/3/library/constants.html#True">True</a> of there were no errors, <a href="https://docs.python.org/3/library/constants.html#False">False</a> otherwise</p>
+							<p>TRUE of there were no errors, FALSE otherwise</p>
 
 					</div>
 	</div>
@@ -932,9 +932,9 @@ def Tracker.Batch.execute (self, cancellable):
 
 <pre class="c-prototype language-c">
 tracker_batch_execute_async (<a title="TrackerBatch" href="tracker-batch.html#TrackerBatch">TrackerBatch</a> * batch,
-                             <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                             <a title="GAsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">GAsyncReadyCallback</a> callback,
-                             <a title="gpointer" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer">gpointer</a> user_data)</pre>
+                             GCancellable* cancellable,
+                             GAsyncReadyCallback callback,
+                             gpointer user_data)</pre>
 
 <p>Executes the batch. This operation happens asynchronously, when
 finished <em>callback</em> will be executed.</p>
@@ -961,7 +961,7 @@ finished <em>callback</em> will be executed.</p>
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -971,7 +971,7 @@ finished <em>callback</em> will be executed.</p>
 		<i><em><code>callback</code></em></i>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">GAsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -1009,7 +1009,7 @@ asynchronous operation is finished.</p>
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.Batch.prototype.execute_async(cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, callback: <a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a>, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
+<code>function Tracker.Batch.prototype.execute_async(cancellable: Gio.Cancellable, callback: Gio.AsyncReadyCallback, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
     // javascript wrapper for 'tracker_batch_execute_async'
 }</code></pre>
 
@@ -1035,10 +1035,10 @@ finished <em>callback</em> will be executed.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -1046,10 +1046,10 @@ finished <em>callback</em> will be executed.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>callback</code></em></i>
-<span>(</span><a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a><span>)</span>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -1113,10 +1113,10 @@ finished <em>callback</em> will be executed.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+<p>a GCancellable, or NULL</p>
 
 </div>
 
@@ -1124,10 +1124,10 @@ finished <em>callback</em> will be executed.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>callback</code></em></i>
-<span>(</span><a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a><span>)</span>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -1175,10 +1175,10 @@ asynchronous operation is finished.</p>
 
 
 <pre class="c-prototype language-c">
-<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+gboolean
 tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#TrackerBatch">TrackerBatch</a> * batch,
-                              <a title="GAsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">GAsyncResult</a> * res,
-                              <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                              GAsyncResult* res,
+                              GError** error)</pre>
 
 <p>Finishes the operation started with <a href="tracker-batch.html#tracker_batch_execute_async">tracker_batch_execute_async</a>.</p>
 
@@ -1202,7 +1202,7 @@ tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#T
 		<i><em><code>res</code></em></i>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">GAsyncResult</a> with the result of the operation</p>
+<p>a GAsyncResult with the result of the operation</p>
 
 </div>
 
@@ -1212,7 +1212,7 @@ tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#T
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p>location for a <a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a>, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>location for a GError, or NULL</p>
 
 </div>
 
@@ -1224,7 +1224,7 @@ tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#T
 				<b>Returns</b>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a> of there were no errors, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a> otherwise</p>
+							<p>TRUE of there were no errors, FALSE otherwise</p>
 
 					</div>
 	</div>
@@ -1250,7 +1250,7 @@ tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#T
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.Batch.prototype.execute_finish(res: <a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a>): {
+<code>function Tracker.Batch.prototype.execute_finish(res: Gio.AsyncResult): {
     // javascript wrapper for 'tracker_batch_execute_finish'
 }</code></pre>
 
@@ -1275,10 +1275,10 @@ tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#T
 <div class="symbol-detail">
 	<div>
 		<i><em><code>res</code></em></i>
-<span>(</span><a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a><span>)</span>
+<span>(</span>Gio.AsyncResult<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a> with the result of the operation</p>
+<p>a GAsyncResult with the result of the operation</p>
 
 </div>
 
@@ -1291,7 +1291,7 @@ tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#T
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a> of there were no errors, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">false</a> otherwise</p>
+							<p>TRUE of there were no errors, FALSE otherwise</p>
 
 					</div>
 	</div>
@@ -1342,10 +1342,10 @@ def Tracker.Batch.execute_finish (self, res):
 <div class="symbol-detail">
 	<div>
 		<i><em><code>res</code></em></i>
-<span>(</span><a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a><span>)</span>
+<span>(</span>Gio.AsyncResult<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a> with the result of the operation</p>
+<p>a GAsyncResult with the result of the operation</p>
 
 </div>
 
@@ -1358,7 +1358,7 @@ def Tracker.Batch.execute_finish (self, res):
 <span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
 –
 			</div>
-							<p><a href="https://docs.python.org/3/library/constants.html#True">True</a> of there were no errors, <a href="https://docs.python.org/3/library/constants.html#False">False</a> otherwise</p>
+							<p>TRUE of there were no errors, FALSE otherwise</p>
 
 					</div>
 	</div>

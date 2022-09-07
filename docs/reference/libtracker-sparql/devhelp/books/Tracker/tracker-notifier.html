@@ -147,7 +147,7 @@ available at event notification time.</li>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+GObject
     <span class="lineart">╰──</span>TrackerNotifier
 </pre>
 
@@ -169,7 +169,7 @@ to changes in the stored data.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerNotifier.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>)
+		(GObject)
 		–
 	</div>
 			<i>No description available</i>
@@ -250,7 +250,7 @@ to changes in the stored data.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.Notifier
 </pre>
 
@@ -272,7 +272,7 @@ to changes in the stored data.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerNotifier.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		(GObject.Object)
 		–
 	</div>
 			<i>No description available</i>
@@ -298,7 +298,7 @@ to changes in the stored data.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.Notifier
 </pre>
 
@@ -320,7 +320,7 @@ to changes in the stored data.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerNotifier.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		(GObject.Object)
 		–
 	</div>
 			<i>No description available</i>
@@ -355,17 +355,17 @@ to changes in the stored data.</p>
 
 
 <pre class="c-prototype language-c">
-<a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a>
+guint
 tracker_notifier_signal_subscribe (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a> * notifier,
-                                   <a title="GDBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">GDBusConnection</a> * connection,
-                                   const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * service,
-                                   const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * object_path,
-                                   const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * graph)</pre>
+                                   GDBusConnection* connection,
+                                   const gchar* service,
+                                   const gchar* object_path,
+                                   const gchar* graph)</pre>
 
 <p>Listens to notification events from a remote SPARQL endpoint as a DBus
 service (see <a href="tracker-endpoint-dbus.html#TrackerEndpointDBus">TrackerEndpointDBus</a>). If the <em>object_path</em> argument is
-<a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a>, the default "/org/freedesktop/Tracker3/Endpoint" path will be
-used. If <em>graph</em> is <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a>, all graphs will be listened for.</p>
+NULL, the default "/org/freedesktop/Tracker3/Endpoint" path will be
+used. If <em>graph</em> is NULL, all graphs will be listened for.</p>
 <p>The signal subscription can be removed with
 <a href="tracker-notifier.html#tracker_notifier_signal_unsubscribe">tracker_notifier_signal_unsubscribe</a>.</p>
 
@@ -389,7 +389,7 @@ used. If <em>graph</em> is <a href="https://developer.gnome.org/glib/unstable/gl
 		<i><em><code>connection</code></em></i>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">GDBusConnection</a></p>
+<p>a GDBusConnection</p>
 
 </div>
 
@@ -411,7 +411,7 @@ used. If <em>graph</em> is <a href="https://developer.gnome.org/glib/unstable/gl
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>DBus object path to subscribe to events for, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>DBus object path to subscribe to events for, or NULL</p>
 
 </div>
 
@@ -423,7 +423,7 @@ used. If <em>graph</em> is <a href="https://developer.gnome.org/glib/unstable/gl
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>graph to listen events for, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>graph to listen events for, or NULL</p>
 
 </div>
 
@@ -461,14 +461,14 @@ used. If <em>graph</em> is <a href="https://developer.gnome.org/glib/unstable/gl
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.Notifier.prototype.signal_subscribe(connection: <a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a>, service: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, object_path: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, graph: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
+<code>function Tracker.Notifier.prototype.signal_subscribe(connection: Gio.DBusConnection, service: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, object_path: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, graph: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>): {
     // javascript wrapper for 'tracker_notifier_signal_subscribe'
 }</code></pre>
 
 <p>Listens to notification events from a remote SPARQL endpoint as a DBus
 service (see <a href="tracker-endpoint-dbus.html#TrackerEndpointDBus">Tracker.EndpointDBus</a>). If the <em>object_path</em> argument is
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a>, the default "/org/freedesktop/Tracker3/Endpoint" path will be
-used. If <em>graph</em> is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a>, all graphs will be listened for.</p>
+NULL, the default "/org/freedesktop/Tracker3/Endpoint" path will be
+used. If <em>graph</em> is NULL, all graphs will be listened for.</p>
 <p>The signal subscription can be removed with
 <a href="tracker-notifier.html#tracker_notifier_signal_unsubscribe">Tracker.Notifier.prototype.signal_unsubscribe</a>.</p>
 
@@ -491,10 +491,10 @@ used. If <em>graph</em> is <a href="https://developer.mozilla.org/en-US/docs/Web
 <div class="symbol-detail">
 	<div>
 		<i><em><code>connection</code></em></i>
-<span>(</span><a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a><span>)</span>
+<span>(</span>Gio.DBusConnection<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a></p>
+<p>a GDBusConnection</p>
 
 </div>
 
@@ -516,7 +516,7 @@ used. If <em>graph</em> is <a href="https://developer.mozilla.org/en-US/docs/Web
 <span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
 –
 </div>
-<p>DBus object path to subscribe to events for, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+<p>DBus object path to subscribe to events for, or NULL</p>
 
 </div>
 
@@ -527,7 +527,7 @@ used. If <em>graph</em> is <a href="https://developer.mozilla.org/en-US/docs/Web
 <span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
 –
 </div>
-<p>graph to listen events for, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+<p>graph to listen events for, or NULL</p>
 
 </div>
 
@@ -571,8 +571,8 @@ used. If <em>graph</em> is <a href="https://developer.mozilla.org/en-US/docs/Web
 
 <p>Listens to notification events from a remote SPARQL endpoint as a DBus
 service (see <a href="tracker-endpoint-dbus.html#TrackerEndpointDBus">Tracker.EndpointDBus</a>). If the <em>object_path</em> argument is
-<a href="https://docs.python.org/3/library/constants.html#None">None</a>, the default "/org/freedesktop/Tracker3/Endpoint" path will be
-used. If <em>graph</em> is <a href="https://docs.python.org/3/library/constants.html#None">None</a>, all graphs will be listened for.</p>
+NULL, the default "/org/freedesktop/Tracker3/Endpoint" path will be
+used. If <em>graph</em> is NULL, all graphs will be listened for.</p>
 <p>The signal subscription can be removed with
 <a href="tracker-notifier.html#tracker_notifier_signal_unsubscribe">Tracker.Notifier.signal_unsubscribe</a>.</p>
 
@@ -595,10 +595,10 @@ used. If <em>graph</em> is <a href="https://docs.python.org/3/library/constants.
 <div class="symbol-detail">
 	<div>
 		<i><em><code>connection</code></em></i>
-<span>(</span><a title="Gio.DBusConnection" href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a><span>)</span>
+<span>(</span>Gio.DBusConnection<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GDBusConnection.html#GDBusConnection-struct">Gio.DBusConnection</a></p>
+<p>a GDBusConnection</p>
 
 </div>
 
@@ -620,7 +620,7 @@ used. If <em>graph</em> is <a href="https://docs.python.org/3/library/constants.
 <span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
 –
 </div>
-<p>DBus object path to subscribe to events for, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+<p>DBus object path to subscribe to events for, or NULL</p>
 
 </div>
 
@@ -631,7 +631,7 @@ used. If <em>graph</em> is <a href="https://docs.python.org/3/library/constants.
 <span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
 –
 </div>
-<p>graph to listen events for, or <a href="https://docs.python.org/3/library/constants.html#None">None</a></p>
+<p>graph to listen events for, or NULL</p>
 
 </div>
 
@@ -680,7 +680,7 @@ used. If <em>graph</em> is <a href="https://docs.python.org/3/library/constants.
 
 <pre class="c-prototype language-c">
 tracker_notifier_signal_unsubscribe (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a> * notifier,
-                                     <a title="guint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#guint">guint</a> handler_id)</pre>
+                                     guint handler_id)</pre>
 
 <p>Undoes a DBus signal subscription, the <em>handler_id</em> argument was previously
 obtained with a <a href="tracker-notifier.html#tracker_notifier_signal_subscribe">tracker_notifier_signal_subscribe</a> call.</p>
@@ -855,10 +855,10 @@ obtained with a <a href="tracker-notifier.html#tracker_notifier_signal_subscribe
 
 <pre class="c-prototype language-c">
 events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerNotifier">TrackerNotifier</a> * self,
-                 <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * service,
-                 <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> * graph,
+                 gchar* service,
+                 gchar* graph,
                  <a title="TrackerNotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a> * events,
-                 <a title="gpointer" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer">gpointer</a> user_data)</pre>
+                 gpointer user_data)</pre>
 
 <p>Notifies of changes in the Tracker database.</p>
 
@@ -882,7 +882,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 		<i><em><code>service</code></em></i>
 –
 </div>
-<p>The SPARQL service that originated the events, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> for the local store</p>
+<p>The SPARQL service that originated the events, NULL for the local store</p>
 
 </div>
 
@@ -892,7 +892,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 		<i><em><code>graph</code></em></i>
 –
 </div>
-<p>The graph where the events happened on, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> for the default anonymous graph</p>
+<p>The graph where the events happened on, NULL for the default anonymous graph</p>
 
 </div>
 
@@ -904,7 +904,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 <span class="annotation">[<abbr title="Generic and defining element of containers and arrays"><span class="acronym">element-type</span></abbr>TrackerNotifierEvent]</span><span>)</span>
 –
 </div>
-<p>A <a href="https://developer.gnome.org/glib/unstable/glib-Pointer-Arrays.html#GPtrArray">GPtrArray</a> of <a href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a></p>
+<p>A GPtrArray of <a href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a></p>
 
 </div>
 
@@ -969,7 +969,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 <span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
 –
 </div>
-<p>The SPARQL service that originated the events, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> for the local store</p>
+<p>The SPARQL service that originated the events, NULL for the local store</p>
 
 </div>
 
@@ -980,7 +980,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 <span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
 –
 </div>
-<p>The graph where the events happened on, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> for the default anonymous graph</p>
+<p>The graph where the events happened on, NULL for the default anonymous graph</p>
 
 </div>
 
@@ -991,7 +991,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 <span>(</span>[ <a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a> ]<span>)</span>
 –
 </div>
-<p>A <a href="https://developer.gnome.org/glib/unstable/glib-Pointer-Arrays.html#GPtrArray">GLib.PtrArray</a> of <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+<p>A GPtrArray of <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
 
 </div>
 
@@ -1056,7 +1056,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 <span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
 –
 </div>
-<p>The SPARQL service that originated the events, <a href="https://docs.python.org/3/library/constants.html#None">None</a> for the local store</p>
+<p>The SPARQL service that originated the events, NULL for the local store</p>
 
 </div>
 
@@ -1067,7 +1067,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 <span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
 –
 </div>
-<p>The graph where the events happened on, <a href="https://docs.python.org/3/library/constants.html#None">None</a> for the default anonymous graph</p>
+<p>The graph where the events happened on, NULL for the default anonymous graph</p>
 
 </div>
 
@@ -1078,7 +1078,7 @@ events_callback (<a title="TrackerNotifier" href="tracker-notifier.html#TrackerN
 <span>(</span>[ <a title="Tracker.NotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a> ]<span>)</span>
 –
 </div>
-<p>A <a href="https://developer.gnome.org/glib/unstable/glib-Pointer-Arrays.html#GPtrArray">GLib.PtrArray</a> of <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
+<p>A GPtrArray of <a href="tracker-notifier.html#TrackerNotifierEvent">Tracker.NotifierEvent</a></p>
 
 </div>
 
@@ -1486,10 +1486,10 @@ tracker_notifier_event_get_event_type (<a title="TrackerNotifierEvent" href="tra
 
 
 <pre class="c-prototype language-c">
-<a title="gint64" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a>
+gint64
 tracker_notifier_event_get_id (<a title="TrackerNotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a> * event)</pre>
 
-<p>Returns the tracker:id of the element being notified upon. This is a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a>
+<p>Returns the tracker:id of the element being notified upon. This is a gint64
 which is used as efficient internal identifier for the resource.</p>
 
 
@@ -1541,7 +1541,7 @@ which is used as efficient internal identifier for the resource.</p>
     // javascript wrapper for 'tracker_notifier_event_get_id'
 }</code></pre>
 
-<p>Returns the tracker:id of the element being notified upon. This is a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>
+<p>Returns the tracker:id of the element being notified upon. This is a gint64
 which is used as efficient internal identifier for the resource.</p>
 
 
@@ -1594,7 +1594,7 @@ which is used as efficient internal identifier for the resource.</p>
 <code>def Tracker.NotifierEvent.get_id (self):
     #python wrapper for 'tracker_notifier_event_get_id'</code></pre>
 
-<p>Returns the tracker:id of the element being notified upon. This is a <a href="https://docs.python.org/3/library/functions.html#int">int</a>
+<p>Returns the tracker:id of the element being notified upon. This is a gint64
 which is used as efficient internal identifier for the resource.</p>
 
 
@@ -1653,7 +1653,7 @@ which is used as efficient internal identifier for the resource.</p>
 
 
 <pre class="c-prototype language-c">
-const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *
+const gchar*
 tracker_notifier_event_get_urn (<a title="TrackerNotifierEvent" href="tracker-notifier.html#TrackerNotifierEvent">TrackerNotifierEvent</a> * event)</pre>
 
 <p>Returns the Uniform Resource Name of the element. This is Tracker's

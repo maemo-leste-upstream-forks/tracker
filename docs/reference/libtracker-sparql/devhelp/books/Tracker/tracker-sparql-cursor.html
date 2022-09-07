@@ -134,7 +134,7 @@ at any given time.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+GObject
     <span class="lineart">╰──</span>TrackerSparqlCursor
 </pre>
 
@@ -156,7 +156,7 @@ iterator of results.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerSparqlCursor.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>)
+		(GObject)
 		–
 	</div>
 			<i>No description available</i>
@@ -237,7 +237,7 @@ iterator of results.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.SparqlCursor
 </pre>
 
@@ -259,7 +259,7 @@ iterator of results.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerSparqlCursor.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		(GObject.Object)
 		–
 	</div>
 			<i>No description available</i>
@@ -285,7 +285,7 @@ iterator of results.</p>
 <div class="hierarchy_container">
 	<div class="hierarchy_details">
 <pre>
-<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>
+GObject.Object
     <span class="lineart">╰──</span>Tracker.SparqlCursor
 </pre>
 
@@ -307,7 +307,7 @@ iterator of results.</p>
 <div class="symbol-detail" data-hotdoc-id="TrackerSparqlCursor.parent_instance">
 	<div>
 		<i><em><code>parent_instance</code></em></i>
-		(<a title="GObject.Object" href="https://developer.gnome.org/gobject/unstable/gobject-The-Base-Object-Type.html#GObject-struct">GObject.Object</a>)
+		(GObject.Object)
 		–
 	</div>
 			<i>No description available</i>
@@ -470,9 +470,9 @@ tracker_sparql_cursor_close (<a title="TrackerSparqlCursor" href="tracker-sparql
 
 
 <pre class="c-prototype language-c">
-<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+gboolean
 tracker_sparql_cursor_get_boolean (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                   <a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> column)</pre>
+                                   gint column)</pre>
 
 <p>Retrieve a boolean for the current row in <em>column</em>.</p>
 
@@ -508,7 +508,7 @@ tracker_sparql_cursor_get_boolean (<a title="TrackerSparqlCursor" href="tracker-
 				<b>Returns</b>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>.</p>
+							<p>a gboolean.</p>
 
 					</div>
 	</div>
@@ -572,7 +572,7 @@ tracker_sparql_cursor_get_boolean (<a title="TrackerSparqlCursor" href="tracker-
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>.</p>
+							<p>a gboolean.</p>
 
 					</div>
 	</div>
@@ -635,7 +635,7 @@ tracker_sparql_cursor_get_boolean (<a title="TrackerSparqlCursor" href="tracker-
 <span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
 –
 			</div>
-							<p>a <a href="https://docs.python.org/3/library/functions.html#bool">bool</a>.</p>
+							<p>a gboolean.</p>
 
 					</div>
 	</div>
@@ -839,9 +839,9 @@ returned object must not be unreferenced by the caller.</p>
 
 
 <pre class="c-prototype language-c">
-<a title="GDateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GDateTime</a> *
+GDateTime*
 tracker_sparql_cursor_get_datetime (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                    <a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> column)</pre>
+                                    gint column)</pre>
 
 <p>Retrieve an GDateTime pointer for the current row in <em>column</em>.</p>
 
@@ -879,7 +879,7 @@ tracker_sparql_cursor_get_datetime (<a title="TrackerSparqlCursor" href="tracker
 <span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GDateTime</a> object, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> if the given column does not contain a xsd:date or xsd:dateTime</p>
+							<p>GDateTime object, or NULL if the given column does not contain a xsd:date or xsd:dateTime</p>
 
 					</div>
 	</div>
@@ -943,10 +943,10 @@ tracker_sparql_cursor_get_datetime (<a title="TrackerSparqlCursor" href="tracker
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
-<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+<span>(</span>GLib.DateTime<span>)</span>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a> object, or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> if the given column does not contain a xsd:date or xsd:dateTime</p>
+							<p>GDateTime object, or NULL if the given column does not contain a xsd:date or xsd:dateTime</p>
 
 					</div>
 	</div>
@@ -1009,10 +1009,10 @@ tracker_sparql_cursor_get_datetime (<a title="TrackerSparqlCursor" href="tracker
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
-<span>(</span><a title="GLib.DateTime" href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a><span>)</span>
+<span>(</span>GLib.DateTime<span>)</span>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-GDateTime.html#GDateTime">GLib.DateTime</a> object, or <a href="https://docs.python.org/3/library/constants.html#None">None</a> if the given column does not contain a xsd:date or xsd:dateTime</p>
+							<p>GDateTime object, or NULL if the given column does not contain a xsd:date or xsd:dateTime</p>
 
 					</div>
 	</div>
@@ -1047,9 +1047,9 @@ tracker_sparql_cursor_get_datetime (<a title="TrackerSparqlCursor" href="tracker
 
 
 <pre class="c-prototype language-c">
-<a title="gdouble" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gdouble">gdouble</a>
+gdouble
 tracker_sparql_cursor_get_double (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                  <a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> column)</pre>
+                                  gint column)</pre>
 
 <p>Retrieve a double for the current row in <em>column</em>.</p>
 
@@ -1244,9 +1244,9 @@ tracker_sparql_cursor_get_double (<a title="TrackerSparqlCursor" href="tracker-s
 
 
 <pre class="c-prototype language-c">
-<a title="gint64" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a>
+gint64
 tracker_sparql_cursor_get_integer (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                   <a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> column)</pre>
+                                   gint column)</pre>
 
 <p>Retrieve an integer for the current row in <em>column</em>.</p>
 
@@ -1282,7 +1282,7 @@ tracker_sparql_cursor_get_integer (<a title="TrackerSparqlCursor" href="tracker-
 				<b>Returns</b>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint64">gint64</a>.</p>
+							<p>a gint64.</p>
 
 					</div>
 	</div>
@@ -1346,7 +1346,7 @@ tracker_sparql_cursor_get_integer (<a title="TrackerSparqlCursor" href="tracker-
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>.</p>
+							<p>a gint64.</p>
 
 					</div>
 	</div>
@@ -1409,7 +1409,7 @@ tracker_sparql_cursor_get_integer (<a title="TrackerSparqlCursor" href="tracker-
 <span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
 –
 			</div>
-							<p>a <a href="https://docs.python.org/3/library/functions.html#int">int</a>.</p>
+							<p>a gint64.</p>
 
 					</div>
 	</div>
@@ -1441,7 +1441,7 @@ tracker_sparql_cursor_get_integer (<a title="TrackerSparqlCursor" href="tracker-
 
 
 <pre class="c-prototype language-c">
-<a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a>
+gint
 tracker_sparql_cursor_get_n_columns (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor)</pre>
 
 <p>This method should only be called after a successful
@@ -1470,7 +1470,7 @@ will be undefined.</p>
 				<b>Returns</b>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> representing the number of columns available in the
+							<p>a gint representing the number of columns available in the
 results to iterate.</p>
 
 					</div>
@@ -1526,7 +1526,7 @@ will be undefined.</p>
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a> representing the number of columns available in the
+							<p>a gint representing the number of columns available in the
 results to iterate.</p>
 
 					</div>
@@ -1581,7 +1581,7 @@ will be undefined.</p>
 <span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
 –
 			</div>
-							<p>a <a href="https://docs.python.org/3/library/functions.html#int">int</a> representing the number of columns available in the
+							<p>a gint representing the number of columns available in the
 results to iterate.</p>
 
 					</div>
@@ -1614,10 +1614,10 @@ results to iterate.</p>
 
 
 <pre class="c-prototype language-c">
-const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *
+const gchar*
 tracker_sparql_cursor_get_string (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                  <a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> column,
-                                  <a title="glong" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#glong">glong</a> * length)</pre>
+                                  gint column,
+                                  glong* length)</pre>
 
 <p>Retrieves a string representation of the data in the current
 row in <em>column</em>.</p>
@@ -1654,7 +1654,7 @@ row in <em>column</em>.</p>
 <span class="annotation">[<abbr title="Parameter for returning results"><span class="acronym">out</span></abbr>]</span><span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>length of the returned string, or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></p>
+<p>length of the returned string, or NULL</p>
 
 </div>
 
@@ -1668,7 +1668,7 @@ row in <em>column</em>.</p>
 <span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
-							<p>a string which must not be freed. <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a> is returned if
+							<p>a string which must not be freed. NULL is returned if
 the column is not in the [0,#n_columns] range.</p>
 
 					</div>
@@ -1736,7 +1736,7 @@ row in <em>column</em>.</p>
 <span>)</span>
 –
 	</div>
-			<p>a string which must not be freed. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> is returned if
+			<p>a string which must not be freed. NULL is returned if
 the column is not in the [0,#n_columns] range.</p>
 
 	</div>
@@ -1749,7 +1749,7 @@ the column is not in the [0,#n_columns] range.</p>
 <span>)</span>
 –
 	</div>
-			<p>a string which must not be freed. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a> is returned if
+			<p>a string which must not be freed. NULL is returned if
 the column is not in the [0,#n_columns] range.</p>
 
 	</div>
@@ -1817,7 +1817,7 @@ row in <em>column</em>.</p>
 <span>)</span>
 –
 	</div>
-			<p>a string which must not be freed. <a href="https://docs.python.org/3/library/constants.html#None">None</a> is returned if
+			<p>a string which must not be freed. NULL is returned if
 the column is not in the [0,#n_columns] range.</p>
 
 	</div>
@@ -1830,7 +1830,7 @@ the column is not in the [0,#n_columns] range.</p>
 <span>)</span>
 –
 	</div>
-			<p>a string which must not be freed. <a href="https://docs.python.org/3/library/constants.html#None">None</a> is returned if
+			<p>a string which must not be freed. NULL is returned if
 the column is not in the [0,#n_columns] range.</p>
 
 	</div>
@@ -1866,7 +1866,7 @@ the column is not in the [0,#n_columns] range.</p>
 <pre class="c-prototype language-c">
 <a title="TrackerSparqlValueType" href="tracker-sparql-cursor.html#TrackerSparqlValueType">TrackerSparqlValueType</a>
 tracker_sparql_cursor_get_value_type (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                      <a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> column)</pre>
+                                      gint column)</pre>
 
 <p>The data type bound to the current row in <em>column</em> is returned.</p>
 
@@ -2061,9 +2061,9 @@ tracker_sparql_cursor_get_value_type (<a title="TrackerSparqlCursor" href="track
 
 
 <pre class="c-prototype language-c">
-const <a title="gchar" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gchar">gchar</a> *
+const gchar*
 tracker_sparql_cursor_get_variable_name (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                         <a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> column)</pre>
+                                         gint column)</pre>
 
 <p>Retrieves the variable name for the current row in <em>column</em>.</p>
 
@@ -2258,11 +2258,11 @@ tracker_sparql_cursor_get_variable_name (<a title="TrackerSparqlCursor" href="tr
 
 
 <pre class="c-prototype language-c">
-<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+gboolean
 tracker_sparql_cursor_is_bound (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                <a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a> column)</pre>
+                                gint column)</pre>
 
-<p>If the current row and <em>column</em> are bound to a value, <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a> is returned.</p>
+<p>If the current row and <em>column</em> are bound to a value, TRUE is returned.</p>
 
 
 
@@ -2296,7 +2296,7 @@ tracker_sparql_cursor_is_bound (<a title="TrackerSparqlCursor" href="tracker-spa
 				<b>Returns</b>
 –
 			</div>
-							<p>a <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a> or <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a>.</p>
+							<p>a TRUE or FALSE.</p>
 
 					</div>
 	</div>
@@ -2323,7 +2323,7 @@ tracker_sparql_cursor_is_bound (<a title="TrackerSparqlCursor" href="tracker-spa
     // javascript wrapper for 'tracker_sparql_cursor_is_bound'
 }</code></pre>
 
-<p>If the current row and <em>column</em> are bound to a value, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a> is returned.</p>
+<p>If the current row and <em>column</em> are bound to a value, TRUE is returned.</p>
 
 
 
@@ -2360,7 +2360,7 @@ tracker_sparql_cursor_is_bound (<a title="TrackerSparqlCursor" href="tracker-spa
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p>a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">false</a>.</p>
+							<p>a TRUE or FALSE.</p>
 
 					</div>
 	</div>
@@ -2386,7 +2386,7 @@ tracker_sparql_cursor_is_bound (<a title="TrackerSparqlCursor" href="tracker-spa
 <code>def Tracker.SparqlCursor.is_bound (self, column):
     #python wrapper for 'tracker_sparql_cursor_is_bound'</code></pre>
 
-<p>If the current row and <em>column</em> are bound to a value, <a href="https://docs.python.org/3/library/constants.html#True">True</a> is returned.</p>
+<p>If the current row and <em>column</em> are bound to a value, TRUE is returned.</p>
 
 
 
@@ -2423,7 +2423,7 @@ tracker_sparql_cursor_is_bound (<a title="TrackerSparqlCursor" href="tracker-spa
 <span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
 –
 			</div>
-							<p>a <a href="https://docs.python.org/3/library/constants.html#True">True</a> or <a href="https://docs.python.org/3/library/constants.html#False">False</a>.</p>
+							<p>a TRUE or FALSE.</p>
 
 					</div>
 	</div>
@@ -2455,10 +2455,10 @@ tracker_sparql_cursor_is_bound (<a title="TrackerSparqlCursor" href="tracker-spa
 
 
 <pre class="c-prototype language-c">
-<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+gboolean
 tracker_sparql_cursor_next (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                            <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                            <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                            GCancellable* cancellable,
+                            GError** error)</pre>
 
 <p>Iterates to the next result. This is completely synchronous and
 it may block.</p>
@@ -2483,7 +2483,7 @@ it may block.</p>
 		<i><em><code>cancellable</code></em></i>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2493,7 +2493,7 @@ it may block.</p>
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> for error reporting.</p>
+<p>GError for error reporting.</p>
 
 </div>
 
@@ -2505,7 +2505,7 @@ it may block.</p>
 				<b>Returns</b>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a> if no more results found, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a>.</p>
+							<p>FALSE if no more results found, otherwise TRUE.</p>
 
 					</div>
 	</div>
@@ -2528,7 +2528,7 @@ it may block.</p>
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlCursor.prototype.next(cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>): {
+<code>function Tracker.SparqlCursor.prototype.next(cancellable: Gio.Cancellable): {
     // javascript wrapper for 'tracker_sparql_cursor_next'
 }</code></pre>
 
@@ -2554,10 +2554,10 @@ it may block.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2570,7 +2570,7 @@ it may block.</p>
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">false</a> if no more results found, otherwise <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a>.</p>
+							<p>FALSE if no more results found, otherwise TRUE.</p>
 
 					</div>
 	</div>
@@ -2619,10 +2619,10 @@ it may block.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2635,7 +2635,7 @@ it may block.</p>
 <span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
 –
 			</div>
-							<p><a href="https://docs.python.org/3/library/constants.html#False">False</a> if no more results found, otherwise <a href="https://docs.python.org/3/library/constants.html#True">True</a>.</p>
+							<p>FALSE if no more results found, otherwise TRUE.</p>
 
 					</div>
 	</div>
@@ -2668,9 +2668,9 @@ it may block.</p>
 
 <pre class="c-prototype language-c">
 tracker_sparql_cursor_next_async (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                  <a title="GCancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> * cancellable,
-                                  <a title="GAsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">GAsyncReadyCallback</a> callback,
-                                  <a title="gpointer" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gpointer">gpointer</a> user_data)</pre>
+                                  GCancellable* cancellable,
+                                  GAsyncReadyCallback callback,
+                                  gpointer user_data)</pre>
 
 <p>Iterates, asynchronously, to the next result.</p>
 
@@ -2694,7 +2694,7 @@ tracker_sparql_cursor_next_async (<a title="TrackerSparqlCursor" href="tracker-s
 		<i><em><code>cancellable</code></em></i>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">GCancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2704,7 +2704,7 @@ tracker_sparql_cursor_next_async (<a title="TrackerSparqlCursor" href="tracker-s
 		<i><em><code>callback</code></em></i>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">GAsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -2739,7 +2739,7 @@ asynchronous operation is finished.</p>
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlCursor.prototype.next_async(cancellable: <a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a>, callback: <a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a>, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
+<code>function Tracker.SparqlCursor.prototype.next_async(cancellable: Gio.Cancellable, callback: Gio.AsyncReadyCallback, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
     // javascript wrapper for 'tracker_sparql_cursor_next_async'
 }</code></pre>
 
@@ -2764,10 +2764,10 @@ asynchronous operation is finished.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2775,10 +2775,10 @@ asynchronous operation is finished.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>callback</code></em></i>
-<span>(</span><a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a><span>)</span>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -2838,10 +2838,10 @@ asynchronous operation is finished.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>cancellable</code></em></i>
-<span>(</span><a title="Gio.Cancellable" href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a><span>)</span>
+<span>(</span>Gio.Cancellable<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GCancellable.html#GCancellable-struct">Gio.Cancellable</a> used to cancel the operation</p>
+<p>a GCancellable used to cancel the operation</p>
 
 </div>
 
@@ -2849,10 +2849,10 @@ asynchronous operation is finished.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>callback</code></em></i>
-<span>(</span><a title="Gio.AsyncReadyCallback" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a><span>)</span>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
 –
 </div>
-<p>user-defined <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncReadyCallback">Gio.AsyncReadyCallback</a> to be called when
+<p>user-defined GAsyncReadyCallback to be called when
 asynchronous operation is finished.</p>
 
 </div>
@@ -2897,10 +2897,10 @@ asynchronous operation is finished.</p>
 
 
 <pre class="c-prototype language-c">
-<a title="gboolean" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gboolean">gboolean</a>
+gboolean
 tracker_sparql_cursor_next_finish (<a title="TrackerSparqlCursor" href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a> * cursor,
-                                   <a title="GAsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">GAsyncResult</a> * res,
-                                   <a title="GError" href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> ** error)</pre>
+                                   GAsyncResult* res,
+                                   GError** error)</pre>
 
 <p>Finishes the asynchronous iteration to the next result.</p>
 
@@ -2924,7 +2924,7 @@ tracker_sparql_cursor_next_finish (<a title="TrackerSparqlCursor" href="tracker-
 		<i><em><code>res</code></em></i>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">GAsyncResult</a> with the result of the operation</p>
+<p>a GAsyncResult with the result of the operation</p>
 
 </div>
 
@@ -2934,7 +2934,7 @@ tracker_sparql_cursor_next_finish (<a title="TrackerSparqlCursor" href="tracker-
 		<i><em><code>error</code></em></i>
 –
 </div>
-<p><a href="https://developer.gnome.org/glib/unstable/glib-Error-Reporting.html#GError">GError</a> for error reporting.</p>
+<p>GError for error reporting.</p>
 
 </div>
 
@@ -2946,7 +2946,7 @@ tracker_sparql_cursor_next_finish (<a title="TrackerSparqlCursor" href="tracker-
 				<b>Returns</b>
 –
 			</div>
-							<p><a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a> if no more results found, otherwise <a href="https://developer.gnome.org/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a>.</p>
+							<p>FALSE if no more results found, otherwise TRUE.</p>
 
 					</div>
 	</div>
@@ -2969,7 +2969,7 @@ tracker_sparql_cursor_next_finish (<a title="TrackerSparqlCursor" href="tracker-
 
 
 <pre class="javascript-prototype language-javascript">
-<code>function Tracker.SparqlCursor.prototype.next_finish(res: <a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a>): {
+<code>function Tracker.SparqlCursor.prototype.next_finish(res: Gio.AsyncResult): {
     // javascript wrapper for 'tracker_sparql_cursor_next_finish'
 }</code></pre>
 
@@ -2994,10 +2994,10 @@ tracker_sparql_cursor_next_finish (<a title="TrackerSparqlCursor" href="tracker-
 <div class="symbol-detail">
 	<div>
 		<i><em><code>res</code></em></i>
-<span>(</span><a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a><span>)</span>
+<span>(</span>Gio.AsyncResult<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a> with the result of the operation</p>
+<p>a GAsyncResult with the result of the operation</p>
 
 </div>
 
@@ -3010,7 +3010,7 @@ tracker_sparql_cursor_next_finish (<a title="TrackerSparqlCursor" href="tracker-
 <span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
 –
 			</div>
-							<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">false</a> if no more results found, otherwise <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">true</a>.</p>
+							<p>FALSE if no more results found, otherwise TRUE.</p>
 
 					</div>
 	</div>
@@ -3058,10 +3058,10 @@ def Tracker.SparqlCursor.next_finish (self, res):
 <div class="symbol-detail">
 	<div>
 		<i><em><code>res</code></em></i>
-<span>(</span><a title="Gio.AsyncResult" href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a><span>)</span>
+<span>(</span>Gio.AsyncResult<span>)</span>
 –
 </div>
-<p>a <a href="https://developer.gnome.org/gio/unstable/GAsyncResult.html#GAsyncResult-struct">Gio.AsyncResult</a> with the result of the operation</p>
+<p>a GAsyncResult with the result of the operation</p>
 
 </div>
 
@@ -3074,7 +3074,7 @@ def Tracker.SparqlCursor.next_finish (self, res):
 <span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
 –
 			</div>
-							<p><a href="https://docs.python.org/3/library/constants.html#False">False</a> if no more results found, otherwise <a href="https://docs.python.org/3/library/constants.html#True">True</a>.</p>
+							<p>FALSE if no more results found, otherwise TRUE.</p>
 
 					</div>
 	</div>
@@ -3346,7 +3346,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 
 
 <pre class="property_signature">
-“n-columns” <span class="type"><a title="gint" href="https://developer.gnome.org/glib/unstable/glib-Basic-Types.html#gint">gint</a></span>
+“n-columns” <span class="type">gint</span>
 </pre>
 
 
