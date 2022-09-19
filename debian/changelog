@@ -1,3 +1,9 @@
+tracker (3.4.0-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Mon, 19 Sep 2022 10:26:29 -0400
+
 tracker (3.4.0~rc-2) unstable; urgency=medium
 
   * debian/rules: Don't ignore build test failures
