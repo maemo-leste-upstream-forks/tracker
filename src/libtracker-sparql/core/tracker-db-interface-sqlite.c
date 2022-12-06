@@ -1901,7 +1901,7 @@ function_sparql_print_iri (sqlite3_context *context,
 		return;
 	}
 
-	if (sqlite3_value_type (argv[0]) == SQLITE_INTEGER) {
+	if (sqlite3_value_numeric_type (argv[0]) == SQLITE_INTEGER) {
 		sqlite3_stmt *stmt;
 		gboolean store_auxdata = FALSE;
 		sqlite3 *db;
@@ -2652,9 +2652,10 @@ tracker_db_statement_mru_insert (TrackerDBStatementMru *stmt_mru,
 		 * Then we assign head->next as new head.
 		 */
 		new_head = stmt_mru->head->next;
-		g_hash_table_remove (stmt_mru->stmts, (gpointer) stmt_mru->head->mru_key);
-		stmt_mru->head->mru_key = NULL;
+		stmt_mru->head->prev->next = new_head;
+		new_head->prev = stmt_mru->head->prev;
 		stmt_mru->head->next = stmt_mru->head->prev = NULL;
+		g_hash_table_remove (stmt_mru->stmts, (gpointer) stmt_mru->head->mru_key);
 		stmt_mru->size--;
 		stmt_mru->head = new_head;
 	}
