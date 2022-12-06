@@ -1,3 +1,9 @@
+tracker (3.4.2-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 06 Dec 2022 16:42:38 -0500
+
 tracker (3.4.0-1) unstable; urgency=medium
 
   * New upstream release
