@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/tracker/issues\n"
-"POT-Creation-Date: 2022-07-20 14:29+0000\n"
+"POT-Creation-Date: 2022-10-31 11:18+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
 "Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
@@ -9,6 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-DamnedLies-Scope: partial\n"
 
 #. Translators: this is a '|' (U+007C) separated list of common
 #. * title beginnings. Meant to be skipped for sorting purposes,
@@ -24,7 +25,7 @@ msgstr "the|a|an"
 msgid "Version"
 msgstr "Аверсиа"
 
-#: src/portal/tracker-main.c:109 src/tracker/tracker-endpoint.c:387
+#: src/portal/tracker-main.c:110 src/tracker/tracker-endpoint.c:387
 #: src/tracker/tracker-export.c:509 src/tracker/tracker-import.c:196
 #: src/tracker/tracker-sparql.c:1566 src/tracker/tracker-sql.c:239
 msgid "Unrecognized options"
@@ -46,7 +47,7 @@ msgstr ""
 
 #: src/tracker/tracker-endpoint.c:55 src/tracker/tracker-endpoint.c:59
 msgid "NAME"
-msgstr ""
+msgstr "АХЬӠ"
 
 #: src/tracker/tracker-endpoint.c:58
 msgid "Specify the ontology name used in this endpoint"
@@ -84,7 +85,7 @@ msgstr "--list  ахархәара аиуоит --session или --system зв�
 #. TRANSLATORS: those are commandline arguments
 #: src/tracker/tracker-endpoint.c:109
 msgid "One “ontology” or “ontology-path” option should be provided"
-msgstr ""
+msgstr "Иарбазароуп аопциак «ontology» мамзар «ontology-path»"
 
 #. TRANSLATORS: those are commandline arguments
 #: src/tracker/tracker-endpoint.c:115
@@ -138,7 +139,7 @@ msgstr ""
 #: src/tracker/tracker-sparql.c:111 src/tracker/tracker-sparql.c:123
 #: src/tracker/tracker-sql.c:45 src/tracker/tracker-sql.c:49
 msgid "FILE"
-msgstr ""
+msgstr "АФАИЛ"
 
 #: src/tracker/tracker-export.c:52 src/tracker/tracker-import.c:50
 #: src/tracker/tracker-sparql.c:114
@@ -294,7 +295,7 @@ msgstr ""
 
 #: src/tracker/tracker-sparql.c:151
 msgid "PROPERTY"
-msgstr ""
+msgstr "АҞАЗШЬАҶЫДА"
 
 #: src/tracker/tracker-sparql.c:154
 msgid "Retrieve all named graphs"
@@ -345,7 +346,7 @@ msgstr ""
 #. * may be Music or Images, etc.
 #: src/tracker/tracker-sparql.c:541 src/tracker/tracker-sparql.c:589
 msgid "None"
-msgstr ""
+msgstr "Мап"
 
 #: src/tracker/tracker-sparql.c:1003
 msgid "Could not create tree: subclass query failed"
@@ -390,11 +391,11 @@ msgstr ""
 
 #: src/tracker/tracker-sparql.c:1238
 msgid "No properties were found"
-msgstr ""
+msgstr "Аҟазшьаҷыдақәа ҧшааӡам"
 
 #: src/tracker/tracker-sparql.c:1238 src/tracker/tracker-sparql.c:1386
 msgid "Properties"
-msgstr ""
+msgstr "Аҟазшьаҷыдақәа"
 
 #: src/tracker/tracker-sparql.c:1266
 msgid "Could not find notify classes"
@@ -462,7 +463,7 @@ msgstr ""
 
 #: src/tracker/tracker-sparql.c:1461
 msgid "Done"
-msgstr ""
+msgstr "Ихиоуп"
 
 #: src/tracker/tracker-sparql.c:1515 src/tracker/tracker-sparql.c:1518
 msgid "No results found matching your query"
@@ -471,7 +472,7 @@ msgstr ""
 #: src/tracker/tracker-sparql.c:1515 src/tracker/tracker-sparql.c:1518
 #: src/tracker/tracker-sql.c:144
 msgid "Results"
-msgstr ""
+msgstr "Алҵшәақәа"
 
 #: src/tracker/tracker-sparql.c:1575 src/tracker/tracker-sql.c:250
 msgid "File and query can not be used together"
@@ -506,4 +507,4 @@ msgstr ""
 
 #: src/tracker/tracker-sql.c:248
 msgid "A database path must be specified"
-msgstr ""
+msgstr "Адыррақәа рбаза ахь амҩа арбазароуп"

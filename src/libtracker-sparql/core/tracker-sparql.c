@@ -1273,8 +1273,10 @@ _convert_terminal (TrackerSparql *sparql)
 	ht = is_parameter ? sparql->parameters : sparql->cached_bindings;
 
 	binding = g_hash_table_lookup (ht, str);
-	if (binding)
+	if (binding) {
+		g_free (str);
 		return g_object_ref (binding);
+	}
 
 	if (is_parameter) {
 		binding = tracker_parameter_binding_new (str, NULL);
@@ -3731,7 +3733,7 @@ translate_GroupClause (TrackerSparql  *sparql,
 {
 	GList *conditions = NULL, *expressions = NULL, *l;
 	gboolean variables_projected = FALSE;
-	TrackerStringBuilder *select, *old;
+	TrackerStringBuilder *select = NULL, *old = NULL;
 	gchar *str;
 
 	/* GroupClause ::= 'GROUP' 'BY' GroupCondition+
@@ -6942,7 +6944,7 @@ static TrackerPathElement *
 intersect_path_elements (TrackerSparql *sparql,
                          GPtrArray     *path_elems)
 {
-	TrackerPathElement *elem;
+	TrackerPathElement *elem = NULL;
 
 	if (path_elems->len == 0)
 		return NULL;
