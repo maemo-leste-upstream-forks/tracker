@@ -165,6 +165,7 @@ connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection"
 
 
 
+
 <hr>
 
 </div>
@@ -200,6 +201,7 @@ connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection"
 
 
 
+
 <hr>
 
 </div>
@@ -230,6 +232,7 @@ GObject.Object
 connection to a <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> on a HTTP port.</p>
 
 </div>
+
 
 
 
@@ -346,10 +349,10 @@ endpoint.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -437,10 +440,10 @@ endpoint.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -528,10 +531,10 @@ endpoint.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -563,11 +566,6 @@ block_remote_address_callback (<a title="TrackerEndpointHttp" href="tracker-endp
                                GSocketAddress* address,
                                gpointer user_data)</pre>
 
-<p>Allows control over the connections stablished. The given
-address is that of the requesting peer.</p>
-<p>Returning FALSE in this handler allows the connection,
-returning TRUE blocks it. The default with no signal
-handlers connected is FALSE.</p>
 
 
 
@@ -589,7 +587,12 @@ handlers connected is FALSE.</p>
 		<i><em><code>address</code></em></i>
 –
 </div>
-<p>The socket address of the remote connection</p>
+<p>The socket address of the remote connection
+ ਪ	 * Allows control over the connections stablished. The given
+address is that of the requesting peer.
+ ਪ	 * Returning FALSE in this handler allows the connection,
+returning TRUE blocks it. The default with no signal
+handlers connected is FALSE.</p>
 
 </div>
 
@@ -640,11 +643,6 @@ handlers connected is FALSE.</p>
     // javascript callback for the 'block-remote-address' signal
 }</code></pre>
 
-<p>Allows control over the connections stablished. The given
-address is that of the requesting peer.</p>
-<p>Returning FALSE in this handler allows the connection,
-returning TRUE blocks it. The default with no signal
-handlers connected is FALSE.</p>
 
 
 
@@ -668,7 +666,12 @@ handlers connected is FALSE.</p>
 <span>(</span>Gio.SocketAddress<span>)</span>
 –
 </div>
-<p>The socket address of the remote connection</p>
+<p>The socket address of the remote connection
+ ਪ	 * Allows control over the connections stablished. The given
+address is that of the requesting peer.
+ ਪ	 * Returning FALSE in this handler allows the connection,
+returning TRUE blocks it. The default with no signal
+handlers connected is FALSE.</p>
 
 </div>
 
@@ -720,11 +723,6 @@ handlers connected is FALSE.</p>
 <code>def block_remote_address_callback (self, address, *user_data):
     #python callback for the 'block-remote-address' signal</code></pre>
 
-<p>Allows control over the connections stablished. The given
-address is that of the requesting peer.</p>
-<p>Returning FALSE in this handler allows the connection,
-returning TRUE blocks it. The default with no signal
-handlers connected is FALSE.</p>
 
 
 
@@ -748,7 +746,12 @@ handlers connected is FALSE.</p>
 <span>(</span>Gio.SocketAddress<span>)</span>
 –
 </div>
-<p>The socket address of the remote connection</p>
+<p>The socket address of the remote connection
+ ਪ	 * Allows control over the connections stablished. The given
+address is that of the requesting peer.
+ ਪ	 * Returning FALSE in this handler allows the connection,
+returning TRUE blocks it. The default with no signal
+handlers connected is FALSE.</p>
 
 </div>
 
@@ -826,6 +829,7 @@ handlers connected is FALSE.</p>
 </p>
 
 
+
 <hr>
 
 </div>
@@ -860,6 +864,7 @@ handlers connected is FALSE.</p>
 </p>
 
 
+
 <hr>
 
 </div>
@@ -892,6 +897,7 @@ handlers connected is FALSE.</p>
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -935,6 +941,7 @@ handlers connected is FALSE.</p>
 </p>
 
 
+
 <hr>
 
 </div>
@@ -969,6 +976,7 @@ handlers connected is FALSE.</p>
 </p>
 
 
+
 <hr>
 
 </div>
@@ -1001,6 +1009,7 @@ handlers connected is FALSE.</p>
 				Construct Only
 			
 </p>
+
 
 
 <hr>

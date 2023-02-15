@@ -163,6 +163,7 @@ about a given resource.</p>
 
 
 
+
 <hr>
 <h3>Class structure</h3>
 <div class="gi-symbol gi-symbol-c">
@@ -180,6 +181,7 @@ about a given resource.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -198,6 +200,7 @@ about a given resource.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -209,6 +212,7 @@ about a given resource.</p>
 <h3>
 	Tracker.ResourceClass
 </h3>
+
 
 
 
@@ -266,6 +270,7 @@ about a given resource.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -311,6 +316,7 @@ about a given resource.</p>
 	</div>
 
 			</div>
+
 
 
 
@@ -745,10 +751,10 @@ tracker_resource_add_datetime (<a title="TrackerResource" href="tracker-resource
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -811,10 +817,10 @@ tracker_resource_add_datetime (<a title="TrackerResource" href="tracker-resource
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -876,10 +882,10 @@ tracker_resource_add_datetime (<a title="TrackerResource" href="tracker-resource
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -2123,6 +2129,8 @@ set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p
 <div class="symbol-detail">
 	<div>
 		<i><em><code>resource</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span>)</span>
 –
 </div>
 <p>the property object</p>
@@ -2139,8 +2147,135 @@ set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p
 
 </div>
 <div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_take_relation">
+	<i>Tracker.Resource.prototype.add_take_relation</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.add_take_relation(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, resource: <a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a>): {
+    // javascript wrapper for 'tracker_resource_add_take_relation'
+}</code></pre>
+
+<p>Adds a resource object to a multi-valued property. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_uri">Tracker.Resource.prototype.add_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
 </div>
 <div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_add_take_relation">
+	<i>Tracker.Resource.add_take_relation</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.add_take_relation (self, property_uri, resource):
+    #python wrapper for 'tracker_resource_add_take_relation'</code></pre>
+
+<p>Adds a resource object to a multi-valued property. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_add_uri">Tracker.Resource.add_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
 </div>
 
 </div>
@@ -2595,6 +2730,8 @@ tracker_resource_get_first_datetime (<a title="TrackerResource" href="tracker-re
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="Don't free data after the code is done"><span class="acronym">transfer: none</span></abbr>]</span><span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
 							<p>the first GDateTime object</p>
@@ -2604,10 +2741,10 @@ tracker_resource_get_first_datetime (<a title="TrackerResource" href="tracker-re
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -2671,10 +2808,10 @@ tracker_resource_get_first_datetime (<a title="TrackerResource" href="tracker-re
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -2737,10 +2874,10 @@ tracker_resource_get_first_datetime (<a title="TrackerResource" href="tracker-re
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -3393,7 +3530,7 @@ tracker_resource_get_first_relation (<a title="TrackerResource" href="tracker-re
 			<div>
 				<b>Returns</b>
 <span>(</span>
-<span class="annotation">[<abbr title="Don't free data after the code is done"><span class="acronym">transfer: none</span></abbr>]</span><span>)</span>
+<span class="annotation">[<abbr title="Don't free data after the code is done"><span class="acronym">transfer: none</span></abbr>]</span><span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
 							<p>the first resource object</p>
@@ -3591,6 +3728,8 @@ tracker_resource_get_first_string (<a title="TrackerResource" href="tracker-reso
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
 							<p>the first string object</p>
@@ -3788,6 +3927,8 @@ tracker_resource_get_first_uri (<a title="TrackerResource" href="tracker-resourc
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
 							<p>the first resource object as an URI.</p>
@@ -3976,6 +4117,8 @@ SPARQL blank node identifier, such as "_:123".</p>
 		<div class="symbol-detail">
 			<div>
 				<b>Returns</b>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
 							<p>a string owned by the resource</p>
@@ -4156,10 +4299,10 @@ The list should be freed with g_list_free.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.0
 		</p>
-
 
 <hr>
 
@@ -4213,10 +4356,10 @@ The list should be freed with g_list_free.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.0
 		</p>
-
 
 <hr>
 
@@ -4269,10 +4412,10 @@ The list should be freed with g_list_free.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.0
 		</p>
-
 
 <hr>
 
@@ -4343,10 +4486,10 @@ in the SPARQL issued by <em>resource</em>.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -4411,10 +4554,10 @@ in the SPARQL issued by <em>resource</em>.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -4478,10 +4621,10 @@ in the SPARQL issued by <em>resource</em>.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -4543,11 +4686,11 @@ tracker_resource_get_values (<a title="TrackerResource" href="tracker-resource.h
 			<div>
 				<b>Returns</b>
 <span>(</span>
-<span class="annotation">[<abbr title="Free data container after the code is done"><span class="acronym">transfer: container</span></abbr>]</span><span class="annotation">[<abbr title="Generic and defining element of containers and arrays"><span class="acronym">element-type</span></abbr>GValue]</span><span>)</span>
+<span class="annotation">[<abbr title="Free data container after the code is done"><span class="acronym">transfer: container</span></abbr>]</span><span class="annotation">[<abbr title="Generic and defining element of containers and arrays"><span class="acronym">element-type</span></abbr>GValue]</span><span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
-							<p>a GList of GValue
-instances. The list should be freed with g_list_free</p>
+							<p>a GList of
+GValue instances. The list should be freed with g_list_free</p>
 
 					</div>
 	</div>
@@ -4611,8 +4754,8 @@ instances. The list should be freed with g_list_free</p>
 <span>(</span>[ GObject.Value]<span>)</span>
 –
 			</div>
-							<p>a GList of GValue
-instances. The list should be freed with g_list_free</p>
+							<p>a GList of
+GValue instances. The list should be freed with g_list_free</p>
 
 					</div>
 	</div>
@@ -4675,8 +4818,8 @@ instances. The list should be freed with g_list_free</p>
 <span>(</span>[ GObject.Value]<span>)</span>
 –
 			</div>
-							<p>a GList of GValue
-instances. The list should be freed with g_list_free</p>
+							<p>a GList of
+GValue instances. The list should be freed with g_list_free</p>
 
 					</div>
 	</div>
@@ -4896,7 +5039,7 @@ resource identifier is &lt;, == or &gt; than <em>identifier</em></p>
 
             
 
-<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_resource_print_jsonld">
+<div class="base_symbol_container" data-hotdoc-tags="deprecated:3.5;" id="tracker_resource_print_jsonld">
 	
 <div class="gi-symbol gi-symbol-c">
 
@@ -4941,7 +5084,7 @@ from the connection that is the intended recipient of this data.</p>
 	<div>
 		<i><em><code>namespaces</code></em></i>
 <span>(</span>
-<span class="annotation">[<abbr title="NULL is OK, both for passing and returning"><span class="acronym">allow-none</span></abbr>]</span><span>)</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
 <p>a set of prefixed URLs, or NULL to use the
@@ -4965,6 +5108,9 @@ Nepomuk set</p>
 
 
 
+	<p>
+	<b>deprecated</b>			: 3.5: Use tracker_resource_print_rdf()
+		</p>
 
 <hr>
 
@@ -5035,6 +5181,9 @@ Nepomuk set</p>
 
 
 
+	<p>
+	<b>deprecated</b>			: 3.5: Use tracker_resource_print_rdf()
+		</p>
 
 <hr>
 
@@ -5104,6 +5253,9 @@ Nepomuk set</p>
 
 
 
+	<p>
+	<b>deprecated</b>			: 3.5: Use tracker_resource_print_rdf()
+		</p>
 
 <hr>
 
@@ -5177,9 +5329,12 @@ from the connection that is the intended recipient of this data.</p>
 <div class="symbol-detail">
 	<div>
 		<i><em><code>graph</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
-<p>target graph of the resource RDF, or NULL for the default graph</p>
+<p>target graph of the resource RDF, or NULL for the
+default graph</p>
 
 </div>
 
@@ -5198,10 +5353,10 @@ from the connection that is the intended recipient of this data.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.4
 		</p>
-
 
 <hr>
 
@@ -5270,7 +5425,8 @@ from the connection that is the intended recipient of this data.</p>
 <span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
 –
 </div>
-<p>target graph of the resource RDF, or NULL for the default graph</p>
+<p>target graph of the resource RDF, or NULL for the
+default graph</p>
 
 </div>
 
@@ -5290,10 +5446,10 @@ from the connection that is the intended recipient of this data.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.4
 		</p>
-
 
 <hr>
 
@@ -5361,7 +5517,8 @@ from the connection that is the intended recipient of this data.</p>
 <span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
 –
 </div>
-<p>target graph of the resource RDF, or NULL for the default graph</p>
+<p>target graph of the resource RDF, or NULL for the
+default graph</p>
 
 </div>
 
@@ -5381,10 +5538,10 @@ from the connection that is the intended recipient of this data.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.4
 		</p>
-
 
 <hr>
 
@@ -5714,10 +5871,10 @@ Nepomuk set</p>
 
 
 
+
 	<p>
 	<b>deprecated</b>			: 3.4: Use tracker_resource_print_rdf() instead.
 		</p>
-
 
 <hr>
 
@@ -5787,10 +5944,10 @@ Nepomuk set</p>
 
 
 
+
 	<p>
 	<b>deprecated</b>			: 3.4: Use tracker_resource_print_rdf() instead.
 		</p>
-
 
 <hr>
 
@@ -5859,10 +6016,10 @@ Nepomuk set</p>
 
 
 
+
 	<p>
 	<b>deprecated</b>			: 3.4: Use tracker_resource_print_rdf() instead.
 		</p>
-
 
 <hr>
 
@@ -5915,7 +6072,7 @@ that both ends use a common <a href="tracker-namespace-manager.html#TrackerNames
 			<div>
 				<b>Returns</b>
 <span>(</span>
-<span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span>)</span>
+<span class="annotation">[<abbr title="Alias for transfer none, used for objects with floating refs"><span class="acronym">transfer: floating</span></abbr>]</span><span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
 							<p>A variant describing the resource,
@@ -6300,10 +6457,10 @@ tracker_resource_set_datetime (<a title="TrackerResource" href="tracker-resource
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -6366,10 +6523,10 @@ tracker_resource_set_datetime (<a title="TrackerResource" href="tracker-resource
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -6431,10 +6588,10 @@ tracker_resource_set_datetime (<a title="TrackerResource" href="tracker-resource
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -6897,7 +7054,7 @@ insert the results in a database.</p>
 	<div>
 		<i><em><code>identifier</code></em></i>
 <span>(</span>
-<span class="annotation">[<abbr title="NULL is OK, both for passing and returning"><span class="acronym">allow-none</span></abbr>]</span><span>)</span>
+<span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 </div>
 <p>a string identifying the resource</p>
@@ -7868,6 +8025,8 @@ set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p
 <div class="symbol-detail">
 	<div>
 		<i><em><code>resource</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span>)</span>
 –
 </div>
 <p>the property object</p>
@@ -7884,8 +8043,135 @@ set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p
 
 </div>
 <div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_take_relation">
+	<i>Tracker.Resource.prototype.set_take_relation</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Resource.prototype.set_take_relation(property_uri: <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, resource: <a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a>): {
+    // javascript wrapper for 'tracker_resource_set_take_relation'
+}</code></pre>
+
+<p>Sets a single-valued resource object as a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a>. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_uri">Tracker.Resource.prototype.set_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
 </div>
 <div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_resource_set_take_relation">
+	<i>Tracker.Resource.set_take_relation</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Resource.set_take_relation (self, property_uri, resource):
+    #python wrapper for 'tracker_resource_set_take_relation'</code></pre>
+
+<p>Sets a single-valued resource object as a <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a>. This
+function produces similar RDF to <a href="tracker-resource.html#tracker_resource_set_uri">Tracker.Resource.set_uri</a>,
+although in this function the URI will depend on the identifier
+set on <em>resource</em>. This function takes ownership of <em>resource</em>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>self</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the <a href="tracker-resource.html#TrackerResource">Tracker.Resource</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>property_uri</code></em></i>
+<span>(</span><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a><span>)</span>
+–
+</div>
+<p>a string identifying the property to modify</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>resource</code></em></i>
+<span>(</span><a title="Tracker.Resource" href="tracker-resource.html#TrackerResource">Tracker.Resource</a><span>)</span>
+–
+</div>
+<p>the property object</p>
+
+</div>
+
+			</div>
+
+
+
+
+
+<hr>
+
 </div>
 
 </div>
@@ -8137,7 +8423,7 @@ use a common <a href="tracker-namespace-manager.html#TrackerNamespaceManager">Tr
 			<div>
 				<b>Returns</b>
 <span>(</span>
-<span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span>)</span>
+<span class="annotation">[<abbr title="Free data after the code is done"><span class="acronym">transfer: full</span></abbr>]</span><span class="annotation">[<abbr title="NULL may be passed to the value"><span class="acronym">nullable</span></abbr>]</span><span>)</span>
 –
 			</div>
 							<p>A TrackerResource, or NULL if
@@ -8287,7 +8573,7 @@ deserialization fails.</p>
 “identifier” <span class="type">gchar*</span>
 </pre>
 
-<p>The URI identifier for this class, or NULL for a
+<p>ਪ	 * The URI identifier for this class, or NULL for a
 blank node.</p>
 
 
@@ -8301,6 +8587,7 @@ blank node.</p>
 				Write
 			
 </p>
+
 
 
 <hr>
@@ -8320,7 +8607,7 @@ blank node.</p>
 “identifier” <span class="type"><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>
 </pre>
 
-<p>The URI identifier for this class, or NULL for a
+<p>ਪ	 * The URI identifier for this class, or NULL for a
 blank node.</p>
 
 
@@ -8334,6 +8621,7 @@ blank node.</p>
 				Write
 			
 </p>
+
 
 
 <hr>
@@ -8353,7 +8641,7 @@ blank node.</p>
 “self.props.identifier” <span class="type"><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a></span>
 </pre>
 
-<p>The URI identifier for this class, or NULL for a
+<p>ਪ	 * The URI identifier for this class, or NULL for a
 blank node.</p>
 
 
@@ -8367,6 +8655,7 @@ blank node.</p>
 				Write
 			
 </p>
+
 
 
 <hr>
@@ -8396,6 +8685,7 @@ blank node.</p>
 <pre class="raw_code">
 #define TRACKER_TYPE_RESOURCE tracker_resource_get_type()
 </pre>
+
 
 
 

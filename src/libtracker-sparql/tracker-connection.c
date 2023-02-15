@@ -381,6 +381,16 @@ tracker_sparql_connection_update_array_finish (TrackerSparqlConnection  *connect
  *
  * Returns: a #GVariant with the generated URNs, which should be freed with
  * g_variant_unref() when no longer used.
+ *
+ * Deprecated: 3.5: This function makes the expectation that blank nodes have
+ * a durable name that persist. The SPARQL and RDF specs define a much more
+ * reduced scope for blank node labels. This function advises a behavior that
+ * goes against that reduced scope, and will directly make the returned values
+ * meaningless if the %TRACKER_SPARQL_CONNECTION_FLAGS_ANONYMOUS_BNODES flag
+ * is defined in the connection.
+ *
+ * Users that want names generated for them, should look for other methods
+ * (e.g. IRIs containing UUIDv4 strings).
  */
 GVariant *
 tracker_sparql_connection_update_blank (TrackerSparqlConnection  *connection,
@@ -411,6 +421,8 @@ tracker_sparql_connection_update_blank (TrackerSparqlConnection  *connection,
  * Executes asynchronously a SPARQL update with blank nodes. See
  * the tracker_sparql_connection_update_blank() documentation to
  * see the differences with tracker_sparql_connection_update().
+ *
+ * Deprecated: 3.5: See tracker_sparql_connection_update_blank().
  */
 void
 tracker_sparql_connection_update_blank_async (TrackerSparqlConnection *connection,
@@ -443,6 +455,8 @@ tracker_sparql_connection_update_blank_async (TrackerSparqlConnection *connectio
  *
  * Returns: a #GVariant with the generated URNs, which should be freed with
  * g_variant_unref() when no longer used.
+ *
+ * Deprecated: 3.5: See tracker_sparql_connection_update_blank().
  */
 GVariant *
 tracker_sparql_connection_update_blank_finish (TrackerSparqlConnection  *connection,
@@ -584,7 +598,9 @@ tracker_sparql_connection_get_namespace_manager (TrackerSparqlConnection *connec
  * @cancellable: a #GCancellable used to cancel the operation, or %NULL
  * @error: a #TrackerSparqlError or %NULL if no error occured
  *
- * Prepares the given @sparql as a #TrackerSparqlStatement.
+ * Prepares the given SELECT/DESCRIBE/CONSTRUCT @sparql as a #TrackerSparqlStatement.
+ * This prepared statement can be executed through tracker_sparql_statement_execute()
+ * or tracker_sparql_statement_serialize_async() families of functions.
  *
  * Returns: (transfer full) (nullable): a prepared statement
  */
@@ -603,6 +619,41 @@ tracker_sparql_connection_query_statement (TrackerSparqlConnection  *connection,
 	                                                                          sparql,
 	                                                                          cancellable,
 	                                                                          error);
+}
+
+/**
+ * tracker_sparql_connection_update_statement:
+ * @connection: a #TrackerSparqlConnection
+ * @sparql: the SPARQL update
+ * @cancellable: a #GCancellable used to cancel the operation, or %NULL
+ * @error: a #TrackerSparqlError or %NULL if no error occured
+ *
+ * Prepares the given INSERT/DELETE/LOAD/CLEAR/DROP/ADD/MOVE/COPY/CREATE @sparql
+ * as a #TrackerSparqlStatement. This prepared statement can be executed through
+ * the tracker_sparql_statement_update() family of functions.
+ *
+ * Returns: (transfer full) (nullable): a prepared statement
+ *
+ * Since: 3.5
+ */
+TrackerSparqlStatement *
+tracker_sparql_connection_update_statement (TrackerSparqlConnection  *connection,
+                                            const gchar              *sparql,
+                                            GCancellable             *cancellable,
+                                            GError                  **error)
+{
+	g_return_val_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection), NULL);
+	g_return_val_if_fail (sparql != NULL, NULL);
+	g_return_val_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable), NULL);
+	g_return_val_if_fail (!error || !*error, NULL);
+
+	if (!TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->update_statement)
+		return NULL;
+
+	return TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->update_statement (connection,
+	                                                                           sparql,
+	                                                                           cancellable,
+	                                                                           error);
 }
 
 /**
@@ -738,6 +789,7 @@ tracker_sparql_connection_load_statement_from_gresource (TrackerSparqlConnection
 {
 	TrackerSparqlStatement *stmt;
 	GBytes *query;
+	GError *inner_error1 = NULL, *inner_error2 = NULL;
 
 	g_return_val_if_fail (TRACKER_IS_SPARQL_CONNECTION (connection), NULL);
 	g_return_val_if_fail (resource_path && *resource_path, NULL);
@@ -754,7 +806,21 @@ tracker_sparql_connection_load_statement_from_gresource (TrackerSparqlConnection
 	                                                                          g_bytes_get_data (query,
 	                                                                                            NULL),
 	                                                                          cancellable,
-	                                                                          error);
+	                                                                          &inner_error1);
+
+	if (inner_error1) {
+		stmt = TRACKER_SPARQL_CONNECTION_GET_CLASS (connection)->update_statement (connection,
+		                                                                           g_bytes_get_data (query,
+		                                                                                             NULL),
+		                                                                           cancellable,
+		                                                                           &inner_error2);
+		if (inner_error1 && inner_error2) {
+			/* Pick one */
+			g_propagate_error (error, inner_error1);
+			g_clear_error (&inner_error2);
+		}
+	}
+
 	g_bytes_unref (query);
 
 	return stmt;

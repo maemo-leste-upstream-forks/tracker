@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<book xmlns="http://www.devhelp.net/book" title="Tracker 3.4.2" link="index.html" author="hotdoc" name="Tracker" version="2" language="C" online="https://gnome.pages.gitlab.gnome.org/tracker/docs/developer/">
+<book xmlns="http://www.devhelp.net/book" title="Tracker 3.5.0.beta" link="index.html" author="hotdoc" name="Tracker" version="2" language="C" online="https://gnome.pages.gitlab.gnome.org/tracker/docs/developer/">
   <chapters>
     <sub name="Overview" link="overview.html"/>
     <sub name="Examples" link="examples.html"/>
@@ -59,6 +59,8 @@
     <keyword type="property" name="connection" link="tracker-batch.html#TrackerBatch:connection"/>
     <keyword type="function" name="tracker_batch_add_resource" link="tracker-batch.html#tracker_batch_add_resource"/>
     <keyword type="function" name="tracker_batch_add_sparql" link="tracker-batch.html#tracker_batch_add_sparql"/>
+    <keyword type="function" name="tracker_batch_add_statement" link="tracker-batch.html#tracker_batch_add_statement"/>
+    <keyword type="function" name="tracker_batch_add_statementv" link="tracker-batch.html#tracker_batch_add_statementv"/>
     <keyword type="function" name="tracker_batch_execute" link="tracker-batch.html#tracker_batch_execute"/>
     <keyword type="function" name="tracker_batch_execute_async" link="tracker-batch.html#tracker_batch_execute_async"/>
     <keyword type="function" name="tracker_batch_execute_finish" link="tracker-batch.html#tracker_batch_execute_finish"/>
@@ -113,6 +115,7 @@
     <keyword type="function" name="tracker_sparql_connection_update_resource" link="tracker-sparql-connection.html#tracker_sparql_connection_update_resource"/>
     <keyword type="function" name="tracker_sparql_connection_update_resource_async" link="tracker-sparql-connection.html#tracker_sparql_connection_update_resource_async"/>
     <keyword type="function" name="tracker_sparql_connection_update_resource_finish" link="tracker-sparql-connection.html#tracker_sparql_connection_update_resource_finish"/>
+    <keyword type="function" name="tracker_sparql_connection_update_statement" link="tracker-sparql-connection.html#tracker_sparql_connection_update_statement"/>
     <keyword type="macro" name="TRACKER_SPARQL_TYPE_CURSOR" link="tracker-sparql-cursor.html#TRACKER_SPARQL_TYPE_CURSOR"/>
     <keyword type="member" name="TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE" link="tracker-sparql-cursor.html#TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE"/>
     <keyword type="member" name="TRACKER_SPARQL_VALUE_TYPE_BOOLEAN" link="tracker-sparql-cursor.html#TRACKER_SPARQL_VALUE_TYPE_BOOLEAN"/>
@@ -246,6 +249,9 @@
     <keyword type="function" name="tracker_sparql_statement_get_sparql" link="tracker-sparql-statement.html#tracker_sparql_statement_get_sparql"/>
     <keyword type="function" name="tracker_sparql_statement_serialize_async" link="tracker-sparql-statement.html#tracker_sparql_statement_serialize_async"/>
     <keyword type="function" name="tracker_sparql_statement_serialize_finish" link="tracker-sparql-statement.html#tracker_sparql_statement_serialize_finish"/>
+    <keyword type="function" name="tracker_sparql_statement_update" link="tracker-sparql-statement.html#tracker_sparql_statement_update"/>
+    <keyword type="function" name="tracker_sparql_statement_update_async" link="tracker-sparql-statement.html#tracker_sparql_statement_update_async"/>
+    <keyword type="function" name="tracker_sparql_statement_update_finish" link="tracker-sparql-statement.html#tracker_sparql_statement_update_finish"/>
     <keyword type="function" name="tracker_sparql_escape_uri" link="tracker-uri.html#tracker_sparql_escape_uri"/>
     <keyword type="function" name="tracker_sparql_escape_uri_printf" link="tracker-uri.html#tracker_sparql_escape_uri_printf"/>
     <keyword type="function" name="tracker_sparql_escape_uri_vprintf" link="tracker-uri.html#tracker_sparql_escape_uri_vprintf"/>
@@ -256,6 +262,7 @@
     <keyword type="macro" name="TRACKER_AVAILABLE_IN_3_2" link="tracker-version.html#TRACKER_AVAILABLE_IN_3_2"/>
     <keyword type="macro" name="TRACKER_AVAILABLE_IN_3_3" link="tracker-version.html#TRACKER_AVAILABLE_IN_3_3"/>
     <keyword type="macro" name="TRACKER_AVAILABLE_IN_3_4" link="tracker-version.html#TRACKER_AVAILABLE_IN_3_4"/>
+    <keyword type="macro" name="TRACKER_AVAILABLE_IN_3_5" link="tracker-version.html#TRACKER_AVAILABLE_IN_3_5"/>
     <keyword type="macro" name="TRACKER_AVAILABLE_IN_ALL" link="tracker-version.html#TRACKER_AVAILABLE_IN_ALL"/>
     <keyword type="macro" name="TRACKER_CHECK_VERSION" link="tracker-version.html#TRACKER_CHECK_VERSION"/>
     <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_1" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_1"/>
@@ -266,11 +273,14 @@
     <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_3_FOR" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_3_FOR"/>
     <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_4" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_4"/>
     <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_4_FOR" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_4_FOR"/>
+    <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_5" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_5"/>
+    <keyword type="macro" name="TRACKER_DEPRECATED_IN_3_5_FOR" link="tracker-version.html#TRACKER_DEPRECATED_IN_3_5_FOR"/>
     <keyword type="macro" name="TRACKER_VERSION_3_0" link="tracker-version.html#TRACKER_VERSION_3_0"/>
     <keyword type="macro" name="TRACKER_VERSION_3_1" link="tracker-version.html#TRACKER_VERSION_3_1"/>
     <keyword type="macro" name="TRACKER_VERSION_3_2" link="tracker-version.html#TRACKER_VERSION_3_2"/>
     <keyword type="macro" name="TRACKER_VERSION_3_3" link="tracker-version.html#TRACKER_VERSION_3_3"/>
     <keyword type="macro" name="TRACKER_VERSION_3_4" link="tracker-version.html#TRACKER_VERSION_3_4"/>
+    <keyword type="macro" name="TRACKER_VERSION_3_5" link="tracker-version.html#TRACKER_VERSION_3_5"/>
     <keyword type="macro" name="TRACKER_VERSION_CUR" link="tracker-version.html#TRACKER_VERSION_CUR"/>
     <keyword type="macro" name="TRACKER_VERSION_MAX_ALLOWED" link="tracker-version.html#TRACKER_VERSION_MAX_ALLOWED"/>
     <keyword type="macro" name="TRACKER_VERSION_MIN_REQUIRED" link="tracker-version.html#TRACKER_VERSION_MIN_REQUIRED"/>
@@ -281,8 +291,10 @@
     <keyword type="function" name="tracker_check_version" link="tracker-version.html#tracker_check_version"/>
     <keyword type="macro" name="TRACKER_SPARQL_ERROR" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR"/>
     <keyword type="member" name="TRACKER_SPARQL_ERROR_CONSTRAINT" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_CONSTRAINT"/>
+    <keyword type="member" name="TRACKER_SPARQL_ERROR_CORRUPT" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_CORRUPT"/>
     <keyword type="member" name="TRACKER_SPARQL_ERROR_INCOMPLETE_PROPERTY_DEFINITION" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_INCOMPLETE_PROPERTY_DEFINITION"/>
     <keyword type="member" name="TRACKER_SPARQL_ERROR_INTERNAL" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_INTERNAL"/>
+    <keyword type="member" name="TRACKER_SPARQL_ERROR_LAST" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_LAST"/>
     <keyword type="member" name="TRACKER_SPARQL_ERROR_MISSING_LAST_MODIFIED_HEADER" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_MISSING_LAST_MODIFIED_HEADER"/>
     <keyword type="member" name="TRACKER_SPARQL_ERROR_NO_SPACE" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_NO_SPACE"/>
     <keyword type="member" name="TRACKER_SPARQL_ERROR_ONTOLOGY_NOT_FOUND" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_ONTOLOGY_NOT_FOUND"/>
@@ -294,7 +306,7 @@
     <keyword type="member" name="TRACKER_SPARQL_ERROR_UNKNOWN_GRAPH" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_UNKNOWN_GRAPH"/>
     <keyword type="member" name="TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY"/>
     <keyword type="member" name="TRACKER_SPARQL_ERROR_UNSUPPORTED" link="tracker-sparql-error.html#TRACKER_SPARQL_ERROR_UNSUPPORTED"/>
-    <keyword type="member" name="TRACKER_SPARQL_N_ERRORS" link="tracker-sparql-error.html#TRACKER_SPARQL_N_ERRORS"/>
+    <keyword type="macro" name="TRACKER_SPARQL_N_ERRORS" link="tracker-sparql-error.html#TRACKER_SPARQL_N_ERRORS"/>
     <keyword type="enum" name="TrackerSparqlError" link="tracker-sparql-error.html#TrackerSparqlError"/>
     <keyword type="function" name="tracker_sparql_error_quark" link="tracker-sparql-error.html#tracker_sparql_error_quark"/>
     <keyword type="macro" name="TRACKER_PREFIX_DC" link="tracker-ontologies.html#TRACKER_PREFIX_DC"/>
@@ -311,7 +323,9 @@
     <keyword type="macro" name="TRACKER_PREFIX_SLO" link="tracker-ontologies.html#TRACKER_PREFIX_SLO"/>
     <keyword type="macro" name="TRACKER_PREFIX_TRACKER" link="tracker-ontologies.html#TRACKER_PREFIX_TRACKER"/>
     <keyword type="macro" name="TRACKER_PREFIX_XSD" link="tracker-ontologies.html#TRACKER_PREFIX_XSD"/>
-    <keyword type="member" name="TRACKER_N_RDF_FORMATS" link="tracker-enums.html#TRACKER_N_RDF_FORMATS"/>
+    <keyword type="macro" name="TRACKER_N_RDF_FORMATS" link="tracker-enums.html#TRACKER_N_RDF_FORMATS"/>
+    <keyword type="member" name="TRACKER_RDF_FORMAT_JSON_LD" link="tracker-enums.html#TRACKER_RDF_FORMAT_JSON_LD"/>
+    <keyword type="member" name="TRACKER_RDF_FORMAT_LAST" link="tracker-enums.html#TRACKER_RDF_FORMAT_LAST"/>
     <keyword type="member" name="TRACKER_RDF_FORMAT_TRIG" link="tracker-enums.html#TRACKER_RDF_FORMAT_TRIG"/>
     <keyword type="member" name="TRACKER_RDF_FORMAT_TURTLE" link="tracker-enums.html#TRACKER_RDF_FORMAT_TURTLE"/>
     <keyword type="enum" name="TrackerRdfFormat" link="tracker-enums.html#TrackerRdfFormat"/>

@@ -166,6 +166,7 @@ iterator of results.</p>
 
 
 
+
 <hr>
 <h3>Class structure</h3>
 <div class="gi-symbol gi-symbol-c">
@@ -183,6 +184,7 @@ iterator of results.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -201,6 +203,7 @@ iterator of results.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -212,6 +215,7 @@ iterator of results.</p>
 <h3>
 	Tracker.SparqlCursorClass
 </h3>
+
 
 
 
@@ -269,6 +273,7 @@ iterator of results.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -314,6 +319,7 @@ iterator of results.</p>
 	</div>
 
 			</div>
+
 
 
 
@@ -886,10 +892,10 @@ tracker_sparql_cursor_get_datetime (<a title="TrackerSparqlCursor" href="tracker
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -953,10 +959,10 @@ tracker_sparql_cursor_get_datetime (<a title="TrackerSparqlCursor" href="tracker
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -1019,10 +1025,10 @@ tracker_sparql_cursor_get_datetime (<a title="TrackerSparqlCursor" href="tracker
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -3091,7 +3097,7 @@ def Tracker.SparqlCursor.next_finish (self, res):
 
             
 
-<div class="base_symbol_container" data-hotdoc-tags="" id="tracker_sparql_cursor_rewind">
+<div class="base_symbol_container" data-hotdoc-tags="deprecated:3.5;" id="tracker_sparql_cursor_rewind">
 	
 <div class="gi-symbol gi-symbol-c">
 
@@ -3129,6 +3135,12 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 
 
 
+	<p>
+	<b>deprecated</b>			: 3.5: This function only works on cursors
+ from direct #TrackerSparqlConnection objects and cannot work
+ reliably across all cursor types. Issue a different query to
+ obtain a new cursor.
+		</p>
 
 <hr>
 
@@ -3170,6 +3182,12 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 
 
 
+	<p>
+	<b>deprecated</b>			: 3.5: This function only works on cursors
+ from direct #TrackerSparqlConnection objects and cannot work
+ reliably across all cursor types. Issue a different query to
+ obtain a new cursor.
+		</p>
 
 <hr>
 
@@ -3210,6 +3228,12 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 
 
 
+	<p>
+	<b>deprecated</b>			: 3.5: This function only works on cursors
+ from direct #TrackerSparqlConnection objects and cannot work
+ reliably across all cursor types. Issue a different query to
+ obtain a new cursor.
+		</p>
 
 <hr>
 
@@ -3237,7 +3261,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 “connection” <span class="type"><a title="TrackerSparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> *</span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> used to retrieve the results.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> used to retrieve the results.</p>
 
 
 <p>
@@ -3253,6 +3277,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3272,7 +3297,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 “connection” <span class="type"><a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a></span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> used to retrieve the results.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> used to retrieve the results.</p>
 
 
 <p>
@@ -3288,6 +3313,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3307,7 +3333,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 “self.props.connection” <span class="type"><a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a></span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> used to retrieve the results.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> used to retrieve the results.</p>
 
 
 <p>
@@ -3323,6 +3349,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3360,6 +3387,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 </p>
 
 
+
 <hr>
 
 </div>
@@ -3388,6 +3416,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 </p>
 
 
+
 <hr>
 
 </div>
@@ -3414,6 +3443,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 				Read
 			
 </p>
+
 
 
 <hr>
@@ -3539,6 +3569,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 
 
 
+
 <hr>
 
 </div>
@@ -3651,6 +3682,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 
 
 
+
 <hr>
 
 </div>
@@ -3760,6 +3792,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 	</div>
 
 			</div>
+
 
 
 
@@ -3792,6 +3825,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 
 
 
+
 <hr>
 
 </div>
@@ -3819,6 +3853,7 @@ tracker_sparql_cursor_rewind (<a title="TrackerSparqlCursor" href="tracker-sparq
 <pre class="raw_code">
 #define TRACKER_TYPE_SPARQL_CURSOR tracker_sparql_cursor_get_type ()
 </pre>
+
 
 
 

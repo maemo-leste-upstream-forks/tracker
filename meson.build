@@ -1,5 +1,5 @@
 project('tracker', 'c',
-        version: '3.4.2',
+        version: '3.5.0.beta',
         meson_version: '>=0.53',
         default_options: [
           'c_std=c99',
@@ -55,6 +55,8 @@ libxml2 = dependency('libxml-2.0', version: '> 2.6')
 sqlite = dependency('sqlite3', version: '>' + sqlite_required)
 dbus = dependency('dbus-1')
 
+gvdb_dep = dependency('gvdb')
+
 soup = get_option('soup')
 if soup.contains('soup2') or soup.contains('auto')
   libsoup2 = dependency('libsoup-2.4', version: '> 2.40',
@@ -97,6 +99,10 @@ if get_option('tests')
   endif
 endif
 python = import('python').find_installation('python3', modules: py_modules)
+
+if get_option('vapi').enabled() and get_option('introspection').disabled()
+  error('Vala binding generation requires the \'introspection\' to be enabled')
+endif
 
 cc_warning_flags = [
   '-Wformat',
@@ -337,8 +343,6 @@ tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'
 # NOTE: We don't use ${TRACKER_API_VERSION} because other content like
 # the ontology is installed to the same location.
 tracker_ontologies_dir = join_paths(get_option('prefix'), get_option('datadir'), tracker_versioned_name, 'ontologies')
-
-vapi_dir = join_paths(get_option('prefix'), get_option('datadir'), 'vala', 'vapi')
 
 if gobject_introspection.found()
   typelib_dir = gobject_introspection.get_variable(pkgconfig: 'typelibdir',
