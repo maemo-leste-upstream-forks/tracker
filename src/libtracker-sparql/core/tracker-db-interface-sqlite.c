@@ -414,46 +414,6 @@ function_sparql_uri_is_descendant (sqlite3_context *context,
 }
 
 static void
-function_sparql_format_time (sqlite3_context *context,
-                             int              argc,
-                             sqlite3_value   *argv[])
-{
-	const gchar *fn = "SparqlFormatTime helper";
-
-	if (argc != 1) {
-		result_context_function_error (context, fn, "Invalid argument count");
-		return;
-	}
-
-	if (sqlite3_value_type (argv[0]) == SQLITE_NULL) {
-		sqlite3_result_null (context);
-		return;
-	} else if (sqlite3_value_numeric_type (argv[0]) == SQLITE_INTEGER) {
-		GDateTime *datetime;
-		gint64 timestamp;
-
-		timestamp = sqlite3_value_int64 (argv[0]);
-		datetime = g_date_time_new_from_unix_utc (timestamp);
-
-		if (datetime) {
-			sqlite3_result_text (context,
-					     tracker_date_format_iso8601 (datetime),
-					     -1, g_free);
-			g_date_time_unref (datetime);
-		} else {
-			sqlite3_result_null (context);
-		}
-	} else if (sqlite3_value_type (argv[0]) == SQLITE_TEXT) {
-		const gchar *str;
-
-		str = sqlite3_value_text (argv[0]);
-		sqlite3_result_text (context, g_strdup (str), -1, g_free);
-	} else {
-		result_context_function_error (context, fn, "Invalid argument type");
-	}
-}
-
-static void
 function_sparql_timestamp (sqlite3_context *context,
                            int              argc,
                            sqlite3_value   *argv[])
@@ -1890,65 +1850,111 @@ function_sparql_bnode (sqlite3_context *context,
 }
 
 static void
-function_sparql_print_iri (sqlite3_context *context,
-                           int              argc,
-                           sqlite3_value   *argv[])
+function_sparql_print_value (sqlite3_context *context,
+                             int              argc,
+                             sqlite3_value   *argv[])
 {
-	const gchar *fn = "PrintIRI helper";
+	const gchar *fn = "PrintValue helper";
+	TrackerPropertyType prop_type;
 
-	if (argc > 1) {
+	if (argc > 2) {
 		result_context_function_error (context, fn, "Invalid argument count");
 		return;
 	}
 
-	if (sqlite3_value_numeric_type (argv[0]) == SQLITE_INTEGER) {
-		sqlite3_stmt *stmt;
-		gboolean store_auxdata = FALSE;
-		sqlite3 *db;
-		gint result;
+	if (sqlite3_value_type (argv[0]) == SQLITE_NULL) {
+		sqlite3_result_null (context);
+		return;
+	}
 
-		stmt = sqlite3_get_auxdata (context, 1);
+	prop_type = sqlite3_value_int64 (argv[1]);
 
-		if (stmt == NULL) {
-			store_auxdata = TRUE;
-			db = sqlite3_context_db_handle (context);
-
-			result = sqlite3_prepare_v2 (db, "SELECT Uri FROM Resource WHERE ID = ?",
-			                             -1, &stmt, NULL);
-			if (result != SQLITE_OK) {
-				result_context_function_error (context, fn, sqlite3_errstr (result));
-				return;
-			}
-		}
-
-		sqlite3_reset (stmt);
-		sqlite3_bind_value (stmt, 1, argv[0]);
-		result = stmt_step (stmt);
-
-		if (result == SQLITE_DONE) {
-			sqlite3_result_null (context);
-		} else if (result == SQLITE_ROW) {
-			const gchar *value;
-
-			value = (const gchar *) sqlite3_column_text (stmt, 0);
-
-			if (value && *value) {
-				sqlite3_result_text (context, g_strdup (value), -1, g_free);
+	switch (prop_type) {
+	case TRACKER_PROPERTY_TYPE_RESOURCE:
+		if (sqlite3_value_numeric_type (argv[0]) == SQLITE_INTEGER) {
+			/* Raw rowids belong to blank nodes */
+			if (sqlite3_value_int64 (argv[0]) == 0) {
+				sqlite3_result_null (context);
 			} else {
 				sqlite3_result_text (context,
 				                     g_strdup_printf ("urn:bnode:%" G_GINT64_FORMAT,
 				                                      (gint64) sqlite3_value_int64 (argv[0])),
 				                     -1, g_free);
 			}
+		} else if (sqlite3_value_type (argv[0]) == SQLITE_TEXT) {
+			sqlite3_result_value (context, argv[0]);
 		} else {
-			result_context_function_error (context, fn, sqlite3_errstr (result));
+			result_context_function_error (context, fn, "Invalid value type");
 		}
+		break;
+	case TRACKER_PROPERTY_TYPE_DATE:
+	case TRACKER_PROPERTY_TYPE_DATETIME:
+		if (sqlite3_value_numeric_type (argv[0]) == SQLITE_INTEGER) {
+			struct tm tm;
+			gint64 timestamp;
+			gchar buf[100];
+			int retval;
 
-		if (store_auxdata) {
-			sqlite3_set_auxdata (context, 1, (void*) stmt, stmt_destroy);
+			timestamp = sqlite3_value_int64 (argv[0]);
+
+			if (gmtime_r ((time_t *) &timestamp, &tm) == NULL)
+				result_context_function_error (context, fn, "Invalid unix timestamp");
+
+			if (prop_type == TRACKER_PROPERTY_TYPE_DATETIME)
+				retval = strftime ((gchar *) &buf, sizeof (buf), "%2C%y-%m-%dT%TZ", &tm);
+			else if (prop_type == TRACKER_PROPERTY_TYPE_DATE)
+				retval = strftime ((gchar *) &buf, sizeof (buf), "%2C%y-%m-%d", &tm);
+			else
+				g_assert_not_reached ();
+
+			if (retval != 0)
+				sqlite3_result_text (context, g_strdup (buf), -1, g_free);
+			else
+				result_context_function_error (context, fn, "Invalid unix timestamp");
+		} else if (sqlite3_value_type (argv[0]) == SQLITE_TEXT) {
+			if (prop_type == TRACKER_PROPERTY_TYPE_DATETIME) {
+				sqlite3_result_value (context, argv[0]);
+			} else if (prop_type == TRACKER_PROPERTY_TYPE_DATE) {
+				const gchar *value, *end;
+				int len = -1;
+
+				value = sqlite3_value_text (argv[0]);
+				/* Drop time data if we are given a xsd:dateTime as a xsd:date */
+				end = strchr (value, 'T');
+				if (end)
+					len = end - value;
+
+				sqlite3_result_text (context,
+				                     g_strndup (value, len),
+				                     -1, g_free);
+			} else {
+				g_assert_not_reached ();
+			}
+		} else {
+			result_context_function_error (context, fn, "Invalid value type");
 		}
-	} else {
+		break;
+	case TRACKER_PROPERTY_TYPE_BOOLEAN:
+		if (sqlite3_value_numeric_type (argv[0]) == SQLITE_INTEGER &&
+		    (sqlite3_value_int64 (argv[0]) == 0 ||
+		     sqlite3_value_int64 (argv[0]) == 1)) {
+			sqlite3_result_text (context,
+			                     sqlite3_value_int64 (argv[0]) == 1 ?
+			                     "true" : "false",
+			                     -1, NULL);
+		} else {
+			sqlite3_result_null (context);
+		}
+		break;
+	case TRACKER_PROPERTY_TYPE_STRING:
+	case TRACKER_PROPERTY_TYPE_LANGSTRING:
+	case TRACKER_PROPERTY_TYPE_INTEGER:
+	case TRACKER_PROPERTY_TYPE_DOUBLE:
+	case TRACKER_PROPERTY_TYPE_UNKNOWN:
 		sqlite3_result_value (context, argv[0]);
+		break;
+	default:
+		result_context_function_error (context, fn, "Invalid property type");
 	}
 }
 
@@ -1976,8 +1982,6 @@ initialize_functions (TrackerDBInterface *db_interface)
 		{ "SparqlCartesianDistance", 4, SQLITE_ANY | SQLITE_DETERMINISTIC,
 		  function_sparql_cartesian_distance },
 		/* Date/time */
-		{ "SparqlFormatTime", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
-		  function_sparql_format_time },
 		{ "SparqlTimestamp", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
 		  function_sparql_timestamp },
 		{ "SparqlTimeSort", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
@@ -2028,8 +2032,8 @@ initialize_functions (TrackerDBInterface *db_interface)
 		  function_sparql_langmatches },
 		{ "SparqlStrLang", 2, SQLITE_ANY | SQLITE_DETERMINISTIC,
 		  function_sparql_strlang },
-		{ "SparqlPrintIRI", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
-		  function_sparql_print_iri },
+		{ "SparqlPrintValue", 2, SQLITE_ANY | SQLITE_DETERMINISTIC,
+		  function_sparql_print_value },
 		/* Numbers */
 		{ "SparqlCeil", 1, SQLITE_ANY | SQLITE_DETERMINISTIC,
 		  function_sparql_ceil },
@@ -2293,26 +2297,23 @@ tracker_db_interface_sqlite_fts_create_update_query (TrackerDBInterface  *db_int
         }
 
         query = g_strdup_printf ("INSERT INTO \"%s\".fts5 (ROWID, %s) "
-                                 "SELECT ROWID, %s FROM \"%s\".fts_view WHERE ROWID = ? AND COALESCE(%s, NULL) IS NOT NULL",
+                                 "SELECT ROWID, %s FROM \"%s\".fts_view WHERE ROWID = ?",
                                  database,
                                  props_str->str,
                                  props_str->str,
-                                 database,
-                                 props_str->str);
+                                 database);
         g_string_free (props_str, TRUE);
 
         return query;
 }
 
-gboolean
-tracker_db_interface_sqlite_fts_update_text (TrackerDBInterface  *db_interface,
-                                             const gchar         *database,
-                                             TrackerRowid         id,
-                                             const gchar        **properties,
-                                             GError             **error)
+TrackerDBStatement *
+tracker_db_interface_sqlite_fts_insert_text_stmt (TrackerDBInterface  *db_interface,
+                                                  const gchar         *database,
+                                                  const gchar        **properties,
+                                                  GError             **error)
 {
 	TrackerDBStatement *stmt;
-	GError *inner_error = NULL;
 	gchar *query;
 
 	query = tracker_db_interface_sqlite_fts_create_update_query (db_interface,
@@ -2324,19 +2325,7 @@ tracker_db_interface_sqlite_fts_update_text (TrackerDBInterface  *db_interface,
 	                                              query);
 	g_free (query);
 
-        if (!stmt)
-                return FALSE;
-
-        tracker_db_statement_bind_int (stmt, 0, id);
-        tracker_db_statement_execute (stmt, &inner_error);
-        g_object_unref (stmt);
-
-        if (inner_error) {
-	        g_propagate_prefixed_error (error, inner_error, "Could not insert FTS text: ");
-                return FALSE;
-        }
-
-        return TRUE;
+	return stmt;
 }
 
 static gchar *
@@ -2358,50 +2347,42 @@ tracker_db_interface_sqlite_fts_create_delete_query (TrackerDBInterface  *db_int
         }
 
         query = g_strdup_printf ("INSERT INTO \"%s\".fts5 (fts5, ROWID, %s) "
-                                 "SELECT 'delete', ROWID, %s FROM \"%s\".fts_view WHERE ROWID = ? AND COALESCE(%s, NULL) IS NOT NULL",
+                                 "SELECT 'delete', ROWID, %s FROM \"%s\".fts_view WHERE ROWID = ?",
                                  database,
                                  props_str->str,
                                  props_str->str,
-                                 database,
-                                 props_str->str);
+                                 database);
         g_string_free (props_str, TRUE);
 
         return query;
 }
 
-gboolean
-tracker_db_interface_sqlite_fts_delete_text (TrackerDBInterface  *db_interface,
-                                             const gchar         *database,
-                                             TrackerRowid         rowid,
-                                             const gchar        **properties,
-                                             GError             **error)
+TrackerDBStatement *
+tracker_db_interface_sqlite_fts_delete_text_stmt (TrackerDBInterface  *db_interface,
+                                                  const gchar         *database,
+                                                  const gchar        **properties,
+                                                  GError             **error)
 {
 	TrackerDBStatement *stmt;
-	GError *inner_error = NULL;
 	gchar *query;
 
 	query = tracker_db_interface_sqlite_fts_create_delete_query (db_interface,
 	                                                             database,
 	                                                             properties);
 	stmt = tracker_db_interface_create_statement (db_interface,
-	                                              TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE,
+	                                              TRACKER_DB_STATEMENT_CACHE_TYPE_NONE,
 	                                              error,
 	                                              query);
 	g_free (query);
 
-	if (!stmt)
-		return FALSE;
+	return stmt;
+}
 
-	tracker_db_statement_bind_int (stmt, 0, rowid);
-	tracker_db_statement_execute (stmt, &inner_error);
-	g_object_unref (stmt);
-
-	if (inner_error) {
-	        g_propagate_prefixed_error (error, inner_error, "Could not delete FTS text: ");
-                return FALSE;
-	}
-
-	return TRUE;
+gboolean
+tracker_db_interface_sqlite_fts_integrity_check (TrackerDBInterface  *interface,
+                                                 const gchar         *database)
+{
+	return tracker_fts_integrity_check (interface->db, database, "fts5");
 }
 
 gboolean
@@ -2855,18 +2836,6 @@ execute_stmt (TrackerDBInterface  *interface,
 	tracker_db_interface_unref_use (interface);
 
 	if (result != SQLITE_DONE) {
-		/* This is rather fatal */
-		if (errno != ENOSPC &&
-		    (sqlite3_errcode (interface->db) == SQLITE_IOERR ||
-		     sqlite3_errcode (interface->db) == SQLITE_CORRUPT ||
-		     sqlite3_errcode (interface->db) == SQLITE_NOTADB)) {
-
-			g_critical ("SQLite error: %s (errno: %s)",
-			            sqlite3_errmsg (interface->db),
-			            g_strerror (errno));
-			return FALSE;
-		}
-
 		if (result == SQLITE_INTERRUPT) {
 			g_set_error (error,
 			             TRACKER_DB_INTERFACE_ERROR,
@@ -2878,15 +2847,40 @@ execute_stmt (TrackerDBInterface  *interface,
 			             TRACKER_DB_CONSTRAINT,
 			             "Constraint would be broken: %s",
 			             sqlite3_errmsg (interface->db));
-		} else {
+		} else if (result == SQLITE_FULL) {
 			g_set_error (error,
 			             TRACKER_DB_INTERFACE_ERROR,
-			             errno != ENOSPC ? TRACKER_DB_QUERY_ERROR : TRACKER_DB_NO_SPACE,
-			             "%s%s%s%s",
-			             sqlite3_errmsg (interface->db),
-			             errno != 0 ? " (strerror of errno (not necessarily related): " : "",
-			             errno != 0 ? g_strerror (errno) : "",
-			             errno != 0 ? ")" : "");
+			             TRACKER_DB_NO_SPACE,
+			             "No space to write database");
+		} else {
+			int db_result;
+
+			db_result = sqlite3_errcode (interface->db);
+
+			if (db_result == SQLITE_CORRUPT ||
+			    db_result == SQLITE_NOTADB) {
+				g_set_error (error,
+				             TRACKER_DB_INTERFACE_ERROR,
+				             TRACKER_DB_CORRUPT,
+				             "Database corrupt: %s",
+				             sqlite3_errmsg (interface->db));
+			} else if (db_result == SQLITE_IOERR) {
+				int db_errno;
+
+				db_errno = sqlite3_system_errno (interface->db);
+
+				g_set_error (error,
+				             TRACKER_DB_INTERFACE_ERROR,
+				             TRACKER_DB_QUERY_ERROR,
+				             "I/O error (errno: %s)",
+				             g_strerror (db_errno));
+			} else {
+				g_set_error (error,
+				             TRACKER_DB_INTERFACE_ERROR,
+				             TRACKER_DB_QUERY_ERROR,
+				             "%s",
+				             sqlite3_errmsg (interface->db));
+			}
 		}
 	}
 
@@ -3250,8 +3244,8 @@ tracker_db_statement_bind_bytes (TrackerDBStatement         *stmt,
 
 void
 tracker_db_statement_bind_value (TrackerDBStatement *stmt,
-				 int                 index,
-				 const GValue       *value)
+                                 int                 index,
+                                 const GValue       *value)
 {
 	GType type;
 
@@ -3274,6 +3268,10 @@ tracker_db_statement_bind_value (TrackerDBStatement *stmt,
 	} else if (type == G_TYPE_STRING) {
 		sqlite3_bind_text (stmt->stmt, index + 1,
 				   g_value_get_string (value), -1, SQLITE_TRANSIENT);
+	} else if (type == G_TYPE_BOOLEAN) {
+		sqlite3_bind_text (stmt->stmt, index + 1,
+		                   g_value_get_boolean (value) ? "true" : "false",
+		                   -1, 0);
 	} else if (type == G_TYPE_BYTES) {
 		GBytes *bytes;
 		gconstpointer data;
@@ -3485,26 +3483,20 @@ tracker_db_cursor_get_boolean (TrackerSparqlCursor *sparql_cursor,
 static gboolean
 tracker_db_cursor_get_annotated_value_type (TrackerDBCursor        *cursor,
                                             guint                   column,
+                                            int                     column_type,
                                             TrackerSparqlValueType *value_type)
 {
-	TrackerDBInterface *iface;
 	TrackerPropertyType property_type;
 	gboolean is_null;
 
 	if (cursor->n_columns == 0)
 		return FALSE;
 
-	iface = cursor->ref_stmt->db_interface;
-
-	tracker_db_interface_lock (iface);
-
 	/* The value type may be annotated in extra columns, one per
 	 * user-visible column.
 	 */
 	property_type = sqlite3_column_int64 (cursor->stmt, column + cursor->n_columns);
-	is_null = sqlite3_column_type (cursor->stmt, column) == SQLITE_NULL;
-
-	tracker_db_interface_unlock (iface);
+	is_null = column_type == SQLITE_NULL;
 
 	if (is_null) {
 		*value_type = TRACKER_SPARQL_VALUE_TYPE_UNBOUND;
@@ -3532,7 +3524,7 @@ tracker_db_cursor_get_annotated_value_type (TrackerDBCursor        *cursor,
 		*value_type = TRACKER_SPARQL_VALUE_TYPE_DATETIME;
 		return TRUE;
 	case TRACKER_PROPERTY_TYPE_RESOURCE:
-		if (g_str_has_prefix (tracker_db_cursor_get_string (cursor, column, NULL),
+		if (g_str_has_prefix ((const gchar *) sqlite3_column_text (cursor->stmt, column),
 		                      "urn:bnode:"))
 			*value_type = TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE;
 		else
@@ -3550,13 +3542,7 @@ tracker_db_cursor_get_value_type (TrackerDBCursor *cursor,
 {
 	TrackerDBInterface *iface;
 	gint column_type;
-	guint n_columns = tracker_db_cursor_get_n_columns (cursor);
 	TrackerSparqlValueType value_type;
-
-	g_return_val_if_fail (column < n_columns, TRACKER_SPARQL_VALUE_TYPE_UNBOUND);
-
-	if (tracker_db_cursor_get_annotated_value_type (cursor, column, &value_type))
-		return value_type;
 
 	iface = cursor->ref_stmt->db_interface;
 
@@ -3564,20 +3550,27 @@ tracker_db_cursor_get_value_type (TrackerDBCursor *cursor,
 
 	column_type = sqlite3_column_type (cursor->stmt, column);
 
+	if (!tracker_db_cursor_get_annotated_value_type (cursor, column, column_type, &value_type)) {
+		if (column_type == SQLITE_NULL) {
+			value_type = TRACKER_SPARQL_VALUE_TYPE_UNBOUND;
+		}
+
+		switch (column_type) {
+		case SQLITE_INTEGER:
+			value_type = TRACKER_SPARQL_VALUE_TYPE_INTEGER;
+			break;
+		case SQLITE_FLOAT:
+			value_type = TRACKER_SPARQL_VALUE_TYPE_DOUBLE;
+			break;
+		default:
+			value_type = TRACKER_SPARQL_VALUE_TYPE_STRING;
+			break;
+		}
+	}
+
 	tracker_db_interface_unlock (iface);
 
-	if (column_type == SQLITE_NULL) {
-		return TRACKER_SPARQL_VALUE_TYPE_UNBOUND;
-        }
-
-	switch (column_type) {
-	case SQLITE_INTEGER:
-		return TRACKER_SPARQL_VALUE_TYPE_INTEGER;
-	case SQLITE_FLOAT:
-		return TRACKER_SPARQL_VALUE_TYPE_DOUBLE;
-	default:
-		return TRACKER_SPARQL_VALUE_TYPE_STRING;
-	}
+	return value_type;
 }
 
 const gchar*

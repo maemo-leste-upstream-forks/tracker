@@ -170,6 +170,7 @@ GObject
 
 
 
+
 <hr>
 <h3>Class structure</h3>
 <div class="gi-symbol gi-symbol-c">
@@ -187,6 +188,7 @@ GObject
 
 
 
+
 <hr>
 
 </div>
@@ -205,6 +207,7 @@ GObject
 
 
 
+
 <hr>
 
 </div>
@@ -216,6 +219,7 @@ GObject
 <h3>
 	Tracker.BatchClass
 </h3>
+
 
 
 
@@ -268,6 +272,7 @@ GObject.Object
 
 
 
+
 <hr>
 
 </div>
@@ -308,6 +313,7 @@ GObject.Object
 	</div>
 
 			</div>
+
 
 
 
@@ -382,10 +388,10 @@ tracker_batch_add_resource (<a title="TrackerBatch" href="tracker-batch.html#Tra
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -448,10 +454,10 @@ tracker_batch_add_resource (<a title="TrackerBatch" href="tracker-batch.html#Tra
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -513,10 +519,10 @@ tracker_batch_add_resource (<a title="TrackerBatch" href="tracker-batch.html#Tra
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -574,10 +580,10 @@ tracker_batch_add_sparql (<a title="TrackerBatch" href="tracker-batch.html#Track
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -629,10 +635,10 @@ tracker_batch_add_sparql (<a title="TrackerBatch" href="tracker-batch.html#Track
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -683,10 +689,461 @@ tracker_batch_add_sparql (<a title="TrackerBatch" href="tracker-batch.html#Track
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
 
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.5;" id="tracker_batch_add_statement">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_batch_add_statement">
+	<i>tracker_batch_add_statement</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_batch_add_statement (<a title="TrackerBatch" href="tracker-batch.html#TrackerBatch">TrackerBatch</a> * batch,
+                             <a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
+                             ... ...)</pre>
+
+<p>Adds a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> containing an SPARQL update. The statement will
+be executed once in the batch, with the parameters bound as specified in the
+variable arguments.</p>
+<p>The variable arguments are a NULL terminated set of variable name, value GType,
+and actual value. For example, for a statement that has a single <code>~name</code> parameter,
+it could be given a value for execution with the given code:</p>
+<pre><code class="language-c">tracker_batch_add_statement (batch, stmt,
+                             "name", G_TYPE_STRING, "John Smith",
+                             NULL);
+</code></pre>
+<p>The <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> may be used on multiple <a href="tracker-batch.html#tracker_batch_add_statement">tracker_batch_add_statement</a>
+calls with the same or different values, on the same or different <a href="tracker-batch.html#TrackerBatch">TrackerBatch</a>
+objects.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">tracker_sparql_connection_update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">tracker_sparql_connection_load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>batch</code></em></i>
+–
+</div>
+<p>a <a href="tracker-batch.html#TrackerBatch">TrackerBatch</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> containing a SPARQL update</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>...</code></em></i>
+–
+</div>
+<p>parameters bound to <em>stmt</em>, in triples of name/type/value</p>
+
+</div>
+
+			</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+</div>
+<div class="gi-symbol gi-symbol-python">
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.5;" id="tracker_batch_add_statementv">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_batch_add_statementv">
+	<i>tracker_batch_add_statementv</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_batch_add_statementv (<a title="TrackerBatch" href="tracker-batch.html#TrackerBatch">TrackerBatch</a> * batch,
+                              <a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
+                              guint n_values,
+                              const gchar** variable_names,
+                              const GValue* values)</pre>
+
+<p>Adds a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> containing an SPARQL update. The statement will
+be executed once in the batch, with the values bound as specified by <em>variable_names</em>
+and <em>values</em>.</p>
+<p>For example, for a statement that has a single <code>~name</code> parameter,
+it could be given a value for execution with the given code:</p>
+ <div class="gi-lang-c"><pre><code class="language-c">
+<pre><code>const char *names = { "name" };
+const GValue values[G_N_ELEMENTS (names)] = { 0, };
+
+g_value_init (&amp;values[0], G_TYPE_STRING);
+g_value_set_string (&amp;values[0], "John Smith");
+tracker_batch_add_statementv (batch, stmt,
+                              G_N_ELEMENTS (names),
+                              names, values);
+</code></pre>
+<p></p></code></pre></div>
+ <div class="gi-lang-python"><pre><code class="language-python">
+<pre><code>batch.add_statement(stmt, ['name'], ['John Smith']);
+</code></pre>
+<p></p></code></pre></div>
+ <div class="gi-lang-javascript"><pre><code class="language-javascript">
+<pre><code>batch.add_statement(stmt, ['name'], ['John Smith']);
+</code></pre>
+<p></p></code></pre></div>
+<p>The <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> may be used on multiple <a href="tracker-batch.html#tracker_batch_add_statement">tracker_batch_add_statement</a>
+calls with the same or different values, on the same or different <a href="tracker-batch.html#TrackerBatch">TrackerBatch</a>
+objects.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">tracker_sparql_connection_update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">tracker_sparql_connection_load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>batch</code></em></i>
+–
+</div>
+<p>a <a href="tracker-batch.html#TrackerBatch">TrackerBatch</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> containing a SPARQL update</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>n_values</code></em></i>
+–
+</div>
+<p>the number of bound parameters</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>variable_names</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="Parameter points to an array of items"><span class="acronym">array</span></abbr>length=n_values]</span><span>)</span>
+–
+</div>
+<p>the names of each bound parameter</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>values</code></em></i>
+<span>(</span>
+<span class="annotation">[<abbr title="Parameter points to an array of items"><span class="acronym">array</span></abbr>length=n_values]</span><span>)</span>
+–
+</div>
+<p>the values of each bound parameter</p>
+
+</div>
+
+			</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_batch_add_statementv">
+	<i>Tracker.Batch.prototype.add_statementv</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.Batch.prototype.add_statementv(stmt: <a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a>, n_values: <a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a>, variable_names: [ <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a> ], values: [ GObject.Value]): {
+    // javascript wrapper for 'tracker_batch_add_statementv'
+}</code></pre>
+
+<p>Adds a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> containing an SPARQL update. The statement will
+be executed once in the batch, with the values bound as specified by <em>variable_names</em>
+and <em>values</em>.</p>
+<p>For example, for a statement that has a single <code>~name</code> parameter,
+it could be given a value for execution with the given code:</p>
+ <div class="gi-lang-c"><pre><code class="language-c">
+<pre><code>const char *names = { "name" };
+const GValue values[G_N_ELEMENTS (names)] = { 0, };
+
+g_value_init (&amp;values[0], G_TYPE_STRING);
+g_value_set_string (&amp;values[0], "John Smith");
+tracker_batch_add_statementv (batch, stmt,
+                              G_N_ELEMENTS (names),
+                              names, values);
+</code></pre>
+<p></p></code></pre></div>
+ <div class="gi-lang-python"><pre><code class="language-python">
+<pre><code>batch.add_statement(stmt, ['name'], ['John Smith']);
+</code></pre>
+<p></p></code></pre></div>
+ <div class="gi-lang-javascript"><pre><code class="language-javascript">
+<pre><code>batch.add_statement(stmt, ['name'], ['John Smith']);
+</code></pre>
+<p></p></code></pre></div>
+<p>The <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> may be used on multiple <a href="tracker-batch.html#tracker_batch_add_statement">tracker_batch_add_statement (not introspectable)</a>
+calls with the same or different values, on the same or different <a href="tracker-batch.html#TrackerBatch">Tracker.Batch</a>
+objects.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">Tracker.SparqlConnection.prototype.update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.prototype.load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>batch</code></em></i>
+<span>(</span><a title="Tracker.Batch" href="tracker-batch.html#TrackerBatch">Tracker.Batch</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-batch.html#TrackerBatch">Tracker.Batch</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+<span>(</span><a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> containing a SPARQL update</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>n_values</code></em></i>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+</div>
+<p>the number of bound parameters</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>variable_names</code></em></i>
+<span>(</span>[ <a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a> ]<span>)</span>
+–
+</div>
+<p>the names of each bound parameter</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>values</code></em></i>
+<span>(</span>[ GObject.Value]<span>)</span>
+–
+</div>
+<p>the values of each bound parameter</p>
+
+</div>
+
+			</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_batch_add_statementv">
+	<i>Tracker.Batch.add_statementv</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.Batch.add_statementv (self, stmt, n_values, variable_names, values):
+    #python wrapper for 'tracker_batch_add_statementv'</code></pre>
+
+<p>Adds a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> containing an SPARQL update. The statement will
+be executed once in the batch, with the values bound as specified by <em>variable_names</em>
+and <em>values</em>.</p>
+<p>For example, for a statement that has a single <code>~name</code> parameter,
+it could be given a value for execution with the given code:</p>
+ <div class="gi-lang-c"><pre><code class="language-c">
+<pre><code>const char *names = { "name" };
+const GValue values[G_N_ELEMENTS (names)] = { 0, };
+
+g_value_init (&amp;values[0], G_TYPE_STRING);
+g_value_set_string (&amp;values[0], "John Smith");
+tracker_batch_add_statementv (batch, stmt,
+                              G_N_ELEMENTS (names),
+                              names, values);
+</code></pre>
+<p></p></code></pre></div>
+ <div class="gi-lang-python"><pre><code class="language-python">
+<pre><code>batch.add_statement(stmt, ['name'], ['John Smith']);
+</code></pre>
+<p></p></code></pre></div>
+ <div class="gi-lang-javascript"><pre><code class="language-javascript">
+<pre><code>batch.add_statement(stmt, ['name'], ['John Smith']);
+</code></pre>
+<p></p></code></pre></div>
+<p>The <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> may be used on multiple <a href="tracker-batch.html#tracker_batch_add_statement">tracker_batch_add_statement (not introspectable)</a>
+calls with the same or different values, on the same or different <a href="tracker-batch.html#TrackerBatch">Tracker.Batch</a>
+objects.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">Tracker.SparqlConnection.update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>batch</code></em></i>
+<span>(</span><a title="Tracker.Batch" href="tracker-batch.html#TrackerBatch">Tracker.Batch</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-batch.html#TrackerBatch">Tracker.Batch</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+<span>(</span><a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> containing a SPARQL update</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>n_values</code></em></i>
+<span>(</span><a title="int" href="https://docs.python.org/3/library/functions.html#int">int</a><span>)</span>
+–
+</div>
+<p>the number of bound parameters</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>variable_names</code></em></i>
+<span>(</span>[ <a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a> ]<span>)</span>
+–
+</div>
+<p>the names of each bound parameter</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>values</code></em></i>
+<span>(</span>[ GObject.Value]<span>)</span>
+–
+</div>
+<p>the values of each bound parameter</p>
+
+</div>
+
+			</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
 
 <hr>
 
@@ -769,10 +1226,10 @@ tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerB
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -836,10 +1293,10 @@ tracker_batch_execute (<a title="TrackerBatch" href="tracker-batch.html#TrackerB
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -903,10 +1360,10 @@ def Tracker.Batch.execute (self, cancellable):
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -990,10 +1447,10 @@ asynchronous operation is finished.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -1069,10 +1526,10 @@ asynchronous operation is finished.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -1147,10 +1604,10 @@ asynchronous operation is finished.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -1231,10 +1688,10 @@ tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#T
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -1298,10 +1755,10 @@ tracker_batch_execute_finish (<a title="TrackerBatch" href="tracker-batch.html#T
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -1365,10 +1822,10 @@ def Tracker.Batch.execute_finish (self, res):
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.1
 		</p>
-
 
 <hr>
 
@@ -1562,7 +2019,7 @@ tracker_batch_get_connection (<a title="TrackerBatch" href="tracker-batch.html#T
 “connection” <span class="type"><a title="TrackerSparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> *</span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> the batch belongs to.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> the batch belongs to.</p>
 
 
 <p>
@@ -1578,6 +2035,7 @@ tracker_batch_get_connection (<a title="TrackerBatch" href="tracker-batch.html#T
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -1597,7 +2055,7 @@ tracker_batch_get_connection (<a title="TrackerBatch" href="tracker-batch.html#T
 “connection” <span class="type"><a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a></span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> the batch belongs to.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> the batch belongs to.</p>
 
 
 <p>
@@ -1613,6 +2071,7 @@ tracker_batch_get_connection (<a title="TrackerBatch" href="tracker-batch.html#T
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -1632,7 +2091,7 @@ tracker_batch_get_connection (<a title="TrackerBatch" href="tracker-batch.html#T
 “self.props.connection” <span class="type"><a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a></span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> the batch belongs to.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> the batch belongs to.</p>
 
 
 <p>
@@ -1648,6 +2107,7 @@ tracker_batch_get_connection (<a title="TrackerBatch" href="tracker-batch.html#T
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -1677,6 +2137,7 @@ tracker_batch_get_connection (<a title="TrackerBatch" href="tracker-batch.html#T
 <pre class="raw_code">
 #define TRACKER_TYPE_BATCH tracker_batch_get_type ()
 </pre>
+
 
 
 

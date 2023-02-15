@@ -434,10 +434,10 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int64, gint64, G_TYPE_INT64, g_valu
 SET_PROPERTY_FOR_GTYPE (tracker_resource_set_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_set_object, validate_pointer)
 
 /**
- * tracker_resource_set_take_relation: (skip)
+ * tracker_resource_set_take_relation:
  * @self: the #TrackerResource
  * @property_uri: a string identifying the property to modify
- * @resource: the property object
+ * @resource: (transfer full): the property object
  *
  * Sets a single-valued resource object as a #TrackerResource. This
  * function produces similar RDF to tracker_resource_set_uri(),
@@ -647,10 +647,10 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int64, gint64, G_TYPE_INT64, g_valu
 ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_set_object, validate_pointer)
 
 /**
- * tracker_resource_add_take_relation: (skip)
+ * tracker_resource_add_take_relation:
  * @self: the #TrackerResource
  * @property_uri: a string identifying the property to modify
- * @resource: the property object
+ * @resource: (transfer full): the property object
  *
  * Adds a resource object to a multi-valued property. This
  * function produces similar RDF to tracker_resource_add_uri(),
@@ -700,8 +700,8 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_datetime, GDateTime *, G_TYPE_DATE_
  *
  * Returns the list of all known values of the given property.
  *
- * Returns: (transfer container) (element-type GValue): a #GList of #GValue
- * instances. The list should be freed with g_list_free()
+ * Returns: (transfer container) (element-type GValue) (nullable): a #GList of
+ * #GValue instances. The list should be freed with g_list_free()
  */
 GList *tracker_resource_get_values (TrackerResource *self,
                                     const char      *property_uri)
@@ -820,7 +820,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_int64, gint64, G_TYPE_INT64, 
  *
  * Returns the first resource object previously assigned to a property.
  *
- * Returns: (transfer none): the first resource object
+ * Returns: (transfer none) (nullable): the first resource object
  */
 GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_relation, TrackerResource *, TRACKER_TYPE_RESOURCE, g_value_get_object, NULL)
 
@@ -831,7 +831,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_relation, TrackerResource *, 
  *
  * Returns the first string object previously assigned to a property.
  *
- * Returns: the first string object
+ * Returns: (nullable): the first string object
  */
 GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_string, const char *, G_TYPE_STRING, g_value_get_string, NULL)
 
@@ -842,7 +842,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_string, const char *, G_TYPE_
  *
  * Returns the first resource object previously assigned to a property.
  *
- * Returns: the first resource object as an URI.
+ * Returns: (nullable): the first resource object as an URI.
  */
 GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_uri, const char *, TRACKER_TYPE_URI, g_value_get_string, NULL)
 
@@ -853,7 +853,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_uri, const char *, TRACKER_TY
  *
  * Returns the first resource object previously assigned to a property.
  *
- * Returns: the first GDateTime object
+ * Returns: (transfer none) (nullable): the first GDateTime object
  * Since: 3.2
  */
 GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_datetime, GDateTime *, G_TYPE_DATE_TIME, g_value_get_boxed, NULL)
@@ -867,7 +867,7 @@ GET_PROPERTY_FOR_GTYPE (tracker_resource_get_first_datetime, GDateTime *, G_TYPE
  * If the identifier was set to NULL, the identifier returned will be a unique
  * SPARQL blank node identifier, such as "_:123".
  *
- * Returns: a string owned by the resource
+ * Returns: (nullable): a string owned by the resource
  */
 const char *
 tracker_resource_get_identifier (TrackerResource *self)
@@ -887,14 +887,14 @@ tracker_resource_get_identifier (TrackerResource *self)
 /**
  * tracker_resource_set_identifier:
  * @self: a #TrackerResource
- * @identifier: (allow-none): a string identifying the resource
+ * @identifier: (nullable): a string identifying the resource
  *
  * Changes the identifier of a #TrackerResource. The identifier should be a
  * URI or compact URI, but this is not necessarily enforced. Invalid
  * identifiers may cause errors when serializing the resource or trying to
  * insert the results in a database.
  *
- * If the identifier is set to NULL, a SPARQL blank node identifier such as
+ * If the identifier is set to %NULL, a SPARQL blank node identifier such as
  * "_:123" is assigned to the resource.
  */
 void
@@ -934,7 +934,8 @@ tracker_resource_identifier_compare_func (TrackerResource *resource,
 
 /**
  * tracker_resource_compare:
- * @self: A #TrackerResource
+ * @a: A #TrackerResource
+ * @b: A second #TrackerResource to compare
  *
  * Compare the identifiers of two TrackerResource instances. The resources
  * are considered identical if they have the same identifier.
@@ -1499,120 +1500,10 @@ tracker_resource_print_sparql_update (TrackerResource         *resource,
 	return g_string_free (context.string, FALSE);
 }
 
-typedef struct {
-	TrackerNamespaceManager *all_namespaces, *our_namespaces;
-	JsonBuilder *builder;
-	GList *done_list;
-} GenerateJsonldData;
-
-static void generate_jsonld_foreach (gpointer key, gpointer value_ptr, gpointer user_data);
-
-static void
-tracker_resource_generate_jsonld (TrackerResource    *self,
-                                  GenerateJsonldData *data)
-{
-	TrackerResourcePrivate *priv = GET_PRIVATE (self);
-	JsonBuilder *builder = data->builder;
-
-	/* The JSON-LD spec says it is "important that nodes have an identifier", but
-	 * doesn't mandate one. I think it's better to omit the ID for blank nodes
-	 * (where the caller passed NULL as an identifier) than to emit something
-	 * SPARQL-specific like '_:123'.
-	 */
-	if (!tracker_resource_is_blank_node (self)) {
-		json_builder_set_member_name (builder, "@id");
-		json_builder_add_string_value (builder, priv->identifier);
-	}
-
-	g_hash_table_foreach (priv->properties, generate_jsonld_foreach, data);
-}
-
-static void
-generate_jsonld_value (const GValue       *value,
-                       GenerateJsonldData *data)
-{
-	JsonNode *node;
-
-	if (G_VALUE_HOLDS (value, TRACKER_TYPE_RESOURCE)) {
-		TrackerResource *resource;
-
-		resource = TRACKER_RESOURCE (g_value_get_object (value));
-
-		if (g_list_find (data->done_list, resource) == NULL) {
-			data->done_list = g_list_prepend (data->done_list, resource);
-			json_builder_begin_object (data->builder);
-
-			tracker_resource_generate_jsonld (resource, data);
-
-			json_builder_end_object (data->builder);
-		} else {
-			json_builder_add_string_value (data->builder, tracker_resource_get_identifier(resource));
-		}
-	} else if (G_VALUE_HOLDS (value, TRACKER_TYPE_URI)) {
-		/* URIs can be treated the same as strings in JSON-LD provided the @context
-		 * sets the type of that property correctly. However, json_node_set_value()
-		 * will reject a GValue holding TRACKER_TYPE_URI, so we have to extract the
-		 * string manually here.
-		 */
-		const char *uri = g_value_get_string (value);
-		maybe_intern_prefix_of_compact_uri (data->all_namespaces, data->our_namespaces, uri);
-		node = json_node_new (JSON_NODE_VALUE);
-		json_node_set_string (node, uri);
-		json_builder_add_value (data->builder, node);
-	} else if (G_VALUE_HOLDS (value, G_TYPE_UINT)) {
-		node = json_node_new (JSON_NODE_VALUE);
-		json_node_set_int (node, g_value_get_uint(value));
-		json_builder_add_value (data->builder, node);
-	} else {
-		node = json_node_new (JSON_NODE_VALUE);
-		json_node_set_value (node, value);
-		json_builder_add_value (data->builder, node);
-	}
-}
-
-static void
-generate_jsonld_foreach (gpointer key,
-                         gpointer value_ptr,
-                         gpointer user_data)
-{
-	const char *property = key;
-	const GValue *value = value_ptr;
-	GenerateJsonldData *data = user_data;
-	JsonBuilder *builder = data->builder;
-
-	if (strcmp (property, "rdf:type") == 0) {
-		property = "@type";
-	} else {
-		maybe_intern_prefix_of_compact_uri (data->all_namespaces, data->our_namespaces, property);
-	}
-
-	json_builder_set_member_name (builder, property);
-
-	if (G_VALUE_HOLDS (value, G_TYPE_PTR_ARRAY)) {
-		json_builder_begin_array (builder);
-		g_ptr_array_foreach (g_value_get_boxed (value), (GFunc) generate_jsonld_value, data);
-		json_builder_end_array (builder);
-	} else {
-		generate_jsonld_value (value, data);
-	}
-}
-
-static void
-generate_jsonld_namespace_mapping_foreach (gpointer key,
-                                           gpointer value,
-                                           gpointer user_data)
-{
-	GenerateJsonldData *data = user_data;
-
-	json_builder_set_member_name (data->builder, key);
-	json_builder_add_string_value (data->builder, value);
-}
-
-
 /**
  * tracker_resource_print_jsonld:
  * @self: a #TrackerResource
- * @namespaces: (allow-none): a set of prefixed URLs, or %NULL to use the
+ * @namespaces: (nullable): a set of prefixed URLs, or %NULL to use the
  *     Nepomuk set
  *
  * Serialize all the information in @resource as a JSON-LD document.
@@ -1625,15 +1516,14 @@ generate_jsonld_namespace_mapping_foreach (gpointer key,
  * from the connection that is the intended recipient of this data.
  *
  * Returns: a newly-allocated string containing JSON-LD data.
+ *
+ * Deprecated: 3.5: Use tracker_resource_print_rdf()
  */
 char *
 tracker_resource_print_jsonld (TrackerResource         *self,
                                TrackerNamespaceManager *namespaces)
 {
-	GenerateJsonldData context;
-	JsonNode *json_root_node;
-	JsonGenerator *generator;
-	char *result;
+	g_return_val_if_fail (TRACKER_IS_RESOURCE (self), "");
 
 	if (namespaces == NULL) {
 		G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -1641,38 +1531,7 @@ tracker_resource_print_jsonld (TrackerResource         *self,
 		G_GNUC_END_IGNORE_DEPRECATIONS
 	}
 
-	context.all_namespaces = namespaces;
-	context.our_namespaces = tracker_namespace_manager_new ();
-	context.builder = json_builder_new ();
-	context.done_list = g_list_prepend (NULL, self);
-
-	maybe_intern_prefix_of_compact_uri (context.all_namespaces, context.our_namespaces, tracker_resource_get_identifier (self));
-
-	json_builder_begin_object (context.builder);
-
-	tracker_resource_generate_jsonld (self, &context);
-
-	json_builder_set_member_name (context.builder, "@context");
-	json_builder_begin_object (context.builder);
-	tracker_namespace_manager_foreach (context.our_namespaces, generate_jsonld_namespace_mapping_foreach, &context);
-	json_builder_end_object (context.builder);
-
-	json_builder_end_object (context.builder);
-
-	json_root_node = json_builder_get_root (context.builder);
-
-	generator = json_generator_new ();
-	json_generator_set_root (generator, json_root_node);
-	json_generator_set_pretty (generator, TRUE);
-
-	result = json_generator_to_data (generator, NULL);
-
-	g_list_free (context.done_list);
-	json_node_free (json_root_node);
-	g_object_unref (context.builder);
-	g_object_unref (generator);
-
-	return result;
+	return tracker_resource_print_rdf (self, namespaces, TRACKER_RDF_FORMAT_JSON_LD, NULL);
 }
 
 static TrackerSerializerFormat
@@ -1683,7 +1542,9 @@ convert_format (TrackerRdfFormat format)
 		return TRACKER_SERIALIZER_FORMAT_TTL;
 	case TRACKER_RDF_FORMAT_TRIG:
 		return TRACKER_SERIALIZER_FORMAT_TRIG;
-	case TRACKER_N_RDF_FORMATS:
+	case TRACKER_RDF_FORMAT_JSON_LD:
+		return TRACKER_SERIALIZER_FORMAT_JSON_LD;
+	case TRACKER_RDF_FORMAT_LAST:
 		g_assert_not_reached ();
 	}
 
@@ -1695,7 +1556,8 @@ convert_format (TrackerRdfFormat format)
  * @self: a #TrackerResource
  * @namespaces: a set of prefixed URLs
  * @format: RDF format of the printed string
- * @graph: target graph of the resource RDF, or %NULL for the default graph
+ * @graph: (nullable): target graph of the resource RDF, or %NULL for the
+ * default graph
  *
  * Serialize all the information in @resource into the selected RDF format.
  *
@@ -1721,7 +1583,6 @@ tracker_resource_print_rdf (TrackerResource         *self,
 	g_return_val_if_fail (TRACKER_IS_NAMESPACE_MANAGER (namespaces), NULL);
 	g_return_val_if_fail (format < TRACKER_N_RDF_FORMATS, NULL);
 
-#define BUF_SIZE 4096
 	deserializer = tracker_deserializer_resource_new (self, namespaces, graph);
 	serializer = tracker_serializer_new (TRACKER_SPARQL_CURSOR (deserializer),
 	                                     namespaces,
@@ -1730,6 +1591,34 @@ tracker_resource_print_rdf (TrackerResource         *self,
 
 	str = g_string_new (NULL);
 
+	if (format == TRACKER_RDF_FORMAT_JSON_LD) {
+		JsonParser *parser;
+		JsonGenerator *generator;
+		JsonNode *root;
+
+		/* Special case, ensure that json is pretty printed */
+		parser = json_parser_new ();
+
+		if (!json_parser_load_from_stream (parser,
+		                                   serializer,
+		                                   NULL,
+		                                   NULL)) {
+			g_object_unref (parser);
+			return g_string_free (str, FALSE);
+		}
+
+		generator = json_generator_new ();
+		root = json_parser_get_root (parser);
+		json_generator_set_root (generator, root);
+		json_generator_set_pretty (generator, TRUE);
+		json_generator_to_gstring (generator, str);
+		g_object_unref (generator);
+		g_object_unref (parser);
+
+		return g_string_free (str, FALSE);
+	}
+
+#define BUF_SIZE 4096
 	while (TRUE) {
 		GBytes *bytes;
 
@@ -1792,7 +1681,7 @@ tracker_serialize_single_value (TrackerResource         *resource,
  * All child resources are subsequently serialized. It is implied
  * that both ends use a common #TrackerNamespaceManager.
  *
- * Returns: (transfer full): A variant describing the resource,
+ * Returns: (transfer floating) (nullable): A variant describing the resource,
  *          the reference is floating.
  **/
 GVariant *
@@ -1868,7 +1757,7 @@ tracker_resource_serialize (TrackerResource *resource)
  * tracker_resource_serialize(). It is implied that both ends
  * use a common #TrackerNamespaceManager.
  *
- * Returns: (transfer full): A TrackerResource, or %NULL if
+ * Returns: (transfer full) (nullable): A TrackerResource, or %NULL if
  *          deserialization fails.
  **/
 TrackerResource *

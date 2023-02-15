@@ -147,6 +147,30 @@ says:</p>
 instances as functions. If the property has multiple values, it will
 propagate to the cursor as the <code>GROUP_CONCAT</code>
 (with comma separator) of the multiple values.</p>
+<h2 id="entailment-regime">Entailment regime</h2>
+<p>An entailment regime is a set of rules defining what is valid RDF data, and what
+other axiomatic RDF triples may be extrapolated from a RDF dataset. An example is
+<a href="https://en.wikipedia.org/wiki/RDF_Schema#RDFS_entailment">RDF Schema entailment</a>.</p>
+<p>For SPARQL queries, Tracker implements a subset of
+<a href="https://www.w3.org/TR/rdf-mt/#RDFSRules">RDF Schema entailment rules</a>.
+Rules <em>rdfs1</em>, <em>rdfs5</em>, <em>rdfs6</em>, <em>rdfs10</em>, <em>rdfs11</em>, <em>rdfs12</em> and <em>rdfs13</em> are
+not implemented.</p>
+<p>The <a href="https://www.w3.org/TR/sparql11-entailment/#Updates">SPARQL documentation</a>
+says:</p>
+<pre><code>SPARQL endpoints that use an entailment regime other than simple entailment may
+support update queries, but the exact behavior of the system for such queries
+is not covered by this specification. SPARQL endpoints that use an entailment
+regime other than simple entailment and that do support update queries should
+describe the system behavior in the system's documentation.
+</code></pre>
+<p>Tracker implements the propagation of <code>rdfs:subPropertyOf</code> (<em>rdfs7</em>) and
+<code>rdfs:subClassOf</code>(<em>rdfs8</em>, <em>rdfs9</em>) at SPARQL update time. Other than this
+detail, SPARQL updates can be considered to follow simple entailment in
+practical effects. Rules <em>rdfs2</em>, <em>rdfs3</em>, <em>rdfs4a</em> and <em>rdfs4b</em> do not apply
+to SPARQL updates. The inserted RDF data must still conform to the ontology.</p>
+<p>Notably, resources must be given <code>rdf:type</code> properties explicitly in order to
+be able to receive properties belonging to these classes. The effect of
+<code>rdf:type</code> properties is local to the graph where it was defined.</p>
 <h2 id="syntax-extensions">Syntax extensions</h2>
 <p>Tracker offers some SPARQL syntax extensions. These predate the
 existence of SPARQL 1.1 and stay for legacy reasons. These

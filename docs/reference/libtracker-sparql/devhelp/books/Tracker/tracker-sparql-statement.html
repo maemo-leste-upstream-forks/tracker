@@ -176,6 +176,7 @@ a prepared query statement.</p>
 
 
 
+
 <hr>
 <h3>Class structure</h3>
 <div class="gi-symbol gi-symbol-c">
@@ -193,6 +194,7 @@ a prepared query statement.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -211,6 +213,7 @@ a prepared query statement.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -222,6 +225,7 @@ a prepared query statement.</p>
 <h3>
 	Tracker.SparqlStatementClass
 </h3>
+
 
 
 
@@ -279,6 +283,7 @@ a prepared query statement.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -324,6 +329,7 @@ a prepared query statement.</p>
 	</div>
 
 			</div>
+
 
 
 
@@ -590,10 +596,10 @@ tracker_sparql_statement_bind_datetime (<a title="TrackerSparqlStatement" href="
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -656,10 +662,10 @@ tracker_sparql_statement_bind_datetime (<a title="TrackerSparqlStatement" href="
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -721,10 +727,10 @@ tracker_sparql_statement_bind_datetime (<a title="TrackerSparqlStatement" href="
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.2
 		</p>
-
 
 <hr>
 
@@ -1353,10 +1359,10 @@ tracker_sparql_statement_clear_bindings (<a title="TrackerSparqlStatement" href=
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.0
 		</p>
-
 
 <hr>
 
@@ -1397,10 +1403,10 @@ tracker_sparql_statement_clear_bindings (<a title="TrackerSparqlStatement" href=
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.0
 		</p>
-
 
 <hr>
 
@@ -1440,10 +1446,10 @@ tracker_sparql_statement_clear_bindings (<a title="TrackerSparqlStatement" href=
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.0
 		</p>
-
 
 <hr>
 
@@ -1474,6 +1480,10 @@ tracker_sparql_statement_execute (<a title="TrackerSparqlStatement" href="tracke
                                   GError** error)</pre>
 
 <p>Executes the SPARQL query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_query_statement">tracker_sparql_connection_query_statement</a> or
+SELECT/CONSTRUCT/DESCRIBE statements loaded through
+<a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">tracker_sparql_connection_load_statement_from_gresource</a>.</p>
 
 
 
@@ -1547,6 +1557,10 @@ tracker_sparql_statement_execute (<a title="TrackerSparqlStatement" href="tracke
 }</code></pre>
 
 <p>Executes the SPARQL query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_query_statement">Tracker.SparqlConnection.prototype.query_statement</a> or
+SELECT/CONSTRUCT/DESCRIBE statements loaded through
+<a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.prototype.load_statement_from_gresource</a>.</p>
 
 
 
@@ -1611,6 +1625,10 @@ def Tracker.SparqlStatement.execute (self, cancellable):
     #python wrapper for 'tracker_sparql_statement_execute'</code></pre>
 
 <p>Executes the SPARQL query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_query_statement">Tracker.SparqlConnection.query_statement</a> or
+SELECT/CONSTRUCT/DESCRIBE statements loaded through
+<a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.load_statement_from_gresource</a>.</p>
 
 
 
@@ -1685,6 +1703,10 @@ tracker_sparql_statement_execute_async (<a title="TrackerSparqlStatement" href="
                                         gpointer user_data)</pre>
 
 <p>Asynchronously executes the SPARQL query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_query_statement">tracker_sparql_connection_query_statement</a> or
+SELECT/CONSTRUCT/DESCRIBE statements loaded through
+<a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">tracker_sparql_connection_load_statement_from_gresource</a>.</p>
 
 
 
@@ -1756,6 +1778,10 @@ asynchronous operation is finished.</p>
 }</code></pre>
 
 <p>Asynchronously executes the SPARQL query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_query_statement">Tracker.SparqlConnection.prototype.query_statement</a> or
+SELECT/CONSTRUCT/DESCRIBE statements loaded through
+<a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.prototype.load_statement_from_gresource</a>.</p>
 
 
 
@@ -1830,6 +1856,10 @@ asynchronous operation is finished.</p>
     #python wrapper for 'tracker_sparql_statement_execute_async'</code></pre>
 
 <p>Asynchronously executes the SPARQL query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_query_statement">Tracker.SparqlConnection.query_statement</a> or
+SELECT/CONSTRUCT/DESCRIBE statements loaded through
+<a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.load_statement_from_gresource</a>.</p>
 
 
 
@@ -2541,10 +2571,10 @@ asynchronous operation is finished.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.3
 		</p>
-
 
 <hr>
 
@@ -2649,10 +2679,10 @@ asynchronous operation is finished.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.3
 		</p>
-
 
 <hr>
 
@@ -2756,10 +2786,10 @@ asynchronous operation is finished.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.3
 		</p>
-
 
 <hr>
 
@@ -2843,10 +2873,10 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.3
 		</p>
-
 
 <hr>
 
@@ -2911,10 +2941,10 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.3
 		</p>
-
 
 <hr>
 
@@ -2979,10 +3009,706 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 
 
 
+
 	<p>
 	<b>Since</b>			: 3.3
 		</p>
 
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.5;" id="tracker_sparql_statement_update">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update">
+	<i>tracker_sparql_statement_update</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+gboolean
+tracker_sparql_statement_update (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
+                                 GCancellable* cancellable,
+                                 GError** error)</pre>
+
+<p>Executes the SPARQL update with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">tracker_sparql_connection_update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">tracker_sparql_connection_load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>cancellable</code></em></i>
+–
+</div>
+<p>a GCancellable used to cancel the operation</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>error</code></em></i>
+–
+</div>
+<p>GError for error reporting.</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>TRUE if the update finished with no errors, FALSE otherwise</p>
+
+					</div>
+	</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update">
+	<i>Tracker.SparqlStatement.prototype.update</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.SparqlStatement.prototype.update(cancellable: Gio.Cancellable): {
+    // javascript wrapper for 'tracker_sparql_statement_update'
+}</code></pre>
+
+<p>Executes the SPARQL update with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">Tracker.SparqlConnection.prototype.update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.prototype.load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+<span>(</span><a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>cancellable</code></em></i>
+<span>(</span>Gio.Cancellable<span>)</span>
+–
+</div>
+<p>a GCancellable used to cancel the operation</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>TRUE if the update finished with no errors, FALSE otherwise</p>
+
+					</div>
+	</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update">
+	<i>Tracker.SparqlStatement.update</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>@raises(<a href="https://developer.gnome.org/glib/stable/glib-Error-Reporting.html">GLib.GError</a>)
+def Tracker.SparqlStatement.update (self, cancellable):
+    #python wrapper for 'tracker_sparql_statement_update'</code></pre>
+
+<p>Executes the SPARQL update with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">Tracker.SparqlConnection.update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+<span>(</span><a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>cancellable</code></em></i>
+<span>(</span>Gio.Cancellable<span>)</span>
+–
+</div>
+<p>a GCancellable used to cancel the operation</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
+–
+			</div>
+							<p>TRUE if the update finished with no errors, FALSE otherwise</p>
+
+					</div>
+	</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.5;" id="tracker_sparql_statement_update_async">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update_async">
+	<i>tracker_sparql_statement_update_async</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+tracker_sparql_statement_update_async (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
+                                       GCancellable* cancellable,
+                                       GAsyncReadyCallback callback,
+                                       gpointer user_data)</pre>
+
+<p>Asynchronously executes the SPARQL update query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">tracker_sparql_connection_update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">tracker_sparql_connection_load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>cancellable</code></em></i>
+–
+</div>
+<p>a GCancellable used to cancel the operation</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>callback</code></em></i>
+–
+</div>
+<p>user-defined GAsyncReadyCallback to be called when
+asynchronous operation is finished.</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>user_data</code></em></i>
+–
+</div>
+<p>user-defined data to be passed to <em>callback</em></p>
+
+</div>
+
+			</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update_async">
+	<i>Tracker.SparqlStatement.prototype.update_async</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.SparqlStatement.prototype.update_async(cancellable: Gio.Cancellable, callback: Gio.AsyncReadyCallback, user_data: <a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): {
+    // javascript wrapper for 'tracker_sparql_statement_update_async'
+}</code></pre>
+
+<p>Asynchronously executes the SPARQL update query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">Tracker.SparqlConnection.prototype.update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.prototype.load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+<span>(</span><a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>cancellable</code></em></i>
+<span>(</span>Gio.Cancellable<span>)</span>
+–
+</div>
+<p>a GCancellable used to cancel the operation</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>callback</code></em></i>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
+–
+</div>
+<p>user-defined GAsyncReadyCallback to be called when
+asynchronous operation is finished.</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>user_data</code></em></i>
+<span>(</span><a title="Object" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a><span>)</span>
+–
+</div>
+<p>user-defined data to be passed to <em>callback</em></p>
+
+</div>
+
+			</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update_async">
+	<i>Tracker.SparqlStatement.update_async</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>def Tracker.SparqlStatement.update_async (self, cancellable, callback, *user_data):
+    #python wrapper for 'tracker_sparql_statement_update_async'</code></pre>
+
+<p>Asynchronously executes the SPARQL update query with the currently bound values.</p>
+<p>This function should only be called on <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a> objects
+obtained through <a href="tracker-sparql-connection.html#tracker_sparql_connection_update_statement">Tracker.SparqlConnection.update_statement</a> or
+update statements loaded through <a href="tracker-sparql-connection.html#tracker_sparql_connection_load_statement_from_gresource">Tracker.SparqlConnection.load_statement_from_gresource</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+<span>(</span><a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>cancellable</code></em></i>
+<span>(</span>Gio.Cancellable<span>)</span>
+–
+</div>
+<p>a GCancellable used to cancel the operation</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>callback</code></em></i>
+<span>(</span>Gio.AsyncReadyCallback<span>)</span>
+–
+</div>
+<p>user-defined GAsyncReadyCallback to be called when
+asynchronous operation is finished.</p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>user_data</code></em></i>
+<span>(</span><a title="variadic" href="https://docs.python.org/dev/tutorial/controlflow.html#arbitrary-argument-lists">variadic</a><span>)</span>
+–
+</div>
+<p>user-defined data to be passed to <em>callback</em></p>
+
+</div>
+
+			</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+
+</div>
+
+            
+
+<div class="base_symbol_container" data-hotdoc-tags="since:3.5;" id="tracker_sparql_statement_update_finish">
+	
+<div class="gi-symbol gi-symbol-c">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update_finish">
+	<i>tracker_sparql_statement_update_finish</i>
+</h4>
+
+
+
+
+<pre class="c-prototype language-c">
+gboolean
+tracker_sparql_statement_update_finish (<a title="TrackerSparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a> * stmt,
+                                        GAsyncResult* result,
+                                        GError** error)</pre>
+
+<p>Finishes the asynchronous update started through
+<a href="tracker-sparql-statement.html#tracker_sparql_statement_update_async">tracker_sparql_statement_update_async</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">TrackerSparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>result</code></em></i>
+–
+</div>
+<p>The GAsyncResult from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">TrackerSparqlCursor</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>error</code></em></i>
+–
+</div>
+<p>The error which occurred or NULL</p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+–
+			</div>
+							<p>TRUE if the update finished with no errors, FALSE otherwise</p>
+
+					</div>
+	</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-javascript">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update_finish">
+	<i>Tracker.SparqlStatement.prototype.update_finish</i>
+</h4>
+
+
+<pre class="javascript-prototype language-javascript">
+<code>function Tracker.SparqlStatement.prototype.update_finish(result: Gio.AsyncResult): {
+    // javascript wrapper for 'tracker_sparql_statement_update_finish'
+}</code></pre>
+
+<p>Finishes the asynchronous update started through
+<a href="tracker-sparql-statement.html#tracker_sparql_statement_update_async">Tracker.SparqlStatement.prototype.update_async</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+<span>(</span><a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>result</code></em></i>
+<span>(</span>Gio.AsyncResult<span>)</span>
+–
+</div>
+<p>The GAsyncResult from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">Tracker.SparqlCursor</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="Number" href="https://developer.mozilla.org/en-US/docs/Glossary/Number">Number</a><span>)</span>
+–
+			</div>
+							<p>TRUE if the update finished with no errors, FALSE otherwise</p>
+
+					</div>
+	</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
+
+<hr>
+
+</div>
+<div class="gi-symbol gi-symbol-python">
+
+
+
+
+<h4 data-hotdoc-id="tracker_sparql_statement_update_finish">
+	<i>Tracker.SparqlStatement.update_finish</i>
+</h4>
+
+
+<pre class="python-prototype language-python">
+<code>@raises(<a href="https://developer.gnome.org/glib/stable/glib-Error-Reporting.html">GLib.GError</a>)
+def Tracker.SparqlStatement.update_finish (self, result):
+    #python wrapper for 'tracker_sparql_statement_update_finish'</code></pre>
+
+<p>Finishes the asynchronous update started through
+<a href="tracker-sparql-statement.html#tracker_sparql_statement_update_async">Tracker.SparqlStatement.update_async</a>.</p>
+
+
+
+	<div class="parameters-container">
+		<p><b>Parameters:</b></p>
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>stmt</code></em></i>
+<span>(</span><a title="Tracker.SparqlStatement" href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a><span>)</span>
+–
+</div>
+<p>a <a href="tracker-sparql-statement.html#TrackerSparqlStatement">Tracker.SparqlStatement</a></p>
+
+</div>
+
+					
+<div class="symbol-detail">
+	<div>
+		<i><em><code>result</code></em></i>
+<span>(</span>Gio.AsyncResult<span>)</span>
+–
+</div>
+<p>The GAsyncResult from the callback used to return the <a href="tracker-sparql-cursor.html#TrackerSparqlCursor">Tracker.SparqlCursor</a></p>
+
+</div>
+
+			</div>
+
+		<div class="return-values-container">
+		<div class="symbol-detail">
+			<div>
+				<b>Returns</b>
+<span>(</span><a title="bool" href="https://docs.python.org/3/library/functions.html#bool">bool</a><span>)</span>
+–
+			</div>
+							<p>TRUE if the update finished with no errors, FALSE otherwise</p>
+
+					</div>
+	</div>
+
+
+
+
+	<p>
+	<b>Since</b>			: 3.5
+		</p>
 
 <hr>
 
@@ -3010,7 +3736,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 “connection” <span class="type"><a title="TrackerSparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> *</span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> used to perform the query.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">TrackerSparqlConnection</a> used to perform the query.</p>
 
 
 <p>
@@ -3026,6 +3752,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3045,7 +3772,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 “connection” <span class="type"><a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a></span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> used to perform the query.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> used to perform the query.</p>
 
 
 <p>
@@ -3061,6 +3788,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3080,7 +3808,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 “self.props.connection” <span class="type"><a title="Tracker.SparqlConnection" href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a></span>
 </pre>
 
-<p>The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> used to perform the query.</p>
+<p>ਪ	 * The <a href="tracker-sparql-connection.html#TrackerSparqlConnection">Tracker.SparqlConnection</a> used to perform the query.</p>
 
 
 <p>
@@ -3096,6 +3824,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3122,7 +3851,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 “sparql” <span class="type">gchar*</span>
 </pre>
 
-<p>SPARQL query stored in this statement.</p>
+<p>ਪ	 * SPARQL query stored in this statement.</p>
 
 
 <p>
@@ -3138,6 +3867,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3157,7 +3887,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 “sparql” <span class="type"><a title="String" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>
 </pre>
 
-<p>SPARQL query stored in this statement.</p>
+<p>ਪ	 * SPARQL query stored in this statement.</p>
 
 
 <p>
@@ -3173,6 +3903,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3192,7 +3923,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 “self.props.sparql” <span class="type"><a title="str" href="https://docs.python.org/3/library/functions.html#func-str">str</a></span>
 </pre>
 
-<p>SPARQL query stored in this statement.</p>
+<p>ਪ	 * SPARQL query stored in this statement.</p>
 
 
 <p>
@@ -3208,6 +3939,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 				Construct Only
 			
 </p>
+
 
 
 <hr>
@@ -3241,6 +3973,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 
 
 
+
 <hr>
 
 </div>
@@ -3268,6 +4001,7 @@ In case of error, NULL will be returned and <em>error</em> will be set.</p>
 <pre class="raw_code">
 #define TRACKER_TYPE_SPARQL_STATEMENT tracker_sparql_statement_get_type ()
 </pre>
+
 
 
 
