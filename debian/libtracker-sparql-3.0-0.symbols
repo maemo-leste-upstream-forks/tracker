@@ -2,6 +2,8 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
 * Build-Depends-Package: libtracker-sparql-3.0-dev
  tracker_batch_add_resource@Base 3.1.1
  tracker_batch_add_sparql@Base 3.1.1
+ tracker_batch_add_statement@Base 3.5.0~beta
+ tracker_batch_add_statementv@Base 3.5.0~beta
  tracker_batch_execute@Base 3.1.1
  tracker_batch_execute_async@Base 3.1.1
  tracker_batch_execute_finish@Base 3.1.1
@@ -113,6 +115,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_connection_update_resource@Base 3.1.1
  tracker_sparql_connection_update_resource_async@Base 3.1.1
  tracker_sparql_connection_update_resource_finish@Base 3.1.1
+ tracker_sparql_connection_update_statement@Base 3.5.0~beta
  tracker_sparql_cursor_close@Base 0.12.0
  tracker_sparql_cursor_get_boolean@Base 0.10.0
  tracker_sparql_cursor_get_connection@Base 0.10.0
@@ -150,3 +153,6 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_statement_get_type@Base 2.2.0
  tracker_sparql_statement_serialize_async@Base 3.3.0~beta
  tracker_sparql_statement_serialize_finish@Base 3.3.0~beta
+ tracker_sparql_statement_update@Base 3.5.0~beta
+ tracker_sparql_statement_update_async@Base 3.5.0~beta
+ tracker_sparql_statement_update_finish@Base 3.5.0~beta
