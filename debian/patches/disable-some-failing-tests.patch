@@ -1,13 +1,20 @@
-Description: in the autopkgtest setup some tests fail that pass during
- build. Ideally we figure out how to set it up correctly, but until
- then, let's skip these tests.
-Author: Paul Gevers <elbrus@debian.org>
+From: Paul Gevers <elbrus@debian.org>
+Date: Wed, 15 Feb 2023 10:05:23 -0500
+Subject: in the autopkgtest setup some tests fail that pass during
+
 Debian-Bug: https://bugs.debian.org/903374
 
-Index: tracker/tests/functional-tests/cli.py
-===================================================================
---- tracker.orig/tests/functional-tests/cli.py
-+++ tracker/tests/functional-tests/cli.py
+build. Ideally we figure out how to set it up correctly, but until
+then, let's skip these tests.
+---
+ tests/functional-tests/test_cli.py    | 5 +++++
+ tests/functional-tests/test_portal.py | 2 ++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/tests/functional-tests/test_cli.py b/tests/functional-tests/test_cli.py
+index b4f1c25..d938366 100644
+--- a/tests/functional-tests/test_cli.py
++++ b/tests/functional-tests/test_cli.py
 @@ -24,6 +24,7 @@ import unittest
  
  import configuration
@@ -16,49 +23,50 @@ Index: tracker/tests/functional-tests/cli.py
  import random
  
  
-@@ -37,6 +38,7 @@ class TestCli(fixtures.TrackerCommandLin
-         expected_version_line = 'Tracker %s' % configuration.tracker_version()
+@@ -36,6 +37,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+         expected_version_line = "Tracker %s" % configuration.tracker_version()
          self.assertEqual(version_line, expected_version_line)
  
 +    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
      def test_create_local_database(self):
          """Create a database using `tracker3 endpoint` for local testing"""
  
-@@ -53,6 +55,7 @@ class TestCli(fixtures.TrackerCommandLin
-                 ['tracker3', 'sparql', '--database', tmpdir,
-                  '--query', 'ASK { ?u a rdfs:Resource }'])
+@@ -66,6 +68,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+                 ]
+             )
  
 +    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
      def test_export(self):
          """Export contents of a Tracker database."""
  
-@@ -69,6 +72,7 @@ class TestCli(fixtures.TrackerCommandLin
-             self.run_cli(
-                 ['tracker3', 'export', '--database', tmpdir, '--show-graphs']);
+@@ -87,6 +90,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+             self.run_cli(["tracker3", "export", "--database", tmpdir])
+             self.run_cli(["tracker3", "export", "--database", tmpdir, "--show-graphs"])
  
 +    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
      def test_import(self):
          """Import a Turtle file into a Tracker database."""
  
-@@ -83,6 +87,7 @@ class TestCli(fixtures.TrackerCommandLin
-             self.run_cli(
-                 ['tracker3', 'import', '--database', tmpdir, testdata]);
+@@ -107,6 +111,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+             )
+             self.run_cli(["tracker3", "import", "--database", tmpdir, testdata])
  
 +    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
      def test_http_endpoint(self):
          """Create a HTTP endpoint for local testing"""
  
-Index: tracker/tests/functional-tests/portal.py
-===================================================================
---- tracker.orig/tests/functional-tests/portal.py
-+++ tracker/tests/functional-tests/portal.py
-@@ -30,7 +30,9 @@ import unittest
+diff --git a/tests/functional-tests/test_portal.py b/tests/functional-tests/test_portal.py
+index 94b5d47..c45a97d 100644
+--- a/tests/functional-tests/test_portal.py
++++ b/tests/functional-tests/test_portal.py
+@@ -31,8 +31,10 @@ import unittest
  
  import configuration
  import fixtures
 +import os
  
+ 
 +@unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
  class TestPortal(fixtures.TrackerPortalTest):
      def test_01_forbidden(self):
-         self.start_service('org.freedesktop.Inaccessible')
+         self.start_service("org.freedesktop.Inaccessible")
