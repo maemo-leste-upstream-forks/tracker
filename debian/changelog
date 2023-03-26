@@ -1,8 +1,13 @@
-tracker (3.5.0-1) UNRELEASED; urgency=medium
+tracker (3.5.0-1) experimental; urgency=medium
 
   * New upstream release
+  * Cherry-pick build test fix
+  * Build-Depend on gi-docgen
+  * debian/libtracker-sparql-3.0-0.install: Install newly split out ICU
+    parser plugin
+  * deibn/libtracker-sparql-3.0-0.symbols: Add new symbol
 
- -- Jeremy Bicha <jbicha@ubuntu.com>  Sun, 26 Mar 2023 16:05:35 -0400
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Sun, 26 Mar 2023 17:11:34 -0400
 
 tracker (3.5.0~beta-1) experimental; urgency=medium
 
