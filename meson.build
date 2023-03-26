@@ -1,6 +1,6 @@
 project('tracker', 'c',
-        version: '3.5.0.beta',
-        meson_version: '>=0.53',
+        version: '3.5.0',
+        meson_version: '>=0.55',
         default_options: [
           'c_std=c99',
           'warning_level=2'])
@@ -291,9 +291,7 @@ conf = configuration_data()
 
 # Config that goes in config.h
 
-conf.set('HAVE_LIBICU', unicode_library_name == 'icu')
 conf.set('HAVE_LIBSTEMMER', have_libstemmer)
-conf.set('HAVE_LIBUNISTRING', unicode_library_name == 'unistring')
 
 conf.set('HAVE_STATVFS64', cc.has_header_symbol('sys/statvfs.h', 'statvfs64', args: '-D_LARGEFILE64_SOURCE'))
 

@@ -1,0 +1,829 @@
+<!--
+SPDX-FileCopyrightText: Tracker Development Team
+
+SPDX-License-Identifier: GPL-2.1-or-later
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tracker.SparqlConnection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta charset="utf-8" />
+
+  
+  <meta property="og:type" content="website"/>
+
+  
+  <meta property="og:image:width" content="256"/>
+  <meta property="og:image:height" content="256"/>
+  <meta property="og:image:secure_url" content="logo.svg"/>
+  <meta property="og:image:alt" content="Tracker-3.0"/>
+  
+
+  
+  <meta property="og:title" content="Tracker.SparqlConnection"/>
+  <meta property="og:description" content="Reference for Tracker.SparqlConnection"/>
+  <meta name="twitter:title" content="Tracker.SparqlConnection"/>
+  <meta name="twitter:description" content="Reference for Tracker.SparqlConnection"/>
+
+
+  
+  <meta name="twitter:card" content="summary"/>
+
+  
+  
+  
+  
+
+  <link rel="stylesheet" href="style.css" type="text/css" />
+
+  
+
+  
+  <script src="urlmap.js"></script>
+  
+  
+  <script src="fzy.js"></script>
+  <script src="search.js"></script>
+  
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <div id="body-wrapper" tabindex="-1">
+
+    <nav class="sidebar devhelp-hidden">
+      
+      <div class="section">
+        <img src="logo.svg" class="logo"/>
+      </div>
+      
+      
+      <div class="search section">
+        <form id="search-form" autocomplete="off">
+          <input id="search-input" type="text" name="do-not-autocomplete" placeholder="Click, or press 's' to search" autocomplete="off"/>
+        </form>
+      </div>
+      
+      <div class="section namespace">
+        <h3><a href="index.html">Tracker</a></h3>
+        <p>API Version: 3.0</p>
+        
+        <p>Library Version: 3.5.0</p>
+        
+      </div>
+      
+<div class="section">
+  <h5>Type</h5>
+  <div class="links">
+    <a class="current" href="class.SparqlConnection.html#description">SparqlConnection</a>
+  </div>
+</div>
+
+
+<div class="section">
+  <h5>Constructors</h5>
+  <div class="links">
+  
+    <a class="ctor" href="ctor.SparqlConnection.bus_new.html">bus_new</a>
+  
+    <a class="ctor" href="ctor.SparqlConnection.bus_new_finish.html">bus_new_finish</a>
+  
+    <a class="ctor" href="ctor.SparqlConnection.new.html">new</a>
+  
+    <a class="ctor" href="ctor.SparqlConnection.new_finish.html">new_finish</a>
+  
+    <a class="ctor" href="ctor.SparqlConnection.remote_new.html">remote_new</a>
+  
+  </div>
+</div>
+
+
+
+<div class="section">
+  <h5>Functions</h5>
+  <div class="links">
+  
+    <a class="func" href="type_func.SparqlConnection.bus_new_async.html">bus_new_async</a>
+  
+    <a class="func" href="type_func.SparqlConnection.new_async.html">new_async</a>
+  
+  </div>
+</div>
+
+
+
+<div class="section">
+  <h5>Instance methods</h5>
+  <div class="links">
+  
+    <a class="method" href="method.SparqlConnection.close.html">close</a>
+  
+    <a class="method" href="method.SparqlConnection.close_async.html">close_async</a>
+  
+    <a class="method" href="method.SparqlConnection.close_finish.html">close_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.create_batch.html">create_batch</a>
+  
+    <a class="method" href="method.SparqlConnection.create_notifier.html">create_notifier</a>
+  
+    <a class="method" href="method.SparqlConnection.deserialize_async.html">deserialize_async</a>
+  
+    <a class="method" href="method.SparqlConnection.deserialize_finish.html">deserialize_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.get_namespace_manager.html">get_namespace_manager</a>
+  
+    <a class="method" href="method.SparqlConnection.load_statement_from_gresource.html">load_statement_from_gresource</a>
+  
+    <a class="method" href="method.SparqlConnection.map_connection.html">map_connection</a>
+  
+    <a class="method" href="method.SparqlConnection.query.html">query</a>
+  
+    <a class="method" href="method.SparqlConnection.query_async.html">query_async</a>
+  
+    <a class="method" href="method.SparqlConnection.query_finish.html">query_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.query_statement.html">query_statement</a>
+  
+    <a class="method" href="method.SparqlConnection.serialize_async.html">serialize_async</a>
+  
+    <a class="method" href="method.SparqlConnection.serialize_finish.html">serialize_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update.html">update</a>
+  
+    <a class="method" href="method.SparqlConnection.update_array_async.html">update_array_async</a>
+  
+    <a class="method" href="method.SparqlConnection.update_array_finish.html">update_array_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update_async.html">update_async</a>
+  
+    <a class="method" href="method.SparqlConnection.update_blank.html">update_blank</a>
+  
+    <a class="method" href="method.SparqlConnection.update_blank_async.html">update_blank_async</a>
+  
+    <a class="method" href="method.SparqlConnection.update_blank_finish.html">update_blank_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update_finish.html">update_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update_resource.html">update_resource</a>
+  
+    <a class="method" href="method.SparqlConnection.update_resource_async.html">update_resource_async</a>
+  
+    <a class="method" href="method.SparqlConnection.update_resource_finish.html">update_resource_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update_statement.html">update_statement</a>
+  
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+      <div class="section generator">
+        <p>Generated by <a href="https://gitlab.gnome.org/GNOME/gi-docgen">gi-docgen</a> 2023.2</p>
+      </div>
+    </nav>
+
+    <button id="btn-to-top" class="hidden"><span class="up-arrow"></span></button>
+
+    
+<section id="main" class="content">
+  <header>
+    <h3>Class</h3>
+    <h1 aria-label="Name"><a href="index.html">Tracker</a><span class="sep" role="presentation"></span>SparqlConnection</h1>
+  </header>
+
+  <section>
+    <summary>
+      <div class="docblock">
+        <p></p>
+      </div>
+
+      <div class="toggle-wrapper">
+        <h4 id="description" style="display:flex;">
+          Description
+          <a href="#description" class="anchor"></a>
+          
+          <a class="srclink" title="go to source location" href="https://gitlab.gnome.org/GNOME/tracker/-/blob/master/src/libtracker-sparql/tracker-connection.c#L20">[src]</a>
+          
+        </h4>
+
+        <pre><code>abstract class Tracker.SparqlConnection : GObject.Object
+{
+  /* No available fields */
+}</pre></code>
+
+        <div class="docblock">
+          <p><code>TrackerSparqlConnection</code> holds a connection to a <span class="caps">RDF</span> triple&nbsp;store.</p>
+<p>This triple store may be of three&nbsp;types:</p>
+<ul>
+<li>Local to the process, created through <a href="ctor.SparqlConnection.new.html"><code>tracker_sparql_connection_new()</code></a>.</li>
+<li>A <span class="caps">HTTP</span> <span class="caps">SPARQL</span> endpoint over the network, created through
+   <a href="ctor.SparqlConnection.remote_new.html"><code>tracker_sparql_connection_remote_new()</code></a></li>
+<li>A DBus <span class="caps">SPARQL</span> endpoint owned by another process in the same machine, created
+   through <a href="ctor.SparqlConnection.bus_new.html"><code>tracker_sparql_connection_bus_new()</code></a></li>
+</ul>
+<p>When creating a local triple store, it is required to give details about its
+structure. This is done by passing a location to an ontology, see more
+on how are <a href="ontologies.html">ontologies defined</a>. A local database may be
+stored in a filesystem location, or it may reside in&nbsp;memory.</p>
+<p>A <code>TrackerSparqlConnection</code> is private to the calling process, it can be
+exposed to other hosts/processes via a <a href="class.Endpoint.html"><code>TrackerEndpoint</code></a>, see
+<a href="ctor.EndpointDBus.new.html"><code>tracker_endpoint_dbus_new()</code></a> and <a href="ctor.EndpointHttp.new.html"><code>tracker_endpoint_http_new()</code></a>.</p>
+<p>When issuing <span class="caps">SPARQL</span> queries and updates, it is recommended that these are
+created through <a href="class.SparqlStatement.html"><code>TrackerSparqlStatement</code></a> to avoid the <span class="caps">SPARQL</span>
+injection class of bugs, see <a href="method.SparqlConnection.query_statement.html"><code>tracker_sparql_connection_query_statement()</code></a>
+and <a href="method.SparqlConnection.update_statement.html"><code>tracker_sparql_connection_update_statement()</code></a>. For <span class="caps">SPARQL</span> updates
+it is also possible to use a &#8220;builder&#8221; approach to generate <span class="caps">RDF</span> data, see
+<a href="class.Resource.html"><code>TrackerResource</code></a>. It is also possible to create <a href="class.SparqlStatement.html"><code>TrackerSparqlStatement</code></a>
+objects for <span class="caps">SPARQL</span> queries and updates from <span class="caps">SPARQL</span> strings embedded in a
+<a href="javascript:void(0)" data-namespace="Gio" data-link="struct.Resource.html" class="external"><code>GResource</code></a>, see <a href="method.SparqlConnection.load_statement_from_gresource.html"><code>tracker_sparql_connection_load_statement_from_gresource()</code></a>.</p>
+<p>To get the best performance, it is recommended that <span class="caps">SPARQL</span> updates are clustered
+through <a href="class.Batch.html"><code>TrackerBatch</code></a>.</p>
+<p><code>TrackerSparqlConnection</code> also offers a number of methods for the simple cases,
+<a href="method.SparqlConnection.query.html"><code>tracker_sparql_connection_query()</code></a> may be used when there is a <span class="caps">SPARQL</span>
+query string directly available, and the <a href="method.SparqlConnection.update.html"><code>tracker_sparql_connection_update()</code></a>
+family of functions may be used for one-off updates. All functions have asynchronous&nbsp;variants.</p>
+<p>When a <span class="caps">SPARQL</span> query is executed, a <a href="class.SparqlCursor.html"><code>TrackerSparqlCursor</code></a> will be obtained
+to iterate over the query&nbsp;results.</p>
+<p>Depending on the ontology definition, <code>TrackerSparqlConnection</code> may emit
+notifications whenever resources of certain types get insert, modified or
+deleted from the triple store (see <a href="nrl-ontology.html#nrl:notify">nrl:notify</a>.
+These notifications can be handled via a <a href="class.Notifier.html"><code>TrackerNotifier</code></a> obtained with
+<a href="method.SparqlConnection.create_notifier.html"><code>tracker_sparql_connection_create_notifier()</code></a>.</p>
+<p>After done with a connection, it is recommended to call <a href="method.SparqlConnection.close.html"><code>tracker_sparql_connection_close()</code></a>
+or <a href="method.SparqlConnection.close_async.html"><code>tracker_sparql_connection_close_async()</code></a> explicitly to cleanly close the
+connection and prevent consistency checks on future runs. The triple store
+connection will be implicitly closed when the <code>TrackerSparqlConnection</code> object
+is&nbsp;disposed.</p>
+<p>A <code>TrackerSparqlConnection</code> may be used from multiple threads, asynchronous
+updates are executed sequentially on arrival order, asynchronous
+queries are dispatched in a thread&nbsp;pool.</p>
+<p>If you ever have the need to procedurally compose <span class="caps">SPARQL</span> query strings, consider
+the use of <a href="func.sparql_escape_string.html"><code>tracker_sparql_escape_string()</code></a> for literal strings and
+the <a href="func.sparql_escape_uri.html"><code>tracker_sparql_escape_uri()</code></a> family of functions for&nbsp;URIs.</p>
+        </div>
+
+        <div class="docblock">
+          
+          
+          
+        </div>
+
+        
+      </div>
+    </summary>
+
+    
+
+    
+    <div class="toggle-wrapper ancestors">
+      <h4 id="ancestors">
+        Ancestors
+        <a href="#ancestors" class="anchor"></a>
+      </h4>
+
+      <div class="docblock">
+        <ul>
+        
+          
+          <li class="class"><a class="external" href="javascript:void(0)" data-link="class.Object.html" data-namespace="GObject">GObject</a></li>
+          
+        
+        </ul>
+      </div>
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="toggle-wrapper constructors">
+      <h4 id="constructors">
+        Constructors
+        <a href="#constructors" class="anchor"></a>
+      </h4>
+
+      <div class="docblock">
+      
+        <div class="">
+          <h6><a href="ctor.SparqlConnection.bus_new.html">tracker_sparql_connection_bus_new</a></h6>
+          <div class="docblock">
+            <p>Connects to a database owned by another process on the
+local machine via&nbsp;DBus.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="ctor.SparqlConnection.bus_new_finish.html">tracker_sparql_connection_bus_new_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_bus_new_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.1</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="ctor.SparqlConnection.new.html">tracker_sparql_connection_new</a></h6>
+          <div class="docblock">
+            <p>Creates or opens a process-local&nbsp;database.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="ctor.SparqlConnection.new_finish.html">tracker_sparql_connection_new_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_new_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="ctor.SparqlConnection.remote_new.html">tracker_sparql_connection_remote_new</a></h6>
+          <div class="docblock">
+            <p>Creates a connection to a remote <span class="caps">HTTP</span> <span class="caps">SPARQL</span>&nbsp;endpoint.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+    
+
+    
+    <div class="toggle-wrapper methods">
+      <h4 id="type-functions">
+        Functions
+        <a href="#type-functions" class="anchor"></a>
+      </h4>
+
+      <div class="docblock">
+      
+      <div class="">
+        <h6><a href="type_func.SparqlConnection.bus_new_async.html">tracker_sparql_connection_bus_new_async</a></h6>
+        <div class="docblock">
+          <p>Connects asynchronously to a database owned by another process on the
+local machine via&nbsp;DBus.</p>
+        </div>
+        <div class="docblock">
+          <p><span class="emblem available">since: 3.1</span></p>
+        </div>
+      </div>
+      
+      <div class="">
+        <h6><a href="type_func.SparqlConnection.new_async.html">tracker_sparql_connection_new_async</a></h6>
+        <div class="docblock">
+          <p>Creates or opens a process-local database&nbsp;asynchronously.</p>
+        </div>
+        <div class="docblock">
+          <p></p>
+        </div>
+      </div>
+      
+      </div>
+    </div>
+    
+
+    
+    <div class="toggle-wrapper methods">
+      <h4 id="methods">
+        Instance methods
+        <a href="#methods" class="anchor"></a>
+      </h4>
+
+      <div class="docblock">
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.close.html">tracker_sparql_connection_close</a></h6>
+          <div class="docblock">
+            <p>Closes a <span class="caps">SPARQL</span>&nbsp;connection.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.close_async.html">tracker_sparql_connection_close_async</a></h6>
+          <div class="docblock">
+            <p>Closes a <span class="caps">SPARQL</span> connection&nbsp;asynchronously.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.close_finish.html">tracker_sparql_connection_close_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_close_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.create_batch.html">tracker_sparql_connection_create_batch</a></h6>
+          <div class="docblock">
+            <p>Creates a new <code>TrackerBatch</code> to store and execute <span class="caps">SPARQL</span>&nbsp;updates.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.create_notifier.html">tracker_sparql_connection_create_notifier</a></h6>
+          <div class="docblock">
+            <p>Creates a new <code>TrackerNotifier</code> to receive notifications about changes in <code>connection</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.deserialize_async.html">tracker_sparql_connection_deserialize_async</a></h6>
+          <div class="docblock">
+            <p>Loads the <span class="caps">RDF</span> data contained in <code>stream</code> into the given <code>connection</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.4</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.deserialize_finish.html">tracker_sparql_connection_deserialize_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_deserialize_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.4</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.get_namespace_manager.html">tracker_sparql_connection_get_namespace_manager</a></h6>
+          <div class="docblock">
+            <p>Returns a <code>TrackerNamespaceManager</code> that contains all
+prefixes in the ontology of <code>connection</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.load_statement_from_gresource.html">tracker_sparql_connection_load_statement_from_gresource</a></h6>
+          <div class="docblock">
+            <p>Prepares a <code>TrackerSparqlStatement</code> for the <span class="caps">SPARQL</span> contained as a <code>GResource</code>
+file at <code>resource_path</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.3</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.map_connection.html">tracker_sparql_connection_map_connection</a></h6>
+          <div class="docblock">
+            <p>Maps a <code>TrackerSparqlConnection</code> onto another through a <code>private:</code>handle_name&#8220; <span class="caps">URI</span>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.3</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.query.html">tracker_sparql_connection_query</a></h6>
+          <div class="docblock">
+            <p>Executes a <span class="caps">SPARQL</span> query on <code>connection</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.query_async.html">tracker_sparql_connection_query_async</a></h6>
+          <div class="docblock">
+            <p>Executes asynchronously a <span class="caps">SPARQL</span> query on <code>connection</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.query_finish.html">tracker_sparql_connection_query_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_query_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.query_statement.html">tracker_sparql_connection_query_statement</a></h6>
+          <div class="docblock">
+            <p>Prepares the given <code>SELECT</code>/<code>ASK</code>/<code>DESCRIBE</code>/<code>CONSTRUCT</code> <span class="caps">SPARQL</span> query as a
+<code>TrackerSparqlStatement</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.serialize_async.html">tracker_sparql_connection_serialize_async</a></h6>
+          <div class="docblock">
+            <p>Serializes a <code>DESCRIBE</code> or <code>CONSTRUCT</code> query into the specified <span class="caps">RDF</span>&nbsp;format.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.3</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.serialize_finish.html">tracker_sparql_connection_serialize_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_serialize_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.3</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update.html">tracker_sparql_connection_update</a></h6>
+          <div class="docblock">
+            <p>Executes a <span class="caps">SPARQL</span> update on <code>connection</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update_array_async.html">tracker_sparql_connection_update_array_async</a></h6>
+          <div class="docblock">
+            <p>Executes asynchronously an array of <span class="caps">SPARQL</span> updates. All updates in the
+array are handled within a single&nbsp;transaction.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update_array_finish.html">tracker_sparql_connection_update_array_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_update_array_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update_async.html">tracker_sparql_connection_update_async</a></h6>
+          <div class="docblock">
+            <p>Executes asynchronously a <span class="caps">SPARQL</span>&nbsp;update.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="deprecated">
+          <h6><a href="method.SparqlConnection.update_blank.html">tracker_sparql_connection_update_blank</a></h6>
+          <div class="docblock">
+            <p>Executes a <span class="caps">SPARQL</span> update and returns the names of the generated blank&nbsp;nodes.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem deprecated">deprecated: 3.5</span>&nbsp;</p>
+          </div>
+        </div>
+      
+        <div class="deprecated">
+          <h6><a href="method.SparqlConnection.update_blank_async.html">tracker_sparql_connection_update_blank_async</a></h6>
+          <div class="docblock">
+            <p>Executes asynchronously a <span class="caps">SPARQL</span> update and returns the names of the generated blank&nbsp;nodes.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem deprecated">deprecated: 3.5</span>&nbsp;</p>
+          </div>
+        </div>
+      
+        <div class="deprecated">
+          <h6><a href="method.SparqlConnection.update_blank_finish.html">tracker_sparql_connection_update_blank_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_update_blank_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem deprecated">deprecated: 3.5</span>&nbsp;</p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update_finish.html">tracker_sparql_connection_update_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_update_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update_resource.html">tracker_sparql_connection_update_resource</a></h6>
+          <div class="docblock">
+            <p>Inserts a resource as described by <code>resource</code> on the given <code>graph</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.1</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update_resource_async.html">tracker_sparql_connection_update_resource_async</a></h6>
+          <div class="docblock">
+            <p>Inserts asynchronously a resource as described by <code>resource</code> on the given <code>graph</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.1</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update_resource_finish.html">tracker_sparql_connection_update_resource_finish</a></h6>
+          <div class="docblock">
+            <p>Finishes the operation started with <code>tracker_sparql_connection_update_resource_async()</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.1</span></p>
+          </div>
+        </div>
+      
+        <div class="">
+          <h6><a href="method.SparqlConnection.update_statement.html">tracker_sparql_connection_update_statement</a></h6>
+          <div class="docblock">
+            <p>Prepares the given <code>INSERT</code>/<code>DELETE</code> <span class="caps">SPARQL</span> as a <code>TrackerSparqlStatement</code>.</p>
+          </div>
+          <div class="docblock">
+            <p><span class="emblem available">since: 3.5</span></p>
+          </div>
+        </div>
+      
+      </div>
+
+      
+        
+        <div class="toggle-wrapper default-hide ancestor-methods"><h5 style="display:block;">Methods inherited from <a class="external" href="javascript:void(0)" data-link="class.Object.html" data-namespace="GObject">GObject</a> (43)</h5>
+          <div class="docblock">
+          
+            <div class="docblock">
+              <p>Please see&nbsp;<a class="external" href="javascript:void(0)" data-link="class.Object.html#methods" data-namespace="GObject">GObject</a>&nbsp;for a full list of methods.</em></p>
+            </div>
+          
+          </div>
+        </div>
+        
+      
+
+      
+    </div>
+    
+
+    
+
+    
+    <div class="signals toggle-wrapper">
+      <h4 id="signals">
+        Signals
+        <a href="#signals" class="anchor"></a>
+      </h4>
+
+      
+
+      
+        
+        <div class="toggle-wrapper default-hide ancestor-signals"><h5 style="display:block;">Signals inherited from <a class="external" href="javascript:void(0)" data-link="class.Object.html" data-namespace="GObject">GObject</a> (1)</h5>
+          <div class="docblock">
+          <h6><a class="external" href="javascript:void(0)" data-namespace="GObject" data-link="signal.Object.notify.html">GObject::notify</a></h6>
+            <div class="docblock">
+              <p>The notify signal is emitted on an object when one of its properties has
+its value set through g_object_set_property(), g_object_set(), et&nbsp;al.</p>
+            </div>
+            <div class="docblock">
+              <p></p>
+            </div>
+          
+          </div>
+        </div>
+        
+      
+
+      
+
+    </div>
+    
+
+    
+    <div class="class toggle-wrapper default-hide">
+      <h4 id="class-struct">
+        Class structure
+        <a href="#class-struct" class="anchor"></a>
+      </h4>
+
+      <div class="docblock">
+        <pre><code>struct TrackerSparqlConnectionClass {
+  /* no available fields */
+}</code></pre>
+      </div>
+
+      <div class="docblock">
+        No description available.
+      </div>
+
+      
+    </div>
+    
+
+    
+
+    
+
+  </section>
+</section>
+
+
+    
+<div id="toc" class="toc">
+  <nav aria-labelledby="toc-title">
+    <p id="toc-title">Content</p>
+    <ul class="toc-list">
+      <li class="toc-list-item"><a href="#description"><span class="link-text">Description</span></a></li>
+      
+      
+      
+      <li class="toc-list-item"><a href="#ancestors"><span class="link-text">Ancestors</span></a></li>
+      
+      
+      
+<li class="toc-list-item"><a href="#constructors"><span class="link-text">Constructors</span></a></li>
+
+
+      
+<li class="toc-list-item"><a href="#type-functions"><span class="link-text">Functions</span></a></li>
+
+
+      
+<li class="toc-list-item"><a href="#methods"><span class="link-text">Methods</span></a></li>
+
+
+      
+
+      
+
+      
+
+      
+
+    </ul>
+  </nav>
+</div>
+
+
+    <section id="search" class="content hidden"></section>
+
+    <footer>
+    
+    </footer>
+  </div>
+</body>
+</html>
