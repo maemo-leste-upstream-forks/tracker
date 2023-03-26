@@ -1,0 +1,321 @@
+<!--
+SPDX-FileCopyrightText: Tracker Development Team
+
+SPDX-License-Identifier: GPL-2.1-or-later
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tracker.SparqlConnection.query_async</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta charset="utf-8" />
+
+  
+  <meta property="og:type" content="website"/>
+
+  
+  <meta property="og:image:width" content="256"/>
+  <meta property="og:image:height" content="256"/>
+  <meta property="og:image:secure_url" content="logo.svg"/>
+  <meta property="og:image:alt" content="Tracker-3.0"/>
+  
+
+  
+  <meta priority="og:title" content="Tracker.SparqlConnection.query_async"/>
+  <meta priority="og:description" content="Reference for Tracker.SparqlConnection.query_async"/>
+  <meta name="twitter:title" content="Tracker.SparqlConnection.query_async"/>
+  <meta name="twitter:description" content="Reference for Tracker.SparqlConnection.query_async"/>
+
+
+  
+  <meta name="twitter:card" content="summary"/>
+
+  
+  
+  
+  
+
+  <link rel="stylesheet" href="style.css" type="text/css" />
+
+  
+
+  
+  <script src="urlmap.js"></script>
+  
+  
+  <script src="fzy.js"></script>
+  <script src="search.js"></script>
+  
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <div id="body-wrapper" tabindex="-1">
+
+    <nav class="sidebar devhelp-hidden">
+      
+      <div class="section">
+        <img src="logo.svg" class="logo"/>
+      </div>
+      
+      
+      <div class="search section">
+        <form id="search-form" autocomplete="off">
+          <input id="search-input" type="text" name="do-not-autocomplete" placeholder="Click, or press 's' to search" autocomplete="off"/>
+        </form>
+      </div>
+      
+      <div class="section namespace">
+        <h3><a href="index.html">Tracker</a></h3>
+        <p>API Version: 3.0</p>
+        
+        <p>Library Version: 3.5.0</p>
+        
+      </div>
+      
+<div class="section">
+  <h5>Type</h5>
+  <div class="links">
+    <a href="class.SparqlConnection.html">SparqlConnection</a>
+  </div>
+</div>
+<div class="section">
+  <h5>Methods</h5>
+  <div class="links">
+  
+    <a class="method" href="method.SparqlConnection.close.html">close</a>
+  
+    <a class="method" href="method.SparqlConnection.close_async.html">close_async</a>
+  
+    <a class="method" href="method.SparqlConnection.close_finish.html">close_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.create_batch.html">create_batch</a>
+  
+    <a class="method" href="method.SparqlConnection.create_notifier.html">create_notifier</a>
+  
+    <a class="method" href="method.SparqlConnection.deserialize_async.html">deserialize_async</a>
+  
+    <a class="method" href="method.SparqlConnection.deserialize_finish.html">deserialize_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.get_namespace_manager.html">get_namespace_manager</a>
+  
+    <a class="method" href="method.SparqlConnection.load_statement_from_gresource.html">load_statement_from_gresource</a>
+  
+    <a class="method" href="method.SparqlConnection.map_connection.html">map_connection</a>
+  
+    <a class="method" href="method.SparqlConnection.query.html">query</a>
+  
+    <a class="method current" href="method.SparqlConnection.query_async.html">query_async</a>
+  
+    <a class="method" href="method.SparqlConnection.query_finish.html">query_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.query_statement.html">query_statement</a>
+  
+    <a class="method" href="method.SparqlConnection.serialize_async.html">serialize_async</a>
+  
+    <a class="method" href="method.SparqlConnection.serialize_finish.html">serialize_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update.html">update</a>
+  
+    <a class="method" href="method.SparqlConnection.update_array_async.html">update_array_async</a>
+  
+    <a class="method" href="method.SparqlConnection.update_array_finish.html">update_array_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update_async.html">update_async</a>
+  
+    <a class="method" href="method.SparqlConnection.update_blank.html">update_blank</a>
+  
+    <a class="method" href="method.SparqlConnection.update_blank_async.html">update_blank_async</a>
+  
+    <a class="method" href="method.SparqlConnection.update_blank_finish.html">update_blank_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update_finish.html">update_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update_resource.html">update_resource</a>
+  
+    <a class="method" href="method.SparqlConnection.update_resource_async.html">update_resource_async</a>
+  
+    <a class="method" href="method.SparqlConnection.update_resource_finish.html">update_resource_finish</a>
+  
+    <a class="method" href="method.SparqlConnection.update_statement.html">update_statement</a>
+  
+  </div>
+</div>
+
+      <div class="section generator">
+        <p>Generated by <a href="https://gitlab.gnome.org/GNOME/gi-docgen">gi-docgen</a> 2023.2</p>
+      </div>
+    </nav>
+
+    <button id="btn-to-top" class="hidden"><span class="up-arrow"></span></button>
+
+    
+<section id="main" class="content">
+  <header>
+    <h3>Method</h3>
+    <h1><a href="index.html">Tracker</a><span class="sep"></span><a href="class.SparqlConnection.html">SparqlConnection</a><span class="sep"></span>query_async</h1>
+  </header>
+
+  <section>
+    <div class="docblock">
+      <p></p>
+    </div>
+
+    <div class="declaration toggle-wrapper">
+      <h4 style="display:flex;" id="declaration">
+        Declaration
+        <a class="anchor" href="#declaration"></a>
+        
+        <a class="srclink" title="go to source location" href="https://gitlab.gnome.org/GNOME/tracker/-/blob/master/src/libtracker-sparql/tracker-connection.h#L136">[src]</a>
+        
+      </h4>
+
+      <div class="docblock c-decl">
+        <pre><code><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"></span>
+<span class="n">tracker_sparql_connection_query_async</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="n">TrackerSparqlConnection</span><span class="o">*</span><span class="w"> </span><span class="n">connection</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">gchar</span><span class="o">*</span><span class="w"> </span><span class="n">sparql</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">GCancellable</span><span class="o">*</span><span class="w"> </span><span class="n">cancellable</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">GAsyncReadyCallback</span><span class="w"> </span><span class="n">callback</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="n">gpointer</span><span class="w"> </span><span class="n">user_data</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+</pre></div>
+</code></pre>
+      </div>
+    </div>
+
+    <div class="description toggle-wrapper">
+      <h4 style="display:flex;" id="description">
+        Description
+        <a class="anchor" href="#description"></a>
+        
+        <a class="srclink" title="go to source location" href="https://gitlab.gnome.org/GNOME/tracker/-/blob/master/src/libtracker-sparql/tracker-connection.c#L188">[src]</a>
+        
+      </h4>
+
+      <div class="docblock">
+        <p>Executes asynchronously a <span class="caps">SPARQL</span> query on <code>connection</code></p>
+<p>If the query is partially built from user input or other
+untrusted sources, special care is required about possible
+<span class="caps">SPARQL</span> injection. In order to avoid it entirely, it is recommended
+to use <a href="class.SparqlStatement.html"><code>TrackerSparqlStatement</code></a>. The function
+<a href="func.sparql_escape_string.html"><code>tracker_sparql_escape_string()</code></a> exists as a last resort,
+but its use is not&nbsp;recommended.</p>
+      </div>
+
+      <div class="docblock">
+        
+        
+        
+        
+        
+        
+      </div>
+
+      
+    </div>
+
+    
+    <div class="parameters toggle-wrapper">
+      <h4 id="parameters">
+        Parameters
+        <a href="#parameters" class="anchor"></a>
+      </h4>
+
+      <div class="docblock">
+        <dl class="arguments">
+          
+          <dt class="arg-name"><code>sparql</code></dt>
+          <dd class="arg-description">
+            <p><em>Type:</em>&nbsp;<code>const gchar*</code></p>
+            <p><p>String containing the <span class="caps">SPARQL</span>&nbsp;query.</p></p>
+            <table>
+            
+            
+            
+            
+            
+            
+            
+            <tr><td title="transfer: none">The data is owned by the caller of the function.</td></tr>
+            <tr><td>The value is a NUL terminated UTF-8 string.</td></tr>
+            </table>
+          </dd>
+          
+          <dt class="arg-name"><code>cancellable</code></dt>
+          <dd class="arg-description">
+            <p><em>Type:</em>&nbsp;<a href="javascript:void(0)" data-link="class.Cancellable.html" data-namespace="Gio" class="external"><code>GCancellable</code></a></p>
+            <p><p>Optional <a href="javascript:void(0)" data-namespace="Gio" data-link="class.Cancellable.html" class="external"><code>GCancellable</code></a></p></p>
+            <table>
+            
+            <tr><td>The argument can be <code>NULL</code>.</td></tr>
+            
+            
+            
+            
+            
+            <tr><td title="transfer: none">The data is owned by the caller of the function.</td></tr>
+            
+            </table>
+          </dd>
+          
+          <dt class="arg-name"><code>callback</code></dt>
+          <dd class="arg-description">
+            <p><em>Type:</em>&nbsp;<a href="javascript:void(0)" data-link="callback.AsyncReadyCallback.html" data-namespace="Gio" class="external"><code>GAsyncReadyCallback</code></a></p>
+            <p><p>User-defined <a href="javascript:void(0)" data-namespace="Gio" data-link="callback.AsyncReadyCallback.html" class="external"><code>GAsyncReadyCallback</code></a> to be called when
+           the asynchronous operation is&nbsp;finished.</p></p>
+            <table>
+            
+            <tr><td>The argument can be <code>NULL</code>.</td></tr>
+            
+            
+            
+            
+            
+            
+            
+            </table>
+          </dd>
+          
+          <dt class="arg-name"><code>user_data</code></dt>
+          <dd class="arg-description">
+            <p><em>Type:</em>&nbsp;<code>gpointer</code></p>
+            <p><p>User-defined data to be passed to <code>callback</code>.</p></p>
+            <table>
+            
+            <tr><td>The argument can be <code>NULL</code>.</td></tr>
+            
+            
+            
+            
+            
+            <tr><td title="transfer: none">The data is owned by the caller of the function.</td></tr>
+            
+            </table>
+          </dd>
+          
+
+          
+        </dl>
+      </div>
+    </div>
+    
+
+    
+
+  </section>
+</section>
+
+
+    
+
+    <section id="search" class="content hidden"></section>
+
+    <footer>
+    
+    </footer>
+  </div>
+</body>
+</html>

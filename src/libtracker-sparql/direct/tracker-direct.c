@@ -431,14 +431,6 @@ query_thread_pool_func (gpointer data,
 	g_object_unref (task);
 }
 
-static gint
-task_compare_func (GTask    *a,
-                   GTask    *b,
-                   gpointer  user_data)
-{
-	return g_task_get_priority (b) - g_task_get_priority (a);
-}
-
 static gboolean
 set_up_thread_pools (TrackerDirectConnection  *conn,
 		     GError                  **error)
@@ -457,12 +449,6 @@ set_up_thread_pools (TrackerDirectConnection  *conn,
 	if (!priv->update_thread)
 		return FALSE;
 
-	g_thread_pool_set_sort_function (priv->select_pool,
-	                                 (GCompareDataFunc) task_compare_func,
-	                                 conn);
-	g_thread_pool_set_sort_function (priv->update_thread,
-	                                 (GCompareDataFunc) task_compare_func,
-	                                 conn);
 	return TRUE;
 }
 
@@ -502,8 +488,6 @@ tracker_direct_connection_initable_init (GInitable     *initable,
 
 	conn = TRACKER_DIRECT_CONNECTION (initable);
 	priv = tracker_direct_connection_get_instance_private (conn);
-
-	tracker_locale_sanity_check ();
 
 	if (!set_up_thread_pools (conn, error))
 		return FALSE;
