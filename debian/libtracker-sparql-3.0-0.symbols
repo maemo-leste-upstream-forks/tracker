@@ -132,6 +132,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_cursor_next_async@Base 0.10.0
  tracker_sparql_cursor_next_finish@Base 0.10.0
  tracker_sparql_cursor_rewind@Base 0.10.0
+ tracker_sparql_error_get_type@Base 3.5.0
  tracker_sparql_error_quark@Base 0.10.0
  tracker_sparql_escape_string@Base 0.10.0
  tracker_sparql_escape_uri@Base 1.12.0
