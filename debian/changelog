@@ -1,8 +1,12 @@
-tracker (3.5.1-1) UNRELEASED; urgency=medium
+tracker (3.5.1-1) experimental; urgency=medium
 
   * New upstream release
+  * Drop patch applied in new release
+  * Add debian/upstream/metadata
+  * Update renamed lintian tag names in lintian overrides
+  * Update standards version to 4.6.2, no changes needed
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 10 May 2023 16:16:33 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 10 May 2023 16:22:40 -0400
 
 tracker (3.5.0-1) experimental; urgency=medium
 
