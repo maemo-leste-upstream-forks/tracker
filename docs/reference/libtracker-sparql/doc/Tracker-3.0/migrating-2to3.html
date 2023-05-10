@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -176,11 +176,11 @@ simply returns a boolean return value and a single error for the whole&nbsp;tran
 <h2 id="no-tracker_sparql_connection_getget_async">No <code>tracker_sparql_connection_get()/get_async()</code><a class="md-anchor" href="#no-tracker_sparql_connection_getget_async" title="Permanent link"></a></h2>
 <p>There is no longer a singleton <span class="caps">SPARQL</span> connection. If you are only interested in
 tracker-miner-fs data, you can create a dedicated DBus connection to it&nbsp;through:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracker_sparql_connection_bus_new</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;org.freedesktop.Tracker3.Miner.Files&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…</span><span class="p">);</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracker_sparql_connection_bus_new</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;org.freedesktop.Tracker3.Miner.Files&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">…</span><span class="p">);</span>
 </code></pre></div>
 
 <p>If you are interested in storing your own data, you can do it&nbsp;through:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracker_sparql_connection_new</span><span class="w"> </span><span class="p">(</span><span class="err">…</span><span class="p">);</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracker_sparql_connection_new</span><span class="w"> </span><span class="p">(</span><span class="err">…</span><span class="p">);</span>
 </code></pre></div>
 
 <p>Note that you still may access other endpoints in <span class="caps">SELECT</span> queries, eg. for&nbsp;tracker-miner-fs:</p>

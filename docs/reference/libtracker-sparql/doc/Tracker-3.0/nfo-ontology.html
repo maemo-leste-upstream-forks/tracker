@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -88,18 +88,28 @@ SPDX-License-Identifier: GPL-2.1-or-later
   <section>
     <div class="docblock">
     <p>About files and other desktop&nbsp;resources.</p>
-<style>img { display: inline-block } table { border-collapse: collapse; } tr { border: none !important; } tr:hover { background: var(--box-bg); } td:not(:last-child), th:not(:last-child) { border: none; border-right: solid 1px #888; }</style>
+<style>svg .icon { fill: var(--primary) }table { border-collapse: collapse; } tr { border: none !important; } tr:hover { background: var(--box-bg); } td:not(:last-child), th:not(:last-child) { border: none; border-right: solid 1px #888; }</style>
 
-<div class="codehilite"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">nfo:</span><span class="w"> </span><span class="nv">&lt;http://tracker.api.gnome.org/ontology/v3/nfo#&gt;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">nfo:</span><span class="w"> </span><span class="nv">&lt;http://tracker.api.gnome.org/ontology/v3/nfo#&gt;</span>
 </code></pre></div>
 
 <p>The following classes are&nbsp;defined:</p>
 <p><a href="#nfo:Application">Application</a>, <a href="#nfo:Archive">Archive</a>, <a href="#nfo:ArchiveItem">ArchiveItem</a>, <a href="#nfo:Attachment">Attachment</a>, <a href="#nfo:Audio">Audio</a>, <a href="#nfo:Bookmark">Bookmark</a>, <a href="#nfo:BookmarkFolder">BookmarkFolder</a>, <a href="#nfo:CompressionType">CompressionType</a>, <a href="#nfo:Cursor">Cursor</a>, <a href="#nfo:DataContainer">DataContainer</a>, <a href="#nfo:DeletedResource">DeletedResource</a>, <a href="#nfo:Document">Document</a>, <a href="#nfo:EBook">EBook</a>, <a href="#nfo:EmbeddedFileDataObject">EmbeddedFileDataObject</a>, <a href="#nfo:Equipment">Equipment</a>, <a href="#nfo:Executable">Executable</a>, <a href="#nfo:FileDataObject">FileDataObject</a>, <a href="#nfo:FileHash">FileHash</a>, <a href="#nfo:Filesystem">Filesystem</a>, <a href="#nfo:FilesystemImage">FilesystemImage</a>, <a href="#nfo:Folder">Folder</a>, <a href="#nfo:Font">Font</a>, <a href="#nfo:GameImage">GameImage</a>, <a href="#nfo:HardDiskPartition">HardDiskPartition</a>, <a href="#nfo:HelpDocument">HelpDocument</a>, <a href="#nfo:HtmlDocument">HtmlDocument</a>, <a href="#nfo:Icon">Icon</a>, <a href="#nfo:Image">Image</a>, <a href="#nfo:ImageCategory">ImageCategory</a>, <a href="#nfo:Media">Media</a>, <a href="#nfo:MediaFileListEntry">MediaFileListEntry</a>, <a href="#nfo:MediaList">MediaList</a>, <a href="#nfo:MediaStream">MediaStream</a>, <a href="#nfo:MindMap">MindMap</a>, <a href="#nfo:Note">Note</a>, <a href="#nfo:OperatingSystem">OperatingSystem</a>, <a href="#nfo:Orientation">Orientation</a>, <a href="#nfo:PaginatedTextDocument">PaginatedTextDocument</a>, <a href="#nfo:PlainTextDocument">PlainTextDocument</a>, <a href="#nfo:Presentation">Presentation</a>, <a href="#nfo:RasterImage">RasterImage</a>, <a href="#nfo:RegionOfInterest">RegionOfInterest</a>, <a href="#nfo:RegionOfInterestContent">RegionOfInterestContent</a>, <a href="#nfo:RemoteDataObject">RemoteDataObject</a>, <a href="#nfo:RemotePortAddress">RemotePortAddress</a>, <a href="#nfo:Software">Software</a>, <a href="#nfo:SoftwareApplication">SoftwareApplication</a>, <a href="#nfo:SoftwareCategory">SoftwareCategory</a>, <a href="#nfo:SoftwareItem">SoftwareItem</a>, <a href="#nfo:SoftwareService">SoftwareService</a>, <a href="#nfo:SourceCode">SourceCode</a>, <a href="#nfo:Spreadsheet">Spreadsheet</a>, <a href="#nfo:TextDocument">TextDocument</a>, <a href="#nfo:Trash">Trash</a>, <a href="#nfo:VectorImage">VectorImage</a>, <a href="#nfo:Video">Video</a>, <a href="#nfo:Visual">Visual</a>, <a href="#nfo:WebHistory">WebHistory</a>, <a href="#nfo:Website">Website</a></p>
+<div style='display:none'>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" version="1.1" height="16"><g id="icon-deprecated" class="icon"><rect width="16" height="16" fill="#00000000"/><g transform="translate(-39.9997,39.98872)"><path d="m 47.90615,-39.89497 c -0.5255,-0.0286 -1.03823,0.28305 -1.4375,0.96875 l -6.25,11.59375 c -0.53347,0.96339 0.04822,2.34375 1.09375,2.34375 h 13.15625 c 0.98172,0 1.90311,-1.15939 1.21875,-2.34375 l -6.3125,-11.53125 c -0.39872,-0.64617 -0.94325,-1.00262 -1.46875,-1.03125 z m 0.0625,3.9375 c 0.54448,-0.0172 1.04849,0.48677 1.03125,1.03125 v 3.9375 c 0.007,0.52831 -0.47163,1 -1,1 -0.52836,0 -1.00747,-0.47169 -1,-1 v -3.9375 c -0.008,-0.4666 0.3541,-0.91253 0.8125,-1 0.0511,-0.0145 0.10345,-0.02495 0.15625,-0.03125 z m 0.03125,6.96875 c 0.552285,0 1,0.447715 1,1 0,0.552285 -0.447715,1 -1,1 -0.552285,0 -1,-0.447715 -1,-1 0,-0.552285 0.447715,-1 1,-1 z" /></g></g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-superproperty" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M12 9h-1c-.258 0-.53-.13-.72-.313L9 7.407V16H7V7.406L5.717 8.687c-.19.183-.462.313-.719.313H4V8c0-.31.09-.552.281-.75L8 3.594l3.718 3.656c.19.198.281.44.281.75z" overflow="visible"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" version="1.1" height="16"> <g id="icon-multivalue" class="icon"><rect width="16" height="16" fill="#00000000"/><g transform="translate(-320.98275,227.01492)"><path d="m 324.17969,-227.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -224 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -224 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-215.00781 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 v 1.83008 h 2 v -1.83008 c 0,-0.13089 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 v 1.78711 h 2 v -1.78711 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-223.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -220 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -220 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-219.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -216 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -216 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /></g></g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-fulltextindexed" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M6.508 1C3.48 1 1.002 3.473 1.002 6.5c0 3.026 2.478 5.5 5.506 5.5s5.504-2.474 5.504-5.5c0-3.027-2.476-5.5-5.504-5.5zm0 2a3.486 3.486 0 013.504 3.5c0 1.944-1.556 3.5-3.504 3.5a3.488 3.488 0 01-3.506-3.5C3.002 4.555 4.56 3 6.508 3z" overflow="visible"/><path d="M10 8.99a1 1 0 00-.695 1.717l4.004 4a1 1 0 101.414-1.414l-4.004-4A1 1 0 0010 8.99z" overflow="visible"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-notify" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M7.942 1.948c-2.209 0-3.33 1.5-4 4l-1 5c-.108.542-.447 1-1 1v1h12v-1c-.552 0-.891-.458-1-1l-1-5c-.53-2.5-1.79-4-4-4zm.176 12a1.5 1.5 0 001.412 1 1.5 1.5 0 001.412-1z"/></g></svg>
+</div>
 <h1 id="classes"><a name="nfo-classes"></a>Classes<a class="md-anchor" href="#classes" title="Permanent link"></a></h1>
 <h2 id="application"><a name="nfo:Application"></a>Application<a class="md-anchor" href="#application" title="Permanent link"></a></h2>
 <p>An&nbsp;application</p>
 <h4 id="class-hierarchy"><a name="nfo:Application.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -166,6 +176,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A compressed file. May contain other files or folder&nbsp;inside.</p>
 <h4 id="class-hierarchy_1"><a name="nfo:Archive.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_1" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -251,6 +262,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A file entity inside an&nbsp;archive.</p>
 <h4 id="class-hierarchy_2"><a name="nfo:ArchiveItem.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_2" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -350,6 +362,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A file attached to another data object. Many data formats allow for attachments: emails, vcards, ical events, id3 and&nbsp;exif&#8230;</p>
 <h4 id="class-hierarchy_3"><a name="nfo:Attachment.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_3" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -428,9 +441,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </div>
 <h2 id="audio"><a name="nfo:Audio"></a>Audio<a class="md-anchor" href="#audio" title="Permanent link"></a></h2>
 <p>A file containing audio&nbsp;content</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_4"><a name="nfo:Audio.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_4" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -547,7 +561,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:bitsPerSample"></a>bitsPerSample</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nfo-ontology.html#nfo:bitDepth"><img alt="This property extends nfo:bitDepth" src="icon-superproperty.svg" title="This property extends nfo:bitDepth" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:bitDepth' xlink:title='This property extends nfo:bitDepth'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Amount of bits in each audio sample.</td>
 </tr>
 <tr>
@@ -559,7 +573,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:frontChannels"></a>frontChannels</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nfo-ontology.html#nfo:channels"><img alt="This property extends nfo:channels" src="icon-superproperty.svg" title="This property extends nfo:channels" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:channels' xlink:title='This property extends nfo:channels'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Number of front channels.</td>
 </tr>
 <tr>
@@ -571,7 +585,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:lfeChannels"></a>lfeChannels</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nfo-ontology.html#nfo:channels"><img alt="This property extends nfo:channels" src="icon-superproperty.svg" title="This property extends nfo:channels" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:channels' xlink:title='This property extends nfo:channels'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Number of Low Frequency Expansion (subwoofer) channels.</td>
 </tr>
 <tr>
@@ -583,13 +597,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:rearChannels"></a>rearChannels</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nfo-ontology.html#nfo:channels"><img alt="This property extends nfo:channels" src="icon-superproperty.svg" title="This property extends nfo:channels" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:channels' xlink:title='This property extends nfo:channels'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Number of rear channels.</td>
 </tr>
 <tr>
 <td><a name="nfo:sampleCount"></a>sampleCount</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nfo-ontology.html#nfo:count"><img alt="This property extends nfo:count" src="icon-superproperty.svg" title="This property extends nfo:count" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:count' xlink:title='This property extends nfo:count'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The amount of samples in an audio clip.</td>
 </tr>
 <tr>
@@ -601,16 +615,17 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:sideChannels"></a>sideChannels</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nfo-ontology.html#nfo:channels"><img alt="This property extends nfo:channels" src="icon-superproperty.svg" title="This property extends nfo:channels" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:channels' xlink:title='This property extends nfo:channels'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Number of side channels</td>
 </tr>
 </tbody>
 </table>
 <h2 id="bookmark"><a name="nfo:Bookmark"></a>Bookmark<a class="md-anchor" href="#bookmark" title="Permanent link"></a></h2>
 <p>A bookmark of a webbrowser. Use nie:title for the name/label, nie:contentCreated to represent the date when the user added the bookmark, and nie:contentLastModified for modifications. nfo:bookmarks to store the&nbsp;link.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_5"><a name="nfo:Bookmark.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_5" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -740,7 +755,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:bookmarks"></a>bookmarks</td>
 <td><a href="nie-ontology.html#nie:DataObject">DataObject</a></td>
-<td><a href="nie-ontology.html#nie:links"><img alt="This property extends nie:links" src="icon-superproperty.svg" title="This property extends nie:links" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:links' xlink:title='This property extends nie:links'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The address of the linked object. Usually a web <span class="caps">URL</span>.</td>
 </tr>
 <tr>
@@ -771,9 +786,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="bookmarkfolder"><a name="nfo:BookmarkFolder"></a>BookmarkFolder<a class="md-anchor" href="#bookmarkfolder" title="Permanent link"></a></h2>
 <p>A folder with bookmarks of a webbrowser. Use nfo:containsBookmark to relate Bookmarks. Folders can contain subfolders, use containsBookmarkFolder to relate&nbsp;them.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_6"><a name="nfo:BookmarkFolder.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_6" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -894,13 +910,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:containsBookmark"></a>containsBookmark</td>
 <td><a href="nfo-ontology.html#nfo:Bookmark">Bookmark</a></td>
-<td><a href="nie-ontology.html#nie:hasLogicalPart"><img alt="This property extends nie:hasLogicalPart" src="icon-superproperty.svg" title="This property extends nie:hasLogicalPart" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:hasLogicalPart' xlink:title='This property extends nie:hasLogicalPart'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>The folder contains a bookmark.</td>
 </tr>
 <tr>
 <td><a name="nfo:containsBookmarkFolder"></a>containsBookmarkFolder</td>
 <td><a href="nfo-ontology.html#nfo:BookmarkFolder">BookmarkFolder</a></td>
-<td><a href="nie-ontology.html#nie:hasLogicalPart"><img alt="This property extends nie:hasLogicalPart" src="icon-superproperty.svg" title="This property extends nie:hasLogicalPart" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:hasLogicalPart' xlink:title='This property extends nie:hasLogicalPart'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>The folder contains a bookmark folder.</td>
 </tr>
 </tbody>
@@ -909,6 +925,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Type of compression. Instances of this class represent the limited set of values allowed for the nfo:compressionType&nbsp;property.</p>
 <h4 id="class-hierarchy_7"><a name="nfo:CompressionType.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_7" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -992,6 +1009,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A&nbsp;Cursor.</p>
 <h4 id="class-hierarchy_8"><a name="nfo:Cursor.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_8" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1098,9 +1116,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </div>
 <h2 id="datacontainer"><a name="nfo:DataContainer"></a>DataContainer<a class="md-anchor" href="#datacontainer" title="Permanent link"></a></h2>
 <p>A superclass for all entities, whose primary purpose is to serve as containers for other data object. They usually don&#8217;t have any &#8216;meaning&#8217; by themselves. Examples include folders, archives and optical disc&nbsp;images.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_9"><a name="nfo:DataContainer.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_9" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1287,6 +1306,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A file entity that has been deleted from the original source. Usually such entities are stored within various kinds of &#8216;Trash&#8217; or &#8216;Recycle Bin&#8217;&nbsp;folders.</p>
 <h4 id="class-hierarchy_10"><a name="nfo:DeletedResource.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_10" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1376,9 +1396,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="document"><a name="nfo:Document"></a>Document<a class="md-anchor" href="#document" title="Permanent link"></a></h2>
 <p>A generic document. A common superclass for all documents on the&nbsp;desktop.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_11"><a name="nfo:Document.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_11" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1525,7 +1546,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:tableOfContents"></a>tableOfContents</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Section titles and figure descriptions of the document.</td>
 </tr>
 </tbody>
@@ -1534,6 +1555,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Books which can be electronically&nbsp;viewed</p>
 <h4 id="class-hierarchy_12"><a name="nfo:EBook.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_12" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1628,6 +1650,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A file embedded in another data object. There are many ways in which a file may be embedded in another one. Use this class directly only in cases if none of the subclasses gives a better description of your&nbsp;case.</p>
 <h4 id="class-hierarchy_13"><a name="nfo:EmbeddedFileDataObject.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_13" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1741,6 +1764,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>The equipment used to create&nbsp;media</p>
 <h4 id="class-hierarchy_14"><a name="nfo:Equipment.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_14" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1869,6 +1893,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>An executable&nbsp;file.</p>
 <h4 id="class-hierarchy_15"><a name="nfo:Executable.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_15" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1919,9 +1944,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </div>
 <h2 id="filedataobject"><a name="nfo:FileDataObject"></a>FileDataObject<a class="md-anchor" href="#filedataobject" title="Permanent link"></a></h2>
 <p>A resource containing a finite sequence of bytes with arbitrary information, that is available to a computer program and is usually based on some kind of durable storage. A file is durable in the sense that it remains available for programs to use after the current program has&nbsp;finished.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_16"><a name="nfo:FileDataObject.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_16" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2115,25 +2141,25 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:fileCreated"></a>fileCreated</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="nie-ontology.html#nie:created"><img alt="This property extends nie:created" src="icon-superproperty.svg" title="This property extends nie:created" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:created' xlink:title='This property extends nie:created'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>File creation date</td>
 </tr>
 <tr>
 <td><a name="nfo:fileLastAccessed"></a>fileLastAccessed</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="dc-ontology.html#dc:date"><img alt="This property extends dc:date" src="icon-superproperty.svg" title="This property extends dc:date" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:date' xlink:title='This property extends dc:date'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Time when the file was last accessed.</td>
 </tr>
 <tr>
 <td><a name="nfo:fileLastModified"></a>fileLastModified</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="dc-ontology.html#dc:date"><img alt="This property extends dc:date" src="icon-superproperty.svg" title="This property extends dc:date" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:date' xlink:title='This property extends dc:date'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>last modification date</td>
 </tr>
 <tr>
 <td><a name="nfo:fileName"></a>fileName</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Name of the file, together with the extension</td>
 </tr>
 <tr>
@@ -2145,7 +2171,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:fileSize"></a>fileSize</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nie-ontology.html#nie:byteSize"><img alt="This property extends nie:byteSize" src="icon-superproperty.svg" title="This property extends nie:byteSize" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:byteSize' xlink:title='This property extends nie:byteSize'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The size of the file in bytes. For compressed files it means the size of the packed file, not of the contents. For folders it means the aggregated size of all contained files and folders</td>
 </tr>
 <tr>
@@ -2172,6 +2198,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A fingerprint of the file, generated by some hashing&nbsp;function.</p>
 <h4 id="class-hierarchy_17"><a name="nfo:FileHash.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_17" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2280,6 +2307,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A filesystem. Examples of filesystems include hard disk partitions, removable media, but also images thereof stored in&nbsp;files.</p>
 <h4 id="class-hierarchy_18"><a name="nfo:Filesystem.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_18" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2360,6 +2388,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>An image of a filesystem. Instances of this class may include <span class="caps">CD</span> images, <span class="caps">DVD</span> images or hard disk partition images created by various pieces of software (e.g. Norton&nbsp;Ghost)</p>
 <h4 id="class-hierarchy_19"><a name="nfo:FilesystemImage.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_19" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2440,6 +2469,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A folder/directory. Examples of folders include folders on a filesystem and message folders in a&nbsp;mailbox.</p>
 <h4 id="class-hierarchy_20"><a name="nfo:Folder.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_20" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2520,6 +2550,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A&nbsp;font.</p>
 <h4 id="class-hierarchy_21"><a name="nfo:Font.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_21" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2627,13 +2658,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:fontFamily"></a>fontFamily</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>The name of the font family.</td>
 </tr>
 <tr>
 <td><a name="nfo:foundry"></a>foundry</td>
 <td><a href="nco-ontology.html#nco:Contact">Contact</a></td>
-<td><a href="nco-ontology.html#nco:creator"><img alt="This property extends nco:creator" src="icon-superproperty.svg" title="This property extends nco:creator" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:creator' xlink:title='This property extends nco:creator'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The foundry, the organization that created the font.</td>
 </tr>
 </tbody>
@@ -2642,6 +2673,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A game image. This is a Tracker&nbsp;extension</p>
 <h4 id="class-hierarchy_22"><a name="nfo:GameImage.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_22" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2722,6 +2754,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A partition on a hard&nbsp;disk</p>
 <h4 id="class-hierarchy_23"><a name="nfo:HardDiskPartition.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_23" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2774,6 +2807,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>User guides and similar to assist the&nbsp;user</p>
 <h4 id="class-hierarchy_24"><a name="nfo:HelpDocument.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_24" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2840,6 +2874,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A <span class="caps">HTML</span> document, may contain links to other&nbsp;files.</p>
 <h4 id="class-hierarchy_25"><a name="nfo:HtmlDocument.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_25" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2934,6 +2969,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>An Icon (regardless of whether it&#8217;s a raster or a vector icon. A resource representing an icon could have two types (Icon and Raster, or Icon and Vector) if&nbsp;required.</p>
 <h4 id="class-hierarchy_26"><a name="nfo:Icon.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_26" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3026,9 +3062,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </div>
 <h2 id="image"><a name="nfo:Image"></a>Image<a class="md-anchor" href="#image" title="Permanent link"></a></h2>
 <p>A file containing an&nbsp;image.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_27"><a name="nfo:Image.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_27" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3365,13 +3402,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:depicts"></a>depicts</td>
 <td><a href="rdfs-ontology.html#rdfs:Resource">Resource</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Relates an image to the information elements it depicts.</td>
 </tr>
 <tr>
 <td><a name="nfo:hasRegionOfInterest"></a>hasRegionOfInterest</td>
 <td><a href="nfo-ontology.html#nfo:RegionOfInterest">RegionOfInterest</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Link an element with a defined region</td>
 </tr>
 <tr>
@@ -3398,6 +3435,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A image&nbsp;category</p>
 <h4 id="class-hierarchy_28"><a name="nfo:ImageCategory.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_28" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3469,6 +3507,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A piece of media content. This class may be used to express complex media containers with many streams of various media content (both aural and&nbsp;visual).</p>
 <h4 id="class-hierarchy_29"><a name="nfo:Media.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_29" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3779,13 +3818,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:genre"></a>genre</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Genre of media</td>
 </tr>
 <tr>
 <td><a name="nfo:hasMediaStream"></a>hasMediaStream</td>
 <td><a href="nie-ontology.html#nie:DataObject">DataObject</a></td>
-<td><a href="nie-ontology.html#nie:hasPart"><img alt="This property extends nie:hasPart" src="icon-superproperty.svg" title="This property extends nie:hasPart" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:hasPart' xlink:title='This property extends nie:hasPart'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Connects a media container with a single media stream contained within.</td>
 </tr>
 <tr>
@@ -3797,13 +3836,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:alternativeMedia"></a>alternativeMedia</td>
 <td><a href="nfo-ontology.html#nfo:Media">Media</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Link between to different version of the same media. This is used for instances in uPnp where the server can provide the same video in different resolutions and codecs</td>
 </tr>
 <tr>
 <td><a name="nmm:artwork"></a>artwork</td>
 <td><a href="nfo-ontology.html#nfo:Image">Image</a></td>
-<td><a href="nfo-ontology.html#nfo:depiction"><img alt="This property extends nfo:depiction" src="icon-superproperty.svg" title="This property extends nfo:depiction" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:depiction' xlink:title='This property extends nfo:depiction'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Associated Artwork</td>
 </tr>
 <tr>
@@ -3821,7 +3860,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:genre"></a>genre</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
@@ -3842,6 +3881,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A single node in the list of media files contained within an MediaList instance. This class is intended to provide a type all those links have. In valid <span class="caps">NRL</span> untyped resources cannot be linked. There are no properties defined for this class but the application may expect rdf:first and rdf:last links. The former points to the DataObject instance, interpreted as Media the latter points at another MediaFileListEntr. At the end of the list there is a link to&nbsp;rdf:nil.</p>
 <h4 id="class-hierarchy_30"><a name="nfo:MediaFileListEntry.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_30" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3950,6 +3990,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A file containing a list of media files.e.g. a&nbsp;playlist</p>
 <h4 id="class-hierarchy_31"><a name="nfo:MediaList.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_31" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4127,7 +4168,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:hasMediaFileListEntry"></a>hasMediaFileListEntry</td>
 <td><a href="nfo-ontology.html#nfo:MediaFileListEntry">MediaFileListEntry</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>This property is intended to point to an <span class="caps">RDF</span> list of MediaFiles.</td>
 </tr>
 <tr>
@@ -4139,7 +4180,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:mediaListEntry"></a>mediaListEntry</td>
 <td><a href="nie-ontology.html#nie:InformationElement">InformationElement</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A certain item belongs to a media list. This can reflect that a song is in a playlist, an image or video in an Album</td>
 </tr>
 </tbody>
@@ -4148,6 +4189,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A stream of multimedia content, usually contained within a media container such as a movie (containing both audio and video) or a <span class="caps">DVD</span> (possibly containing many streams of audio and video). Most common interpretations for such a DataObject include Audio and&nbsp;Video.</p>
 <h4 id="class-hierarchy_32"><a name="nfo:MediaStream.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_32" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4273,6 +4315,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A MindMap, created by a mind-mapping utility. Examples might include FreeMind or mind&nbsp;mapper.</p>
 <h4 id="class-hierarchy_33"><a name="nfo:MindMap.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_33" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4339,6 +4382,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Usually small document with snippets, reminders or frequenly used&nbsp;content.</p>
 <h4 id="class-hierarchy_34"><a name="nfo:Note.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_34" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4405,6 +4449,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>An&nbsp;OperatingSystem</p>
 <h4 id="class-hierarchy_35"><a name="nfo:OperatingSystem.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_35" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4485,6 +4530,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Orientation&nbsp;enum</p>
 <h4 id="class-hierarchy_36"><a name="nfo:Orientation.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_36" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4580,6 +4626,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A file containing a text document, that is unambiguously divided into pages. Examples might include <span class="caps">PDF</span>, <span class="caps">DOC</span>, <span class="caps">PS</span>&#8217;, <span class="caps">DVI</span>&nbsp;etc.</p>
 <h4 id="class-hierarchy_37"><a name="nfo:PaginatedTextDocument.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_37" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4693,6 +4740,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A file containing plain text (<span class="caps">ASCII</span>, Unicode or other encodings). Examples may include <span class="caps">TXT</span>, <span class="caps">HTML</span>, <span class="caps">XML</span>, program source code&nbsp;etc.</p>
 <h4 id="class-hierarchy_38"><a name="nfo:PlainTextDocument.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_38" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4815,6 +4863,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A Presentation made by some presentation software (Corel Presentations, OpenOffice Impress, <span class="caps">MS</span> Powerpoint&nbsp;etc.)</p>
 <h4 id="class-hierarchy_39"><a name="nfo:Presentation.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_39" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4881,6 +4930,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A raster&nbsp;image.</p>
 <h4 id="class-hierarchy_40"><a name="nfo:RasterImage.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_40" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4989,6 +5039,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Area on an image with relevant content. Following the spec in&nbsp;http://www.metadataworkinggroup.org</p>
 <h4 id="class-hierarchy_41"><a name="nfo:RegionOfInterest.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_41" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5179,6 +5230,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Content in the area. There is a predefined set of contents in the spec:&nbsp;http://www.metadataworkinggroup.org</p>
 <h4 id="class-hierarchy_42"><a name="nfo:RegionOfInterestContent.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_42" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5285,6 +5337,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A file data object stored at a remote location. Don&#8217;t confuse this class with a RemotePortAddress. This one applies to a particular resource, RemotePortAddress applies to an address, that can have various&nbsp;interpretations.</p>
 <h4 id="class-hierarchy_43"><a name="nfo:RemoteDataObject.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_43" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5396,6 +5449,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>An address specifying a remote host and port. Such an address can be interpreted in many ways (examples of such interpretations include mailboxes, websites, remote calendars or filesystems), depending on an interpretation, various kinds of data may be extracted from such an&nbsp;address.</p>
 <h4 id="class-hierarchy_44"><a name="nfo:RemotePortAddress.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_44" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5448,6 +5502,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A piece of software. Examples may include applications and the operating system. This interpretation most commonly applies to&nbsp;SoftwareItems.</p>
 <h4 id="class-hierarchy_45"><a name="nfo:Software.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_45" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5648,9 +5703,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="softwareapplication"><a name="nfo:SoftwareApplication"></a>SoftwareApplication<a class="md-anchor" href="#softwareapplication" title="Permanent link"></a></h2>
 <p>An&nbsp;application</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_46"><a name="nfo:SoftwareApplication.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_46" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5731,6 +5787,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A software&nbsp;category</p>
 <h4 id="class-hierarchy_47"><a name="nfo:SoftwareCategory.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_47" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5866,6 +5923,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A DataObject representing a piece of software. Examples of interpretations of a SoftwareItem include an Application and an&nbsp;OperatingSystem.</p>
 <h4 id="class-hierarchy_48"><a name="nfo:SoftwareItem.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_48" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5918,6 +5976,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A service published by a piece of software, either by an operating system or an application. Examples of such services may include calendar, addresbook and mailbox managed by a <span class="caps">PIM</span> application. This category is introduced to distinguish between data available directly from the applications (Via some Interprocess Communication Mechanisms) and data available from files on a disk. In either case both DataObjects would receive a similar interpretation (e.g. a Mailbox) and wouldn&#8217;t differ on the content&nbsp;level.</p>
 <h4 id="class-hierarchy_49"><a name="nfo:SoftwareService.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_49" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -5970,6 +6029,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Code in a compilable or interpreted programming&nbsp;language.</p>
 <h4 id="class-hierarchy_50"><a name="nfo:SourceCode.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_50" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6107,6 +6167,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A spreadsheet, created by a spreadsheet application. Examples might include Gnumeric, OpenOffice Calc or <span class="caps">MS</span>&nbsp;Excel.</p>
 <h4 id="class-hierarchy_51"><a name="nfo:Spreadsheet.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_51" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6173,6 +6234,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A text&nbsp;document</p>
 <h4 id="class-hierarchy_52"><a name="nfo:TextDocument.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_52" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6298,6 +6360,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Represents a container for deleted files, a feature common in modern operating&nbsp;systems.</p>
 <h4 id="class-hierarchy_53"><a name="nfo:Trash.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_53" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6364,6 +6427,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A vector image (e.g. <span class="caps">SVG</span>)</p>
 <h4 id="class-hierarchy_54"><a name="nfo:VectorImage.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_54" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6456,9 +6520,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </div>
 <h2 id="video"><a name="nfo:Video"></a>Video<a class="md-anchor" href="#video" title="Permanent link"></a></h2>
 <p>A video&nbsp;file.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_55"><a name="nfo:Video.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_55" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6597,7 +6662,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:frameCount"></a>frameCount</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nfo-ontology.html#nfo:count"><img alt="This property extends nfo:count" src="icon-superproperty.svg" title="This property extends nfo:count" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:count' xlink:title='This property extends nfo:count'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The amount of frames in a video sequence.</td>
 </tr>
 <tr>
@@ -6612,6 +6677,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>File containing visual&nbsp;content.</p>
 <h4 id="class-hierarchy_56"><a name="nfo:Visual.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_56" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6750,7 +6816,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:colorDepth"></a>colorDepth</td>
 <td><a href="xsd-ontology.html#xsd:integer">integer</a></td>
-<td><a href="nfo-ontology.html#nfo:bitDepth"><img alt="This property extends nfo:bitDepth" src="icon-superproperty.svg" title="This property extends nfo:bitDepth" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:bitDepth' xlink:title='This property extends nfo:bitDepth'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Amount of bits used to express the color of each pixel.</td>
 </tr>
 <tr>
@@ -6787,9 +6853,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="webhistory"><a name="nfo:WebHistory"></a>WebHistory<a class="md-anchor" href="#webhistory" title="Permanent link"></a></h2>
 <p>A web history&nbsp;entry</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_57"><a name="nfo:WebHistory.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_57" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6867,6 +6934,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A website, usually a container for remote resources, that may be interpreted as HTMLDocuments, images or other types of&nbsp;content.</p>
 <h4 id="class-hierarchy_58"><a name="nfo:Website.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_58" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -6930,7 +6998,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:belongsToContainer"></a>belongsToContainer</td>
 <td><a href="nfo-ontology.html#nfo:DataContainer">DataContainer</a></td>
-<td><a href="nie-ontology.html#nie:isPartOf"><img alt="This property extends nie:isPartOf" src="icon-superproperty.svg" title="This property extends nie:isPartOf" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:isPartOf' xlink:title='This property extends nie:isPartOf'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Models the containment relations between Files and Folders (or CompressedFiles).</td>
 </tr>
 </tbody>
@@ -6976,7 +7044,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nfo:depiction"></a>depiction</td>
 <td><a href="nfo-ontology.html#nfo:Image">Image</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Relates an information element to an image which depicts said element.</td>
 </tr>
 </tbody>

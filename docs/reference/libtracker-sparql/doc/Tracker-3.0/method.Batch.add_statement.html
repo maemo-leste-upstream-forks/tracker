@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -133,12 +133,12 @@ SPDX-License-Identifier: GPL-2.1-or-later
       </h4>
 
       <div class="docblock c-decl">
-        <pre><code><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"></span>
-<span class="n">tracker_batch_add_statement</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">  </span><span class="n">TrackerBatch</span><span class="o">*</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">TrackerSparqlStatement</span><span class="o">*</span><span class="w"> </span><span class="n">stmt</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="p">...</span><span class="w"></span>
-<span class="p">)</span><span class="w"></span>
+        <pre><code><div class="highlight"><pre><span></span><span class="kt">void</span>
+<span class="n">tracker_batch_add_statement</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">TrackerBatch</span><span class="o">*</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TrackerSparqlStatement</span><span class="o">*</span><span class="w"> </span><span class="n">stmt</span><span class="p">,</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="p">)</span>
 </pre></div>
 </code></pre>
       </div>
@@ -161,9 +161,9 @@ variable&nbsp;arguments.</p>
 and value. The value C type must correspond to the given <a href="javascript:void(0)" data-namespace="GObject" data-link="alias.Type.html" class="external"><code>GType</code></a>. For example, for
 a statement that has a single <code>~name</code> parameter, it could be given a value for execution
 with the following&nbsp;code:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">tracker_batch_add_statement</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">stmt</span><span class="p">,</span><span class="w"></span>
-<span class="w">                             </span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">G_TYPE_STRING</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                             </span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">tracker_batch_add_statement</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">stmt</span><span class="p">,</span>
+<span class="w">                             </span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">G_TYPE_STRING</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span>
+<span class="w">                             </span><span class="nb">NULL</span><span class="p">);</span>
 </code></pre></div>
 
 <p>A <a href="class.SparqlStatement.html"><code>TrackerSparqlStatement</code></a> may be used on multiple <a href="method.Batch.add_statement.html"><code>tracker_batch_add_statement()</code></a>

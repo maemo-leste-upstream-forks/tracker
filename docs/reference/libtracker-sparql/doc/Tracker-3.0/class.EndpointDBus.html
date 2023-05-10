@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -158,17 +158,17 @@ accessible to other processes via&nbsp;DBus.</p>
 a <a href="class.SparqlConnection.html"><code>TrackerSparqlConnection</code></a> so its <span class="caps">RDF</span> data is accessible to other
 processes through the given <a href="javascript:void(0)" data-namespace="Gio" data-link="class.DBusConnection.html" class="external"><code>GDBusConnection</code></a>.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1">// This process already has org.example.Endpoint bus name</span>
-<span class="n">endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracker_endpoint_dbus_new</span><span class="w"> </span><span class="p">(</span><span class="n">sparql_connection</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                      </span><span class="n">dbus_connection</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                      </span><span class="nb">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                      </span><span class="nb">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                      </span><span class="o">&amp;</span><span class="n">error</span><span class="p">);</span><span class="w"></span>
+<span class="n">endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracker_endpoint_dbus_new</span><span class="w"> </span><span class="p">(</span><span class="n">sparql_connection</span><span class="p">,</span>
+<span class="w">                                      </span><span class="n">dbus_connection</span><span class="p">,</span>
+<span class="w">                                      </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">                                      </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">                                      </span><span class="o">&amp;</span><span class="n">error</span><span class="p">);</span>
 
 <span class="c1">// From another process</span>
-<span class="n">connection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracker_sparql_connection_bus_new</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;org.example.Endpoint&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                                </span><span class="nb">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                                </span><span class="n">dbus_connection</span><span class="p">,</span><span class="w"></span>
-<span class="w">                                                </span><span class="o">&amp;</span><span class="n">error</span><span class="p">);</span><span class="w"></span>
+<span class="n">connection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracker_sparql_connection_bus_new</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;org.example.Endpoint&quot;</span><span class="p">,</span>
+<span class="w">                                                </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">                                                </span><span class="n">dbus_connection</span><span class="p">,</span>
+<span class="w">                                                </span><span class="o">&amp;</span><span class="n">error</span><span class="p">);</span>
 </code></pre></div>
 
 <p>The <code>TrackerEndpointDBus</code> will manage a DBus object at the given path

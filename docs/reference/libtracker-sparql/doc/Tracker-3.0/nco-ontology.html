@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -88,13 +88,22 @@ SPDX-License-Identifier: GPL-2.1-or-later
   <section>
     <div class="docblock">
     <p>All about contacts. Rough equivalent of the <span class="caps">VCARD</span>&nbsp;standard.</p>
-<style>img { display: inline-block } table { border-collapse: collapse; } tr { border: none !important; } tr:hover { background: var(--box-bg); } td:not(:last-child), th:not(:last-child) { border: none; border-right: solid 1px #888; }</style>
+<style>svg .icon { fill: var(--primary) }table { border-collapse: collapse; } tr { border: none !important; } tr:hover { background: var(--box-bg); } td:not(:last-child), th:not(:last-child) { border: none; border-right: solid 1px #888; }</style>
 
-<div class="codehilite"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">nco:</span><span class="w"> </span><span class="nv">&lt;http://tracker.api.gnome.org/ontology/v3/nco#&gt;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">nco:</span><span class="w"> </span><span class="nv">&lt;http://tracker.api.gnome.org/ontology/v3/nco#&gt;</span>
 </code></pre></div>
 
 <p>The following classes are&nbsp;defined:</p>
 <p><a href="#nco:Affiliation">Affiliation</a>, <a href="#nco:AuthorizationStatus">AuthorizationStatus</a>, <a href="#nco:BbsNumber">BbsNumber</a>, <a href="#nco:CarPhoneNumber">CarPhoneNumber</a>, <a href="#nco:CellPhoneNumber">CellPhoneNumber</a>, <a href="#nco:Contact">Contact</a>, <a href="#nco:ContactGroup">ContactGroup</a>, <a href="#nco:ContactList">ContactList</a>, <a href="#nco:ContactListDataObject">ContactListDataObject</a>, <a href="#nco:ContactMedium">ContactMedium</a>, <a href="#nco:DomesticDeliveryAddress">DomesticDeliveryAddress</a>, <a href="#nco:EmailAddress">EmailAddress</a>, <a href="#nco:FaxNumber">FaxNumber</a>, <a href="#nco:Gender">Gender</a>, <a href="#nco:IMAccount">IMAccount</a>, <a href="#nco:IMAddress">IMAddress</a>, <a href="#nco:IMCapability">IMCapability</a>, <a href="#nco:InternationalDeliveryAddress">InternationalDeliveryAddress</a>, <a href="#nco:IsdnNumber">IsdnNumber</a>, <a href="#nco:MessagingNumber">MessagingNumber</a>, <a href="#nco:ModemNumber">ModemNumber</a>, <a href="#nco:OrganizationContact">OrganizationContact</a>, <a href="#nco:PagerNumber">PagerNumber</a>, <a href="#nco:ParcelDeliveryAddress">ParcelDeliveryAddress</a>, <a href="#nco:PcsNumber">PcsNumber</a>, <a href="#nco:PersonContact">PersonContact</a>, <a href="#nco:PhoneNumber">PhoneNumber</a>, <a href="#nco:PostalAddress">PostalAddress</a>, <a href="#nco:PresenceStatus">PresenceStatus</a>, <a href="#nco:Role">Role</a>, <a href="#nco:VideoTelephoneNumber">VideoTelephoneNumber</a>, <a href="#nco:VoicePhoneNumber">VoicePhoneNumber</a></p>
+<div style='display:none'>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" version="1.1" height="16"><g id="icon-deprecated" class="icon"><rect width="16" height="16" fill="#00000000"/><g transform="translate(-39.9997,39.98872)"><path d="m 47.90615,-39.89497 c -0.5255,-0.0286 -1.03823,0.28305 -1.4375,0.96875 l -6.25,11.59375 c -0.53347,0.96339 0.04822,2.34375 1.09375,2.34375 h 13.15625 c 0.98172,0 1.90311,-1.15939 1.21875,-2.34375 l -6.3125,-11.53125 c -0.39872,-0.64617 -0.94325,-1.00262 -1.46875,-1.03125 z m 0.0625,3.9375 c 0.54448,-0.0172 1.04849,0.48677 1.03125,1.03125 v 3.9375 c 0.007,0.52831 -0.47163,1 -1,1 -0.52836,0 -1.00747,-0.47169 -1,-1 v -3.9375 c -0.008,-0.4666 0.3541,-0.91253 0.8125,-1 0.0511,-0.0145 0.10345,-0.02495 0.15625,-0.03125 z m 0.03125,6.96875 c 0.552285,0 1,0.447715 1,1 0,0.552285 -0.447715,1 -1,1 -0.552285,0 -1,-0.447715 -1,-1 0,-0.552285 0.447715,-1 1,-1 z" /></g></g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-superproperty" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M12 9h-1c-.258 0-.53-.13-.72-.313L9 7.407V16H7V7.406L5.717 8.687c-.19.183-.462.313-.719.313H4V8c0-.31.09-.552.281-.75L8 3.594l3.718 3.656c.19.198.281.44.281.75z" overflow="visible"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" version="1.1" height="16"> <g id="icon-multivalue" class="icon"><rect width="16" height="16" fill="#00000000"/><g transform="translate(-320.98275,227.01492)"><path d="m 324.17969,-227.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -224 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -224 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-215.00781 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 v 1.83008 h 2 v -1.83008 c 0,-0.13089 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 v 1.78711 h 2 v -1.78711 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-223.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -220 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -220 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-219.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -216 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -216 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /></g></g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-fulltextindexed" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M6.508 1C3.48 1 1.002 3.473 1.002 6.5c0 3.026 2.478 5.5 5.506 5.5s5.504-2.474 5.504-5.5c0-3.027-2.476-5.5-5.504-5.5zm0 2a3.486 3.486 0 013.504 3.5c0 1.944-1.556 3.5-3.504 3.5a3.488 3.488 0 01-3.506-3.5C3.002 4.555 4.56 3 6.508 3z" overflow="visible"/><path d="M10 8.99a1 1 0 00-.695 1.717l4.004 4a1 1 0 101.414-1.414l-4.004-4A1 1 0 0010 8.99z" overflow="visible"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-notify" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M7.942 1.948c-2.209 0-3.33 1.5-4 4l-1 5c-.108.542-.447 1-1 1v1h12v-1c-.552 0-.891-.458-1-1l-1-5c-.53-2.5-1.79-4-4-4zm.176 12a1.5 1.5 0 001.412 1 1.5 1.5 0 001.412-1z"/></g></svg>
+</div>
 <h1 id="overview">Overview<a class="md-anchor" href="#overview" title="Permanent link"></a></h1>
 <h2 id="introduction">Introduction<a class="md-anchor" href="#introduction" title="Permanent link"></a></h2>
 <p>This is the ontology modelling contacts and postal addresses. It also extends the original nepomuk adding the Instant Messaging account details, because an &#8216;identity&#8217; in an <span class="caps">IM</span> account can be consider also a&nbsp;contact.</p>
@@ -103,6 +112,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Aggregates three properties defined in <span class="caps">RFC2426</span>. Originally all three were attached directly to a person. One person could have only one title and one role within one organization. This class is intended to lift this&nbsp;limitation.</p>
 <h4 id="class-hierarchy"><a name="nco:Affiliation.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -232,7 +242,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:department"></a>department</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Department. The organizational unit within the organization.</td>
 </tr>
 <tr>
@@ -244,13 +254,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:role"></a>role</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
 <td><a name="nco:title"></a>title</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td></td>
 </tr>
 </tbody>
@@ -259,6 +269,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Predefined instances to indicate the auth status: yes, no,&nbsp;requested</p>
 <h4 id="class-hierarchy_1"><a name="nco:AuthorizationStatus.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_1" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -362,6 +373,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A Bulletin Board System (<span class="caps">BBS</span>) phone number. Inspired by the (<span class="caps">TYPE</span>=bbsl) parameter of the <span class="caps">TEL</span> property as defined in <span class="caps">RFC</span> 2426 sec&nbsp;3.3.1.</p>
 <h4 id="class-hierarchy_2"><a name="nco:BbsNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_2" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -442,6 +454,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A car phone number. Inspired by the (<span class="caps">TYPE</span>=car) parameter of the <span class="caps">TEL</span> property as defined in <span class="caps">RFC</span> 2426 sec&nbsp;3.3.1.</p>
 <h4 id="class-hierarchy_3"><a name="nco:CarPhoneNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_3" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -522,6 +535,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A cellular phone number. Inspired by the (<span class="caps">TYPE</span>=cell) parameter of the <span class="caps">TEL</span> property as defined in <span class="caps">RFC</span> 2426 sec  3.3.1. Usually a cellular phone can accept voice calls as well as textual messages (<span class="caps">SMS</span>), therefore this class has two&nbsp;superclasses.</p>
 <h4 id="class-hierarchy_4"><a name="nco:CellPhoneNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_4" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -621,6 +635,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A Contact. A piece of data that can provide means to identify or communicate with an&nbsp;entity.</p>
 <h4 id="class-hierarchy_5"><a name="nco:Contact.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_5" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -972,13 +987,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:belongsToGroup"></a>belongsToGroup</td>
 <td><a href="nco-ontology.html#nco:ContactGroup">ContactGroup</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Links a Contact with a ContactGroup it belongs to.</td>
 </tr>
 <tr>
 <td><a name="nco:birthDate"></a>birthDate</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="dc-ontology.html#dc:date"><img alt="This property extends dc:date" src="icon-superproperty.svg" title="This property extends dc:date" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:date' xlink:title='This property extends dc:date'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Birth date of the object represented by this Contact. An equivalent of the &#8216;<span class="caps">BDAY</span>&#8217; property as defined in <span class="caps">RFC</span> 2426 Sec. 3.1.5.</td>
 </tr>
 <tr>
@@ -990,13 +1005,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:contactUID"></a>contactUID</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nie-ontology.html#nie:identifier"><img alt="This property extends nie:identifier" src="icon-superproperty.svg" title="This property extends nie:identifier" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:identifier' xlink:title='This property extends nie:identifier'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>A value that represents a globally unique  identifier corresponding to the individual or resource associated with the Contact. An equivalent of the &#8216;<span class="caps">UID</span>&#8217; property defined in <span class="caps">RFC</span> 2426 Sec. 3.6.7</td>
 </tr>
 <tr>
 <td><a name="nco:fullname"></a>fullname</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:title"><img alt="This property extends dc:title" src="icon-superproperty.svg" title="This property extends dc:title" /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:title' xlink:title='This property extends dc:title'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>To specify the formatted text corresponding to the name of the object the Contact represents. An equivalent of the <span class="caps">FN</span> property as defined in <span class="caps">RFC</span> 2426 Sec. 3.1.1.</td>
 </tr>
 <tr>
@@ -1014,13 +1029,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:nickname"></a>nickname</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>A nickname of the Object represented by this Contact. This is an equivalen of the &#8216;<span class="caps">NICKNAME</span>&#8217; property as defined in <span class="caps">RFC</span> 2426 Sec. 3.1.3.</td>
 </tr>
 <tr>
 <td><a name="nco:note"></a>note</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>A note about the object represented by this Contact. An equivalent for the &#8216;<span class="caps">NOTE</span>&#8217; property defined in <span class="caps">RFC</span> 2426 Sec. 3.6.2</td>
 </tr>
 <tr>
@@ -1050,9 +1065,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </ul>
 <h2 id="contactgroup"><a name="nco:ContactGroup"></a>ContactGroup<a class="md-anchor" href="#contactgroup" title="Permanent link"></a></h2>
 <p>A group of Contacts. Could be used to express a group in an addressbook or on a contact list of an <span class="caps">IM</span> application. One contact can belong to many&nbsp;groups.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_6"><a name="nco:ContactGroup.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_6" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1160,16 +1176,17 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:contactGroupName"></a>contactGroupName</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:title"><img alt="This property extends dc:title" src="icon-superproperty.svg" title="This property extends dc:title" /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:title' xlink:title='This property extends dc:title'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>The name of the contact group. This property was <span class="caps">NOT</span> defined in the <span class="caps">VCARD</span> standard. See documentation of the &#8216;ContactGroup&#8217; class for details</td>
 </tr>
 </tbody>
 </table>
 <h2 id="contactlist"><a name="nco:ContactList"></a>ContactList<a class="md-anchor" href="#contactlist" title="Permanent link"></a></h2>
 <p>A contact list, this class represents an addressbook or a contact list of an <span class="caps">IM</span> application. Contacts inside a contact list can belong to contact&nbsp;groups.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_7"><a name="nco:ContactList.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_7" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1277,7 +1294,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:containsContact"></a>containsContact</td>
 <td><a href="nco-ontology.html#nco:ContactListDataObject">ContactListDataObject</a></td>
-<td><a href="nie-ontology.html#nie:hasPart"><img alt="This property extends nie:hasPart" src="icon-superproperty.svg" title="This property extends nie:hasPart" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:hasPart' xlink:title='This property extends nie:hasPart'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A property used to group contacts into contact groups. This property was <span class="caps">NOT</span> defined in the <span class="caps">VCARD</span> standard. See documentation for the &#8216;ContactList&#8217; class for details</td>
 </tr>
 </tbody>
@@ -1286,6 +1303,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>An entity occuring on a contact list (usually interpreted as an&nbsp;nco:Contact)</p>
 <h4 id="class-hierarchy_8"><a name="nco:ContactListDataObject.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_8" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1383,6 +1401,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A superclass for all contact media - ways to contact an entity represented by a Contact instance. Some of the subclasses of this class (the various kinds of telephone numbers and postal addresses) have been inspired by the values of the <span class="caps">TYPE</span> parameter of <span class="caps">ADR</span> and <span class="caps">TEL</span> properties defined in <span class="caps">RFC</span> 2426 sec. 3.2.1. and 3.3.1 respectively. Each value is represented by an appropriate subclass with two major exceptions <span class="caps">TYPE</span>=home and <span class="caps">TYPE</span>=work. They are to be expressed by the roles these contact media are attached to i.e. contact media with <span class="caps">TYPE</span>=home parameter are to be attached to the default role (nco:Contact or nco:PersonContact), whereas media with <span class="caps">TYPE</span>=work parameter should be attached to nco:Affiliation or&nbsp;nco:OrganizationContact.</p>
 <h4 id="class-hierarchy_9"><a name="nco:ContactMedium.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_9" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1541,6 +1560,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Domestic Delivery Addresse. Class inspired by <span class="caps">TYPE</span>=dom parameter of the <span class="caps">ADR</span> property defined in <span class="caps">RFC</span> 2426 sec.&nbsp;3.2.1</p>
 <h4 id="class-hierarchy_10"><a name="nco:DomesticDeliveryAddress.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_10" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1607,6 +1627,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>An email address. The recommended best practice is to use mailto: uris for instances of this&nbsp;class.</p>
 <h4 id="class-hierarchy_11"><a name="nco:EmailAddress.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_11" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1714,7 +1735,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:emailAddress"></a>emailAddress</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Email address</td>
 </tr>
 </tbody>
@@ -1723,6 +1744,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A fax number. Inspired by the (<span class="caps">TYPE</span>=fax) parameter of the <span class="caps">TEL</span> property as defined in <span class="caps">RFC</span> 2426 sec&nbsp;3.3.1.</p>
 <h4 id="class-hierarchy_12"><a name="nco:FaxNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_12" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1789,6 +1811,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Gender. Instances of this class may include male and&nbsp;female.</p>
 <h4 id="class-hierarchy_13"><a name="nco:Gender.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_13" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1877,9 +1900,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </ul>
 <h2 id="imaccount"><a name="nco:IMAccount"></a>IMAccount<a class="md-anchor" href="#imaccount" title="Permanent link"></a></h2>
 <p>An account in an Instant Messaging system. This refers to <span class="caps">IM</span> accounts of the user&nbsp;&#8216;me&#8217;.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_14"><a name="nco:IMAccount.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_14" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2000,7 +2024,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:hasIMContact"></a>hasIMContact</td>
 <td><a href="nco-ontology.html#nco:IMAddress">IMAddress</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Indicates that this Instant Messaging account has the specified Instant Messaging address in the contact list.</td>
 </tr>
 <tr>
@@ -2031,9 +2055,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="imaddress"><a name="nco:IMAddress"></a>IMAddress<a class="md-anchor" href="#imaddress" title="Permanent link"></a></h2>
 <p>An instant messaging address such as&nbsp;xmpp:foo@bar.com.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_15"><a name="nco:IMAddress.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_15" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2295,19 +2320,19 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:imCapability"></a>imCapability</td>
 <td><a href="nco-ontology.html#nco:IMCapability">IMCapability</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Capabilities of an <span class="caps">IM</span> Contact, what can we interact with him</td>
 </tr>
 <tr>
 <td><a name="nco:imID"></a>imID</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nao-ontology.html#nao:identifier"><img alt="This property extends nao:identifier" src="icon-superproperty.svg" title="This property extends nao:identifier" /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nao-ontology.html#nao:identifier' xlink:title='This property extends nao:identifier'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Identifier of the <span class="caps">IM</span> account. Examples of such identifier might include <span class="caps">ICQ</span> UINs, Jabber IDs, Skype names etc.</td>
 </tr>
 <tr>
 <td><a name="nco:imNickname"></a>imNickname</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>A nickname attached to a particular <span class="caps">IM</span> address.</td>
 </tr>
 <tr>
@@ -2340,6 +2365,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Features of a certain <span class="caps">IM</span> connection (depends on the IMAccount implementation used by the&nbsp;Contact)</p>
 <h4 id="class-hierarchy_16"><a name="nco:IMCapability.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_16" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2435,6 +2461,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>International Delivery Addresse. Class inspired by <span class="caps">TYPE</span>=intl parameter of the <span class="caps">ADR</span> property defined in <span class="caps">RFC</span> 2426 sec.&nbsp;3.2.1</p>
 <h4 id="class-hierarchy_17"><a name="nco:InternationalDeliveryAddress.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_17" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2501,6 +2528,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>An <span class="caps">ISDN</span> phone number. Inspired by the (<span class="caps">TYPE</span>=isdn) parameter of the <span class="caps">TEL</span> property as defined in <span class="caps">RFC</span> 2426 sec&nbsp;3.3.1.</p>
 <h4 id="class-hierarchy_18"><a name="nco:IsdnNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_18" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2581,6 +2609,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A number that can accept textual&nbsp;messages.</p>
 <h4 id="class-hierarchy_19"><a name="nco:MessagingNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_19" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2675,6 +2704,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A modem phone number. Inspired by the (<span class="caps">TYPE</span>=modem) parameter of the <span class="caps">TEL</span> property as defined in <span class="caps">RFC</span> 2426 sec&nbsp;3.3.1.</p>
 <h4 id="class-hierarchy_20"><a name="nco:ModemNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_20" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2755,6 +2785,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A Contact that denotes on&nbsp;Organization.</p>
 <h4 id="class-hierarchy_21"><a name="nco:OrganizationContact.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_21" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2926,6 +2957,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A pager phone number. Inspired by the (<span class="caps">TYPE</span>=pager) parameter of the <span class="caps">TEL</span> property as defined in <span class="caps">RFC</span> 2426 sec&nbsp;3.3.1.</p>
 <h4 id="class-hierarchy_22"><a name="nco:PagerNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_22" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3006,6 +3038,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Parcel Delivery Addresse. Class inspired by <span class="caps">TYPE</span>=parcel parameter of the <span class="caps">ADR</span> property defined in <span class="caps">RFC</span> 2426 sec.&nbsp;3.2.1</p>
 <h4 id="class-hierarchy_23"><a name="nco:ParcelDeliveryAddress.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_23" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3072,6 +3105,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Personal Communication Services Number. A class inspired by the <span class="caps">TYPE</span>=pcs parameter of the <span class="caps">TEL</span> property defined in <span class="caps">RFC</span> 2426 sec.&nbsp;3.3.1</p>
 <h4 id="class-hierarchy_24"><a name="nco:PcsNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_24" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3150,9 +3184,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </div>
 <h2 id="personcontact"><a name="nco:PersonContact"></a>PersonContact<a class="md-anchor" href="#personcontact" title="Permanent link"></a></h2>
 <p>A Contact that denotes a Person. A person can have multiple&nbsp;Affiliations.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_25"><a name="nco:PersonContact.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_25" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3321,7 +3356,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:hasAffiliation"></a>hasAffiliation</td>
 <td><a href="nco-ontology.html#nco:Affiliation">Affiliation</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Links a PersonContact with an Affiliation.</td>
 </tr>
 <tr>
@@ -3333,19 +3368,19 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:nameAdditional"></a>nameAdditional</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Additional given name of an object represented by this contact. See documentation for &#8216;nameFamily&#8217; property for details.</td>
 </tr>
 <tr>
 <td><a name="nco:nameFamily"></a>nameFamily</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>The family name of an Object represented by this Contact. These applies to people that have more than one given name. The &#8216;first&#8217; one is considered &#8216;the&#8217; given name (see nameGiven) property. All additional ones are considered &#8216;additional&#8217; names. The name inherited from parents is the &#8216;family name&#8217;. e.g. For Dr. John Phil Paul Stevenson Jr. <span class="caps">M.D. A.C.P.</span> we have contact with: honorificPrefix: &#8216;Dr.&#8217;, nameGiven: &#8216;John&#8217;, nameAdditional: &#8216;Phil&#8217;, nameAdditional: &#8216;Paul&#8217;, nameFamily: &#8216;Stevenson&#8217;, honorificSuffix: &#8216;Jr.&#8217;, honorificSuffix: &#8216;M.D.&#8217;, honorificSuffix: &#8216;<span class="caps">A.C.</span>P.&#8217;. These properties form an equivalent of the compound &#8216;N&#8217; property as defined in <span class="caps">RFC</span> 2426 Sec. 3.1.2</td>
 </tr>
 <tr>
 <td><a name="nco:nameGiven"></a>nameGiven</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>The given name for the object represented by this Contact. See documentation for &#8216;nameFamily&#8217; property for details.</td>
 </tr>
 <tr>
@@ -3371,6 +3406,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A telephone&nbsp;number.</p>
 <h4 id="class-hierarchy_26"><a name="nco:PhoneNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_26" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3543,6 +3579,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A postal address. A class aggregating the various parts of a value for the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426 Sec.&nbsp;3.2.1.</p>
 <h4 id="class-hierarchy_27"><a name="nco:PostalAddress.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_27" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3742,55 +3779,55 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:country"></a>country</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>A part of an address specifying the country. Inspired by the seventh part of the value of the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426, sec. 3.2.1</td>
 </tr>
 <tr>
 <td><a name="nco:county"></a>county</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Regional division between state and city. Not in <span class="caps">RFC</span> 2426 sec 3.2.1. Added for <span class="caps">API</span> compatibility</td>
 </tr>
 <tr>
 <td><a name="nco:district"></a>district</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Local division inside a city. Not in <span class="caps">RFC</span> 2426 sec 3.2.1. Added for <span class="caps">API</span> compatibility</td>
 </tr>
 <tr>
 <td><a name="nco:extendedAddress"></a>extendedAddress</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>An extended part of an address. This field might be used to express parts of an address that aren&#8217;t include in the name of the Contact but also aren&#8217;t part of the actual location. Usually the streed address and following fields are enough for a postal letter to arrive. Examples may include (&#8216;University of California Campus building 45&#8217;, &#8216;Sears Tower 34th floor&#8217; etc.) Inspired by the second part of the value of the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426, sec. 3.2.1</td>
 </tr>
 <tr>
 <td><a name="nco:locality"></a>locality</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Locality or City. Inspired by the fourth part of the value of the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426, sec. 3.2.1</td>
 </tr>
 <tr>
 <td><a name="nco:pobox"></a>pobox</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Post office box. This is the first part of the value of the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426, sec. 3.2.1</td>
 </tr>
 <tr>
 <td><a name="nco:postalcode"></a>postalcode</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Postal Code. Inspired by the sixth part of the value of the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426, sec. 3.2.1</td>
 </tr>
 <tr>
 <td><a name="nco:region"></a>region</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Region. Inspired by the fifth part of the value of the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426, sec. 3.2.1</td>
 </tr>
 <tr>
 <td><a name="nco:streetAddress"></a>streetAddress</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>The streed address. Inspired by the third part of the value of the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426, sec. 3.2.1</td>
 </tr>
 </tbody>
@@ -3799,6 +3836,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Predefined set of status level&nbsp;instances</p>
 <h4 id="class-hierarchy_28"><a name="nco:PresenceStatus.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_28" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3895,6 +3933,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A role played by a contact. Contacts that denote people, can have many roles (e.g. see the hasAffiliation property and Affiliation class). Contacts that denote Organizations or other Agents usually have one role.  Each role can introduce additional contact&nbsp;media.</p>
 <h4 id="class-hierarchy_29"><a name="nco:Role.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_29" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4201,49 +4240,49 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:blogUrl"></a>blogUrl</td>
 <td><a href="rdfs-ontology.html#rdfs:Resource">Resource</a></td>
-<td><a href="nco-ontology.html#nco:url"><img alt="This property extends nco:url" src="icon-superproperty.svg" title="This property extends nco:url" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:url' xlink:title='This property extends nco:url'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A Blog url.</td>
 </tr>
 <tr>
 <td><a name="nco:foafUrl"></a>foafUrl</td>
 <td><a href="rdfs-ontology.html#rdfs:Resource">Resource</a></td>
-<td><a href="nco-ontology.html#nco:url"><img alt="This property extends nco:url" src="icon-superproperty.svg" title="This property extends nco:url" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:url' xlink:title='This property extends nco:url'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The <span class="caps">URL</span> of the <span class="caps">FOAF</span> file.</td>
 </tr>
 <tr>
 <td><a name="nco:hasContactMedium"></a>hasContactMedium</td>
 <td><a href="nco-ontology.html#nco:ContactMedium">ContactMedium</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A superProperty for all properties linking a Contact to an instance of a contact medium.</td>
 </tr>
 <tr>
 <td><a name="nco:hasEmailAddress"></a>hasEmailAddress</td>
 <td><a href="nco-ontology.html#nco:EmailAddress">EmailAddress</a></td>
-<td><a href="nco-ontology.html#nco:hasContactMedium"><img alt="This property extends nco:hasContactMedium" src="icon-superproperty.svg" title="This property extends nco:hasContactMedium" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:hasContactMedium' xlink:title='This property extends nco:hasContactMedium'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>An address for electronic mail communication with the object specified by this contact. An equivalent of the &#8216;<span class="caps">EMAIL</span>&#8217; property as defined in <span class="caps">RFC</span> 2426 Sec. 3.3.1.</td>
 </tr>
 <tr>
 <td><a name="nco:hasIMAddress"></a>hasIMAddress</td>
 <td><a href="nco-ontology.html#nco:IMAddress">IMAddress</a></td>
-<td><a href="nco-ontology.html#nco:hasContactMedium"><img alt="This property extends nco:hasContactMedium" src="icon-superproperty.svg" title="This property extends nco:hasContactMedium" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:hasContactMedium' xlink:title='This property extends nco:hasContactMedium'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>An address for communication using instant messages with the object specified by this contact.</td>
 </tr>
 <tr>
 <td><a name="nco:hasPhoneNumber"></a>hasPhoneNumber</td>
 <td><a href="nco-ontology.html#nco:PhoneNumber">PhoneNumber</a></td>
-<td><a href="nco-ontology.html#nco:hasContactMedium"><img alt="This property extends nco:hasContactMedium" src="icon-superproperty.svg" title="This property extends nco:hasContactMedium" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:hasContactMedium' xlink:title='This property extends nco:hasContactMedium'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A number for telephony communication with the object represented by this Contact. An equivalent of the &#8216;<span class="caps">TEL</span>&#8217; property defined in <span class="caps">RFC</span> 2426 Sec. 3.3.1</td>
 </tr>
 <tr>
 <td><a name="nco:hasPostalAddress"></a>hasPostalAddress</td>
 <td><a href="nco-ontology.html#nco:PostalAddress">PostalAddress</a></td>
-<td><a href="nco-ontology.html#nco:hasContactMedium"><img alt="This property extends nco:hasContactMedium" src="icon-superproperty.svg" title="This property extends nco:hasContactMedium" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:hasContactMedium' xlink:title='This property extends nco:hasContactMedium'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>The default Address for a Contact. An equivalent of the &#8216;<span class="caps">ADR</span>&#8217; property as defined in <span class="caps">RFC</span> 2426 Sec. 3.2.1.</td>
 </tr>
 <tr>
 <td><a name="nco:url"></a>url</td>
 <td><a href="rdfs-ontology.html#rdfs:Resource">Resource</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A uniform resource locator associated with the given role of a Contact. Inspired by the &#8216;<span class="caps">URL</span>&#8217; property defined in <span class="caps">RFC</span> 2426 Sec. 3.6.8.</td>
 </tr>
 <tr>
@@ -4255,7 +4294,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:websiteUrl"></a>websiteUrl</td>
 <td><a href="rdfs-ontology.html#rdfs:Resource">Resource</a></td>
-<td><a href="nco-ontology.html#nco:url"><img alt="This property extends nco:url" src="icon-superproperty.svg" title="This property extends nco:url" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:url' xlink:title='This property extends nco:url'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A url of a website.</td>
 </tr>
 </tbody>
@@ -4269,6 +4308,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A Video telephone number. A class inspired by the <span class="caps">TYPE</span>=video parameter of the <span class="caps">TEL</span> property defined in <span class="caps">RFC</span> 2426 sec.&nbsp;3.3.1</p>
 <h4 id="class-hierarchy_30"><a name="nco:VideoTelephoneNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_30" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4349,6 +4389,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A telephone number with voice communication capabilities. Class inspired by the <span class="caps">TYPE</span>=voice parameter of the <span class="caps">TEL</span> property defined in <span class="caps">RFC</span> 2426 sec.&nbsp;3.3.1</p>
 <h4 id="class-hierarchy_31"><a name="nco:VoicePhoneNumber.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_31" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -4515,19 +4556,19 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nco:contributor"></a>contributor</td>
 <td><a href="nco-ontology.html#nco:Contact">Contact</a></td>
-<td><a href="dc-ontology.html#dc:contributor"><img alt="This property extends dc:contributor" src="icon-superproperty.svg" title="This property extends dc:contributor" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:contributor' xlink:title='This property extends dc:contributor'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>An entity responsible for making contributions to the content of the InformationElement.</td>
 </tr>
 <tr>
 <td><a name="nco:creator"></a>creator</td>
 <td><a href="nco-ontology.html#nco:Contact">Contact</a></td>
-<td><a href="dc-ontology.html#dc:creator"><img alt="This property extends dc:creator" src="icon-superproperty.svg" title="This property extends dc:creator" /></a><a href="nco-ontology.html#nco:contributor"><img alt="This property extends nco:contributor" src="icon-superproperty.svg" title="This property extends nco:contributor" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:creator' xlink:title='This property extends dc:creator'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:contributor' xlink:title='This property extends nco:contributor'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Creator of a data object, an entity primarily responsible for the creation of the content of the data object.</td>
 </tr>
 <tr>
 <td><a name="nco:publisher"></a>publisher</td>
 <td><a href="nco-ontology.html#nco:Contact">Contact</a></td>
-<td><a href="dc-ontology.html#dc:publisher"><img alt="This property extends dc:publisher" src="icon-superproperty.svg" title="This property extends dc:publisher" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:publisher' xlink:title='This property extends dc:publisher'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>An entity responsible for making the InformationElement available.</td>
 </tr>
 </tbody>

@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -321,6 +321,61 @@ Its inverse operation is <code>tracker:uri</code>.</p>
 
 <p>Returns the <span class="caps">URN</span> that corresponds to an <span class="caps">ID</span>.
 Its inverse operation is <code>tracker:id</code></p>
+<h1 id="full-text-search">Full-text search<a class="md-anchor" href="#full-text-search" title="Permanent link"></a></h1>
+<p>Full-text search (<span class="caps">FTS</span>) is a built-in feature of Tracker, it allows
+for efficient search of individual terms across large collections
+of&nbsp;text.</p>
+<p>String properties are not searchable through the full-text index
+by default, only properties with the <a href="nrl-ontology.md#nrl:fulltextIndexed">nrl:fulltextIndexed</a>
+property enabled can be searched with <span class="caps">FTS</span>.</p>
+<div class="codehilite"><pre><span></span><code><span class="c"># Enable FTS search on the example:title property</span>
+<span class="nn">example</span><span class="p">:</span><span class="nt">title</span> <span class="kt">a</span> <span class="nn">rdf</span><span class="p">:</span><span class="nt">Property</span><span class="p">;</span>
+  <span class="nn">rdfs</span><span class="p">:</span><span class="nt">range</span> <span class="nn">xsd</span><span class="p">:</span><span class="nt">string</span> <span class="p">;</span>
+  <span class="nn">nrl</span><span class="p">:</span><span class="nt">fulltextIndexed</span> <span class="l">true</span> <span class="p">.</span>
+</code></pre></div>
+
+<p>Multiple full-text indexed properties may be defined, either
+in the same or different&nbsp;classes.</p>
+<p>In order to tap into the full-text search index, the <span class="caps">SPARQL</span>
+query must use the <code>fts:match</code> pseudo-property,&nbsp;e.g.:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span> <span class="nv">?res</span> <span class="p">{</span> <span class="nv">?res</span> <span class="nn">fts</span><span class="p">:</span><span class="nt">match</span> <span class="s">&quot;term1 term2&quot;</span> <span class="p">}</span>
+</code></pre></div>
+
+<p>This property will match the resources that match the search
+terms, independently of the order and separation between
+those terms in the searched text. Any full-text indexed
+property is candidate for these&nbsp;matches.</p>
+<p>In order to complement this pseudo-property, there are
+additional functions to extract more information from the
+full-text&nbsp;index:</p>
+<ul>
+<li><a href="#ftsrank">fts:rank</a> to get a ranking order for the matched
+  element. To be used in <code>ORDER BY</code> clauses.</li>
+<li><a href="#ftsoffets">fts:offsets</a> to get a list of offsets of the
+  lookup terms as found in the searched&nbsp;text.</li>
+<li><a href="#ftssnippet">fts:snippet</a> to get a short string representation
+  of the lookup terms in the searched&nbsp;text.</li>
+</ul>
+<p>These functions work on each of the matches provided by <code>fts:match</code>,
+the following example puts all <span class="caps">FTS</span> features together at&nbsp;work:</p>
+<div class="codehilite"><pre><span></span><code><span class="c"># Get resource IRI, snippet and match offsets of every</span>
+<span class="c"># document matching &quot;GNOME&quot;</span>
+<span class="k">SELECT</span>
+  <span class="nv">?u</span>
+  <span class="nn">fts</span><span class="p">:</span><span class="nt">snippet</span><span class="p">(</span><span class="nv">?u</span><span class="p">)</span>
+  <span class="nn">fts</span><span class="p">:</span><span class="nt">offsets</span><span class="p">(</span><span class="nv">?u</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="nv">?u</span> <span class="k">a</span> <span class="nn">nfo</span><span class="p">:</span><span class="nt">Document</span> <span class="p">;</span>
+    <span class="nn">fts</span><span class="p">:</span><span class="nt">match</span> <span class="s">&quot;GNOME&quot;</span> <span class="p">.</span>
+<span class="p">}</span>
+<span class="k">ORDER BY</span> <span class="k">DESC</span> <span class="p">(</span><span class="nn">fts</span><span class="p">:</span><span class="nt">rank</span><span class="p">(</span><span class="nv">?u</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Full-text search is case insensitive, and the content of its
+index may be subject to <a href="https://en.wikipedia.org/wiki/Stemming">stemming</a>,
+<a href="https://en.wikipedia.org/wiki/Stop_word">stop word lists</a> and other
+methods of pre-processing, these settings may changed via the
+<a href="flags.SparqlConnectionFlags.html"><code>TrackerSparqlConnectionFlags</code></a> set on a local&nbsp;connection.</p>
     </div>
   </section>
 </section>
@@ -434,6 +489,9 @@ Its inverse operation is <code>tracker:id</code></p>
             <li class="toc-list-item"><a href="#trackeruri"><span class="link-text">tracker:uri</span></a></li>
           
           </ul>
+          
+        
+        <li class="toc-list-item"><a href="#full-text-search"><span class="link-text">Full-text search</span></a></li>
           
         
       
