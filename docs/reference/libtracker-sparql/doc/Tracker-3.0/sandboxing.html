@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -364,12 +364,12 @@ will automatically try connect via the portal if it can not talk to the
 given D-Bus name&nbsp;directly.</p>
 <p>The policy on the accessed graphs is usually defined in the flatpak manifest
 at the time of bundling the software,&nbsp;e.g.:</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;finish-args&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;--add-policy=Tracker3.dbus:org.example.Endpoint=example:A&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;--add-policy=Tracker3.dbus:org.example.Endpoint=example:B&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;finish-args&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;--add-policy=Tracker3.dbus:org.example.Endpoint=example:A&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;--add-policy=Tracker3.dbus:org.example.Endpoint=example:B&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>The portal will pick the policy from the <code>/.flatpak-info</code> file created

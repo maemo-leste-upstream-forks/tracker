@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -88,13 +88,22 @@ SPDX-License-Identifier: GPL-2.1-or-later
   <section>
     <div class="docblock">
     <p>Top classes in the ontology. Almost everything else is subclass of&nbsp;these.</p>
-<style>img { display: inline-block } table { border-collapse: collapse; } tr { border: none !important; } tr:hover { background: var(--box-bg); } td:not(:last-child), th:not(:last-child) { border: none; border-right: solid 1px #888; }</style>
+<style>svg .icon { fill: var(--primary) }table { border-collapse: collapse; } tr { border: none !important; } tr:hover { background: var(--box-bg); } td:not(:last-child), th:not(:last-child) { border: none; border-right: solid 1px #888; }</style>
 
-<div class="codehilite"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">nie:</span><span class="w"> </span><span class="nv">&lt;http://tracker.api.gnome.org/ontology/v3/nie#&gt;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">nie:</span><span class="w"> </span><span class="nv">&lt;http://tracker.api.gnome.org/ontology/v3/nie#&gt;</span>
 </code></pre></div>
 
 <p>The following classes are&nbsp;defined:</p>
 <p><a href="#nie:DataObject">DataObject</a>, <a href="#nie:DataSource">DataSource</a>, <a href="#nie:InformationElement">InformationElement</a></p>
+<div style='display:none'>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" version="1.1" height="16"><g id="icon-deprecated" class="icon"><rect width="16" height="16" fill="#00000000"/><g transform="translate(-39.9997,39.98872)"><path d="m 47.90615,-39.89497 c -0.5255,-0.0286 -1.03823,0.28305 -1.4375,0.96875 l -6.25,11.59375 c -0.53347,0.96339 0.04822,2.34375 1.09375,2.34375 h 13.15625 c 0.98172,0 1.90311,-1.15939 1.21875,-2.34375 l -6.3125,-11.53125 c -0.39872,-0.64617 -0.94325,-1.00262 -1.46875,-1.03125 z m 0.0625,3.9375 c 0.54448,-0.0172 1.04849,0.48677 1.03125,1.03125 v 3.9375 c 0.007,0.52831 -0.47163,1 -1,1 -0.52836,0 -1.00747,-0.47169 -1,-1 v -3.9375 c -0.008,-0.4666 0.3541,-0.91253 0.8125,-1 0.0511,-0.0145 0.10345,-0.02495 0.15625,-0.03125 z m 0.03125,6.96875 c 0.552285,0 1,0.447715 1,1 0,0.552285 -0.447715,1 -1,1 -0.552285,0 -1,-0.447715 -1,-1 0,-0.552285 0.447715,-1 1,-1 z" /></g></g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-superproperty" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M12 9h-1c-.258 0-.53-.13-.72-.313L9 7.407V16H7V7.406L5.717 8.687c-.19.183-.462.313-.719.313H4V8c0-.31.09-.552.281-.75L8 3.594l3.718 3.656c.19.198.281.44.281.75z" overflow="visible"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" version="1.1" height="16"> <g id="icon-multivalue" class="icon"><rect width="16" height="16" fill="#00000000"/><g transform="translate(-320.98275,227.01492)"><path d="m 324.17969,-227.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -224 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -224 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-215.00781 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 v 1.83008 h 2 v -1.83008 c 0,-0.13089 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 v 1.78711 h 2 v -1.78711 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-223.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -220 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -220 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-219.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -216 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -216 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /></g></g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-fulltextindexed" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M6.508 1C3.48 1 1.002 3.473 1.002 6.5c0 3.026 2.478 5.5 5.506 5.5s5.504-2.474 5.504-5.5c0-3.027-2.476-5.5-5.504-5.5zm0 2a3.486 3.486 0 013.504 3.5c0 1.944-1.556 3.5-3.504 3.5a3.488 3.488 0 01-3.506-3.5C3.002 4.555 4.56 3 6.508 3z" overflow="visible"/><path d="M10 8.99a1 1 0 00-.695 1.717l4.004 4a1 1 0 101.414-1.414l-4.004-4A1 1 0 0010 8.99z" overflow="visible"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-notify" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M7.942 1.948c-2.209 0-3.33 1.5-4 4l-1 5c-.108.542-.447 1-1 1v1h12v-1c-.552 0-.891-.458-1-1l-1-5c-.53-2.5-1.79-4-4-4zm.176 12a1.5 1.5 0 001.412 1 1.5 1.5 0 001.412-1z"/></g></svg>
+</div>
 <h1 id="overview">Overview<a class="md-anchor" href="#overview" title="Permanent link"></a></h1>
 <h2 id="introduction">Introduction<a class="md-anchor" href="#introduction" title="Permanent link"></a></h2>
 <p>The core of the <span class="caps">NEPOMUK</span> Information Element Ontology and the entire
@@ -103,20 +112,25 @@ Ontology Framework revolves around the concepts of <a href="nie-ontology.html#ni
 and content of a piece of data. Their specialized subclasses (defined
 in the other ontologies) can be used to classify
 a wide array of desktop resources and express them in <span class="caps">RDF</span>.</p>
-<p><a href="nie-ontology.html#nie:DataObject">nie:DataObject</a> class represents a bunch of
+<p><a href="nie-ontology.html#nie:DataObject">nie:DataObject</a> class represents a collection of
 bytes somewhere (local or remote), the physical entity that contain
-data. The <em>meaning</em> (interpretation) of that entity, the
-information for the user contained in those bytes (e.g. a music file,
+data. The <em>meaning</em> (interpretation) of that entity (e.g. a music file,
 a picture) is represented on the
 <a href="nie-ontology.html#nie:InformationElement">nie:InformationElement</a> side of the&nbsp;ontology.</p>
-<p>Both sides are linked using the
-property <a href="nie-ontology.html#nie:interpretedAs">nie:interpretedAs</a> (and its reverse
-<a href="nie-ontology.html#nie:isStoredAs">nie:isStoredAs</a>), indicating the correspondence
-between the physical element and its interpretation. There is also a
-property to
-link <a href="nie-ontology.html#nie:InformationElement">nie:InformationElement</a>s,
-representing the logical containment between them (like a picture and
-its&nbsp;album).</p>
+<p>All resources on the desktop are basically related to each other with two most fundamental types
+of relations: interpretation, Expressed through <a href="nie-ontology.html#nie:interpretedAs">nie:interpretedAs</a> and its reverse
+<a href="nie-ontology.html#nie:isStoredAs">nie:isStoredAs</a>.</p>
+<p><img alt="" src="interpretation.svg" /></p>
+<p>And containment, expressed through <a href="nie-ontology.html#nie:hasPart">nie:hasPart</a> and its reverse
+<a href="nie-ontology.html#nie:isPartOf">nie:isPartOf</a>.</p>
+<p><img alt="" src="containment.svg" /></p>
+<p>These properties (or their subproperties with a more specific semantic meaning) provide
+the scaffolding to give an uniform view of the data with an arbitrary level of detail.
+For a more thorough example, the figure below represents an image in an archive in the
+attachment of a <span class="caps">PDF</span> document in the&nbsp;filesystem:</p>
+<p><img alt="" src="example-interpretation-containment.svg" /></p>
+<p>The horizontal edges express interpretation, the diagonal edges express containment.
+This approach gives a uniform overview of data regardless of how it&#8217;s&nbsp;represented.</p>
 <h2 id="common-properties">Common properties<a class="md-anchor" href="#common-properties" title="Permanent link"></a></h2>
 <p>Given that the classes defined in this ontology are the superclasses for almost
 everything in the Nepomuk set of ontologies, the
@@ -145,26 +159,30 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <li>Every file (local or remote) should generate one DataObject instance and an InformationElement&nbsp;instance.</li>
 <li>Even when Data Objects and Information Elements are different&nbsp;entities.</li>
 <li>The <span class="caps">URI</span> of the DataObject is the real location of the item (e.g.&nbsp;&#8221;file://path/to/file.mp3&#8221;)</li>
-<li>The <span class="caps">URI</span> of the InformationElement(s) will be autogenerated&nbsp;IDs.</li>
+<li>The <span class="caps">URI</span> of the InformationElement(s) will be generated&nbsp;IDs.</li>
 <li>Every DataObject must have the property <a href="nie-ontology.html#nie:url">nie:url</a>, that points to the location of the resource, and should be used by any program that wants to access&nbsp;it.</li>
-<li>The InformationElement and DataObject are related via the nie:isStoredAs / nie:interpretedAs&nbsp;properties.</li>
+<li>The InformationElement and DataObject are related via the <a href="nie-ontology.html#nie:isStoredAs">nie:isStoredAs</a> / <a href="nie-ontology.html#nie:interpretedAs">nie:interpretedAs</a>&nbsp;properties.</li>
 </ol>
-<p>Here comes an example, for the image file&nbsp;/home/user/a.jpeg:</p>
-<div class="codehilite"><pre><span></span><code># Properties as nmm:Photo
-&lt;urn:uuid:10293801928301293&gt; a nmm:Photo ;
-    nie:isStoredAs &lt;file:///home/user/a.jpeg&gt; ;
-    nfo:width 49 ;
-    nfo:height 36 ;
-    nmm:flash &amp;lt;nmm:flash-off&amp;gt;;
-    nmm:whiteBalance &lt;nmm:white-balance-automatic&gt; ;
-    nfo:equipment [ a nfo:Equipment ; nfo:make &#39;Nokia&#39;; nfo:model &#39;N900&#39;; nfo:equipmentSoftware &#39;Tracknon&#39; ] .
+<p>Here comes an example, for the image file <code>/home/user/a.jpeg</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="c"># Properties as nmm:Photo</span>
+<span class="nv">&lt;urn:uuid:10293801928301293&gt;</span> <span class="kt">a</span> <span class="nn">nmm</span><span class="p">:</span><span class="nt">Photo</span> <span class="p">;</span>
+  <span class="nn">nie</span><span class="p">:</span><span class="nt">isStoredAs</span> <span class="nv">&lt;file:///home/user/a.jpeg&gt;</span> <span class="p">;</span>
+  <span class="nn">nfo</span><span class="p">:</span><span class="nt">width</span> <span class="mi">49</span> <span class="p">;</span>
+  <span class="nn">nfo</span><span class="p">:</span><span class="nt">height</span> <span class="mi">36</span> <span class="p">;</span>
+  <span class="nn">nmm</span><span class="p">:</span><span class="nt">flash</span> <span class="nn">nmm</span><span class="p">:</span><span class="nt">flash-off</span><span class="p">;</span>
+  <span class="nn">nmm</span><span class="p">:</span><span class="nt">whiteBalance</span> <span class="nn">nmm</span><span class="p">:</span><span class="nt">white-balance-automatic</span> <span class="p">;</span>
+  <span class="nn">nfo</span><span class="p">:</span><span class="nt">equipment</span> <span class="p">[</span>
+    <span class="kt">a</span> <span class="nn">nfo</span><span class="p">:</span><span class="nt">Equipment</span> <span class="p">;</span>
+    <span class="nn">nfo</span><span class="p">:</span><span class="nt">make</span> <span class="s">&#39;Nokia&#39;</span><span class="p">;</span>
+    <span class="nn">nfo</span><span class="p">:</span><span class="nt">model</span> <span class="s">&#39;N900&#39;</span><span class="p">;</span>
+    <span class="nn">nfo</span><span class="p">:</span><span class="nt">equipmentSoftware</span> <span class="s">&#39;Tracknon&#39;</span>
+  <span class="p">]</span> <span class="p">.</span>
 
-# Properties from nfo:FileDataObject
-&lt;file:///home/user/a.jpeg&gt; a nfo:FileDataObject ;
-    nie:interpretedAs &lt;urn:uuid:10293801928301293&gt; ;
-    nfo:fileSize 12341234 ;
-    # Mandatory for any nfo:DataObject
-    nie:url &lt;file:///home/user/a.jpeg&gt; .
+<span class="c"># Properties from nfo:FileDataObject</span>
+<span class="nv">&lt;file:///home/user/a.jpeg&gt;</span> <span class="kt">a</span> <span class="nn">nfo</span><span class="p">:</span><span class="nt">FileDataObject</span> <span class="p">;</span>
+  <span class="nn">nie</span><span class="p">:</span><span class="nt">interpretedAs</span> <span class="nv">&lt;urn:uuid:10293801928301293&gt;</span> <span class="p">;</span>
+  <span class="nn">nfo</span><span class="p">:</span><span class="nt">fileSize</span> <span class="mi">12341234</span> <span class="p">;</span>
+  <span class="nn">nie</span><span class="p">:</span><span class="nt">url</span> <span class="s">&#39;file:///home/user/a.jpeg&#39;</span> <span class="p">.</span>
 </code></pre></div>
 
 <h1 id="classes"><a name="nie-classes"></a>Classes<a class="md-anchor" href="#classes" title="Permanent link"></a></h1>
@@ -172,6 +190,7 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <p>A unit of data that is created, annotated and processed on the user desktop. It represents a native structure the user works with. The usage of the term &#8216;native&#8217;   is important. It means that a DataObject can be directly mapped to a data structure maintained by a native application. This may be a file, a set of files or a part of a file. The granularity depends on the user. This class is not intended to be instantiated by itself. Use more specific&nbsp;subclasses.</p>
 <h4 id="class-hierarchy"><a name="nie:DataObject.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -595,7 +614,7 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nfo:belongsToContainer"></a>belongsToContainer</td>
 <td><a href="nfo-ontology.html#nfo:DataContainer">DataContainer</a></td>
-<td><a href="nie-ontology.html#nie:isPartOf"><img alt="This property extends nie:isPartOf" src="icon-superproperty.svg" title="This property extends nie:isPartOf" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:isPartOf' xlink:title='This property extends nie:isPartOf'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Models the containment relations between Files and Folders (or CompressedFiles).</td>
 </tr>
 <tr>
@@ -613,25 +632,25 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nie:dataSource"></a>dataSource</td>
 <td><a href="nie-ontology.html#nie:DataSource">DataSource</a></td>
-<td><a href="dc-ontology.html#dc:source"><img alt="This property extends dc:source" src="icon-superproperty.svg" title="This property extends dc:source" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:source' xlink:title='This property extends dc:source'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Marks the provenance of a DataObject, what source does a data object come from</td>
 </tr>
 <tr>
 <td><a name="nie:interpretedAs"></a>interpretedAs</td>
 <td><a href="nie-ontology.html#nie:InformationElement">InformationElement</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Links the DataObject with the InformationElement it is interpreted as</td>
 </tr>
 <tr>
 <td><a name="nie:isPartOf"></a>isPartOf</td>
 <td><a href="nie-ontology.html#nie:InformationElement">InformationElement</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Generic property used to express containment relationships between DataObjects. <span class="caps">NIE</span> extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of DataObjects to use those specific subproperties. Note to the developers: Please be aware of the distinction between containment relation and provenance. The isPartOf relation models physical containment, a nie:DataObject (e.g. an nfo:Attachment) is a &#8216;physical&#8217; part of an nie:InformationElement (a nmo:Message). Also, please note the difference between physical containment (isPartOf) and logical containment (isLogicalPartOf) the former has more strict meaning. They may occur independently of each other</td>
 </tr>
 <tr>
 <td><a name="nie:lastRefreshed"></a>lastRefreshed</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="dc-ontology.html#dc:date"><img alt="This property extends dc:date" src="icon-superproperty.svg" title="This property extends dc:date" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:date' xlink:title='This property extends dc:date'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Date when information about this data object was retrieved (for the first time) or last refreshed from the data source. This property is important for metadata extraction applications that don&#8217;t receive any notifications of changes in the data source and have to poll it regularly. This may lead to information becoming out of date. In these cases this property may be used to determine the age of data, which is an important element of it&#8217;s dependability</td>
 </tr>
 <tr>
@@ -646,6 +665,7 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <p>A superclass for all entities from which DataObjects can be extracted. Each entity represents a native application or some other system that manages information that may be of interest to the user of the Semantic Desktop. Subclasses may include FileSystems, Mailboxes, Calendars, websites etc. The exact choice of subclasses and their properties is considered application-specific. Each data extraction application is supposed to provide it&#8217;s own DataSource ontology. Such an ontology should contain supported data source types coupled with properties necessary for the application to gain access to the data sources. (paths, urls, passwords&nbsp;etc&#8230;)</p>
 <h4 id="class-hierarchy_1"><a name="nie:DataSource.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_1" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1137,19 +1157,19 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nco:contributor"></a>contributor</td>
 <td><a href="nco-ontology.html#nco:Contact">Contact</a></td>
-<td><a href="dc-ontology.html#dc:contributor"><img alt="This property extends dc:contributor" src="icon-superproperty.svg" title="This property extends dc:contributor" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:contributor' xlink:title='This property extends dc:contributor'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>An entity responsible for making contributions to the content of the InformationElement.</td>
 </tr>
 <tr>
 <td><a name="nco:creator"></a>creator</td>
 <td><a href="nco-ontology.html#nco:Contact">Contact</a></td>
-<td><a href="dc-ontology.html#dc:creator"><img alt="This property extends dc:creator" src="icon-superproperty.svg" title="This property extends dc:creator" /></a><a href="nco-ontology.html#nco:contributor"><img alt="This property extends nco:contributor" src="icon-superproperty.svg" title="This property extends nco:contributor" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:creator' xlink:title='This property extends dc:creator'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:contributor' xlink:title='This property extends nco:contributor'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Creator of a data object, an entity primarily responsible for the creation of the content of the data object.</td>
 </tr>
 <tr>
 <td><a name="nco:publisher"></a>publisher</td>
 <td><a href="nco-ontology.html#nco:Contact">Contact</a></td>
-<td><a href="dc-ontology.html#dc:publisher"><img alt="This property extends dc:publisher" src="icon-superproperty.svg" title="This property extends dc:publisher" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:publisher' xlink:title='This property extends dc:publisher'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>An entity responsible for making the InformationElement available.</td>
 </tr>
 <tr>
@@ -1173,25 +1193,25 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nie:comment"></a>comment</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>A user comment about an InformationElement</td>
 </tr>
 <tr>
 <td><a name="nie:contentAccessed"></a>contentAccessed</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="nie-ontology.html#nie:informationElementDate"><img alt="This property extends nie:informationElementDate" src="icon-superproperty.svg" title="This property extends nie:informationElementDate" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:informationElementDate' xlink:title='This property extends nie:informationElementDate'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
 <td><a name="nie:contentCreated"></a>contentCreated</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="nie-ontology.html#nie:informationElementDate"><img alt="This property extends nie:informationElementDate" src="icon-superproperty.svg" title="This property extends nie:informationElementDate" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:informationElementDate' xlink:title='This property extends nie:informationElementDate'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The date of the content creation. This may not necessarily be equal to the date when the DataObject (i.e. the physical representation) itself was created. Compare with nie:created property</td>
 </tr>
 <tr>
 <td><a name="nie:contentLastModified"></a>contentLastModified</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="nie-ontology.html#nie:informationElementDate"><img alt="This property extends nie:informationElementDate" src="icon-superproperty.svg" title="This property extends nie:informationElementDate" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:informationElementDate' xlink:title='This property extends nie:informationElementDate'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The date of the last modification of the original content (not its corresponding DataObject or local copy). Compare with nie:lastModified</td>
 </tr>
 <tr>
@@ -1203,25 +1223,25 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nie:copyright"></a>copyright</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:rights"><img alt="This property extends dc:rights" src="icon-superproperty.svg" title="This property extends dc:rights" /></a><a href="nie-ontology.html#nie:legal"><img alt="This property extends nie:legal" src="icon-superproperty.svg" title="This property extends nie:legal" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:rights' xlink:title='This property extends dc:rights'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:legal' xlink:title='This property extends nie:legal'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Content copyright</td>
 </tr>
 <tr>
 <td><a name="nie:depends"></a>depends</td>
 <td><a href="nie-ontology.html#nie:DataObject">DataObject</a></td>
-<td><a href="nie-ontology.html#nie:relatedTo"><img alt="This property extends nie:relatedTo" src="icon-superproperty.svg" title="This property extends nie:relatedTo" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:relatedTo' xlink:title='This property extends nie:relatedTo'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Dependency relation. A piece of content depends on another piece of data in order to be properly understood/used/interpreted</td>
 </tr>
 <tr>
 <td><a name="nie:description"></a>description</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:description"><img alt="This property extends dc:description" src="icon-superproperty.svg" title="This property extends dc:description" /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:description' xlink:title='This property extends dc:description'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>A textual description of the resource. This property may be used for any metadata fields that provide some meta-information or comment about a resource in the form of a passage of text. This property is not to be confused with nie:plainTextContent. Use more specific subproperties wherever possible</td>
 </tr>
 <tr>
 <td><a name="nie:disclaimer"></a>disclaimer</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nie-ontology.html#nie:legal"><img alt="This property extends nie:legal" src="icon-superproperty.svg" title="This property extends nie:legal" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:legal' xlink:title='This property extends nie:legal'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>A disclaimer</td>
 </tr>
 <tr>
@@ -1233,43 +1253,43 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nie:hasLogicalPart"></a>hasLogicalPart</td>
 <td><a href="nie-ontology.html#nie:InformationElement">InformationElement</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Generic property used to express &#8216;logical&#8217; containment relationships between InformationElements. <span class="caps">NIE</span> extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of InformationElement to use those specific subproperties. Note the difference between &#8216;physical&#8217; containment (hasPart) and logical containment (hasLogicalPart)</td>
 </tr>
 <tr>
 <td><a name="nie:hasPart"></a>hasPart</td>
 <td><a href="nie-ontology.html#nie:DataObject">DataObject</a></td>
-<td><a href="nie-ontology.html#nie:relatedTo"><img alt="This property extends nie:relatedTo" src="icon-superproperty.svg" title="This property extends nie:relatedTo" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:relatedTo' xlink:title='This property extends nie:relatedTo'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Generic property used to express &#8216;physical&#8217; containment relationships between DataObjects. <span class="caps">NIE</span> extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of DataObjects to use those specific subproperties. Note to the developers: Please be aware of the distinction between containment relation and provenance. The hasPart relation models physical containment, an InformationElement (a nmo:Message) can have a &#8216;physical&#8217; part (an nfo:Attachment). Also, please note the difference between physical containment (hasPart) and logical containment (hasLogicalPart) the former has more strict meaning. They may occur independently of each other</td>
 </tr>
 <tr>
 <td><a name="nie:identifier"></a>identifier</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:identifier"><img alt="This property extends dc:identifier" src="icon-superproperty.svg" title="This property extends dc:identifier" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:identifier' xlink:title='This property extends dc:identifier'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>An unambiguous reference to the InformationElement within a given context. Recommended best practice is to identify the resource by means of a string conforming to a formal identification system</td>
 </tr>
 <tr>
 <td><a name="nie:informationElementDate"></a>informationElementDate</td>
 <td><a href="xsd-ontology.html#xsd:dateTime">dateTime</a></td>
-<td><a href="dc-ontology.html#dc:date"><img alt="This property extends dc:date" src="icon-superproperty.svg" title="This property extends dc:date" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:date' xlink:title='This property extends dc:date'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A point or period of time associated with an event in the lifecycle of an Information Element. A common superproperty for all date-related properties of InformationElements in the <span class="caps">NIE</span> Framework</td>
 </tr>
 <tr>
 <td><a name="nie:isLogicalPartOf"></a>isLogicalPartOf</td>
 <td><a href="nie-ontology.html#nie:InformationElement">InformationElement</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Generic property used to express &#8216;logical&#8217; containment relationships between DataObjects. <span class="caps">NIE</span> extensions are encouraged to provide more specific subproperties of this one. It is advisable for actual instances of InformationElement to use those specific subproperties. Note the difference between &#8216;physical&#8217; containment (isPartOf) and logical containment (isLogicalPartOf)</td>
 </tr>
 <tr>
 <td><a name="nie:isStoredAs"></a>isStoredAs</td>
 <td><a href="nie-ontology.html#nie:DataObject">DataObject</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Links the information element with the DataObject it is stored in</td>
 </tr>
 <tr>
 <td><a name="nie:keyword"></a>keyword</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Adapted DublinCore: The topic of the content of the resource, as keyword. No sentences here. Recommended best practice is to select a value from a controlled vocabulary or formal classification scheme</td>
 </tr>
 <tr>
@@ -1281,25 +1301,25 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nie:legal"></a>legal</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:rights"><img alt="This property extends dc:rights" src="icon-superproperty.svg" title="This property extends dc:rights" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:rights' xlink:title='This property extends dc:rights'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A common superproperty for all properties that point at legal information about an Information Element</td>
 </tr>
 <tr>
 <td><a name="nie:license"></a>license</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:rights"><img alt="This property extends dc:rights" src="icon-superproperty.svg" title="This property extends dc:rights" /></a><a href="nie-ontology.html#nie:legal"><img alt="This property extends nie:legal" src="icon-superproperty.svg" title="This property extends nie:legal" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:rights' xlink:title='This property extends dc:rights'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:legal' xlink:title='This property extends nie:legal'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Terms and intellectual property rights licensing conditions.</td>
 </tr>
 <tr>
 <td><a name="nie:licenseType"></a>licenseType</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nie-ontology.html#nie:legal"><img alt="This property extends nie:legal" src="icon-superproperty.svg" title="This property extends nie:legal" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:legal' xlink:title='This property extends nie:legal'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>The type of the license. Possible values for this field may include &#8216;<span class="caps">GPL</span>&#8217;, &#8216;<span class="caps">BSD</span>&#8217;, &#8216;Creative Commons&#8217; etc.</td>
 </tr>
 <tr>
 <td><a name="nie:links"></a>links</td>
 <td><a href="nie-ontology.html#nie:DataObject">DataObject</a></td>
-<td><a href="nie-ontology.html#nie:relatedTo"><img alt="This property extends nie:relatedTo" src="icon-superproperty.svg" title="This property extends nie:relatedTo" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:relatedTo' xlink:title='This property extends nie:relatedTo'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>A linking relation. A piece of content links/mentions a piece of data</td>
 </tr>
 <tr>
@@ -1311,13 +1331,13 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nie:plainTextContent"></a>plainTextContent</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Plain-text representation of the content of a InformationElement with all markup removed. The main purpose of this property is full-text indexing and search. Its exact content is considered application-specific. The user can make no assumptions about what is and what is not contained within. Applications should use more specific properties wherever possible.</td>
 </tr>
 <tr>
 <td><a name="nie:relatedTo"></a>relatedTo</td>
 <td><a href="nie-ontology.html#nie:DataObject">DataObject</a></td>
-<td><a href="dc-ontology.html#dc:relation"><img alt="This property extends dc:relation" src="icon-superproperty.svg" title="This property extends dc:relation" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:relation' xlink:title='This property extends dc:relation'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A common superproperty for all relations between a piece of content and other pieces of data (which may be interpreted as other pieces of content).</td>
 </tr>
 <tr>
@@ -1329,13 +1349,13 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="nie:subject"></a>subject</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:subject"><img alt="This property extends dc:subject" src="icon-superproperty.svg" title="This property extends dc:subject" /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:subject' xlink:title='This property extends dc:subject'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>The subject or topic of the document</td>
 </tr>
 <tr>
 <td><a name="nie:title"></a>title</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:title"><img alt="This property extends dc:title" src="icon-superproperty.svg" title="This property extends dc:title" /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:title' xlink:title='This property extends dc:title'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>The title of the document</td>
 </tr>
 <tr>
@@ -1371,7 +1391,7 @@ worth to comment few of them with special&nbsp;relevance:</p>
 <tr>
 <td><a name="tracker:hasExternalReference"></a>hasExternalReference</td>
 <td><a href="tracker-ontology.html#tracker:ExternalReference">ExternalReference</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Links the information element with the external reference</td>
 </tr>
 </tbody>

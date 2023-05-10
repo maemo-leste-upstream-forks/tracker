@@ -71,7 +71,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
         <h3><a href="index.html">Tracker</a></h3>
         <p>API Version: 3.0</p>
         
-        <p>Library Version: 3.5.0</p>
+        <p>Library Version: 3.5.1</p>
         
       </div>
       
@@ -88,13 +88,22 @@ SPDX-License-Identifier: GPL-2.1-or-later
   <section>
     <div class="docblock">
     <p>Description of multimedia objects like Music, Video and&nbsp;Images</p>
-<style>img { display: inline-block } table { border-collapse: collapse; } tr { border: none !important; } tr:hover { background: var(--box-bg); } td:not(:last-child), th:not(:last-child) { border: none; border-right: solid 1px #888; }</style>
+<style>svg .icon { fill: var(--primary) }table { border-collapse: collapse; } tr { border: none !important; } tr:hover { background: var(--box-bg); } td:not(:last-child), th:not(:last-child) { border: none; border-right: solid 1px #888; }</style>
 
-<div class="codehilite"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">nmm:</span><span class="w"> </span><span class="nv">&lt;http://tracker.api.gnome.org/ontology/v3/nmm#&gt;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">@prefix</span><span class="w"> </span><span class="nn">nmm:</span><span class="w"> </span><span class="nv">&lt;http://tracker.api.gnome.org/ontology/v3/nmm#&gt;</span>
 </code></pre></div>
 
 <p>The following classes are&nbsp;defined:</p>
 <p><a href="#nmm:AnalogRadio">AnalogRadio</a>, <a href="#nmm:Artist">Artist</a>, <a href="#nmm:DigitalRadio">DigitalRadio</a>, <a href="#nmm:Flash">Flash</a>, <a href="#nmm:ImageList">ImageList</a>, <a href="#nmm:MeteringMode">MeteringMode</a>, <a href="#nmm:Movie">Movie</a>, <a href="#nmm:MusicAlbum">MusicAlbum</a>, <a href="#nmm:MusicAlbumDisc">MusicAlbumDisc</a>, <a href="#nmm:MusicPiece">MusicPiece</a>, <a href="#nmm:Photo">Photo</a>, <a href="#nmm:Playlist">Playlist</a>, <a href="#nmm:RadioModulation">RadioModulation</a>, <a href="#nmm:RadioStation">RadioStation</a>, <a href="#nmm:SynchronizedText">SynchronizedText</a>, <a href="#nmm:TVSeason">TVSeason</a>, <a href="#nmm:TVSeries">TVSeries</a>, <a href="#nmm:TVShow">TVShow</a>, <a href="#nmm:Video">Video</a>, <a href="#nmm:WhiteBalance">WhiteBalance</a></p>
+<div style='display:none'>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" version="1.1" height="16"><g id="icon-deprecated" class="icon"><rect width="16" height="16" fill="#00000000"/><g transform="translate(-39.9997,39.98872)"><path d="m 47.90615,-39.89497 c -0.5255,-0.0286 -1.03823,0.28305 -1.4375,0.96875 l -6.25,11.59375 c -0.53347,0.96339 0.04822,2.34375 1.09375,2.34375 h 13.15625 c 0.98172,0 1.90311,-1.15939 1.21875,-2.34375 l -6.3125,-11.53125 c -0.39872,-0.64617 -0.94325,-1.00262 -1.46875,-1.03125 z m 0.0625,3.9375 c 0.54448,-0.0172 1.04849,0.48677 1.03125,1.03125 v 3.9375 c 0.007,0.52831 -0.47163,1 -1,1 -0.52836,0 -1.00747,-0.47169 -1,-1 v -3.9375 c -0.008,-0.4666 0.3541,-0.91253 0.8125,-1 0.0511,-0.0145 0.10345,-0.02495 0.15625,-0.03125 z m 0.03125,6.96875 c 0.552285,0 1,0.447715 1,1 0,0.552285 -0.447715,1 -1,1 -0.552285,0 -1,-0.447715 -1,-1 0,-0.552285 0.447715,-1 1,-1 z" /></g></g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-superproperty" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M12 9h-1c-.258 0-.53-.13-.72-.313L9 7.407V16H7V7.406L5.717 8.687c-.19.183-.462.313-.719.313H4V8c0-.31.09-.552.281-.75L8 3.594l3.718 3.656c.19.198.281.44.281.75z" overflow="visible"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" version="1.1" height="16"> <g id="icon-multivalue" class="icon"><rect width="16" height="16" fill="#00000000"/><g transform="translate(-320.98275,227.01492)"><path d="m 324.17969,-227.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -224 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -224 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-215.00781 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 v 1.83008 h 2 v -1.83008 c 0,-0.13089 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 v 1.78711 h 2 v -1.78711 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-223.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -220 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -220 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /><path d="m 324.17969,-219.01562 c -1.2016,0 -2.19727,1.00124 -2.19727,2.20117 V -216 h 2 v -0.81445 c 0,-0.1309 0.0735,-0.20117 0.19727,-0.20117 h 9.60742 c 0.12378,0 0.19531,0.0703 0.19531,0.20117 V -216 h 2 v -0.81445 c 0,-1.19993 -0.99372,-2.20117 -2.19531,-2.20117 z" /></g></g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-fulltextindexed" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M6.508 1C3.48 1 1.002 3.473 1.002 6.5c0 3.026 2.478 5.5 5.506 5.5s5.504-2.474 5.504-5.5c0-3.027-2.476-5.5-5.504-5.5zm0 2a3.486 3.486 0 013.504 3.5c0 1.944-1.556 3.5-3.504 3.5a3.488 3.488 0 01-3.506-3.5C3.002 4.555 4.56 3 6.508 3z" overflow="visible"/><path d="M10 8.99a1 1 0 00-.695 1.717l4.004 4a1 1 0 101.414-1.414l-4.004-4A1 1 0 0010 8.99z" overflow="visible"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><g id="icon-notify" class="icon"><rect width="16" height="16" fill="#00000000"/><path d="M7.942 1.948c-2.209 0-3.33 1.5-4 4l-1 5c-.108.542-.447 1-1 1v1h12v-1c-.552 0-.891-.458-1-1l-1-5c-.53-2.5-1.79-4-4-4zm.176 12a1.5 1.5 0 001.412 1 1.5 1.5 0 001.412-1z"/></g></svg>
+</div>
 <h1 id="overview">Overview<a class="md-anchor" href="#overview" title="Permanent link"></a></h1>
 <h2 id="introduction">Introduction<a class="md-anchor" href="#introduction" title="Permanent link"></a></h2>
 <p>This ontology extends <span class="caps">NIE</span> (Nepomuk Information Element ontology) and <span class="caps">NFO</span> (Nepomuk File Ontology) into the domains of multimedia, including Images, Videos, Music and Radio, and includes a couple of properties to support uPnP&nbsp;sharing.</p>
@@ -112,6 +121,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p><span class="caps">FM</span> Radio carrier signal data. Basically the&nbsp;frequency</p>
 <h4 id="class-hierarchy"><a name="nmm:AnalogRadio.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -246,9 +256,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="artist"><a name="nmm:Artist"></a>Artist<a class="md-anchor" href="#artist" title="Permanent link"></a></h2>
 <p>An&nbsp;artist.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_1"><a name="nmm:Artist.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_1" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -484,7 +495,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:artistName"></a>artistName</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="dc-ontology.html#dc:title"><img alt="This property extends dc:title" src="icon-superproperty.svg" title="This property extends dc:title" /></a><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='dc-ontology.html#dc:title' xlink:title='This property extends dc:title'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td>Name of the artist</td>
 </tr>
 </tbody>
@@ -493,6 +504,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Online Radio Stream data object (i.e. as a raw flow of&nbsp;bytes)</p>
 <h4 id="class-hierarchy_2"><a name="nmm:DigitalRadio.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_2" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -590,6 +602,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Enumeration of the possible values of flash&nbsp;property</p>
 <h4 id="class-hierarchy_3"><a name="nmm:Flash.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_3" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -677,9 +690,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </ul>
 <h2 id="imagelist"><a name="nmm:ImageList"></a>ImageList<a class="md-anchor" href="#imagelist" title="Permanent link"></a></h2>
 <p>An album of&nbsp;images</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_4"><a name="nmm:ImageList.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_4" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -746,6 +760,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Enumeration of different ways a camera determines&nbsp;exposure.</p>
 <h4 id="class-hierarchy_5"><a name="nmm:MeteringMode.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_5" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -840,6 +855,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A&nbsp;Movie</p>
 <h4 id="class-hierarchy_6"><a name="nmm:Movie.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_6" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -947,9 +963,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </div>
 <h2 id="musicalbum"><a name="nmm:MusicAlbum"></a>MusicAlbum<a class="md-anchor" href="#musicalbum" title="Permanent link"></a></h2>
 <p>The music album as provided by the publisher. Not to be confused with media lists or&nbsp;collections</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_7"><a name="nmm:MusicAlbum.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_7" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1115,7 +1132,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:albumArtist"></a>albumArtist</td>
 <td><a href="nmm-ontology.html#nmm:Artist">Artist</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>main artists of the album</td>
 </tr>
 <tr>
@@ -1147,6 +1164,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <h2 id="musicalbumdisc"><a name="nmm:MusicAlbumDisc"></a>MusicAlbumDisc<a class="md-anchor" href="#musicalbumdisc" title="Permanent link"></a></h2>
 <h4 id="class-hierarchy_8"><a name="nmm:MusicAlbumDisc.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_8" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1282,7 +1300,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:musicCDIdentifier"></a>musicCDIdentifier</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nie-ontology.html#nie:identifier"><img alt="This property extends nie:identifier" src="icon-superproperty.svg" title="This property extends nie:identifier" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:identifier' xlink:title='This property extends nie:identifier'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Music <span class="caps">CD</span> identifier to for databases like FreeDB.org. This frame is intended for music that comes from a <span class="caps">CD</span>, so that the <span class="caps">CD</span> can be identified in databases such as the <span class="caps">CDDB</span>. The frame consists of a binary dump of the Table Of Contents, <span class="caps">TOC</span>, from the <span class="caps">CD</span>, which is a header of 4 bytes and then 8 bytes/track on the <span class="caps">CD</span> plus 8 bytes for the &#8216;lead out&#8217; making a maximum of 804 bytes. The offset to the beginning of every track on the <span class="caps">CD</span> should be described with a four bytes absolute <span class="caps">CD</span>-frame address per track, and not with absolute time.</td>
 </tr>
 <tr>
@@ -1295,9 +1313,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="musicpiece"><a name="nmm:MusicPiece"></a>MusicPiece<a class="md-anchor" href="#musicpiece" title="Permanent link"></a></h2>
 <p>Used to assign music-specific properties such as <span class="caps">BPM</span> to video and&nbsp;audio</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_9"><a name="nmm:MusicPiece.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_9" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1524,7 +1543,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:artist"></a>artist</td>
 <td><a href="nmm-ontology.html#nmm:Artist">Artist</a></td>
-<td><a href="nco-ontology.html#nco:contributor"><img alt="This property extends nco:contributor" src="icon-superproperty.svg" title="This property extends nco:contributor" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:contributor' xlink:title='This property extends nco:contributor'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>main artist of the MusicPiece</td>
 </tr>
 <tr>
@@ -1536,43 +1555,43 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:composer"></a>composer</td>
 <td><a href="nmm-ontology.html#nmm:Artist">Artist</a></td>
-<td><a href="nco-ontology.html#nco:contributor"><img alt="This property extends nco:contributor" src="icon-superproperty.svg" title="This property extends nco:contributor" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:contributor' xlink:title='This property extends nco:contributor'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Composer</td>
 </tr>
 <tr>
 <td><a name="nmm:internationalStandardRecordingCode"></a>internationalStandardRecordingCode</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nie-ontology.html#nie:identifier"><img alt="This property extends nie:identifier" src="icon-superproperty.svg" title="This property extends nie:identifier" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:identifier' xlink:title='This property extends nie:identifier'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td><span class="caps">ISRC</span> <span class="caps">ID</span>. Format: &#8216;<span class="caps">CC</span>-<span class="caps">XXX</span>-<span class="caps">YY</span>-<span class="caps">NNNNN</span>&#8217;</td>
 </tr>
 <tr>
 <td><a name="nmm:lyricist"></a>lyricist</td>
 <td><a href="nmm-ontology.html#nmm:Artist">Artist</a></td>
-<td><a href="nco-ontology.html#nco:contributor"><img alt="This property extends nco:contributor" src="icon-superproperty.svg" title="This property extends nco:contributor" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:contributor' xlink:title='This property extends nco:contributor'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Lyricist</td>
 </tr>
 <tr>
 <td><a name="nmm:lyrics"></a>lyrics</td>
 <td><a href="nmm-ontology.html#nmm:SynchronizedText">SynchronizedText</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
 <td><a name="nmm:musicAlbum"></a>musicAlbum</td>
 <td><a href="nmm-ontology.html#nmm:MusicAlbum">MusicAlbum</a></td>
-<td><a href="nie-ontology.html#nie:isLogicalPartOf"><img alt="This property extends nie:isLogicalPartOf" src="icon-superproperty.svg" title="This property extends nie:isLogicalPartOf" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:isLogicalPartOf' xlink:title='This property extends nie:isLogicalPartOf'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>album the music belongs to</td>
 </tr>
 <tr>
 <td><a name="nmm:musicAlbumDisc"></a>musicAlbumDisc</td>
 <td><a href="nmm-ontology.html#nmm:MusicAlbumDisc">MusicAlbumDisc</a></td>
-<td><a href="nie-ontology.html#nie:isLogicalPartOf"><img alt="This property extends nie:isLogicalPartOf" src="icon-superproperty.svg" title="This property extends nie:isLogicalPartOf" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:isLogicalPartOf' xlink:title='This property extends nie:isLogicalPartOf'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>album disc the music belongs to</td>
 </tr>
 <tr>
 <td><a name="nmm:performer"></a>performer</td>
 <td><a href="nmm-ontology.html#nmm:Artist">Artist</a></td>
-<td><a href="nco-ontology.html#nco:contributor"><img alt="This property extends nco:contributor" src="icon-superproperty.svg" title="This property extends nco:contributor" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nco-ontology.html#nco:contributor' xlink:title='This property extends nco:contributor'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Performer</td>
 </tr>
 <tr>
@@ -1585,9 +1604,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="photo"><a name="nmm:Photo"></a>Photo<a class="md-anchor" href="#photo" title="Permanent link"></a></h2>
 <p>A&nbsp;photo</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_10"><a name="nmm:Photo.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_10" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1836,9 +1856,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </table>
 <h2 id="playlist"><a name="nmm:Playlist"></a>Playlist<a class="md-anchor" href="#playlist" title="Permanent link"></a></h2>
 <p>Specific class to split MediaList in Albums and&nbsp;playlists.</p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_11"><a name="nmm:Playlist.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_11" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1905,6 +1926,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Set of instances for analog radio&nbsp;modulation</p>
 <h4 id="class-hierarchy_12"><a name="nmm:RadioModulation.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_12" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -1992,9 +2014,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </ul>
 <h2 id="radiostation"><a name="nmm:RadioStation"></a>RadioStation<a class="md-anchor" href="#radiostation" title="Permanent link"></a></h2>
 <p>The Radio station in user terms: <span class="caps">BBC3</span>, Radio5, <span class="caps">YLEX</span>, &#8230; It is linked with 1 or more carriers (different <span class="caps">FM</span> frenquencies, online sources in different qualities, etc.). Some <span class="caps">RDS</span> information is represented with nie properties, nie:identifier for <span class="caps">PI</span>, nie:title for <span class="caps">PS</span></p>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_13"><a name="nmm:RadioStation.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_13" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2152,7 +2175,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:carrier"></a>carrier</td>
 <td><a href="nfo-ontology.html#nfo:MediaStream">MediaStream</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Signal where a radio can be tuned in. There can be more than one.</td>
 </tr>
 <tr>
@@ -2172,6 +2195,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <h2 id="synchronizedtext"><a name="nmm:SynchronizedText"></a>SynchronizedText<a class="md-anchor" href="#synchronizedtext" title="Permanent link"></a></h2>
 <h4 id="class-hierarchy_14"><a name="nmm:SynchronizedText.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_14" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2352,6 +2376,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A season of a <span class="caps">TV</span>&nbsp;show</p>
 <h4 id="class-hierarchy_15"><a name="nmm:TVSeason.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_15" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2507,7 +2532,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:hasSeasonEpisode"></a>hasSeasonEpisode</td>
 <td><a href="nmm-ontology.html#nmm:TVShow">TVShow</a></td>
-<td><a href="nie-ontology.html#nie:hasLogicalPart"><img alt="This property extends nie:hasLogicalPart" src="icon-superproperty.svg" title="This property extends nie:hasLogicalPart" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:hasLogicalPart' xlink:title='This property extends nie:hasLogicalPart'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Relates a <span class="caps">TV</span> Show season to its episodes</td>
 </tr>
 <tr>
@@ -2519,7 +2544,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:seasonOf"></a>seasonOf</td>
 <td><a href="nmm-ontology.html#nmm:TVSeries">TVSeries</a></td>
-<td><a href="nie-ontology.html#nie:isLogicalPartOf"><img alt="This property extends nie:isLogicalPartOf" src="icon-superproperty.svg" title="This property extends nie:isLogicalPartOf" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:isLogicalPartOf' xlink:title='This property extends nie:isLogicalPartOf'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Relates a <span class="caps">TV</span> Season to its series</td>
 </tr>
 </tbody>
@@ -2528,6 +2553,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A <span class="caps">TV</span> Series has multiple seasons and&nbsp;episodes</p>
 <h4 id="class-hierarchy_16"><a name="nmm:TVSeries.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_16" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2683,13 +2709,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:hasEpisode"></a>hasEpisode</td>
 <td><a href="nmm-ontology.html#nmm:TVShow">TVShow</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>A TVSeries has many episodes</td>
 </tr>
 <tr>
 <td><a name="nmm:hasSeason"></a>hasSeason</td>
 <td><a href="nmm-ontology.html#nmm:TVSeason">TVSeason</a></td>
-<td><a href="nie-ontology.html#nie:hasLogicalPart"><img alt="This property extends nie:hasLogicalPart" src="icon-superproperty.svg" title="This property extends nie:hasLogicalPart" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:hasLogicalPart' xlink:title='This property extends nie:hasLogicalPart'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Relates a <span class="caps">TV</span> Series to its seasons</td>
 </tr>
 </tbody>
@@ -2698,6 +2724,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>A <span class="caps">TV</span>&nbsp;show</p>
 <h4 id="class-hierarchy_17"><a name="nmm:TVShow.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_17" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -2916,7 +2943,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:isPartOfSeason"></a>isPartOfSeason</td>
 <td><a href="nmm-ontology.html#nmm:TVSeason">TVSeason</a></td>
-<td><a href="nie-ontology.html#nie:isLogicalPartOf"><img alt="This property extends nie:isLogicalPartOf" src="icon-superproperty.svg" title="This property extends nie:isLogicalPartOf" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nie-ontology.html#nie:isLogicalPartOf' xlink:title='This property extends nie:isLogicalPartOf'><use xlink:href='#icon-superproperty'/></a></svg></td>
 <td>Relates a <span class="caps">TV</span> Show to its season</td>
 </tr>
 <tr>
@@ -2928,9 +2955,10 @@ SPDX-License-Identifier: GPL-2.1-or-later
 </tbody>
 </table>
 <h2 id="video"><a name="nmm:Video"></a>Video<a class="md-anchor" href="#video" title="Permanent link"></a></h2>
-<p><strong>Note:</strong> <a href="nrl-ontology.html#nrl:notify"><img alt="Notify icon" src="icon-notify.svg" title="Notify icon" /></a>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
+<p><strong>Note:</strong> <svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:notify' xlink:title=''><use xlink:href='#icon-notify'/></a></svg>This class emits notifications about changes, and can be monitored using <a href="class.Notifier.html"><code>TrackerNotifier</code></a>.</p>
 <h4 id="class-hierarchy_18"><a name="nmm:Video.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_18" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3153,13 +3181,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:category"></a>category</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
 <td><a name="nmm:director"></a>director</td>
 <td><a href="nmm-ontology.html#nmm:Artist">Artist</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
@@ -3177,7 +3205,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:leadActor"></a>leadActor</td>
 <td><a href="nmm-ontology.html#nmm:Artist">Artist</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
@@ -3195,7 +3223,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:subtitle"></a>subtitle</td>
 <td><a href="nmm-ontology.html#nmm:SynchronizedText">SynchronizedText</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
@@ -3210,6 +3238,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <p>Camera&#8217;s white balance&nbsp;setting</p>
 <h4 id="class-hierarchy_19"><a name="nmm:WhiteBalance.hierarchy"></a>Class hierarchy<a class="md-anchor" href="#class-hierarchy_19" title="Permanent link"></a></h4>
 <div class="docblock">
+<style>svg .node text { fill: var(--text-color); } </style>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -3310,13 +3339,13 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:alternativeMedia"></a>alternativeMedia</td>
 <td><a href="nfo-ontology.html#nfo:Media">Media</a></td>
-<td><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Link between to different version of the same media. This is used for instances in uPnp where the server can provide the same video in different resolutions and codecs</td>
 </tr>
 <tr>
 <td><a name="nmm:artwork"></a>artwork</td>
 <td><a href="nfo-ontology.html#nfo:Image">Image</a></td>
-<td><a href="nfo-ontology.html#nfo:depiction"><img alt="This property extends nfo:depiction" src="icon-superproperty.svg" title="This property extends nfo:depiction" /></a><a href="nrl-ontology.html#nrl:maxCardinality"><img alt="This property can have multiple values." src="icon-multivalue.svg" title="This property can have multiple values." /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nfo-ontology.html#nfo:depiction' xlink:title='This property extends nfo:depiction'><use xlink:href='#icon-superproperty'/></a></svg><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:maxCardinality' xlink:title='This property can have multiple values.'><use xlink:href='#icon-multivalue'/></a></svg></td>
 <td>Associated Artwork</td>
 </tr>
 <tr>
@@ -3334,7 +3363,7 @@ SPDX-License-Identifier: GPL-2.1-or-later
 <tr>
 <td><a name="nmm:genre"></a>genre</td>
 <td><a href="xsd-ontology.html#xsd:string">string</a></td>
-<td><a href="nrl-ontology.html#nrl:fulltextIndexed"><img alt="This property is full-text-indexed, and can be looked up through fts:match" src="icon-fulltextindexed.svg" title="This property is full-text-indexed, and can be looked up through fts:match" /></a></td>
+<td><svg width='16' height='16' style='display: inline-block;'><a xlink:href='nrl-ontology.html#nrl:fulltextIndexed' xlink:title='This property is full-text-indexed, and can be looked up through fts:match'><use xlink:href='#icon-fulltextindexed'/></a></svg></td>
 <td></td>
 </tr>
 <tr>
