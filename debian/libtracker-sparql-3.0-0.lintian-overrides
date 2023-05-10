@@ -1,1 +1,1 @@
-libtracker-sparql-3.0-0: binary-or-shlib-defines-rpath * /usr/lib/*/tracker-3.0
+libtracker-sparql-3.0-0: custom-library-search-path * /usr/lib/*/tracker-3.0
