@@ -1,1 +1,2 @@
 disable-some-failing-tests.patch
+docs-Switch-shebang-to-bash-since-popd-and-pushd-are-bash.patch
