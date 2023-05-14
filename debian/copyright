@@ -26,7 +26,7 @@ Copyright: 2008-2011 Nokia <ivan.frade@nokia.com>
            2016-2020 Red Hat Inc.
 License: LGPL-2.1+
 
-Files: src/gvdb/*
+Files: subprojects/gvdb/*
 Copyright: 2010 Codethink Limited
 License: LGPL-2.0+
 
