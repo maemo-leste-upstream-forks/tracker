@@ -1,5 +1,5 @@
 project('tracker', 'c',
-        version: '3.5.2',
+        version: '3.5.3',
         meson_version: '>=0.55',
         default_options: [
           'c_std=c99',
@@ -202,6 +202,8 @@ endif
 # Get an appropriate 4-digit year modifier for strftime
 ##################################################################
 result = cc.run('''
+  #define _TIME_BITS 64
+  #define _GNU_SOURCE
   #include <stdio.h>
   #include <string.h>
   #include <time.h>
