@@ -1,9 +1,10 @@
-tracker (3.5.3-1) UNRELEASED; urgency=medium
+tracker (3.5.3-1) experimental; urgency=medium
 
   * New upstream release
     - Fix datetime issues for 32-bit architectures (Closes: #1035903)
+  * Add patch to use full /usr/bin/env path instead of /bin/env
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 01 Jun 2023 09:01:10 -0400
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 01 Jun 2023 09:59:18 -0400
 
 tracker (3.5.2-1) experimental; urgency=medium
 
