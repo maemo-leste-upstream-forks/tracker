@@ -1,0 +1,42 @@
+From: Jeremy Bicha <jeremy.bicha@canonical.com>
+Date: Thu, 1 Jun 2023 09:56:14 -0400
+Subject: Specify /usr/ for shebangs
+
+On systems that haven't completed usrmerge,
+/usr/bin/env is the correct path
+---
+ check-style.py                                  | 2 +-
+ docs/reference/libtracker-sparql/embed-files.py | 2 +-
+ docs/reference/libtracker-sparql/merge-json.py  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/check-style.py b/check-style.py
+index 5ffa18f..6a2c816 100755
+--- a/check-style.py
++++ b/check-style.py
+@@ -1,4 +1,4 @@
+-#!/bin/env python3
++#!/usr/bin/env python3
+ 
+ import argparse
+ import os
+diff --git a/docs/reference/libtracker-sparql/embed-files.py b/docs/reference/libtracker-sparql/embed-files.py
+index ce48558..e2d2ad3 100644
+--- a/docs/reference/libtracker-sparql/embed-files.py
++++ b/docs/reference/libtracker-sparql/embed-files.py
+@@ -1,4 +1,4 @@
+-#!/bin/env python3
++#!/usr/bin/env python3
+ 
+ import os, sys, re
+ 
+diff --git a/docs/reference/libtracker-sparql/merge-json.py b/docs/reference/libtracker-sparql/merge-json.py
+index 7793f91..33a0915 100644
+--- a/docs/reference/libtracker-sparql/merge-json.py
++++ b/docs/reference/libtracker-sparql/merge-json.py
+@@ -1,4 +1,4 @@
+-#!/bin/env python3
++#!/usr/bin/env python3
+ import json, sys
+ 
+ index = json.load(open(sys.argv[1]))
