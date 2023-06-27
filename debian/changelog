@@ -1,3 +1,10 @@
+tracker (3.4.2-3) unstable; urgency=medium
+
+  [ Manuel A. Fernandez Montecelo ]
+  * Increase dh_auto_test timeout (Closes: #1026236)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Tue, 27 Jun 2023 12:09:03 -0400
+
 tracker (3.4.2-2) unstable; urgency=medium
 
   * Cherry-pick proposed patch to fix tests with sqlite 3.42
