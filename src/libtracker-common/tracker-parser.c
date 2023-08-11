@@ -36,14 +36,11 @@ static void (*parser_reset) (TrackerParser *parser,
                              guint          max_word_length,
                              gboolean       enable_stemmer,
                              gboolean       enable_unaccent,
-                             gboolean       ignore_stop_words,
-                             gboolean       ignore_reserved_words,
                              gboolean       ignore_numbers);
 static const gchar * (*parser_next) (TrackerParser *parser,
                                      gint          *position,
                                      gint          *byte_offset_start,
                                      gint          *byte_offset_end,
-                                     gboolean      *stop_word,
                                      gint          *word_length);
 static gpointer (*collation_init) (void);
 static void (*collation_shutdown) (gpointer collator);
@@ -86,7 +83,10 @@ ensure_init_parser (void)
 		g_assert (g_module_supported ());
 
 		for (i = 0; i < G_N_ELEMENTS (modules); i++) {
-			if (g_strcmp0 (g_get_current_dir (), BUILDROOT) == 0) {
+			gchar *current_dir;
+
+			current_dir = g_get_current_dir ();
+			if (g_strcmp0 (current_dir, BUILDROOT) == 0) {
 				/* Detect in-build runtime of this code, this may happen
 				 * building introspection information or running tests.
 				 * We want the in-tree modules to be loaded then.
@@ -100,6 +100,7 @@ ensure_init_parser (void)
 			                               G_MODULE_BIND_LAZY |
 			                               G_MODULE_BIND_LOCAL);
 			g_free (module_path);
+			g_free (current_dir);
 
 			if (module)
 				break;
@@ -151,16 +152,12 @@ tracker_parser_reset (TrackerParser *parser,
                       guint          max_word_length,
                       gboolean       enable_stemmer,
                       gboolean       enable_unaccent,
-                      gboolean       ignore_stop_words,
-                      gboolean       ignore_reserved_words,
                       gboolean       ignore_numbers)
 {
 	parser_reset (parser, txt, txt_size,
 	              max_word_length,
 	              enable_stemmer,
 	              enable_unaccent,
-	              ignore_stop_words,
-	              ignore_reserved_words,
 	              ignore_numbers);
 }
 
@@ -169,13 +166,11 @@ tracker_parser_next (TrackerParser *parser,
                      gint          *position,
                      gint          *byte_offset_start,
                      gint          *byte_offset_end,
-                     gboolean      *stop_word,
                      gint          *word_length)
 {
 	return parser_next (parser, position,
 	                    byte_offset_start,
 	                    byte_offset_end,
-	                    stop_word,
 	                    word_length);
 }
 
