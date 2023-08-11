@@ -1,5 +1,6 @@
 libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
 * Build-Depends-Package: libtracker-sparql-3.0-dev
+ tracker_batch_add_rdf@Base 3.6~beta
  tracker_batch_add_resource@Base 3.1.1
  tracker_batch_add_sparql@Base 3.1.1
  tracker_batch_add_statement@Base 3.5.0~beta
