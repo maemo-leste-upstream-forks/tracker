@@ -1,6 +1,6 @@
 project('tracker', 'c',
-        version: '3.5.3',
-        meson_version: '>=0.55',
+        version: '3.6.beta',
+        meson_version: '>=0.62',
         default_options: [
           'c_std=c99',
           'warning_level=2'])
@@ -18,7 +18,7 @@ tracker_versioned_name = 'tracker@0@'.format(tracker_api_major)
 tracker_version = meson.project_version().split('-')[0]
 tracker_major_version = tracker_version.split('.')[0].to_int()
 tracker_minor_version = tracker_version.split('.')[1].to_int()
-tracker_micro_version = tracker_version.split('.')[2].to_int()
+tracker_micro_version = 0
 tracker_interface_age = 0
 tracker_binary_age = 100 * tracker_minor_version + tracker_micro_version - tracker_interface_age
 
@@ -330,8 +330,8 @@ conf.set('HAVE_LIBSTEMMER', have_libstemmer)
 
 conf.set('HAVE_STATVFS64', cc.has_header_symbol('sys/statvfs.h', 'statvfs64', args: '-D_LARGEFILE64_SOURCE'))
 
-conf.set('LOCALEDIR', '"@0@/@1@"'.format(get_option('prefix'), get_option('localedir')))
-conf.set('SHAREDIR', '"@0@/@1@"'.format(get_option('prefix'), get_option('datadir')))
+conf.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
+conf.set_quoted('SHAREDIR', get_option('prefix') / get_option('datadir'))
 
 conf.set('GETTEXT_PACKAGE', '"@0@"'.format(tracker_versioned_name))
 conf.set('PACKAGE_VERSION', '"@0@"'.format(meson.project_version()))
@@ -394,7 +394,6 @@ test_c_args = tracker_c_args + [
 
 tracker_uninstalled_cli_dir = join_paths(meson.current_build_dir(), 'src', 'tracker')
 tracker_uninstalled_nepomuk_ontologies_dir = join_paths(meson.current_source_dir(), 'src', 'ontologies', 'nepomuk')
-tracker_uninstalled_stop_words_dir = join_paths(meson.current_source_dir(), 'src', 'libtracker-common', 'stop-words')
 tracker_uninstalled_testutils_dir = join_paths(meson.current_source_dir(), 'utils')
 
 if get_option('tests')
