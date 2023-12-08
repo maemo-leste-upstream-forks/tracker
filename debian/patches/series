@@ -1,3 +1,4 @@
 drop-assert.patch
 libtracker-miners-common-Make-g_error-a-soft-error.patch
 Revert-build-Include-libdir-in-rpath.patch
+0001-libtracker-data-Avoid-deletion-of-empty-rows-in-FTS-.patch
