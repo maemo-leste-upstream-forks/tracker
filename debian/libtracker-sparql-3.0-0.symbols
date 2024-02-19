@@ -14,10 +14,16 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_deserialize_flags_get_type@Base 3.4.0~beta
  tracker_endpoint_dbus_get_type@Base 3.1.1
  tracker_endpoint_dbus_new@Base 3.1.1
+ tracker_endpoint_get_allowed_graphs@Base 3.7~beta
+ tracker_endpoint_get_allowed_services@Base 3.7~beta
+ tracker_endpoint_get_readonly@Base 3.7~beta
  tracker_endpoint_get_sparql_connection@Base 3.1.1
  tracker_endpoint_get_type@Base 3.1.1
  tracker_endpoint_http_get_type@Base 3.1.1
  tracker_endpoint_http_new@Base 3.1.1
+ tracker_endpoint_set_allowed_graphs@Base 3.7~beta
+ tracker_endpoint_set_allowed_services@Base 3.7~beta
+ tracker_endpoint_set_readonly@Base 3.7~beta
  tracker_namespace_manager_add_prefix@Base 1.9.1
  tracker_namespace_manager_compress_uri@Base 3.3.0~beta
  tracker_namespace_manager_expand_uri@Base 1.9.1
@@ -123,6 +129,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_cursor_get_datetime@Base 3.3.0~beta
  tracker_sparql_cursor_get_double@Base 0.10.0
  tracker_sparql_cursor_get_integer@Base 0.10.0
+ tracker_sparql_cursor_get_langstring@Base 3.7~beta
  tracker_sparql_cursor_get_n_columns@Base 0.10.0
  tracker_sparql_cursor_get_string@Base 0.10.0
  tracker_sparql_cursor_get_type@Base 0.10.0
@@ -145,6 +152,7 @@ libtracker-sparql-3.0.so.0 libtracker-sparql-3.0-0 #MINVER#
  tracker_sparql_statement_bind_datetime@Base 3.3.0~beta
  tracker_sparql_statement_bind_double@Base 2.2.0
  tracker_sparql_statement_bind_int@Base 2.2.0
+ tracker_sparql_statement_bind_langstring@Base 3.7~beta
  tracker_sparql_statement_bind_string@Base 2.2.0
  tracker_sparql_statement_clear_bindings@Base 3.1.1
  tracker_sparql_statement_execute@Base 2.2.0
