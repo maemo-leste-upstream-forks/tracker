@@ -12,7 +12,7 @@ then, let's skip these tests.
  2 files changed, 7 insertions(+)
 
 diff --git a/tests/functional-tests/test_cli.py b/tests/functional-tests/test_cli.py
-index b4f1c25..d938366 100644
+index 5e480f2..b9ab1cc 100644
 --- a/tests/functional-tests/test_cli.py
 +++ b/tests/functional-tests/test_cli.py
 @@ -24,6 +24,7 @@ import unittest
@@ -31,7 +31,7 @@ index b4f1c25..d938366 100644
      def test_create_local_database(self):
          """Create a database using `tracker3 endpoint` for local testing"""
  
-@@ -66,6 +68,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+@@ -64,6 +66,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
                  ]
              )
  
@@ -39,7 +39,7 @@ index b4f1c25..d938366 100644
      def test_export(self):
          """Export contents of a Tracker database."""
  
-@@ -87,6 +90,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+@@ -83,6 +86,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
              self.run_cli(["tracker3", "export", "--database", tmpdir])
              self.run_cli(["tracker3", "export", "--database", tmpdir, "--show-graphs"])
  
@@ -47,7 +47,7 @@ index b4f1c25..d938366 100644
      def test_import(self):
          """Import a Turtle file into a Tracker database."""
  
-@@ -107,6 +111,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+@@ -101,6 +105,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
              )
              self.run_cli(["tracker3", "import", "--database", tmpdir, testdata])
  
@@ -56,7 +56,7 @@ index b4f1c25..d938366 100644
          """Create a HTTP endpoint for local testing"""
  
 diff --git a/tests/functional-tests/test_portal.py b/tests/functional-tests/test_portal.py
-index 94b5d47..c45a97d 100644
+index 49e241d..bce7073 100644
 --- a/tests/functional-tests/test_portal.py
 +++ b/tests/functional-tests/test_portal.py
 @@ -31,8 +31,10 @@ import unittest
