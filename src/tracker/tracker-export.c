@@ -109,16 +109,17 @@ create_connection (GError **error)
  * as prefix:rest_of_uri; if not, display as <uri>
  */
 inline static gchar *
-format_urn (GHashTable  *prefixes,
-            const gchar *urn,
-            gboolean     full_namespaces)
+format_urn (TrackerNamespaceManager *namespaces,
+            const gchar             *urn,
+            gboolean                 full_namespaces)
 {
 	gchar *urn_out;
 
 	if (full_namespaces) {
 		urn_out = g_strdup_printf ("<%s>", urn);
 	} else {
-		gchar *shorthand = tracker_sparql_get_shorthand (prefixes, urn);
+		gchar *shorthand =
+			tracker_namespace_manager_compress_uri (namespaces, urn);
 
 		/* If the shorthand is the same as the urn passed, we
 		 * assume it is a resource and pass it in as one,
@@ -145,11 +146,15 @@ format_urn (GHashTable  *prefixes,
 /* Print triples in Turtle format */
 static void
 print_turtle (TrackerSparqlCursor *cursor,
-              GHashTable          *prefixes,
               gboolean             full_namespaces)
 {
+	TrackerSparqlConnection *conn;
+	TrackerNamespaceManager *namespaces;
 	gchar *predicate;
 	gchar *object;
+
+	conn = tracker_sparql_cursor_get_connection (cursor);
+	namespaces = tracker_sparql_connection_get_namespace_manager (conn);
 
 	while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
 		const gchar *resource = tracker_sparql_cursor_get_string (cursor, 1, NULL);
@@ -166,7 +171,7 @@ print_turtle (TrackerSparqlCursor *cursor,
 		//	continue;
 		//}
 
-		predicate = format_urn (prefixes, key, full_namespaces);
+		predicate = format_urn (namespaces, key, full_namespaces);
 
 		if (g_ascii_strcasecmp (value_is_resource, "true") == 0) {
 			object = g_strdup_printf ("<%s>", value);
@@ -190,13 +195,17 @@ print_turtle (TrackerSparqlCursor *cursor,
 /* Print graphs and triples in TriG format */
 static void
 print_trig (TrackerSparqlCursor *cursor,
-            GHashTable          *prefixes,
             gboolean             full_namespaces)
 {
+	TrackerSparqlConnection *conn;
+	TrackerNamespaceManager *namespaces;
 	gchar *predicate;
 	gchar *object;
 	gchar *previous_graph = NULL;
 	const gchar *graph = NULL;
+
+	conn = tracker_sparql_cursor_get_connection (cursor);
+	namespaces = tracker_sparql_connection_get_namespace_manager (conn);
 
 	while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
 		graph = tracker_sparql_cursor_get_string (cursor, 0, NULL);
@@ -224,7 +233,7 @@ print_trig (TrackerSparqlCursor *cursor,
 		//	continue;
 		//}
 
-		predicate = format_urn (prefixes, key, full_namespaces);
+		predicate = format_urn (namespaces, key, full_namespaces);
 
 		if (g_ascii_strcasecmp (value_is_resource, "true") == 0) {
 			object = g_strdup_printf ("<%s>", value);
@@ -418,7 +427,7 @@ export_2to3_with_query (const gchar  *query,
 	db_manager = tracker_db_manager_new (TRACKER_DB_MANAGER_READONLY |
 	                                     TRACKER_DB_MANAGER_SKIP_VERSION_CHECK,
 	                                     store, FALSE,
-	                                     1, 1, NULL, NULL, NULL, NULL, &inner_error);
+	                                     1, NULL, &inner_error);
 
 	if (inner_error) {
 		g_propagate_prefixed_error (error, inner_error,
@@ -453,9 +462,9 @@ export_2to3_with_query (const gchar  *query,
 	if (keyfile) {
 		print_keyfile (cursor);
 	} if (show_graphs) {
-		print_trig (cursor, NULL, FALSE);
+		print_trig (cursor, FALSE);
 	} else {
-		print_turtle (cursor, NULL, FALSE);
+		print_turtle (cursor, FALSE);
 	}
 
 	g_object_unref (cursor);
@@ -529,7 +538,7 @@ export_2to3_run (void)
 }
 
 int
-tracker_export (int argc, const char **argv)
+main (int argc, const char **argv)
 {
 	GOptionContext *context;
 	GError *error = NULL;

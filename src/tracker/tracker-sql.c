@@ -97,7 +97,7 @@ sql_by_query (void)
 {
 	TrackerDBInterface *iface;
 	TrackerDBStatement *stmt = NULL;
-	TrackerDBCursor *cursor = NULL;
+	TrackerSparqlCursor *cursor = NULL;
 	GError *error = NULL;
 	gint n_rows = 0;
 	GFile *db_location;
@@ -107,7 +107,7 @@ sql_by_query (void)
 	db_location = g_file_new_for_commandline_arg (database_path);
 	data_manager = tracker_data_manager_new (TRACKER_DB_MANAGER_READONLY,
 	                                         db_location, NULL,
-	                                         100, 100);
+	                                         100);
 
 	if (!g_initable_init (G_INITABLE (data_manager), NULL, &error)) {
 		g_printerr ("%s: %s\n",
@@ -129,7 +129,7 @@ sql_by_query (void)
 	}
 
 	if (stmt) {
-		cursor = tracker_db_statement_start_cursor (stmt, &error);
+		cursor = TRACKER_SPARQL_CURSOR (tracker_db_statement_start_cursor (stmt, &error));
 	}
 
 	if (error) {
@@ -143,16 +143,16 @@ sql_by_query (void)
 
 	g_print ("%s:\n", _("Results"));
 
-	while (tracker_db_cursor_iter_next (cursor, NULL, &error)) {
-		guint i;
+	while (tracker_sparql_cursor_next (cursor, NULL, &error)) {
+		gint i;
 
-		for (i =  0; i < tracker_db_cursor_get_n_columns (cursor); i++) {
+		for (i =  0; i < tracker_sparql_cursor_get_n_columns (cursor); i++) {
 			const gchar *str;
 
 			if (i)
 				g_print (" | ");
 
-			str = tracker_db_cursor_get_string (cursor, i, NULL);
+			str = tracker_sparql_cursor_get_string (cursor, i, NULL);
 			if (str) {
 				g_print ("%s", str);
 			} else {
@@ -224,7 +224,7 @@ sql_options_enabled (void)
 }
 
 int
-tracker_sql (int argc, const char **argv)
+main (int argc, const char **argv)
 {
 	GOptionContext *context;
 	GError *error = NULL;

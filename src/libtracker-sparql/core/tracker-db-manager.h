@@ -67,11 +67,7 @@ TrackerDBManager   *tracker_db_manager_new                    (TrackerDBManagerF
                                                                GFile                  *cache_location,
                                                                gboolean                shared_cache,
                                                                guint                   select_cache_size,
-                                                               guint                   update_cache_size,
-                                                               TrackerBusyCallback     busy_callback,
-                                                               gpointer                busy_user_data,
                                                                GObject                *iface_data,
-                                                               gpointer                vtab_data,
                                                                GError                **error);
 TrackerDBInterface *tracker_db_manager_get_db_interface       (TrackerDBManager      *db_manager,
                                                                GError               **error);
@@ -82,9 +78,7 @@ gboolean            tracker_db_manager_has_enough_space       (TrackerDBManager 
 gboolean            tracker_db_manager_is_first_time          (TrackerDBManager      *db_manager);
 
 TrackerDBManagerFlags
-                    tracker_db_manager_get_flags              (TrackerDBManager      *db_manager,
-							       guint                 *select_cache_size,
-                                                               guint                 *update_cache_size);
+                    tracker_db_manager_get_flags              (TrackerDBManager      *db_manager);
 
 gboolean            tracker_db_manager_locale_changed         (TrackerDBManager      *db_manager,
                                                                GError               **error);
@@ -109,6 +103,7 @@ void                tracker_db_manager_release_memory         (TrackerDBManager 
 TrackerDBVersion    tracker_db_manager_get_version            (TrackerDBManager      *db_manager);
 void                tracker_db_manager_update_version         (TrackerDBManager      *db_manager);
 
+gboolean tracker_db_manager_needs_integrity_check (TrackerDBManager *db_manager);
 
 G_END_DECLS
 

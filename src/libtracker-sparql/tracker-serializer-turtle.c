@@ -34,6 +34,7 @@ struct _TrackerTriple
 	gchar *subject;
 	gchar *predicate;
 	gchar *object;
+	gchar *object_langtag;
 	TrackerSparqlValueType subject_type;
 	TrackerSparqlValueType object_type;
 };
@@ -65,11 +66,14 @@ static void
 tracker_triple_init_from_cursor (TrackerTriple       *triple,
                                  TrackerSparqlCursor *cursor)
 {
+	const gchar *langtag;
+
 	triple->subject_type = tracker_sparql_cursor_get_value_type (cursor, 0);
 	triple->object_type = tracker_sparql_cursor_get_value_type (cursor, 2);
 	triple->subject = g_strdup (tracker_sparql_cursor_get_string (cursor, 0, NULL));
 	triple->predicate = g_strdup (tracker_sparql_cursor_get_string (cursor, 1, NULL));
-	triple->object = g_strdup (tracker_sparql_cursor_get_string (cursor, 2, NULL));
+	triple->object = g_strdup (tracker_sparql_cursor_get_langstring (cursor, 2, &langtag, NULL));
+	triple->object_langtag = g_strdup (langtag);
 
 	if (triple->subject_type == TRACKER_SPARQL_VALUE_TYPE_STRING) {
 		if (g_str_has_prefix (triple->subject, "urn:bnode:")) {
@@ -92,6 +96,7 @@ tracker_triple_clear (TrackerTriple *triple)
 	g_clear_pointer (&triple->subject, g_free);
 	g_clear_pointer (&triple->predicate, g_free);
 	g_clear_pointer (&triple->object, g_free);
+	g_clear_pointer (&triple->object_langtag, g_free);
 }
 
 static TrackerTripleBreak
@@ -144,10 +149,14 @@ print_value (GString                 *str,
 	case TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE: {
 		gchar *bnode_label;
 
-		bnode_label = g_strdelimit (g_strdup (value), ":", '_');
-		g_string_append (str, "_:");
-		g_string_append (str, bnode_label);
-		g_free (bnode_label);
+		if (g_str_has_prefix (value, "_:")) {
+			g_string_append (str, value);
+		} else {
+			bnode_label = g_strdelimit (g_strdup (value), ":", '_');
+			g_string_append (str, "_:");
+			g_string_append (str, bnode_label);
+			g_free (bnode_label);
+		}
 		break;
 	}
 	case TRACKER_SPARQL_VALUE_TYPE_STRING:
@@ -253,6 +262,11 @@ serialize_up_to_size (TrackerSerializerTurtle *serializer_ttl,
 
 			g_string_append_c (serializer_ttl->data, ' ');
 			print_value (serializer_ttl->data, cur.object, cur.object_type, namespaces);
+
+			if (cur.object_langtag) {
+				g_string_append_c (serializer_ttl->data, '@');
+				g_string_append (serializer_ttl->data, cur.object_langtag);
+			}
 		}
 
 		serializer_ttl->has_triples = TRUE;

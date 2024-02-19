@@ -33,8 +33,6 @@
 #include "tracker-data-manager.h"
 #include "tracker-uuid.h"
 
-#define UNKNOWN_STATUS 0.5
-
 #define MAX_INTERFACES_PER_CPU        16
 #define MAX_INTERFACES                (MAX_INTERFACES_PER_CPU * g_get_num_processors ())
 
@@ -75,19 +73,15 @@ static TrackerDBDefinition db_base = {
 struct _TrackerDBManager {
 	GObject parent_instance;
 	TrackerDBDefinition db;
-	gboolean locations_initialized;
 	gchar *data_dir;
-	gchar *user_data_dir;
 	gchar *in_use_filename;
 	GFile *cache_location;
 	gchar *shared_cache_key;
 	TrackerDBManagerFlags flags;
 	guint s_cache_size;
-	guint u_cache_size;
 	gboolean first_time;
+	gboolean needs_integrity_check;
 	TrackerDBVersion db_version;
-
-	gpointer vtab_data;
 
 	GWeakRef iface_data;
 
@@ -97,7 +91,6 @@ struct _TrackerDBManager {
 enum {
 	SETUP_INTERFACE,
 	UPDATE_INTERFACE,
-	INTEGRITY_CHECK,
 	N_SIGNALS
 };
 
@@ -118,16 +111,8 @@ tracker_db_manager_is_first_time (TrackerDBManager *db_manager)
 }
 
 TrackerDBManagerFlags
-tracker_db_manager_get_flags (TrackerDBManager *db_manager,
-                              guint            *select_cache_size,
-                              guint            *update_cache_size)
+tracker_db_manager_get_flags (TrackerDBManager *db_manager)
 {
-	if (select_cache_size)
-		*select_cache_size = db_manager->s_cache_size;
-
-	if (update_cache_size)
-		*update_cache_size = db_manager->u_cache_size;
-
 	return db_manager->flags;
 }
 
@@ -136,7 +121,7 @@ iface_set_params (TrackerDBInterface   *iface,
                   gboolean              readonly,
                   GError              **error)
 {
-	tracker_db_interface_execute_query (iface, NULL, "PRAGMA encoding = \"UTF-8\"");
+	tracker_db_interface_execute_query (iface, NULL, "PRAGMA encoding = 'UTF-8'");
 
 	if (readonly) {
 		tracker_db_interface_execute_query (iface, NULL, "PRAGMA temp_store = MEMORY;");
@@ -172,11 +157,11 @@ db_set_params (TrackerDBInterface   *iface,
 			         internal_error->message);
 			g_propagate_error (error, internal_error);
 		} else {
-			TrackerDBCursor *cursor;
+			TrackerSparqlCursor *cursor;
 
-			cursor = tracker_db_statement_start_cursor (stmt, NULL);
-			if (tracker_db_cursor_iter_next (cursor, NULL, NULL)) {
-				if (g_ascii_strcasecmp (tracker_db_cursor_get_string (cursor, 0, NULL), "WAL") != 0) {
+			cursor = TRACKER_SPARQL_CURSOR (tracker_db_statement_start_cursor (stmt, NULL));
+			if (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+				if (g_ascii_strcasecmp (tracker_sparql_cursor_get_string (cursor, 0, NULL), "WAL") != 0) {
 					g_set_error (error,
 					             TRACKER_DB_INTERFACE_ERROR,
 					             TRACKER_DB_OPEN_ERROR,
@@ -202,7 +187,7 @@ tracker_db_manager_get_metadata (TrackerDBManager   *db_manager,
 {
 	TrackerDBInterface *iface;
 	TrackerDBStatement *stmt;
-	TrackerDBCursor *cursor;
+	TrackerSparqlCursor *cursor;
 
 	iface = tracker_db_manager_get_writable_db_interface (db_manager);
 	stmt = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_NONE,
@@ -212,15 +197,15 @@ tracker_db_manager_get_metadata (TrackerDBManager   *db_manager,
 		return FALSE;
 
 	tracker_db_statement_bind_text (stmt, 0, key);
-	cursor = tracker_db_statement_start_cursor (stmt, NULL);
+	cursor = TRACKER_SPARQL_CURSOR (tracker_db_statement_start_cursor (stmt, NULL));
 	g_object_unref (stmt);
 
-	if (!cursor || !tracker_db_cursor_iter_next (cursor, NULL, NULL)) {
+	if (!cursor || !tracker_sparql_cursor_next (cursor, NULL, NULL)) {
 		g_clear_object (&cursor);
 		return FALSE;
 	}
 
-	tracker_db_cursor_get_value (cursor, 0, value);
+	tracker_db_cursor_get_value (TRACKER_DB_CURSOR (cursor), 0, value);
 	g_object_unref (cursor);
 
 	return G_VALUE_TYPE (value) != G_TYPE_INVALID;
@@ -258,7 +243,7 @@ db_get_version (TrackerDBManager *db_manager)
 {
 	TrackerDBInterface *iface;
 	TrackerDBStatement *stmt;
-	TrackerDBCursor *cursor;
+	TrackerSparqlCursor *cursor;
 	TrackerDBVersion version;
 
 	iface = tracker_db_manager_get_writable_db_interface (db_manager);
@@ -267,15 +252,15 @@ db_get_version (TrackerDBManager *db_manager)
 	if (!stmt)
 		return TRACKER_DB_VERSION_UNKNOWN;
 
-	cursor = tracker_db_statement_start_cursor (stmt, NULL);
+	cursor = TRACKER_SPARQL_CURSOR (tracker_db_statement_start_cursor (stmt, NULL));
 	g_object_unref (stmt);
 
-	if (!cursor || !tracker_db_cursor_iter_next (cursor, NULL, NULL)) {
+	if (!cursor || !tracker_sparql_cursor_next (cursor, NULL, NULL)) {
 		g_clear_object (&cursor);
 		return TRACKER_DB_VERSION_UNKNOWN;
 	}
 
-	version = tracker_db_cursor_get_int (cursor, 0);
+	version = tracker_sparql_cursor_get_integer (cursor, 0);
 	g_object_unref (cursor);
 
 	return version;
@@ -387,11 +372,6 @@ tracker_db_manager_ensure_location (TrackerDBManager *db_manager,
 		return;
 	}
 
-	if (db_manager->locations_initialized) {
-		return;
-	}
-
-	db_manager->locations_initialized = TRUE;
 	db_manager->data_dir = g_file_get_path (cache_location);
 
 	db_manager->db = db_base;
@@ -447,7 +427,7 @@ db_check_integrity (TrackerDBManager *db_manager)
 {
 	GError *internal_error = NULL;
 	TrackerDBStatement *stmt;
-	TrackerDBCursor *cursor = NULL;
+	TrackerSparqlCursor *cursor = NULL;
 	gboolean handled = FALSE;
 
 	stmt = tracker_db_interface_create_statement (db_manager->db.iface, TRACKER_DB_STATEMENT_CACHE_TYPE_NONE,
@@ -463,14 +443,14 @@ db_check_integrity (TrackerDBManager *db_manager)
 		return FALSE;
 	}
 
-	cursor = tracker_db_statement_start_cursor (stmt, NULL);
+	cursor = TRACKER_SPARQL_CURSOR (tracker_db_statement_start_cursor (stmt, NULL));
 	g_object_unref (stmt);
 
 	if (cursor) {
-		if (tracker_db_cursor_iter_next (cursor, NULL, NULL)) {
+		if (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
 			const gchar *check_result;
 
-			check_result = tracker_db_cursor_get_string (cursor, 0, NULL);
+			check_result = tracker_sparql_cursor_get_string (cursor, 0, NULL);
 			if (g_strcmp0 (check_result, "ok") != 0) {
 				g_message ("Corrupt database: sqlite integrity check returned '%s'", check_result);
 				return FALSE;
@@ -479,7 +459,7 @@ db_check_integrity (TrackerDBManager *db_manager)
 		g_object_unref (cursor);
 	}
 
-	g_signal_emit (db_manager, signals[INTEGRITY_CHECK], 0, db_manager->db.iface, &handled);
+	db_manager->needs_integrity_check = TRUE;
 
 	/* Someone raised an error */
 	if (handled)
@@ -493,11 +473,7 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
                         GFile                  *cache_location,
                         gboolean                shared_cache,
                         guint                   select_cache_size,
-                        guint                   update_cache_size,
-                        TrackerBusyCallback     busy_callback,
-                        gpointer                busy_user_data,
                         GObject                *iface_data,
-                        gpointer                vtab_data,
                         GError                **error)
 {
 	TrackerDBManager *db_manager;
@@ -507,7 +483,6 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 	gboolean need_to_create = FALSE;
 
 	db_manager = g_object_new (TRACKER_TYPE_DB_MANAGER, NULL);
-	db_manager->vtab_data = vtab_data;
 
 	/* Set default value for first_time */
 	db_manager->first_time = FALSE;
@@ -515,7 +490,6 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 	/* Set up locations */
 	db_manager->flags = flags;
 	db_manager->s_cache_size = select_cache_size;
-	db_manager->u_cache_size = update_cache_size;
 	db_manager->interfaces = g_async_queue_new_full (g_object_unref);
 
 	g_set_object (&db_manager->cache_location, cache_location);
@@ -585,8 +559,6 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 		}
 	}
 
-	db_manager->locations_initialized = TRUE;
-
 	if ((flags & TRACKER_DB_MANAGER_READONLY) != 0) {
 		GValue value = G_VALUE_INIT;
 		TrackerDBManagerFlags fts_flags = 0;
@@ -611,8 +583,7 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 	if (need_to_create) {
 		db_manager->first_time = TRUE;
 
-		if ((db_manager->flags & TRACKER_DB_MANAGER_IN_MEMORY) == 0 &&
-		     !tracker_file_system_has_enough_space (db_manager->data_dir, TRACKER_DB_MIN_REQUIRED_SPACE, TRUE)) {
+		if (!tracker_db_manager_has_enough_space (db_manager)) {
 			g_set_error (error,
 			             TRACKER_DB_INTERFACE_ERROR,
 			             TRACKER_DB_OPEN_ERROR,
@@ -663,8 +634,6 @@ tracker_db_manager_new (TrackerDBManagerFlags   flags,
 					g_object_unref (db_manager);
 					return NULL;
 				}
-
-				busy_callback ("Integrity checking", 0, busy_user_data);
 
 				if (db_check_integrity (db_manager) == FALSE) {
 					g_set_error (error,
@@ -744,6 +713,7 @@ tracker_db_manager_create_db_interface (TrackerDBManager  *db_manager,
 	TrackerDBInterface *connection;
 	GError *internal_error = NULL;
 	TrackerDBInterfaceFlags flags = 0;
+	GObject *user_data;
 
 	if (readonly)
 		flags |= TRACKER_DB_INTERFACE_READONLY;
@@ -761,12 +731,11 @@ tracker_db_manager_create_db_interface (TrackerDBManager  *db_manager,
 		return NULL;
 	}
 
-	tracker_db_interface_set_user_data (connection,
-	                                    g_weak_ref_get (&db_manager->iface_data),
-	                                    g_object_unref);
+	user_data = g_weak_ref_get (&db_manager->iface_data);
+	tracker_db_interface_set_user_data (connection, user_data);
+	g_object_unref (user_data);
 
-	if (db_manager->vtab_data)
-		tracker_db_interface_init_vtabs (connection, db_manager->vtab_data);
+	tracker_db_interface_init_vtabs (connection);
 
 	iface_set_params (connection,
 	                  readonly,
@@ -783,15 +752,14 @@ tracker_db_manager_create_db_interface (TrackerDBManager  *db_manager,
 		return NULL;
 	}
 
+	if (!tracker_db_interface_sqlite_fts_init (connection,
+	                                           db_manager->flags,
+	                                           error))
+		return FALSE;
+
 	tracker_db_interface_set_max_stmt_cache_size (connection,
 	                                              TRACKER_DB_STATEMENT_CACHE_TYPE_SELECT,
 	                                              db_manager->s_cache_size);
-
-	if (!readonly) {
-		tracker_db_interface_set_max_stmt_cache_size (connection,
-		                                              TRACKER_DB_STATEMENT_CACHE_TYPE_UPDATE,
-		                                              db_manager->u_cache_size);
-	}
 
 	return connection;
 }
@@ -899,14 +867,6 @@ tracker_db_manager_class_init (TrackerDBManagerClass *klass)
                              NULL, NULL,
                              g_cclosure_marshal_VOID__OBJECT,
                              G_TYPE_NONE,
-                             1, TRACKER_TYPE_DB_INTERFACE);
-	signals[INTEGRITY_CHECK] =
-               g_signal_new ("integrity-check",
-                             G_TYPE_FROM_CLASS (klass),
-                             G_SIGNAL_RUN_LAST, 0,
-                             g_signal_accumulator_true_handled,
-                             NULL, NULL,
-                             G_TYPE_BOOLEAN,
                              1, TRACKER_TYPE_DB_INTERFACE);
 }
 
@@ -1144,3 +1104,15 @@ tracker_db_manager_get_version (TrackerDBManager *db_manager)
 {
 	return db_manager->db_version;
 }
+
+gboolean
+tracker_db_manager_needs_integrity_check (TrackerDBManager *db_manager)
+{
+	gboolean needs_integrity_check;
+
+	needs_integrity_check = db_manager->needs_integrity_check;
+	db_manager->needs_integrity_check = FALSE;
+
+	return needs_integrity_check;
+}
+

@@ -339,20 +339,20 @@ test_tracker_sparql_query_iterate_async_cancel (gpointer      fixture,
 TrackerSparqlConnection *
 create_local_connection (GError **error)
 {
-        TrackerSparqlConnection *conn;
-        GFile *store, *ontology;
-        gchar *path;
+	TrackerSparqlConnection *conn;
+	GFile *store, *ontology;
+	gchar *path;
 
-        path = g_build_filename (g_get_tmp_dir (), "libtracker-sparql-test-XXXXXX", NULL);
-        g_mkdtemp_full (path, 0700);
-        store = g_file_new_for_path (path);
-        g_free (path);
+	path = g_build_filename (g_get_tmp_dir (), "libtracker-sparql-test-XXXXXX", NULL);
+	g_mkdtemp_full (path, 0700);
+	store = g_file_new_for_path (path);
+	g_free (path);
 
-        ontology = g_file_new_for_path (TEST_ONTOLOGIES_DIR);
+	ontology = tracker_sparql_get_ontology_nepomuk ();
 
-        conn = tracker_sparql_connection_new (0, store, ontology, NULL, error);
-        g_object_unref (store);
-        g_object_unref (ontology);
+	conn = tracker_sparql_connection_new (0, store, ontology, NULL, error);
+	g_object_unref (store);
+	g_object_unref (ontology);
 
         return conn;
 }
@@ -606,6 +606,43 @@ test_tracker_sparql_cursor_get_value_type (gpointer      fixture,
 	tracker_sparql_cursor_close (cursor);
 }
 
+static void
+test_tracker_sparql_cursor_get_langstring (gpointer      fixture,
+                                           gconstpointer user_data)
+{
+	TrackerSparqlConnection *conn = (TrackerSparqlConnection *) user_data;
+	TrackerSparqlCursor *cursor;
+	GError *error = NULL;
+	const gchar *str, *langtag;
+	glong len;
+
+	cursor = tracker_sparql_connection_query (conn,
+	                                          "SELECT ('Hola'@es AS ?greeting) { }",
+						  NULL, &error);
+	g_assert_no_error (error);
+	g_assert_true (cursor != NULL);
+	g_assert_true (tracker_sparql_cursor_get_connection (cursor) == conn);
+
+	tracker_sparql_cursor_next (cursor, NULL, &error);
+	g_assert_no_error (error);
+
+	g_assert_cmpint (tracker_sparql_cursor_get_value_type (cursor, 0),
+			 ==, TRACKER_SPARQL_VALUE_TYPE_STRING);
+	g_assert_cmpstr (tracker_sparql_cursor_get_variable_name (cursor, 0),
+	                 ==, "greeting");
+
+	str = tracker_sparql_cursor_get_langstring (cursor, 0, &langtag, &len);
+	g_assert_cmpstr (str, ==, "Hola");
+	g_assert_cmpstr (langtag, ==, "es");
+	g_assert_cmpint (len, ==, 4);
+
+	str = tracker_sparql_cursor_get_string (cursor, 0, &len);
+	g_assert_cmpstr (str, ==, "Hola");
+	g_assert_cmpint (len, ==, 4);
+
+	tracker_sparql_cursor_close (cursor);
+}
+
 typedef struct {
 	const gchar *name;
 	GTestFixtureFunc func;
@@ -622,6 +659,7 @@ TestInfo tests[] = {
 	{ "tracker_sparql_cursor_next_async", test_tracker_sparql_cursor_next_async },
 	{ "tracker_sparql_cursor_get_variable_name", test_tracker_sparql_cursor_get_variable_name },
 	{ "tracker_sparql_cursor_get_value_type", test_tracker_sparql_cursor_get_value_type },
+	{ "tracker_sparql_cursor_get_langstring", test_tracker_sparql_cursor_get_langstring },
 };
 
 static void
