@@ -1,5 +1,5 @@
 project('tracker', 'c',
-        version: '3.6.0',
+        version: '3.7.beta',
         meson_version: '>=0.62',
         default_options: [
           'c_std=c99',
@@ -18,7 +18,11 @@ tracker_versioned_name = 'tracker@0@'.format(tracker_api_major)
 tracker_version = meson.project_version().split('-')[0]
 tracker_major_version = tracker_version.split('.')[0].to_int()
 tracker_minor_version = tracker_version.split('.')[1].to_int()
-tracker_micro_version = 0
+version_micro = tracker_version.split('.')[2]
+if version_micro.to_upper() != version_micro.to_lower()
+    version_micro = '0'
+endif
+tracker_micro_version = version_micro.to_int()
 tracker_interface_age = 0
 tracker_binary_age = 100 * tracker_minor_version + tracker_micro_version - tracker_interface_age
 
@@ -54,6 +58,8 @@ json_glib = dependency('json-glib-1.0', version: '>= 1.4', required: true)
 libxml2 = dependency('libxml-2.0', version: '> 2.6')
 sqlite = dependency('sqlite3', version: '>' + sqlite_required)
 dbus = dependency('dbus-1')
+avahi_glib = dependency('avahi-glib', required: get_option('avahi'))
+avahi_client = dependency('avahi-client', required: get_option('avahi'))
 
 gvdb_dep = dependency('gvdb')
 
@@ -83,6 +89,8 @@ endif
 if not libsoup2.found() and not libsoup3.found()
   error('At least one of libsoup2 or libsoup3 is required')
 endif
+
+have_avahi = avahi_glib.found() and avahi_client.found()
 
 libmath = cc.find_library('m', required: false)
 libdl = cc.find_library('dl')
@@ -211,15 +219,15 @@ result = cc.run('''
   int main (int argc, char *argv[]) {
     char *modifiers[] = { "%Y", "%C%y", "%4Y", "%2C%y", NULL };
     time_t timestamp = -58979923200; /* 0101-01-01T01:01:01Z */
-    char *buf[100];
+    char buf[100];
     struct tm tm;
     int i;
     gmtime_r (&timestamp, &tm);
     for (i = 0; modifiers[i]; i++) {
-      strftime (&buf, sizeof buf, modifiers[i], &tm);
-      if (strcmp (&buf, "0101") == 0) {
+      strftime (buf, sizeof buf, modifiers[i], &tm);
+      if (strcmp (buf, "0101") == 0) {
         printf ("%s", modifiers[i]);
-	return 0;
+        return 0;
       }
     }
     return -1;
@@ -327,6 +335,7 @@ conf = configuration_data()
 # Config that goes in config.h
 
 conf.set('HAVE_LIBSTEMMER', have_libstemmer)
+conf.set('HAVE_AVAHI', have_avahi)
 
 conf.set('HAVE_STATVFS64', cc.has_header_symbol('sys/statvfs.h', 'statvfs64', args: '-D_LARGEFILE64_SOURCE'))
 
@@ -374,10 +383,6 @@ po_subdir = join_paths(source_root, 'po')
 
 tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-' + tracker_api_version)
 
-# NOTE: We don't use ${TRACKER_API_VERSION} because other content like
-# the ontology is installed to the same location.
-tracker_ontologies_dir = join_paths(get_option('prefix'), get_option('datadir'), tracker_versioned_name, 'ontologies')
-
 if gobject_introspection.found()
   typelib_dir = gobject_introspection.get_variable(pkgconfig: 'typelibdir',
                                                    pkgconfig_define: [ 'libdir', libdir ])
@@ -393,7 +398,6 @@ test_c_args = tracker_c_args + [
 ]
 
 tracker_uninstalled_cli_dir = join_paths(meson.current_build_dir(), 'src', 'tracker')
-tracker_uninstalled_nepomuk_ontologies_dir = join_paths(meson.current_source_dir(), 'src', 'ontologies', 'nepomuk')
 tracker_uninstalled_testutils_dir = join_paths(meson.current_source_dir(), 'utils')
 
 if get_option('tests')
@@ -441,6 +445,7 @@ summary = [
   '    API documentation:                      ' + get_option('docs').to_string(),
   '    CLI documentation (manpages):           ' + get_option('man').to_string(),
   '    Libsoup backends:                       ' + soup_backends,
+  '    Avahi DNS-SD on HTTP endpoints:         ' + have_avahi.to_string(),
 ]
 
 if get_option('bash_completion')

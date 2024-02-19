@@ -254,6 +254,9 @@ rdf_types (TestFixture   *test_fixture,
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
 	GDateTime *datetime;
+	const gchar *langtag;
+	gboolean retval;
+	glong len;
 
 	datetime = g_date_time_new_utc (2020, 01, 01, 01, 01, 01);
 
@@ -264,6 +267,7 @@ rdf_types (TestFixture   *test_fixture,
 	                                                  "  (~double AS ?double)"
 	                                                  "  (~bool AS ?bool)"
 	                                                  "  (~datetime AS ?datetime)"
+	                                                  "  (~langString AS ?langString)"
 	                                                  "{ }",
 	                                                  NULL,
 	                                                  &error);
@@ -274,18 +278,31 @@ rdf_types (TestFixture   *test_fixture,
 	tracker_sparql_statement_bind_double (stmt, "double", 42.2);
 	tracker_sparql_statement_bind_boolean (stmt, "bool", TRUE);
 	tracker_sparql_statement_bind_datetime (stmt, "datetime", datetime);
+	tracker_sparql_statement_bind_langstring (stmt, "langString", "Hola", "es");
 
 	cursor = tracker_sparql_statement_execute (stmt, NULL, &error);
 	g_assert_no_error (error);
 
-	g_assert_true (tracker_sparql_cursor_next (cursor, NULL, &error));
+	retval = tracker_sparql_cursor_next (cursor, NULL, &error);
 	g_assert_no_error (error);
+	g_assert_true (retval);
 
-	g_assert_cmpstr (tracker_sparql_cursor_get_string (cursor, 0, NULL), ==, "Hello");
+	g_assert_cmpstr (tracker_sparql_cursor_get_string (cursor, 0, &len), ==, "Hello");
+	g_assert_cmpint (len, ==, strlen ("Hello"));
 	g_assert_cmpint (tracker_sparql_cursor_get_integer (cursor, 1), ==, 42);
 	g_assert_cmpfloat (tracker_sparql_cursor_get_double (cursor, 2), ==, 42.2);
 	g_assert_cmpint (tracker_sparql_cursor_get_boolean (cursor, 3), ==, TRUE);
 	g_assert_true (g_date_time_equal (tracker_sparql_cursor_get_datetime (cursor, 4), datetime));
+	g_assert_cmpstr (tracker_sparql_cursor_get_langstring (cursor, 5, &langtag, &len), ==, "Hola");
+	g_assert_cmpstr (langtag, ==, "es");
+	g_assert_cmpint (len, ==, strlen ("Hola"));
+
+	/* Check strings and langstrings the other way around too */
+	g_assert_cmpstr (tracker_sparql_cursor_get_langstring (cursor, 0, &langtag, &len), ==, "Hello");
+	g_assert_cmpstr (langtag, ==, NULL);
+	g_assert_cmpint (len, ==, strlen ("Hello"));
+	g_assert_cmpstr (tracker_sparql_cursor_get_string (cursor, 5, &len), ==, "Hola");
+	g_assert_cmpint (len, ==, strlen ("Hola"));
 
 	g_date_time_unref (datetime);
 	g_object_unref (stmt);
@@ -346,7 +363,7 @@ stmt_update (TestFixture   *test_fixture,
 	GError *error = NULL;
 
 	stmt = tracker_sparql_connection_update_statement (test_fixture->conn,
-	                                                   "INSERT DATA { ~res a rdfs:Resource }",
+	                                                   "INSERT DATA { ~res a rdfs:Resource ; rdfs:label ~label }",
 	                                                   NULL,
 	                                                   &error);
 	g_assert_no_error (error);
@@ -360,17 +377,19 @@ stmt_update (TestFixture   *test_fixture,
 	g_assert_nonnull (stmt);
 
 	tracker_sparql_statement_bind_string (stmt, "res", "http://example.com/a");
+	tracker_sparql_statement_bind_string (stmt, "label", "Label");
 	tracker_sparql_statement_update (stmt, NULL, &error);
 	g_assert_no_error (error);
 
 	tracker_sparql_statement_bind_string (stmt, "res", "http://example.com/b");
+	tracker_sparql_statement_bind_langstring (stmt, "label", "Etiqueta", "es");
 	tracker_sparql_statement_update (stmt, NULL, &error);
 	g_assert_no_error (error);
 
 	/* Check that data was inserted */
 	cursor = tracker_sparql_connection_query (test_fixture->conn,
-	                                          "ASK { <http://example.com/a> a rdfs:Resource ."
-	                                          "      <http://example.com/b> a rdfs:Resource ."
+	                                          "ASK { <http://example.com/a> a rdfs:Resource ; rdfs:label 'Label' ."
+	                                          "      <http://example.com/b> a rdfs:Resource ; rdfs:label 'Etiqueta'@es ."
 	                                          "}",
 	                                          NULL,
 	                                          &error);
@@ -449,18 +468,77 @@ stmt_update_async (TestFixture   *test_fixture,
 	g_object_unref (stmt);
 }
 
+static void
+stmt_fts (TestFixture   *test_fixture,
+          gconstpointer  context)
+{
+	TrackerSparqlStatement *stmt;
+	TrackerSparqlCursor *cursor;
+	GError *error = NULL;
+	gboolean retval;
+
+	/* FIXME: We are relying on this insertion to happen in prior tests for the HTTP connection test */
+	if (strstr (G_OBJECT_TYPE_NAME (test_fixture->conn), "Remote") == NULL) {
+		tracker_sparql_connection_update (test_fixture->conn,
+		                                  "INSERT DATA { "
+		                                  "  <http://example.com/fts1> a nmm:MusicPiece ; nie:title '''abc''' ."
+		                                  "  <http://example.com/fts2> a nmm:MusicPiece ; nie:title '''def''' ."
+		                                  "}",
+		                                  NULL,
+		                                  &error);
+		g_assert_no_error (error);
+	}
+
+	stmt = tracker_sparql_connection_query_statement (test_fixture->conn,
+	                                                  "SELECT ?u { ?u fts:match ~arg }",
+	                                                  NULL,
+	                                                  &error);
+	g_assert_no_error (error);
+
+	/* Search one element */
+	tracker_sparql_statement_bind_string (stmt, "arg", "abc");
+	cursor = tracker_sparql_statement_execute (stmt, NULL, &error);
+	g_assert_no_error (error);
+	retval = tracker_sparql_cursor_next (cursor, NULL, &error);
+	g_assert_no_error (error);
+	g_assert_true (retval);
+	g_assert_cmpstr (tracker_sparql_cursor_get_string (cursor, 0, NULL), ==, "http://example.com/fts1");
+	g_clear_object (&cursor);
+
+	/* Search another element */
+	tracker_sparql_statement_bind_string (stmt, "arg", "def");
+	cursor = tracker_sparql_statement_execute (stmt, NULL, &error);
+	g_assert_no_error (error);
+	retval = tracker_sparql_cursor_next (cursor, NULL, &error);
+	g_assert_no_error (error);
+	g_assert_true (retval);
+	g_assert_cmpstr (tracker_sparql_cursor_get_string (cursor, 0, NULL), ==, "http://example.com/fts2");
+	g_clear_object (&cursor);
+
+	/* Search with mo matches */
+	tracker_sparql_statement_bind_string (stmt, "arg", "xyz");
+	cursor = tracker_sparql_statement_execute (stmt, NULL, &error);
+	g_assert_no_error (error);
+	retval = tracker_sparql_cursor_next (cursor, NULL, &error);
+	g_assert_no_error (error);
+	g_assert_false (retval);
+	g_clear_object (&cursor);
+
+	g_clear_object (&stmt);
+}
+
 TrackerSparqlConnection *
 create_local_connection (GError **error)
 {
-        TrackerSparqlConnection *conn;
-        GFile *ontology;
+	TrackerSparqlConnection *conn;
+	GFile *ontology;
 
-        ontology = g_file_new_for_path (TEST_ONTOLOGIES_DIR);
+	ontology = tracker_sparql_get_ontology_nepomuk ();
 
-        conn = tracker_sparql_connection_new (0, NULL, ontology, NULL, error);
-        g_object_unref (ontology);
+	conn = tracker_sparql_connection_new (0, NULL, ontology, NULL, error);
+	g_object_unref (ontology);
 
-        return conn;
+	return conn;
 }
 
 static gpointer
@@ -539,6 +617,7 @@ TestFuncData test_funcs[] = {
 	{ "execute_async", execute_async },
 	{ "update", stmt_update },
 	{ "update_async", stmt_update_async },
+	{ "fts", stmt_fts },
 };
 
 static void

@@ -128,7 +128,7 @@ expand_uri (TrackerDeserializerResource *deserializer,
 	TrackerNamespaceManager *namespaces;
 
 	if (strncmp (uri, "_:", 2) == 0)
-		return g_strdup (&uri[2]);
+		return g_strdup (uri);
 
 	namespaces = tracker_deserializer_get_namespaces (TRACKER_DESERIALIZER (deserializer));
 
@@ -197,7 +197,11 @@ value_type_from_gtype (const GValue *value)
 		else
 			return TRACKER_SPARQL_VALUE_TYPE_URI;
 	} else if (G_VALUE_HOLDS (value, TRACKER_TYPE_URI)) {
-		return TRACKER_SPARQL_VALUE_TYPE_URI;
+		const gchar *uri = g_value_get_string (value);
+		if (g_str_has_prefix (uri, "_:"))
+			return TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE;
+		else
+			return TRACKER_SPARQL_VALUE_TYPE_URI;
 	} else if (G_VALUE_HOLDS (value, G_TYPE_STRING)) {
 		return TRACKER_SPARQL_VALUE_TYPE_STRING;
 	} else if (G_VALUE_HOLDS (value, G_TYPE_BOOLEAN)) {
@@ -252,14 +256,20 @@ tracker_deserializer_resource_get_value_type (TrackerSparqlCursor *cursor,
 }
 
 static const gchar *
-tracker_deserializer_resource_get_string (TrackerSparqlCursor *cursor,
-                                          gint                 col,
-                                          glong               *length)
+tracker_deserializer_resource_get_string (TrackerSparqlCursor  *cursor,
+                                          gint                  col,
+                                          const gchar         **langtag,
+                                          glong                *length)
 {
 	TrackerDeserializerResource *deserializer =
 		TRACKER_DESERIALIZER_RESOURCE (cursor);
 	const gchar *str = NULL;
 	ResourceStack *item;
+
+	if (length)
+		*length = 0;
+	if (langtag)
+		*langtag = NULL;
 
 	item = peek_stack (deserializer);
 	if (!item)

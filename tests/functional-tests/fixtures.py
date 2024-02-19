@@ -94,7 +94,7 @@ class TrackerSparqlDirectTest(ut.TestCase):
             self.conn = Tracker.SparqlConnection.new(
                 Tracker.SparqlConnectionFlags.NONE,
                 Gio.File.new_for_path(self.tmpdir),
-                Gio.File.new_for_path(cfg.ontologies_dir()),
+                Tracker.sparql_get_ontology_nepomuk(),
                 None,
             )
 
@@ -128,7 +128,7 @@ class TrackerSparqlBusTest(ut.TestCase):
         conn = Tracker.SparqlConnection.new(
             Tracker.SparqlConnectionFlags.NONE,
             Gio.File.new_for_path(tmpdir),
-            Gio.File.new_for_path(cfg.ontologies_dir()),
+            Tracker.sparql_get_ontology_nepomuk(),
             None,
         )
 
@@ -190,7 +190,7 @@ class TrackerPortalTest(ut.TestCase):
         conn = Tracker.SparqlConnection.new(
             Tracker.SparqlConnectionFlags.NONE,
             None,
-            Gio.File.new_for_path(cfg.ontologies_dir()),
+            Tracker.sparql_get_ontology_nepomuk(),
             None,
         )
 
@@ -304,7 +304,7 @@ class TrackerPortalTest(ut.TestCase):
         return Tracker.SparqlConnection.new(
             Tracker.SparqlConnectionFlags.NONE,
             None,
-            Gio.File.new_for_path(cfg.ontologies_dir()),
+            Tracker.sparql_get_ontology_nepomuk(),
             None,
         )
 
@@ -319,9 +319,7 @@ class TrackerCommandLineTestCase(ut.TestCase):
 
         path = self.env.get("PATH", []).split(":")
         self.env["PATH"] = ":".join([cfg.cli_dir()] + path)
-        self.env["TRACKER_CLI_SUBCOMMANDS_DIR"] = os.path.join(
-            cfg.cli_dir(), "subcommands"
-        )
+        self.env["TRACKER_CLI_DIR"] = cfg.cli_dir()
         self.bg_processes = []
 
     def tearDown(self):
