@@ -1,2 +1,5 @@
 disable-some-failing-tests.patch
 docs-Switch-shebang-to-bash-since-popd-and-pushd-are-bash.patch
+Revert-core-Define-_TIME_BITS-64-to-ensure-64-bit-time-in.patch
+Revert-build-Detect-appropriate-strftime-year-modifier-at.patch
+Revert-core-Use-direct-strftime-on-SparqlPrintValue.patch
