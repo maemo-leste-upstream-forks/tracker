@@ -1,3 +1,10 @@
+tracker (3.7~beta-2) experimental; urgency=medium
+
+  * Revert a commit & 2 fixups that broke build tests on 32-bit
+    (Closes: #1035903)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 23 Feb 2024 21:50:34 -0500
+
 tracker (3.7~beta-1) experimental; urgency=medium
 
   * New upstream release
