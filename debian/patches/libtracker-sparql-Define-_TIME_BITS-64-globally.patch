@@ -1,0 +1,55 @@
+From: Carlos Garnacho <carlosg@gnome.org>
+Date: Tue, 27 Feb 2024 10:56:59 +0100
+Subject: libtracker-sparql: Define _TIME_BITS=64 globally
+
+Our current attempts to use 64-bit support for timestamps in
+32-bit platforms are spoiled. Define this globally so it will
+be correctly picked up, there are two things worth mentioning:
+
+- This was made optional by glibc developers since there are
+  chances of ABI breakage if the affected types are exposed in
+  API. Our API and headers however don't expose any of the
+  affected system headers and types, and our outward representation
+  of dates is always either string or GDateTime. This change should
+  not introduce the possibility of such ABI breakages.
+
+- This define mandates the use of _FILE_OFFSET_BITS=64 too, but
+  meson does provide this for us out of the box.
+
+Closes: https://gitlab.gnome.org/GNOME/tracker/-/issues/398
+(cherry picked from commit e9cc579a402d7c3e21eef25eeff129aac3126956)
+
+Origin: future 3.7.rc
+---
+ meson.build                                              | 3 +++
+ src/libtracker-sparql/core/tracker-db-interface-sqlite.c | 3 ---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 7e735ec..df77c30 100644
+--- a/meson.build
++++ b/meson.build
+@@ -372,6 +372,9 @@ tracker_c_args = [
+ 
+   # Needed for statvfs64, and probably other stuff
+   '-D_LARGEFILE64_SOURCE',
++
++  # Needed for 64-bit time_t handling in 32-bit platforms
++  '-D_TIME_BITS=64',
+ ]
+ 
+ configinc = include_directories('./')
+diff --git a/src/libtracker-sparql/core/tracker-db-interface-sqlite.c b/src/libtracker-sparql/core/tracker-db-interface-sqlite.c
+index 482ff52..7066508 100644
+--- a/src/libtracker-sparql/core/tracker-db-interface-sqlite.c
++++ b/src/libtracker-sparql/core/tracker-db-interface-sqlite.c
+@@ -19,9 +19,6 @@
+ 
+ #include "config.h"
+ 
+-/* 64-bit time on 32-bit platforms */
+-#define _TIME_BITS 64
+-
+ #include <glib/gstdio.h>
+ 
+ #include <sqlite3.h>
