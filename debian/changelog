@@ -1,3 +1,11 @@
+tracker (3.7~beta-3) experimental; urgency=medium
+
+  * Add debian/salsa-ci.yml
+  * Drop workaround patches for 32-bit build test issues and cherry-pick
+    upstream's new fixes instead
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 02 Mar 2024 10:56:27 -0500
+
 tracker (3.7~beta-2) experimental; urgency=medium
 
   * Revert a commit & 2 fixups that broke build tests on 32-bit
