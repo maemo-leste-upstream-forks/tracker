@@ -1,4 +1,1 @@
 disable-some-failing-tests.patch
-docs-Switch-shebang-to-bash-since-popd-and-pushd-are-bash.patch
-tests-Compare-floats-with-an-epsilon.patch
-libtracker-sparql-Define-_TIME_BITS-64-globally.patch
