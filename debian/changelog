@@ -1,8 +1,9 @@
-tracker (3.7~rc-1) UNRELEASED; urgency=medium
+tracker (3.7~rc-1) experimental; urgency=medium
 
   * New upstream release
+  * Drop 3 patches applied in new release
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 04 Mar 2024 18:45:04 -0500
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 04 Mar 2024 18:45:58 -0500
 
 tracker (3.7~beta-3) experimental; urgency=medium
 
