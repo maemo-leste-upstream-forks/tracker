@@ -1,3 +1,9 @@
+tracker (3.7~rc-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Mon, 04 Mar 2024 18:45:04 -0500
+
 tracker (3.7~beta-3) experimental; urgency=medium
 
   * Add debian/salsa-ci.yml
