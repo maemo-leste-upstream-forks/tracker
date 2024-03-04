@@ -1,5 +1,5 @@
 project('tracker', 'c',
-        version: '3.7.beta',
+        version: '3.7.rc',
         meson_version: '>=0.62',
         default_options: [
           'c_std=c99',
@@ -372,6 +372,9 @@ tracker_c_args = [
 
   # Needed for statvfs64, and probably other stuff
   '-D_LARGEFILE64_SOURCE',
+
+  # Needed for 64-bit time_t handling in 32-bit platforms
+  '-D_TIME_BITS=64',
 ]
 
 configinc = include_directories('./')
