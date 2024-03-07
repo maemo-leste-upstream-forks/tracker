@@ -12,6 +12,11 @@ dh_auto_configure -- \
     -Dsystemd_user_services=true \
     -Dsystemd_user_services_dir=/usr/lib/systemd/user
 
+# install the system version of the libraries in the LD_LIBRARY_PATH of the tests
+DEB_TARGET_MULTIARCH=`dpkg-architecture -q DEB_TARGET_MULTIARCH`
+BUILD_OUTPUT_DIR="obj-$(dpkg-architecture -qDEB_HOST_GNU_TYPE)"
+cp /usr/lib/${DEB_TARGET_MULTIARCH}/tracker-3.0/libtracker*.so ${BUILD_OUTPUT_DIR}/src/libtracker-common/
+
 LOCPATH=${AUTOPKGTEST_TMP}/locale \
     HOME=${AUTOPKGTEST_TMP} \
     LANG=en_US.utf8 \

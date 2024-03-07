@@ -1,3 +1,17 @@
+tracker (3.7~rc-2) UNRELEASED; urgency=medium
+
+  * debian/tests/unit-tests:
+    - the autopkgtest are using the upstream buildtests which aren't
+      installed tests. The tests setup isn't rebuilding the libraries but
+      then LD_LIBRARY_PATH is forced by meson on a local path and not
+      considering the system location, which means it doesn't fail the
+      needed libraries. Workaround the problem by copying the system
+      library to the local path in the unit-tests script. It's not ideal
+      but the alternative of rebuilding the library would mean we wouldn't
+      be testing the right binaries.
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Thu, 07 Mar 2024 10:29:53 +0100
+
 tracker (3.7~rc-1) experimental; urgency=medium
 
   * New upstream release
