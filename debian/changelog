@@ -1,3 +1,13 @@
+tracker (3.7~rc-3) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * Disable build tests when nocheck is set (Closes: #1061464)
+
+  [ Jeremy Bícha ]
+  * Release to unstable (Closes: #1065464)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 08 Mar 2024 08:01:20 -0500
+
 tracker (3.7~rc-2) experimental; urgency=medium
 
   * debian/tests/unit-tests:
