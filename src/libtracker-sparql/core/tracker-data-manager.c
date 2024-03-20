@@ -4112,7 +4112,6 @@ tracker_data_manager_initable_init (GInitable     *initable,
 
 	manager->db_manager = tracker_db_manager_new (manager->flags,
 	                                              manager->cache_location,
-	                                              FALSE,
 	                                              manager->select_cache_size,
 	                                              G_OBJECT (manager),
 	                                              &internal_error);
@@ -5224,6 +5223,7 @@ tracker_data_manager_get_remote_connection (TrackerDataManager  *data_manager,
 	TrackerSparqlConnection *connection = NULL;
 	GError *inner_error = NULL;
 	gchar *uri_scheme = NULL;
+	gchar *bus_name = NULL, *object_path = NULL;
 
 	g_mutex_lock (&data_manager->connections_lock);
 
@@ -5232,7 +5232,6 @@ tracker_data_manager_get_remote_connection (TrackerDataManager  *data_manager,
 	if (!connection) {
 		uri_scheme = g_uri_parse_scheme (uri);
 		if (g_strcmp0 (uri_scheme, "dbus") == 0) {
-			gchar *bus_name, *object_path;
 			GDBusConnection *dbus_connection;
 			GBusType bus_type;
 
@@ -5262,8 +5261,6 @@ tracker_data_manager_get_remote_connection (TrackerDataManager  *data_manager,
 
 			connection = tracker_sparql_connection_bus_new (bus_name, object_path,
 			                                                dbus_connection, &inner_error);
-			g_free (bus_name);
-			g_free (object_path);
 			g_object_unref (dbus_connection);
 
 			if (!connection)
@@ -5290,6 +5287,8 @@ tracker_data_manager_get_remote_connection (TrackerDataManager  *data_manager,
 fail:
 	g_mutex_unlock (&data_manager->connections_lock);
 	g_free (uri_scheme);
+	g_clear_pointer (&bus_name, g_free);
+	g_clear_pointer (&object_path, g_free);
 
 	if (inner_error)
 		g_propagate_error (error, inner_error);
