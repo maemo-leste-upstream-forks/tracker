@@ -7,12 +7,13 @@ Debian-Bug: https://bugs.debian.org/903374
 build. Ideally we figure out how to set it up correctly, but until
 then, let's skip these tests.
 ---
- tests/functional-tests/test_cli.py    | 5 +++++
- tests/functional-tests/test_portal.py | 2 ++
- 2 files changed, 7 insertions(+)
+ tests/functional-tests/test_cli.py           |  4 ++++
+ tests/functional-tests/test_endpoint_http.py | 12 ++++++++++++
+ tests/functional-tests/test_portal.py        |  2 ++
+ 3 files changed, 18 insertions(+)
 
 diff --git a/tests/functional-tests/test_cli.py b/tests/functional-tests/test_cli.py
-index 5e480f2..b9ab1cc 100644
+index 9a44df0..c68c9df 100644
 --- a/tests/functional-tests/test_cli.py
 +++ b/tests/functional-tests/test_cli.py
 @@ -24,6 +24,7 @@ import unittest
@@ -20,10 +21,10 @@ index 5e480f2..b9ab1cc 100644
  import configuration
  import fixtures
 +import os
- import random
  
  
-@@ -36,6 +37,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+ class TestCli(fixtures.TrackerCommandLineTestCase):
+@@ -35,6 +36,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
          expected_version_line = "Tracker %s" % configuration.tracker_version()
          self.assertEqual(version_line, expected_version_line)
  
@@ -31,7 +32,7 @@ index 5e480f2..b9ab1cc 100644
      def test_create_local_database(self):
          """Create a database using `tracker3 endpoint` for local testing"""
  
-@@ -64,6 +66,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+@@ -63,6 +65,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
                  ]
              )
  
@@ -39,7 +40,7 @@ index 5e480f2..b9ab1cc 100644
      def test_export(self):
          """Export contents of a Tracker database."""
  
-@@ -83,6 +86,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
+@@ -82,6 +85,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
              self.run_cli(["tracker3", "export", "--database", tmpdir])
              self.run_cli(["tracker3", "export", "--database", tmpdir, "--show-graphs"])
  
@@ -47,14 +48,100 @@ index 5e480f2..b9ab1cc 100644
      def test_import(self):
          """Import a Turtle file into a Tracker database."""
  
-@@ -101,6 +105,7 @@ class TestCli(fixtures.TrackerCommandLineTestCase):
-             )
-             self.run_cli(["tracker3", "import", "--database", tmpdir, testdata])
+diff --git a/tests/functional-tests/test_endpoint_http.py b/tests/functional-tests/test_endpoint_http.py
+index 5721733..bbae628 100644
+--- a/tests/functional-tests/test_endpoint_http.py
++++ b/tests/functional-tests/test_endpoint_http.py
+@@ -24,6 +24,7 @@ import unittest
+ import configuration
+ import fixtures
+ import json
++import os
+ from pathlib import Path
+ import random
+ import shutil
+@@ -34,6 +35,7 @@ from urllib.request import Request, urlopen
+ 
+ 
+ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def setUp(self):
+         super().setUp()
+ 
+@@ -57,10 +59,12 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
+             "Listening",
+         )
  
 +    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
-     def test_http_endpoint(self):
-         """Create a HTTP endpoint for local testing"""
+     def tearDown(self):
+         super().tearDown()
+         shutil.rmtree(self._dirpath)
  
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_http_query_cli(self):
+         """Query the HTTP endpoint via `tracker3 sparql`"""
+ 
+@@ -77,10 +81,12 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
+         self.assertIn("true", stdout)
+ 
+     @staticmethod
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def example_ask_query() -> str:
+         """Simple query that should always return 'true'."""
+         return "ASK { ?u a rdfs:Resource }"
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def validate_ask_query_response(self, data):
+         self.assertEqual(len(data["head"]["vars"]), 1);
+         self.assertEqual(len(data["results"]["bindings"]), 1);
+@@ -90,6 +96,7 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
+         self.assertEqual(row[var_name]["type"], "literal")
+         self.assertEqual(row[var_name]["value"], "true")
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_http_get_without_query(self):
+         """Get the endpoint descriptor, returned when there's no query."""
+         with urlopen(self.address) as response:
+@@ -99,6 +106,7 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
+         # expected info.
+         self.assertIn("format:JSON-LD", data)
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_http_get_query(self):
+         query = quote(self.example_ask_query())
+         request = Request(f"{self.address}?query={query}")
+@@ -109,6 +117,7 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
+         data = json.loads(text)
+         self.validate_ask_query_response(data)
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_http_post_query(self):
+         query = "ASK { ?u a rdfs:Resource }"
+ 
+@@ -120,6 +129,7 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
+         data = json.loads(text)
+         self.validate_ask_query_response(data)
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_missing_accept_header(self):
+         """Ensure error code when there is no valid response format specified."""
+         query = "ASK { ?u a rdfs:Resource }"
+@@ -134,6 +144,7 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
+         self.assertEqual(error.code, 400);
+         self.assertIn(error.msg, "No recognized accepted formats");
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_http_invalid_utf8(self):
+         """Ensure error code when the query is not valid UTF-8"""
+         query = "AB\xfc\0\0\0\xef"
+@@ -147,6 +158,7 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
+         self.assertEqual(error.code, 400);
+         self.assertIn("invalid UTF-8", error.msg);
+ 
++    @unittest.skipIf ('AUTOPKGTEST_TMP' in os.environ, "It errors in autopkgtest")
+     def test_http_invalid_sparql(self):
+         """Ensure error code when the query is not valid SPARQL"""
+         query = "Bananas in space"
 diff --git a/tests/functional-tests/test_portal.py b/tests/functional-tests/test_portal.py
 index 49e241d..bce7073 100644
 --- a/tests/functional-tests/test_portal.py
