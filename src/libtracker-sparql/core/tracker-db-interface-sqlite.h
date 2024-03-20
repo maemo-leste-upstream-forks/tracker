@@ -36,7 +36,6 @@ typedef void (*TrackerDBWalCallback) (TrackerDBInterface *iface,
 
 typedef enum {
 	TRACKER_DB_INTERFACE_READONLY  = 1 << 0,
-	TRACKER_DB_INTERFACE_USE_MUTEX = 1 << 1,
 	TRACKER_DB_INTERFACE_IN_MEMORY = 1 << 2,
 } TrackerDBInterfaceFlags;
 
@@ -45,7 +44,6 @@ TrackerDBInterface *tracker_db_interface_sqlite_new                    (const gc
                                                                         TrackerDBInterfaceFlags   flags,
                                                                         GError                  **error);
 gint64              tracker_db_interface_sqlite_get_last_insert_id     (TrackerDBInterface       *interface);
-void                tracker_db_interface_sqlite_enable_shared_cache    (void);
 gboolean            tracker_db_interface_sqlite_fts_init               (TrackerDBInterface       *interface,
                                                                         TrackerDBManagerFlags     fts_flags,
                                                                         GError                  **error);
