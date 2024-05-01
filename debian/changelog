@@ -1,3 +1,9 @@
+tracker (3.7.2-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 01 May 2024 17:27:44 -0400
+
 tracker (3.7.1-1) unstable; urgency=medium
 
   * New upstream release
