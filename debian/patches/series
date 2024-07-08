@@ -1,1 +1,3 @@
 disable-some-failing-tests.patch
+build-Depend-on-parser-modules-for-the-internal-common-li.patch
+docs-Wait-for-parser-module-before-building-ontology-docu.patch

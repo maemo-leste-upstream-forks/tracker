@@ -1,0 +1,38 @@
+From: Carlos Garnacho <carlosg@gnome.org>
+Date: Fri, 14 Jun 2024 22:48:32 +0200
+Subject: docs: Wait for parser module before building ontology documentation
+
+This is an indirect dependency (since we load the ontology to an
+in-memory database to introspect it), and sometimes Meson gets ahead
+of itself trying to build the documentation before these modules are
+built.
+
+Add these build_tgt dependencies right on the custom_target() call
+to generate these docs, since we cannot make the common library nor
+the ontology doc generator to wait on these.
+---
+ docs/reference/libtracker-sparql/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docs/reference/libtracker-sparql/meson.build b/docs/reference/libtracker-sparql/meson.build
+index 3c17c53..9cb6d67 100644
+--- a/docs/reference/libtracker-sparql/meson.build
++++ b/docs/reference/libtracker-sparql/meson.build
+@@ -27,7 +27,7 @@ base_ontology_docs = custom_target('ontology-docgen',
+               '--output-dir', meson.current_build_dir(),
+               '--introduction-dir', meson.current_source_dir(),
+               '--ontology-description-dir', join_paths(source_root, 'src/ontologies/')],
+-    depends: tracker_docgen,
++    depends: [tracker_docgen, libtracker_parser],
+     depend_files: [base_ontology, ontology_introductions],
+ )
+ 
+@@ -38,7 +38,7 @@ nepomuk_ontology_docs = custom_target('nepomuk-docgen',
+               '--ontology-dir', join_paths(source_root, 'src/ontologies/nepomuk'),
+               '--output-dir', meson.current_build_dir(),
+               '--introduction-dir', meson.current_source_dir()],
+-    depends: tracker_docgen,
++    depends: [tracker_docgen, libtracker_parser],
+     depend_files: [nepomuk, ontology_introductions],
+ )
+ 
