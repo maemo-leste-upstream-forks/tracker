@@ -3,7 +3,13 @@
 mkdir "${AUTOPKGTEST_TMP}/locale"
 localedef -c -i en_US -f UTF-8 "${AUTOPKGTEST_TMP}/locale/en_US.utf8"
 
+# libtracker-common is a static library so we can't use the system version.
+# compile it now but make it search for loadable modules in the system paths
+# by masking the BUILDROOT macro.
+echo "#define BUILDROOT \"/dev/null\"" > "${AUTOPKGTEST_TMP}/test-vars.h"
+
 dh_auto_configure -- \
+    -Dc_args="$(dpkg-buildflags --get CFLAGS) --include ${AUTOPKGTEST_TMP}/test-vars.h" \
     -Dunicode_support=icu \
     -Dstemmer=enabled \
     -Ddocs=true \
@@ -11,14 +17,15 @@ dh_auto_configure -- \
     -Dbash_completion_dir=/usr/share/bash-completion/completions \
     -Dsystemd_user_services=true \
     -Dsystemd_user_services_dir=/usr/lib/systemd/user
+dh_auto_build -- meson-test-prereq
 
 # install the system version of the libraries in the LD_LIBRARY_PATH of the tests
 DEB_TARGET_MULTIARCH=`dpkg-architecture -q DEB_TARGET_MULTIARCH`
 BUILD_OUTPUT_DIR="obj-$(dpkg-architecture -qDEB_HOST_GNU_TYPE)"
-cp /usr/lib/${DEB_TARGET_MULTIARCH}/tracker-3.0/libtracker*.so ${BUILD_OUTPUT_DIR}/src/libtracker-common/
+cp --preserve=links /usr/lib/${DEB_TARGET_MULTIARCH}/libtracker-sparql-3.0.so.* ${BUILD_OUTPUT_DIR}/src/libtracker-sparql/
 
 LOCPATH=${AUTOPKGTEST_TMP}/locale \
     HOME=${AUTOPKGTEST_TMP} \
     LANG=en_US.utf8 \
     LC_ALL=en_US.utf8 \
-    dbus-run-session -- dh_auto_test -- --no-suite tracker:sparql 2> >(grep -vE '^(Activating|Successfully activated)')>&2
+    dbus-run-session -- dh_auto_test 2> >(grep -vE '^(Activating|Successfully activated)')>&2
