@@ -1,3 +1,11 @@
+tracker (3.7.3-2) unstable; urgency=medium
+
+  [ Alessandro Astone ]
+  * Fix autopkgtests and cherrypick some upstream build fixes
+    (Closes: #1068468)
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Tue, 09 Jul 2024 23:08:29 +0200
+
 tracker (3.7.3-1) unstable; urgency=medium
 
   * New upstream release
