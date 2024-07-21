@@ -1,0 +1,26 @@
+From e3108e2c407efc9797f080830b24f8d03e3c5b35 Mon Sep 17 00:00:00 2001
+From: Carlos Garnacho <carlosg@gnome.org>
+Date: Tue, 4 Feb 2020 16:31:39 +0100
+Subject: [PATCH] libtracker-direct: Fix async TrackerSparqlStatement execution
+
+The bound values were copied the wrong way around...
+---
+ src/libtracker-direct/tracker-direct-statement.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/libtracker-direct/tracker-direct-statement.c b/src/libtracker-direct/tracker-direct-statement.c
+index c2c18b94f..609dbb485 100644
+--- a/src/libtracker-direct/tracker-direct-statement.c
++++ b/src/libtracker-direct/tracker-direct-statement.c
+@@ -200,7 +200,7 @@ copy_values_deep (GHashTable *values)
+ 
+ 		copy_value = g_new0 (GValue, 1);
+ 		g_value_init (copy_value, G_VALUE_TYPE (val));
+-		g_value_copy (copy_value, val);
++		g_value_copy (val, copy_value);
+ 
+ 		g_hash_table_insert (copy, g_strdup (key), copy_value);
+ 	}
+-- 
+2.30.2
+
