@@ -2,7 +2,10 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: tracker
 Source: https://ftp.gnome.org/pub/GNOME/sources/tracker/
 Files-Excluded: docs/reference/libtracker-sparql/doc
+                src/tracker/tracker-webide.*
+                src/web-ide
 Comment: Let's build the docs from source
+ The web-ide project isn't built and we don't need it currently
 
 Files: *
 Copyright: 2008-2011 Nokia <ivan.frade@nokia.com>
