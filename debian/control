@@ -1,4 +1,4 @@
-Source: tracker
+Source: tinysparql
 Section: utils
 Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>

@@ -1,3 +1,9 @@
+tinysparql (3.7.3-3) UNRELEASED; urgency=medium
+
+  * Rename to tinysparql (Closes: #1072712)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 15 Aug 2024 14:38:31 -0400
+
 tracker (3.7.3-2) unstable; urgency=medium
 
   [ Alessandro Astone ]
