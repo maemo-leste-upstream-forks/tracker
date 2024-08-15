@@ -1,5 +1,0 @@
-libtracker-common 0 libtracker-sparql-3.0-0 (= ${binary:Version})
-libtracker-data 0 libtracker-sparql-3.0-0 (= ${binary:Version})
-libtracker-miner-3.0 0 libtracker-miner-3.0-0 (= ${binary:Version})
-libtracker-sparql-3.0 0 libtracker-sparql-3.0-0 (= ${binary:Version})
-libtracker-control-3.0 0 libtracker-control-3.0-0 (= ${binary:Version})

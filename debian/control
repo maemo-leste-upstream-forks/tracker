@@ -32,20 +32,21 @@ Build-Depends: debhelper-compat (= 13),
                python3-tap <!nocheck>,
 Standards-Version: 4.6.2
 Rules-Requires-Root: no
-Vcs-Browser: https://salsa.debian.org/gnome-team/tracker
-Vcs-Git: https://salsa.debian.org/gnome-team/tracker.git
+Vcs-Browser: https://salsa.debian.org/gnome-team/tinysparql
+Vcs-Git: https://salsa.debian.org/gnome-team/tinysparql.git
 Homepage: https://tracker.gnome.org/
 
-Package: tracker
+Package: tinysparql
 Architecture: any
-Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          shared-mime-info,
          libglib2.0-bin,
          default-dbus-session-bus | dbus-session-bus
 Recommends: tracker-miner-fs
-Breaks: tracker-miner-fs (<< 3.1.1)
+Breaks: tracker (<< 3.8~)
+Replaces: tracker (<< 3.8~)
+Provides: tracker
 Description: metadata database, indexer and search tool
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
@@ -55,14 +56,28 @@ Package: libtracker-sparql-3.0-0
 Architecture: any
 Multi-Arch: same
 Section: libs
-Pre-Depends: ${misc:Pre-Depends},
 Depends: ${shlibs:Depends},
-         ${misc:Depends}
+         ${misc:Depends},
+         libtinysparql-3.0-0 (= ${binary:Version}),
 Description: metadata database, indexer and search tool - library
  This package contains a library to perform SPARQL queries and updates in the
  Tracker store.
  .
  Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: libtinysparql-3.0-0
+Architecture: any
+Multi-Arch: same
+Section: libs
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Description: metadata database, indexer and search tool - library
+ This package contains a library to perform SPARQL queries and updates in the
+ TinySPARQL store.
+ .
+ TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
@@ -80,6 +95,7 @@ Depends: ${shlibs:Depends},
          libsoup-3.0-dev (>= 2.40),
          libsqlite3-dev (>= 3.15.0),
          gir1.2-tracker-3.0 (= ${binary:Version})
+Provides: ${gir:Provides}
 Suggests: libtracker-sparql-doc
 Description: metadata database, indexer and search tool - development files
  This package contains the static libraries and header files needed to link
@@ -92,19 +108,45 @@ Description: metadata database, indexer and search tool - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-doc
+Package: libtinysparql-dev
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libtinysparql-3.0-0 (= ${binary:Version}),
+         libglib2.0-dev (>= 2.52.0),
+         libicu-dev (>= 4.8.1.1),
+         libjson-glib-dev (>= 1.4),
+         libxml2-dev (>= 2.6),
+         libsoup-3.0-dev (>= 2.40),
+         libsqlite3-dev (>= 3.15.0),
+         gir1.2-tsparql-3.0 (= ${binary:Version})
+Provides: ${gir:Provides}
+Suggests: libtracker-sparql-doc
+Description: metadata database, indexer and search tool - development files
+ This package contains the static libraries and header files needed to link
+ applications with libtracker-sparql.
+ .
+ libtracker-sparql provides a library to perform SPARQL queries and updates in
+ the Tracker store.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: libtinysparql-doc
 Architecture: all
 Section: doc
 Depends: ${misc:Depends}
 Suggests: devhelp
-Breaks: libtracker-sparql-doc
-Replaces: libtracker-sparql-doc
-Provides: libtracker-sparql-doc (= ${binary:Version})
+Breaks: libtracker-doc
+Replaces: libtracker-doc
 Description: metadata database, indexer and search tool - API documentation
- This package contains the API documentation for libtracker-sparql-3
- and ontology-3, as well as some example programs.
+ This package contains the API documentation for libtinysparql
+ as well as some example programs.
  .
- Tracker is an advanced framework for first class objects with associated
+ TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
@@ -115,6 +157,7 @@ Multi-Arch: same
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          ${gir:Depends}
+Provides: ${gir:Provides}
 Description: GObject introspection data for Tracker
  This package contains introspection data for libtracker-control,
  libtracker-miner and libtracker-sparql.
@@ -126,20 +169,20 @@ Description: GObject introspection data for Tracker
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: tracker-test-utils
-Section: libs
+Package: gir1.2-tsparql-3.0
+Section: introspection
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         python3-gi,
-         gir1.2-tracker-3.0 (= ${binary:Version}),
-         gir1.2-glib-2.0,
-         libglib2.0-bin
-Description: test utilities for tracker
- This package contains shared test utilities provided by tracker, for use by
- tracker-miners.
+         ${gir:Depends}
+Provides: ${gir:Provides}
+Description: GObject introspection data for TSparql
+ This package contains introspection data for libtinysparql.
  .
- Tracker is an advanced framework for first class objects with associated
+ It can be used by packages using the GIRepository format to generate
+ dynamic bindings
+ .
+ TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
