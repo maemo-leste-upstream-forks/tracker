@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <tinysparql.h>
 
 /* This MUST be larger than TRACKER_STEROIDS_BUFFER_SIZE */
 #define LONG_NAME_SIZE 128 * 1024 * sizeof(char)
@@ -217,14 +217,12 @@ test_tracker_sparql_query_iterate_empty (gpointer      fixture,
 	g_assert_true (tracker_sparql_cursor_get_n_columns (cursor) == 1);
 
 	g_object_get (G_OBJECT (cursor),
-		      "n-columns", &prop_cols,
-		      "connection", &prop_conn,
-		      NULL);
+	              "n-columns", &prop_cols,
+	              "connection", &prop_conn,
+	              NULL);
 
 	g_assert_cmpint (prop_cols, ==, tracker_sparql_cursor_get_n_columns (cursor));
 	g_assert_true (prop_conn == conn);
-
-	/* FIXME: test behavior of cursor getters after last value */
 
 	g_object_unref (cursor);
 }
@@ -360,6 +358,23 @@ create_local_connection (GError **error)
 	ontology = tracker_sparql_get_ontology_nepomuk ();
 
 	conn = tracker_sparql_connection_new (0, store, ontology, NULL, error);
+
+	{
+		TrackerSparqlConnectionFlags object_flags;
+		GFile *object_store, *object_ontology;
+
+		g_object_get (conn,
+		              "flags", &object_flags,
+		              "store-location", &object_store,
+		              "ontology-location", &object_ontology,
+		              NULL);
+		g_assert_cmpint (object_flags, ==, 0);
+		g_assert_true (object_store == store);
+		g_assert_true (object_ontology == ontology);
+		g_clear_object (&object_store);
+		g_clear_object (&object_ontology);
+	}
+
 	g_object_unref (store);
 	g_object_unref (ontology);
 
@@ -385,8 +400,75 @@ thread_func (gpointer user_data)
 	endpoint_bus = tracker_endpoint_dbus_new (direct, dbus_conn, NULL, NULL, &error);
 	g_assert_no_error (error);
 
+	{
+		GDBusConnection *object_dbus_conn;
+		gchar *object_dbus_path;
+		TrackerSparqlConnection *object_sparql_conn;
+		gboolean object_readonly;
+		gchar **object_allowed_services, **object_allowed_graphs;
+
+		g_object_get (endpoint_bus,
+		              "dbus-connection", &object_dbus_conn,
+		              "object-path", &object_dbus_path,
+		              "sparql-connection", &object_sparql_conn,
+		              "readonly", &object_readonly,
+		              "allowed-services", &object_allowed_services,
+		              "allowed-graphs", &object_allowed_graphs,
+		              NULL);
+		g_assert_true (object_dbus_conn == dbus_conn);
+		/* Check that NULL gets us the default object path */
+		g_assert_cmpstr (object_dbus_path, ==, "/org/freedesktop/Tracker3/Endpoint");
+		g_assert_true (object_sparql_conn == direct);
+		g_assert_false (object_readonly);
+		g_assert_null (object_allowed_services);
+		g_assert_null (object_allowed_graphs);
+
+		g_clear_object (&object_dbus_conn);
+		g_clear_object (&object_sparql_conn);
+		g_clear_pointer (&object_dbus_path, g_free);
+		g_clear_pointer (&object_allowed_services, g_strfreev);
+		g_clear_pointer (&object_allowed_graphs, g_strfreev);
+
+		g_assert_false (tracker_endpoint_get_readonly (TRACKER_ENDPOINT (endpoint_bus)));
+		g_assert_null (tracker_endpoint_get_allowed_services (TRACKER_ENDPOINT (endpoint_bus)));
+		g_assert_null (tracker_endpoint_get_allowed_graphs (TRACKER_ENDPOINT (endpoint_bus)));
+	}
+
 	endpoint_http = tracker_endpoint_http_new (direct, http_port, NULL, NULL, &error);
 	g_assert_no_error (error);
+
+	{
+		int object_http_port;
+		GTlsCertificate *object_certificate;
+		TrackerSparqlConnection *object_sparql_conn;
+		gboolean object_readonly;
+		gchar **object_allowed_services, **object_allowed_graphs;
+
+		g_object_get (endpoint_http,
+		              "http-port", &object_http_port,
+		              "http-certificate", &object_certificate,
+		              "sparql-connection", &object_sparql_conn,
+		              "readonly", &object_readonly,
+		              "allowed-services", &object_allowed_services,
+		              "allowed-graphs", &object_allowed_graphs,
+		              NULL);
+		g_assert_true (object_http_port == http_port);
+		g_assert_null (object_certificate);
+		g_assert_true (object_sparql_conn == direct);
+		/* Http endpoints are readonly */
+		g_assert_true (object_readonly);
+		g_assert_null (object_allowed_services);
+		g_assert_null (object_allowed_graphs);
+
+		g_clear_object (&object_certificate);
+		g_clear_object (&object_sparql_conn);
+		g_clear_pointer (&object_allowed_services, g_strfreev);
+		g_clear_pointer (&object_allowed_graphs, g_strfreev);
+
+		g_assert_true (tracker_endpoint_get_readonly (TRACKER_ENDPOINT (endpoint_http)));
+		g_assert_null (tracker_endpoint_get_allowed_services (TRACKER_ENDPOINT (endpoint_http)));
+		g_assert_null (tracker_endpoint_get_allowed_graphs (TRACKER_ENDPOINT (endpoint_http)));
+	}
 
 	started = TRUE;
 	g_main_loop_run (main_loop);
@@ -417,11 +499,41 @@ create_connections (void)
 
 	host = g_strdup_printf ("http://127.0.0.1:%d/sparql", http_port);
 	http = tracker_sparql_connection_remote_new (host);
+
+	{
+		gchar *object_base_uri;
+
+		g_object_get (http,
+		              "base-uri", &object_base_uri,
+		              NULL);
+		g_assert_cmpstr (object_base_uri, ==, host);
+		g_clear_pointer (&object_base_uri, g_free);
+	}
+
 	g_free (host);
 
 	dbus = tracker_sparql_connection_bus_new (g_dbus_connection_get_unique_name (dbus_conn),
 						  NULL, dbus_conn, &error);
 	g_assert_no_error (error);
+
+	{
+		GDBusConnection *object_dbus_connection;
+		gchar *object_bus_name, *object_dbus_path;
+
+		g_object_get (dbus,
+		              "bus-name", &object_bus_name,
+		              "bus-object-path", &object_dbus_path,
+		              "bus-connection", &object_dbus_connection,
+		              NULL);
+
+		g_assert_cmpstr (object_bus_name, ==, g_dbus_connection_get_unique_name (dbus_conn));
+		/* Expect the default object path */
+		g_assert_cmpstr ("/org/freedesktop/Tracker3/Endpoint", ==, object_dbus_path);
+		g_assert_true (object_dbus_connection == dbus_conn);
+		g_clear_object (&object_dbus_connection);
+		g_clear_pointer (&object_bus_name, g_free);
+		g_clear_pointer (&object_dbus_path, g_free);
+	}
 
 	g_thread_unref (thread);
 }
@@ -590,7 +702,7 @@ test_tracker_sparql_cursor_get_value_type (gpointer      fixture,
 	g_assert_no_error (error);
 
 	cursor = tracker_sparql_connection_query (conn,
-						  "SELECT ?urn ?added ?label ?unbound { "
+						  "SELECT ?urn ?added ?label ?unbound (42 AS ?int) (true AS ?bool) (42.2 AS ?double) (BNODE() AS ?bnode) { "
 						  "  ?urn nrl:added ?added ; "
 						  "       rdfs:label ?label . "
 						  "} LIMIT 1",
@@ -615,6 +727,18 @@ test_tracker_sparql_cursor_get_value_type (gpointer      fixture,
 	g_assert_cmpint (tracker_sparql_cursor_get_value_type (cursor, 3),
 			 ==,
 			 TRACKER_SPARQL_VALUE_TYPE_UNBOUND);
+	g_assert_cmpint (tracker_sparql_cursor_get_value_type (cursor, 4),
+			 ==,
+			 TRACKER_SPARQL_VALUE_TYPE_INTEGER);
+	g_assert_cmpint (tracker_sparql_cursor_get_value_type (cursor, 5),
+			 ==,
+			 TRACKER_SPARQL_VALUE_TYPE_BOOLEAN);
+	g_assert_cmpint (tracker_sparql_cursor_get_value_type (cursor, 6),
+			 ==,
+			 TRACKER_SPARQL_VALUE_TYPE_DOUBLE);
+	g_assert_cmpint (tracker_sparql_cursor_get_value_type (cursor, 7),
+			 ==,
+			 TRACKER_SPARQL_VALUE_TYPE_BLANK_NODE);
 
 	tracker_sparql_cursor_close (cursor);
 }
@@ -658,6 +782,76 @@ test_tracker_sparql_cursor_get_langstring (gpointer      fixture,
 	tracker_sparql_cursor_close (cursor);
 }
 
+static void
+test_tracker_sparql_cursor_after_last_row (gpointer      fixture,
+                                           gconstpointer user_data)
+{
+	TrackerSparqlConnection *conn = (TrackerSparqlConnection *) user_data;
+	TrackerSparqlCursor *cursor;
+	GError *error = NULL;
+	gboolean has_next;
+
+	cursor = tracker_sparql_connection_query (conn,
+	                                          "SELECT ('Hola' AS ?greeting) { }",
+	                                          NULL, &error);
+	g_assert_no_error (error);
+	g_assert_nonnull (cursor);
+	g_assert_true (tracker_sparql_cursor_get_connection (cursor) == conn);
+
+	has_next = tracker_sparql_cursor_next (cursor, NULL, &error);
+	g_assert_no_error (error);
+	g_assert_true (has_next);
+
+	/* Check that iterating multiple times after the last cursor does return FALSE, but no error */
+	has_next = tracker_sparql_cursor_next (cursor, NULL, &error);
+	g_assert_false (has_next);
+	g_assert_no_error (error);
+
+	has_next = tracker_sparql_cursor_next (cursor, NULL, &error);
+	g_assert_false (has_next);
+	g_assert_no_error (error);
+
+	/* Check cursor API after last next() */
+	g_assert_null (tracker_sparql_cursor_get_string (cursor, 0, NULL));
+	g_assert_cmpstr (tracker_sparql_cursor_get_variable_name (cursor, 0), ==, "greeting");
+	g_assert_cmpint (tracker_sparql_cursor_get_value_type (cursor, 0), ==, TRACKER_SPARQL_VALUE_TYPE_UNBOUND);
+	g_assert_cmpint (tracker_sparql_cursor_is_bound (cursor, 0), ==, FALSE);
+	g_assert_cmpint (tracker_sparql_cursor_get_n_columns (cursor), ==, 1);
+
+	tracker_sparql_cursor_close (cursor);
+	g_clear_object (&cursor);
+}
+
+static void
+test_tracker_sparql_cursor_after_last_column (gpointer      fixture,
+                                              gconstpointer user_data)
+{
+	TrackerSparqlConnection *conn = (TrackerSparqlConnection *) user_data;
+	TrackerSparqlCursor *cursor;
+	GError *error = NULL;
+	gboolean has_next;
+
+	cursor = tracker_sparql_connection_query (conn,
+	                                          "SELECT ('Hola' AS ?greeting) { }",
+	                                          NULL, &error);
+	g_assert_no_error (error);
+	g_assert_true (cursor != NULL);
+	g_assert_true (tracker_sparql_cursor_get_connection (cursor) == conn);
+
+	has_next = tracker_sparql_cursor_next (cursor, NULL, &error);
+	g_assert_no_error (error);
+	g_assert_true (has_next);
+
+	/* Check cursor API after last column */
+	g_assert_null (tracker_sparql_cursor_get_string (cursor, 1, NULL));
+	g_assert_null (tracker_sparql_cursor_get_variable_name (cursor, 1));
+	g_assert_cmpint (tracker_sparql_cursor_get_value_type (cursor, 1), ==, TRACKER_SPARQL_VALUE_TYPE_UNBOUND);
+	g_assert_cmpint (tracker_sparql_cursor_is_bound (cursor, 1), ==, FALSE);
+
+	tracker_sparql_cursor_close (cursor);
+	g_clear_object (&cursor);
+}
+
 typedef struct {
 	const gchar *name;
 	GTestFixtureFunc func;
@@ -675,6 +869,8 @@ TestInfo tests[] = {
 	{ "tracker_sparql_cursor_get_variable_name", test_tracker_sparql_cursor_get_variable_name },
 	{ "tracker_sparql_cursor_get_value_type", test_tracker_sparql_cursor_get_value_type },
 	{ "tracker_sparql_cursor_get_langstring", test_tracker_sparql_cursor_get_langstring },
+	{ "tracker_sparql_cursor_after_last_row", test_tracker_sparql_cursor_after_last_row },
+	{ "tracker_sparql_cursor_after_last_column", test_tracker_sparql_cursor_after_last_column },
 };
 
 static void

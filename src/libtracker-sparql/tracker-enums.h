@@ -19,8 +19,11 @@
  * Author: Carlos Garnacho <carlosg@gnome.org>
  */
 
-#ifndef TRACKER_ENUMS_H
-#define TRACKER_ENUMS_H
+#pragma once
+
+#if !defined (__LIBTRACKER_SPARQL_INSIDE__) && !defined (TRACKER_COMPILATION)
+#error "only <tinysparql.h> must be included directly."
+#endif
 
 /**
  * TrackerRdfFormat:
@@ -43,5 +46,3 @@ typedef enum {
 } TrackerRdfFormat;
 
 #define TRACKER_N_RDF_FORMATS TRACKER_RDF_FORMAT_LAST
-
-#endif /* TRACKER_ENUMS_H */

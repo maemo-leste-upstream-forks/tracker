@@ -23,7 +23,7 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <tinysparql.h>
 
 typedef struct _TestInfo TestInfo;
 
@@ -44,7 +44,7 @@ const TestInfo tests[] = {
 	{ "input/object-variable", 2, TRUE },
 	{ "functions/rank", 5 },
 	{ "functions/offsets", 3 },
-	{ "functions/snippet", 4 },
+	{ "functions/snippet", 3 },
 	{ NULL }
 };
 
@@ -106,6 +106,7 @@ test_sparql_query (gconstpointer test_data)
 	for (i = 1; i <= test_info->number_of_queries; i++) {
 		query_filename = g_strdup_printf ("%s-%d.rq", test_prefix, i);
 		retval = g_file_get_contents (query_filename, &query, NULL, &error);
+		g_free (query_filename);
 		g_assert_true (retval);
 		g_assert_no_error (error);
 
@@ -177,7 +178,6 @@ test_sparql_query (gconstpointer test_data)
 
 		/* cleanup */
 
-		g_free (query_filename);
 		g_free (query);
 		g_free (results_filename);
 		g_free (results);

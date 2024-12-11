@@ -16,10 +16,10 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
-#ifndef __TRACKER_BUS_CURSOR_H__
-#define __TRACKER_BUS_CURSOR_H__
 
-#include <libtracker-sparql/tracker-sparql.h>
+#pragma once
+
+#include <tinysparql.h>
 
 #define TRACKER_TYPE_BUS_CURSOR (tracker_bus_cursor_get_type ())
 G_DECLARE_FINAL_TYPE (TrackerBusCursor,
@@ -29,5 +29,3 @@ G_DECLARE_FINAL_TYPE (TrackerBusCursor,
 
 TrackerSparqlCursor *tracker_bus_cursor_new (GInputStream *stream,
 					     GVariant     *variables);
-
-#endif /* __TRACKER_BUS_CURSOR_H__ */

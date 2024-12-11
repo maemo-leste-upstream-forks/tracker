@@ -20,8 +20,7 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_DATA_MANAGER_H__
-#define __LIBTRACKER_DATA_MANAGER_H__
+#pragma once
 
 #include <glib.h>
 
@@ -37,6 +36,8 @@ typedef struct _TrackerDataManagerClass TrackerDataManagerClass;
 #include "tracker-data-update.h"
 #include "tracker-db-interface.h"
 #include "tracker-db-manager.h"
+
+#define TRACKER_DEFAULT_GRAPH TRACKER_PREFIX_NRL "DefaultGraph"
 
 #define TRACKER_DATA_ONTOLOGY_ERROR                  (tracker_data_ontology_error_quark ())
 
@@ -93,7 +94,7 @@ gboolean             tracker_data_manager_copy_graph  (TrackerDataManager  *mana
 GHashTable *         tracker_data_manager_get_graphs       (TrackerDataManager *manager,
                                                             gboolean            in_transaction);
 
-TrackerRowid         tracker_data_manager_find_graph       (TrackerDataManager *manager,
+gboolean             tracker_data_manager_find_graph       (TrackerDataManager *manager,
                                                             const gchar        *name,
                                                             gboolean            in_transaction);
 
@@ -114,6 +115,8 @@ void tracker_data_manager_map_connection (TrackerDataManager      *data_manager,
                                           const gchar             *handle_name,
                                           TrackerSparqlConnection *connection);
 
-G_END_DECLS
+gboolean tracker_data_manager_fts_integrity_check (TrackerDataManager  *data_manager,
+                                                   TrackerDBInterface  *iface,
+                                                   const gchar         *database);
 
-#endif /* __LIBTRACKER_DATA_MANAGER_H__ */
+G_END_DECLS

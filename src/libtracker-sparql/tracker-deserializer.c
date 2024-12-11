@@ -84,30 +84,6 @@ tracker_deserializer_set_property (GObject      *object,
 	}
 }
 
-static void
-tracker_deserializer_get_property (GObject    *object,
-                                   guint       prop_id,
-                                   GValue     *value,
-                                   GParamSpec *pspec)
-{
-	TrackerDeserializer *deserializer = TRACKER_DESERIALIZER (object);
-	TrackerDeserializerPrivate *priv =
-		tracker_deserializer_get_instance_private (deserializer);
-
-	switch (prop_id) {
-	case PROP_STREAM:
-		g_value_set_object (value, priv->stream);
-		break;
-	case PROP_NAMESPACE_MANAGER:
-		g_value_set_object (value,
-		                    tracker_deserializer_get_namespaces (deserializer));
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-		break;
-	}
-}
-
 static gboolean
 tracker_deserializer_is_bound (TrackerSparqlCursor *cursor,
                                gint                 column)
@@ -134,7 +110,6 @@ tracker_deserializer_class_init (TrackerDeserializerClass *klass)
 
 	object_class->finalize = tracker_deserializer_finalize;
 	object_class->set_property = tracker_deserializer_set_property;
-	object_class->get_property = tracker_deserializer_get_property;
 
 	cursor_class->is_bound = tracker_deserializer_is_bound;
 	cursor_class->close = tracker_deserializer_close;
@@ -146,7 +121,6 @@ tracker_deserializer_class_init (TrackerDeserializerClass *klass)
 		                     G_TYPE_INPUT_STREAM,
 		                     G_PARAM_CONSTRUCT_ONLY |
 		                     G_PARAM_STATIC_STRINGS |
-		                     G_PARAM_READABLE |
 		                     G_PARAM_WRITABLE);
 	props[PROP_NAMESPACE_MANAGER] =
 		g_param_spec_object ("namespace-manager",
@@ -155,7 +129,6 @@ tracker_deserializer_class_init (TrackerDeserializerClass *klass)
 		                     TRACKER_TYPE_NAMESPACE_MANAGER,
 		                     G_PARAM_CONSTRUCT_ONLY |
 		                     G_PARAM_STATIC_STRINGS |
-		                     G_PARAM_READABLE |
 		                     G_PARAM_WRITABLE);
 
 	g_object_class_install_properties (object_class, N_PROPS, props);
@@ -194,16 +167,25 @@ static TrackerSerializerFormat
 pick_format_for_file (GFile *file)
 {
 	TrackerSerializerFormat format = TRACKER_SERIALIZER_FORMAT_TTL;
-	gchar *uri;
+	TrackerRdfFormat rdf_format = 0;
 
-	uri = g_file_get_uri (file);
+	if (!tracker_rdf_format_pick_for_file (file, &rdf_format))
+		return format;
 
-	if (g_str_has_suffix (uri, ".trig"))
+	switch (rdf_format) {
+	case TRACKER_RDF_FORMAT_TURTLE:
+		format = TRACKER_SERIALIZER_FORMAT_TTL;
+		break;
+	case TRACKER_RDF_FORMAT_TRIG:
 		format = TRACKER_SERIALIZER_FORMAT_TRIG;
-	if (g_str_has_suffix (uri, ".jsonld"))
+		break;
+	case TRACKER_RDF_FORMAT_JSON_LD:
 		format = TRACKER_SERIALIZER_FORMAT_JSON_LD;
-
-	g_free (uri);
+		break;
+	default:
+		g_assert_not_reached ();
+		break;
+	}
 
 	return format;
 }

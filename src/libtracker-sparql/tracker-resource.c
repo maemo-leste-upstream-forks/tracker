@@ -53,20 +53,20 @@ G_DEFINE_TYPE_WITH_PRIVATE (TrackerResource, tracker_resource, G_TYPE_OBJECT)
  *
  * This object keeps track of a set of properties for a given resource, and can
  * also link to other `TrackerResource` objects to form trees or graphs of RDF
- * data. See [method@Tracker.Resource.set_relation] and [method@Tracker.Resource.set_uri]
+ * data. See [method@Resource.set_relation] and [method@Resource.set_uri]
  * on how to link a `TrackerResource` to other RDF data.
  *
  * `TrackerResource` may also hold data about literal values, added through
- * the specialized [method@Tracker.Resource.set_int64], [method@Tracker.Resource.set_string],
- * etc family of functions, or the generic [method@Tracker.Resource.set_gvalue] method.
+ * the specialized [method@Resource.set_int64], [method@Resource.set_string],
+ * etc family of functions, or the generic [method@Resource.set_gvalue] method.
  *
  * Since RDF properties may be multi-valued, for every `set` call there exists
- * another `add` call (e.g. [method@Tracker.Resource.add_int64], [method@Tracker.Resource.add_string]
+ * another `add` call (e.g. [method@Resource.add_int64], [method@Resource.add_string]
  * and so on). The `set` methods do also reset any previously value the
  * property might hold for the given resource.
  *
- * Resources may have an IRI set at creation through [ctor@Tracker.Resource.new],
- * or set afterwards through [method@Tracker.Resource.set_identifier]. Resources
+ * Resources may have an IRI set at creation through [ctor@Resource.new],
+ * or set afterwards through [method@Resource.set_identifier]. Resources
  * without a name will represent a blank node, and will be dealt with as such
  * during database insertions.
  *
@@ -75,9 +75,9 @@ G_DEFINE_TYPE_WITH_PRIVATE (TrackerResource, tracker_resource, G_TYPE_OBJECT)
  * for e.g. database updates.
  *
  * Once the RDF data is built in memory, the (tree of) `TrackerResource` may be
- * converted to a RDF format through [method@Tracker.Resource.print_rdf], or
- * directly inserted into a database through [method@Tracker.Batch.add_resource]
- * or [method@Tracker.SparqlConnection.update_resource].
+ * converted to a RDF format through [method@Resource.print_rdf], or
+ * directly inserted into a database through [method@Batch.add_resource]
+ * or [method@SparqlConnection.update_resource].
  */
 
 static char *
@@ -455,7 +455,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_int64, gint64, G_TYPE_INT64, g_valu
  * that points to a non-literal class (i.e. a subclass of
  * [rdfs:Resource](rdf-ontology.html#rdfs:Resource)).
  *
- * This function produces similar RDF to [method@Tracker.Resource.set_uri],
+ * This function produces similar RDF to [method@Resource.set_uri],
  * although in this function the URI will depend on the identifier
  * set on @resource.
  */
@@ -474,7 +474,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_relation, TrackerResource *, TRACKE
  * that points to a non-literal class (i.e. a subclass of
  * [rdfs:Resource](rdf-ontology.html#rdfs:Resource)).
  *
- * This function produces similar RDF to [method@Tracker.Resource.set_uri],
+ * This function produces similar RDF to [method@Resource.set_uri],
  * although in this function the URI will depend on the identifier
  * set on @resource.
  */
@@ -504,7 +504,7 @@ SET_PROPERTY_FOR_GTYPE (tracker_resource_set_string, const char *, G_TYPE_STRING
  * that points to a non-literal class (i.e. a subclass of
  * [rdfs:Resource](rdf-ontology.html#rdfs:Resource)).
  *
- * This function produces similar RDF to [method@Tracker.Resource.set_relation], although
+ * This function produces similar RDF to [method@Resource.set_relation], although
  * it requires that the URI is previously known.
  */
 SET_PROPERTY_FOR_GTYPE (tracker_resource_set_uri, const char *, TRACKER_TYPE_URI, value_set_uri, validate_pointer)
@@ -713,7 +713,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_int64, gint64, G_TYPE_INT64, g_valu
  * that points to a non-literal class (i.e. a subclass of
  * [rdfs:Resource](rdf-ontology.html#rdfs:Resource)).
  *
- * This method produces similar RDF to [method@Tracker.Resource.add_uri],
+ * This method produces similar RDF to [method@Resource.add_uri],
  * although in this function the URI will depend on the identifier
  * set on @resource.
  */
@@ -735,7 +735,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_relation, TrackerResource *, TRACKE
  * that points to a non-literal class (i.e. a subclass of
  * [rdfs:Resource](rdf-ontology.html#rdfs:Resource)).
  *
- * This function produces similar RDF to [method@Tracker.Resource.add_uri],
+ * This function produces similar RDF to [method@Resource.add_uri],
  * although in this function the URI will depend on the identifier
  * set on @resource. This function takes ownership of @resource.
  */
@@ -772,7 +772,7 @@ ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_string, const char *, G_TYPE_STRING
  * This method is meant for RDF properties allowing multiple values, see
  * [nrl:maxCardinality](nrl-ontology.html#nrl:maxCardinality).
  *
- * This function produces similar RDF to [method@Tracker.Resource.add_relation], although
+ * This function produces similar RDF to [method@Resource.add_relation], although
  * it requires that the URI is previously known.
  */
 ADD_PROPERTY_FOR_GTYPE (tracker_resource_add_uri, const char *, TRACKER_TYPE_URI, value_set_uri, validate_pointer)
@@ -1102,42 +1102,6 @@ parse_prefix (const gchar *prefixed_name)
 	return g_strndup (prefixed_name, token_end - prefixed_name);
 }
 
-/* Helper function for serialization code. This allows you to selectively
- * populate 'interned_namespaces' from 'all_namespaces' based on when a
- * particular prefix is actually used. This is quite inefficient compared
- * to just dumping all known namespaces, but it makes the serializated
- * output more readable.
- */
-static void
-maybe_intern_prefix_of_compact_uri (TrackerNamespaceManager *all_namespaces,
-                                    TrackerNamespaceManager *interned_namespaces,
-                                    const char              *uri)
-{
-	/* The TrackerResource API doesn't distinguish between compact URIs and full
-	 * URIs. This is fine as long as users don't add prefixes that can be
-	 * confused with URIs. Both URIs and CURIEs can have anything following
-	 * the ':', so without hardcoding knowledge of well-known protocols here,
-	 * we can't really tell if the user has done something dumb like defining a
-	 * "urn" prefix.
-	 */
-	char *prefix = parse_prefix (uri);
-
-	if (prefix == NULL) {
-		g_warning ("Invalid URI or compact URI: %s", uri);
-		return;
-	}
-
-	if (tracker_namespace_manager_has_prefix (all_namespaces, prefix)) {
-		if (!tracker_namespace_manager_has_prefix (interned_namespaces, prefix)) {
-			const char *namespace = tracker_namespace_manager_lookup_prefix (all_namespaces, prefix);
-			tracker_namespace_manager_add_prefix (interned_namespaces, prefix, namespace);
-		}
-	}
-
-	g_free (prefix);
-}
-
-
 static gboolean
 is_blank_node (const char *uri_or_curie_or_blank)
 {
@@ -1171,8 +1135,7 @@ is_builtin_class (const gchar             *uri_or_curie,
 static void
 generate_turtle_uri_value (const char              *uri_or_curie_or_blank,
                            GString                 *string,
-                           TrackerNamespaceManager *all_namespaces,
-                           TrackerNamespaceManager *our_namespaces)
+                           TrackerNamespaceManager *all_namespaces)
 {
 	/* The tracker_resource_set_uri() function accepts URIs
 	 * (such as http://example.com/) and compact URIs (such as nie:DataObject),
@@ -1189,11 +1152,6 @@ generate_turtle_uri_value (const char              *uri_or_curie_or_blank,
 		char *prefix = parse_prefix (uri_or_curie_or_blank);
 
 		if (prefix && tracker_namespace_manager_has_prefix (all_namespaces, prefix)) {
-			/* It's a compact URI and we know the prefix */
-			if (our_namespaces != NULL) {
-				maybe_intern_prefix_of_compact_uri (all_namespaces, our_namespaces, uri_or_curie_or_blank);
-			};
-
 			g_string_append (string, uri_or_curie_or_blank);
 		} else {
 			/* It's a full URI (or something invalid, but we can't really tell that here) */
@@ -1207,21 +1165,18 @@ generate_turtle_uri_value (const char              *uri_or_curie_or_blank,
 static void
 generate_turtle_value (const GValue            *value,
                        GString                 *string,
-                       TrackerNamespaceManager *all_namespaces,
-                       TrackerNamespaceManager *our_namespaces)
+                       TrackerNamespaceManager *all_namespaces)
 {
 	GType type = G_VALUE_TYPE (value);
 	if (type == TRACKER_TYPE_URI) {
 		generate_turtle_uri_value (g_value_get_string (value),
 		                           string,
-		                           all_namespaces,
-		                           our_namespaces);
+		                           all_namespaces);
 	} else if (type == TRACKER_TYPE_RESOURCE) {
 		TrackerResource *relation = TRACKER_RESOURCE (g_value_get_object (value));
 		generate_turtle_uri_value (tracker_resource_get_identifier (relation),
 		                           string,
-		                           all_namespaces,
-		                           our_namespaces);
+		                           all_namespaces);
 	} else if (type == G_TYPE_STRING) {
 		char *escaped = tracker_sparql_escape_string (g_value_get_string (value));
 		g_string_append_printf(string, "\"%s\"", escaped);
@@ -1250,7 +1205,7 @@ generate_turtle_value (const GValue            *value,
 			g_string_append (string, g_value_get_string (&str_value));
 		} else {
 			g_warning ("Cannot serialize value of type %s to Turtle/SPARQL",
-			            G_VALUE_TYPE_NAME (value));
+			           G_VALUE_TYPE_NAME (value));
 		}
 		g_value_unset (&str_value);
 	}
@@ -1260,8 +1215,7 @@ void
 generate_turtle_property (const char              *property,
                           const GValue            *value,
                           GString                 *string,
-                          TrackerNamespaceManager *all_namespaces,
-                          TrackerNamespaceManager *our_namespaces)
+                          TrackerNamespaceManager *all_namespaces)
 {
 	if (strcmp (property, TRACKER_PREFIX_RDF "type") == 0 || strcmp (property, "rdf:type") == 0) {
 		g_string_append (string, "a");
@@ -1276,18 +1230,16 @@ generate_turtle_property (const char              *property,
 		if (array->len > 0) {
 			generate_turtle_value (g_ptr_array_index (array, 0),
 			                       string,
-			                       all_namespaces,
-			                       our_namespaces);
+			                       all_namespaces);
 			for (i = 1; i < array->len; i++) {
 				g_string_append (string, " , ");
 				generate_turtle_value (g_ptr_array_index (array, i),
 				                       string,
-				                       all_namespaces,
-				                       our_namespaces);
+				                       all_namespaces);
 			}
 		}
 	} else {
-		generate_turtle_value (value, string, all_namespaces, our_namespaces);
+		generate_turtle_value (value, string, all_namespaces);
 	}
 }
 
@@ -1303,12 +1255,12 @@ generate_turtle_property (const char              *property,
  * <https://www.w3.org/TR/2014/REC-turtle-20140225/>
  *
  * The @namespaces object is used to expand any compact URI values. In most
- * cases you should pass the one returned by [method@Tracker.SparqlConnection.get_namespace_manager]
+ * cases you should pass the one returned by [method@SparqlConnection.get_namespace_manager]
  * from the connection that is the intended recipient of this data.
  *
  * Returns: a newly-allocated string
  *
- * Deprecated: 3.4: Use [method@Tracker.Resource.print_rdf] instead.
+ * Deprecated: 3.4: Use [method@Resource.print_rdf] instead.
  */
 char *
 tracker_resource_print_turtle (TrackerResource         *self,
@@ -1437,7 +1389,7 @@ generate_sparql_delete_queries (TrackerResource     *resource,
 
 			g_string_append (data->string, "  ");
 			generate_turtle_uri_value (tracker_resource_get_identifier (resource),
-						   data->string, data->namespaces, NULL);
+			                           data->string, data->namespaces);
 			g_string_append_printf (data->string, " %s ?%s }", property, variable_name);
 			g_free (variable_name);
 
@@ -1491,7 +1443,7 @@ generate_sparql_insert_pattern (TrackerResource    *resource,
 	g_hash_table_foreach (priv->properties, generate_sparql_relation_inserts_foreach, data);
 
 	generate_turtle_uri_value (tracker_resource_get_identifier (resource),
-				   data->string, data->namespaces, NULL);
+	                           data->string, data->namespaces);
 	g_string_append_printf (data->string, " ");
 
 	/* rdf:type needs to be first, otherwise you'll see 'subject x is not in domain y'
@@ -1499,7 +1451,7 @@ generate_sparql_insert_pattern (TrackerResource    *resource,
 	 */
 	value = g_hash_table_lookup (priv->properties, "rdf:type");
 	if (value != NULL) {
-		generate_turtle_property ("a", value, data->string, data->namespaces, NULL);
+		generate_turtle_property ("a", value, data->string, data->namespaces);
 		had_property = TRUE;
 	}
 
@@ -1512,7 +1464,7 @@ generate_sparql_insert_pattern (TrackerResource    *resource,
 				g_string_append (data->string, " ; \n  ");
 			}
 
-			generate_turtle_property (property, value, data->string, data->namespaces, NULL);
+			generate_turtle_property (property, value, data->string, data->namespaces);
 
 			had_property = TRUE;
 		}
@@ -1535,7 +1487,7 @@ generate_sparql_insert_pattern (TrackerResource    *resource,
  * stored in @resource.
  *
  * The @namespaces object is used to expand any compact URI values. In most
- * cases you should pass the one returned by [method@Tracker.SparqlConnection.get_namespace_manager]
+ * cases you should pass the one returned by [method@SparqlConnection.get_namespace_manager]
  * from the connection that is the intended recipient of this data.
  *
  * Returns: a newly-allocated string containing a SPARQL update command.
@@ -1614,12 +1566,12 @@ tracker_resource_print_sparql_update (TrackerResource         *resource,
  * serialization format.
  *
  * The @namespaces object is used to expand any compact URI values. In most
- * cases you should pass the one returned by [method@Tracker.SparqlConnection.get_namespace_manager]
+ * cases you should pass the one returned by [method@SparqlConnection.get_namespace_manager]
  * from the connection that is the intended recipient of this data.
  *
  * Returns: a newly-allocated string containing JSON-LD data.
  *
- * Deprecated: 3.5: Use [method@Tracker.Resource.print_rdf] instead.
+ * Deprecated: 3.5: Use [method@Resource.print_rdf] instead.
  */
 char *
 tracker_resource_print_jsonld (TrackerResource         *self,
@@ -1664,7 +1616,7 @@ convert_format (TrackerRdfFormat format)
  * Serialize all the information in @resource into the selected RDF format.
  *
  * The @namespaces object is used to expand any compact URI values. In most
- * cases you should pass the one returned by [method@Tracker.SparqlConnection.get_namespace_manager]
+ * cases you should pass the one returned by [method@SparqlConnection.get_namespace_manager]
  * from the connection that is the intended recipient of this data.
  *
  * Returns: a newly-allocated string containing RDF data in the requested format.
@@ -1781,7 +1733,7 @@ tracker_serialize_single_value (TrackerResource         *resource,
  *
  * Serializes a `TrackerResource` to a [type@GLib.Variant] in a lossless way.
  * All child resources are subsequently serialized. It is implied
- * that both ends use a common [class@Tracker.NamespaceManager].
+ * that both ends use a common [class@NamespaceManager].
  *
  * Returns: (transfer floating) (nullable): A variant describing the resource,
  *          the reference is floating.
@@ -1856,8 +1808,8 @@ tracker_resource_serialize (TrackerResource *resource)
  * @variant: a [type@GLib.Variant]
  *
  * Deserializes a `TrackerResource` previously serialized with
- * [method@Tracker.Resource.serialize]. It is implied that both ends
- * use a common [class@Tracker.NamespaceManager].
+ * [method@Resource.serialize]. It is implied that both ends
+ * use a common [class@NamespaceManager].
  *
  * Returns: (transfer full) (nullable): A TrackerResource, or %NULL if
  *          deserialization fails.

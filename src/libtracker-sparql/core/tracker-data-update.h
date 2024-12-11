@@ -18,8 +18,7 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_DATA_UPDATE_H__
-#define __LIBTRACKER_DATA_UPDATE_H__
+#pragma once
 
 #include <glib.h>
 #include <gio/gio.h>
@@ -72,11 +71,11 @@ void     tracker_data_update_statement              (TrackerData               *
                                                      TrackerProperty           *predicate,
                                                      const GValue              *object,
                                                      GError                   **error);
-void     tracker_data_begin_transaction             (TrackerData               *data,
+gboolean tracker_data_begin_transaction             (TrackerData               *data,
                                                      GError                   **error);
-void     tracker_data_begin_ontology_transaction    (TrackerData               *data,
+gboolean tracker_data_begin_ontology_transaction    (TrackerData               *data,
                                                      GError                   **error);
-void     tracker_data_commit_transaction            (TrackerData               *data,
+gboolean tracker_data_commit_transaction            (TrackerData               *data,
                                                      GError                   **error);
 void     tracker_data_rollback_transaction          (TrackerData               *data);
 void     tracker_data_update_sparql                 (TrackerData               *data,
@@ -163,5 +162,3 @@ void tracker_data_update_freeze_flush (TrackerData *data);
 void tracker_data_update_thaw_flush (TrackerData *data);
 
 G_END_DECLS
-
-#endif /* __LIBTRACKER_DATA_UPDATE_H__ */

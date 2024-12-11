@@ -23,7 +23,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <libtracker-sparql/tracker-sparql.h>
+#include <tinysparql.h>
 
 typedef struct {
 	const gchar *test_name;
@@ -32,6 +32,7 @@ typedef struct {
 	const gchar *arg1;
 	const gchar *arg2;
 	const gchar *arg3;
+	const gchar *arg4;
 	gboolean service;
 } TestInfo;
 
@@ -50,7 +51,8 @@ TestInfo tests[] = {
 	{ "subject-4", "/test/sparql/statement/subject.rq", "statement/subject-2.out", "urn:nonexistent" },
 	{ "filter", "statement/filter.rq", "statement/filter.out", "http://tracker.api.gnome.org/ontology/v3/nmm#MusicAlbum", "Music album" },
 	{ "filter-2", "/test/sparql/statement/filter.rq", "statement/filter.out", "http://tracker.api.gnome.org/ontology/v3/nmm#MusicAlbum", "Music album" },
-	{ "service", "statement/service.rq", "statement/service.out", "Music album", NULL, NULL, TRUE },
+	{ "service", "statement/service.rq", "statement/service.out", "Music album", NULL, NULL, NULL, TRUE },
+	{ "service-2", "statement/service-2.rq", "statement/service-2.out", NULL, NULL, NULL, "1.1", TRUE },
 	{ "limit", "statement/limit.rq", "statement/limit.out", "1" },
 	{ "limit-2", "statement/limit.rq", "statement/limit-2.out", "2" },
 	{ "limit-3", "/test/sparql/statement/limit.rq", "statement/limit.out", "1" },
@@ -197,6 +199,8 @@ query_statement (TestFixture   *test_fixture,
 		stmt = tracker_sparql_connection_load_statement_from_gresource (test_fixture->conn,
 		                                                                test_info->query_file,
 		                                                                NULL, &error);
+		g_assert_true (tracker_sparql_statement_get_connection (stmt) == test_fixture->conn);
+		g_assert_nonnull (tracker_sparql_statement_get_sparql (stmt));
 	} else {
 		path = g_build_filename (TOP_SRCDIR, "tests", "libtracker-sparql",
 		                         test_info->query_file, NULL);
@@ -215,8 +219,9 @@ query_statement (TestFixture   *test_fixture,
 
 		stmt = tracker_sparql_connection_query_statement (test_fixture->conn, query,
 		                                                  NULL, &error);
-		g_free (query);
 		g_assert_true (tracker_sparql_statement_get_connection (stmt) == test_fixture->conn);
+		g_assert_cmpstr (tracker_sparql_statement_get_sparql (stmt), ==, query);
+		g_free (query);
 	}
 
 	g_assert_no_error (error);
@@ -229,6 +234,10 @@ query_statement (TestFixture   *test_fixture,
 		date_time = g_date_time_new_from_iso8601 (test_info->arg3, NULL);
 		tracker_sparql_statement_bind_datetime (stmt, "arg3", date_time);
 		g_date_time_unref (date_time);
+	}
+	if (test_info->arg4) {
+		double d = g_strtod (test_info->arg4, NULL);
+		tracker_sparql_statement_bind_double (stmt, "arg4", d);
 	}
 
 	cursor = tracker_sparql_statement_execute (stmt, NULL, &error);
@@ -256,26 +265,37 @@ rdf_types (TestFixture   *test_fixture,
 {
 	TrackerSparqlStatement *stmt;
 	TrackerSparqlCursor *cursor;
+	TrackerSparqlConnection *c;
 	GError *error = NULL;
 	GDateTime *datetime;
-	const gchar *langtag;
+	const gchar *langtag, *query;
 	gboolean retval;
 	glong len;
+	gchar *s;
 
 	datetime = g_date_time_new_utc (2020, 01, 01, 01, 01, 01);
 
+	query = "SELECT "
+	        "  (~string AS ?string)"
+	        "  (~int AS ?int)"
+	        "  (~double AS ?double)"
+	        "  (~bool AS ?bool)"
+	        "  (~datetime AS ?datetime)"
+	        "  (~langString AS ?langString)"
+	        "{ }";
 	stmt = tracker_sparql_connection_query_statement (test_fixture->conn,
-	                                                  "SELECT "
-	                                                  "  (~string AS ?string)"
-	                                                  "  (~int AS ?int)"
-	                                                  "  (~double AS ?double)"
-	                                                  "  (~bool AS ?bool)"
-	                                                  "  (~datetime AS ?datetime)"
-	                                                  "  (~langString AS ?langString)"
-	                                                  "{ }",
+	                                                  query,
 	                                                  NULL,
 	                                                  &error);
 	g_assert_no_error (error);
+
+	g_object_get (stmt, "connection", &c, NULL);
+	g_assert_true (c == test_fixture->conn);
+	g_object_unref (c);
+
+	g_object_get (stmt, "sparql", &s, NULL);
+	g_assert_cmpstr (s, ==, query);
+	g_free (s);
 
 	tracker_sparql_statement_bind_string (stmt, "string", "Hello");
 	tracker_sparql_statement_bind_int (stmt, "int", 42);
@@ -365,12 +385,13 @@ stmt_update (TestFixture   *test_fixture,
 	TrackerSparqlStatement *stmt;
 	TrackerSparqlCursor *cursor;
 	GError *error = NULL;
+	const char *query;
 
+	query = "INSERT DATA { ~res a rdfs:Resource ; rdfs:label ~label }";
 	stmt = tracker_sparql_connection_update_statement (test_fixture->conn,
-	                                                   "INSERT DATA { ~res a rdfs:Resource ; rdfs:label ~label }",
+	                                                   query,
 	                                                   NULL,
 	                                                   &error);
-	g_assert_no_error (error);
 
 	if (strstr (G_OBJECT_TYPE_NAME (test_fixture->conn), "Remote") != NULL) {
 		/* HTTP connections do not implement updates on purpose */
@@ -378,7 +399,10 @@ stmt_update (TestFixture   *test_fixture,
 		return;
 	}
 
+	g_assert_no_error (error);
 	g_assert_nonnull (stmt);
+	g_assert_true (tracker_sparql_statement_get_connection (stmt) == test_fixture->conn);
+	g_assert_cmpstr (tracker_sparql_statement_get_sparql (stmt), ==, query);
 
 	tracker_sparql_statement_bind_string (stmt, "res", "http://example.com/a");
 	tracker_sparql_statement_bind_string (stmt, "label", "Label");
@@ -452,7 +476,6 @@ stmt_update_async (TestFixture   *test_fixture,
 	                                                   "INSERT DATA { ~res a rdfs:Resource }",
 	                                                   NULL,
 	                                                   &error);
-	g_assert_no_error (error);
 
 	if (strstr (G_OBJECT_TYPE_NAME (test_fixture->conn), "Remote") != NULL) {
 		/* HTTP connections do not implement updates on purpose */
@@ -460,6 +483,7 @@ stmt_update_async (TestFixture   *test_fixture,
 		return;
 	}
 
+	g_assert_no_error (error);
 	g_assert_nonnull (stmt);
 
 	loop = g_main_loop_new (NULL, FALSE);

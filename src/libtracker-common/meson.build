@@ -8,7 +8,7 @@ tracker_common_sources = [
 ]
 
 if unicode_library_name == 'icu'
-  libtracker_parser_libicu = shared_module('tracker-parser-libicu',
+  libtracker_parser = shared_module('tracker-parser-libicu',
     'tracker-parser-libicu.c',
     'tracker-parser-utils.c',
     'tracker-language.c',
@@ -23,7 +23,7 @@ if unicode_library_name == 'icu'
     name_suffix: 'so',
   )
 else
-  libtracker_parser_libunistring = shared_module('tracker-parser-libunistring',
+  libtracker_parser = shared_module('tracker-parser-libunistring',
     'tracker-parser-libunistring.c',
     'tracker-parser-utils.c',
     'tracker-language.c',

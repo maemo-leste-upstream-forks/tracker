@@ -19,15 +19,14 @@
  * Author: Carlos Garnacho <carlosg@gnome.org>
  */
 
-#ifndef TRACKER_ENDPOINT_HTTP_H
-#define TRACKER_ENDPOINT_HTTP_H
+#pragma once
 
 #if !defined (__LIBTRACKER_SPARQL_INSIDE__) && !defined (TRACKER_COMPILATION)
-#error "only <libtracker-sparql/tracker-sparql.h> must be included directly."
+#error "only <tinysparql.h> must be included directly."
 #endif
 
-#include <libtracker-sparql/tracker-endpoint.h>
-#include <libtracker-sparql/tracker-version.h>
+#include <tracker-endpoint.h>
+#include <tracker-version.h>
 
 G_BEGIN_DECLS
 
@@ -50,5 +49,3 @@ TrackerEndpointHttp * tracker_endpoint_http_new (TrackerSparqlConnection  *sparq
                                                  GError                  **error);
 
 G_END_DECLS
-
-#endif /* TRACKER_ENDPOINT_HTTP_H */

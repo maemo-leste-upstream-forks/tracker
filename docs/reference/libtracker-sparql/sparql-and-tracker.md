@@ -1,11 +1,11 @@
-Title: SPARQL as understood by Tracker
+Title: SPARQL as understood by TinySPARQL
 slug: sparql-and-tracker
 
-This document describes the choices made by Tracker in its interpretation
+This document describes the choices made by TinySPARQL in its interpretation
 of the SPARQL documents, as well as the ways it diverges or extends on the
 specifications.
 
-## The default graph
+## The default graph sets
 
 The [SPARQL documentation](https://www.w3.org/TR/sparql11-update/#graphStore)
 says:
@@ -19,9 +19,42 @@ graph describing the named graphs, a representation of a union of
 other graphs, etc.
 ```
 
-Tracker defines the default graph to be the union of the unnamed graph
-and all known named graphs. Updates without specified graph are still
-performed only on the unnamed graph.
+By default, TinySPARQL declares a named graph called `nrl:DefaultGraph`, this
+graph is implicitly part of the default graph used for solution matching, but
+not to the pool of named graphs. Every other graph created by user data will be
+added both to the default graph and the pool of named graphs.
+
+The default graph is defined this way as the RDF union of the `nrl:DefaultGraph`
+graph with every other known named graph. The default pool of named graphs
+comprises all known graphs, with the exception of the default `nrl:DefaultGraph`
+graph.
+
+```SPARQL
+SELECT *
+WHERE {
+  # Implicitly accesses the RDF union of all graphs
+  ?a a rdfs:Resource
+  GRAPH ?g {
+    # Implicitly accesses every individual graph except nrl:DefaultGraph
+    ?b a rdfs:Resource
+  }
+}
+```
+
+This behavior can be altered with `FROM` / `USING` and
+`FROM NAMED` / `USING NAMED` syntax. The default graph is to all effects
+anonymous, unless it is explicitly brought to the set of named graphs.
+
+```SPARQL
+# Access the default graph as a named graph
+SELECT *
+FROM NAMED nrl:DefaultGraph
+WHERE {
+  GRAPH ?g {
+    ?u a rdfs:Resource .
+  }
+}
+```
 
 ## Blank nodes
 
@@ -34,7 +67,7 @@ the RDF abstract syntax, a blank node is just a unique node that can
 be used in one or more RDF statements, but has no intrinsic name.
 ```
 
-By default, Tracker does instead treat blank nodes as an URI generator. The
+By default, TinySPARQL does instead treat blank nodes as an URI generator. The
 string referencing a blank node (e.g. as returned by cursors) permanently
 identifies that blank node and can be used as an URI reference in
 future queries.
@@ -53,7 +86,7 @@ In addition, SPARQL provides the ability to invoke arbitrary functions
 […]. These functions are invoked by name (an IRI) within a SPARQL query.
 ```
 
-Tracker allows using all defined `rdf:Property`
+TinySPARQL allows using all defined `rdf:Property`
 instances as functions. If the property has multiple values, it will
 propagate to the cursor as the `GROUP_CONCAT`
 (with comma separator) of the multiple values.
@@ -64,7 +97,7 @@ An entailment regime is a set of rules defining what is valid RDF data, and what
 other axiomatic RDF triples may be extrapolated from a RDF dataset. An example is
 [RDF Schema entailment](https://en.wikipedia.org/wiki/RDF_Schema#RDFS_entailment).
 
-For SPARQL queries, Tracker implements a subset of
+For SPARQL queries, TinySPARQL implements a subset of
 [RDF Schema entailment rules](https://www.w3.org/TR/rdf-mt/#RDFSRules).
 Rules *rdfs1*, *rdfs5*, *rdfs6*, *rdfs10*, *rdfs11*, *rdfs12* and *rdfs13* are
 not implemented.
@@ -80,7 +113,7 @@ regime other than simple entailment and that do support update queries should
 describe the system behavior in the system's documentation.
 ```
 
-Tracker implements the propagation of `rdfs:subPropertyOf` (*rdfs7*) and
+TinySPARQL implements the propagation of `rdfs:subPropertyOf` (*rdfs7*) and
 `rdfs:subClassOf`(*rdfs8*, *rdfs9*) at SPARQL update time. Other than this
 detail, SPARQL updates can be considered to follow simple entailment in
 practical effects. Rules *rdfs2*, *rdfs3*, *rdfs4a* and *rdfs4b* do not apply
@@ -92,7 +125,7 @@ be able to receive properties belonging to these classes. The effect of
 
 ## Syntax extensions
 
-Tracker offers some SPARQL syntax extensions. These predate the
+TinySPARQL offers some SPARQL syntax extensions. These predate the
 existence of SPARQL 1.1 and stay for legacy reasons. These
 extensions should be used sparingly, if at all.
 
@@ -105,7 +138,7 @@ a specific separator for the GROUP_CONCAT operation:
 GROUP_CONCAT (?var, separator=;)
 ```
 
-Tracker additionally accepts a simplified syntax:
+TinySPARQL additionally accepts a simplified syntax:
 
 ```SPARQL
 GROUP_CONCAT (?u, ';')
@@ -114,7 +147,7 @@ GROUP_CONCAT (?u, ';')
 ### BOUND
 
 The BOUND function, as defined in the SPARQL specification,
-only accepts variables as its single argument. Tracker additionally
+only accepts variables as its single argument. TinySPARQL additionally
 allows this function to deal with expressions, mainly allowing the
 nesting of other functions, e.g. functional properties:
 
@@ -124,7 +157,7 @@ SELECT BOUND (nfo:fileName (?u)) { ?u a nfo:FileDataObject }
 
 ### Subselects in expressions
 
-Tracker accepts subselects in place of expressions, these subselects
+TinySPARQL accepts subselects in place of expressions, these subselects
 should return a single variable in order to act as a expression.
 E.g. this query:
 
@@ -140,12 +173,12 @@ SELECT nie:hasPart(?elem) { ?elem a nfo:Folder }
 
 ### INSERT/DELETE SILENT
 
-Tracker allows the use of SILENT after INSERT and DELETE
+TinySPARQL allows the use of SILENT after INSERT and DELETE
 keywords. Errors will be consequently silenced.
 
 ### INSERT OR REPLACE
 
-Tracker adds a special `INSERT OR REPLACE`
+TinySPARQL adds a special `INSERT OR REPLACE`
 operation. This form of update will overwrite any existing values.
 
 ```SPARQL
@@ -167,7 +200,7 @@ syntax available in SPARQL 1.1 is a more versatile replacement.
 
 ### Expressions in ORDER BY
 
-Tracker allows the use of expressions in
+TinySPARQL allows the use of expressions in
 `ORDER BY` clauses, e.g.:
 
 ```SPARQL
@@ -188,7 +221,7 @@ SELECT ((?a - ?b) AS ?sub) {
 }
 ```
 
-Tracker relaxes this restriction, and does not enforce that
+TinySPARQL relaxes this restriction, and does not enforce that
 expressions are surrounded by parentheses, e.g.:
 
 ```SPARQL
@@ -203,13 +236,13 @@ so its use is not recommended.
 
 ### Separator of update queries
 
-Tracker makes the use of the `;` separator
+TinySPARQL makes the use of the `;` separator
 between update clauses optional. Its use is still recommended for
 readability.
 
 ### CONSTRAINT syntax
 
-Tracker supports `CONSTRAINT GRAPH` and `CONSTRAINT SERVICE` clauses
+TinySPARQL supports `CONSTRAINT GRAPH` and `CONSTRAINT SERVICE` clauses
 in the query prologue. These clauses limit the access outside of the
 specified graphs and services.
 
@@ -258,7 +291,7 @@ SELECT * { ?s ?p ?o }
 
 ## Mapping IDs and IRIs
 
-Tracker provides the `tracker:id` and `tracker:uri` SPARQL
+TinySPARQL provides the `tracker:id` and `tracker:uri` SPARQL
 functions, that allow converting an URI reference to a numeric
 identifier, and back.
 
@@ -268,21 +301,21 @@ mostly obey legacy reasons and its use is not recommended.
 
 ## Parameters and prepared statements
 
-Tracker accepts `~` prefixed variables in place of literals
+TinySPARQL accepts `~` prefixed variables in place of literals
 throughout most of the SPARQL select syntax. These variables
 are treated as parameters at query time, so it is possible
 to prepare a query statement once and reuse it many times
 assigning different values to those parameters at query time.
 
-See [class@Tracker.SparqlStatement] documentation for more information.
+See [class@SparqlStatement] documentation for more information.
 
 ## Full-text search
 
-Tracker provides full-text search capabilities, these are exposed
+TinySPARQL provides full-text search capabilities, these are exposed
 as a `fts:match` pseudo-property that will match the resources
 matching the given text string.
 
-To complement this pseudo property, Tracker provides the
+To complement this pseudo property, TinySPARQL provides the
 `fts:snippet`, `fts:offsets` and `fts:rank` SPARQL functions that
 can be used on the matches.
 

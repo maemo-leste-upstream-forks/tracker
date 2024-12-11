@@ -18,8 +18,8 @@
  *
  * Author: Carlos Garnacho <carlosg@gnome.org>
  */
-#ifndef __TRACKER_PORTAL_H__
-#define __TRACKER_PORTAL_H__
+
+#pragma once
 
 #include <gio/gio.h>
 
@@ -30,4 +30,4 @@ TrackerPortal * tracker_portal_new (GDBusConnection  *connection,
                                     GCancellable     *cancellable,
                                     GError          **error);
 
-#endif /* __TRACKER_PORTAL_H__ */
+const gchar * tracker_portal_get_test_flatpak_info (TrackerPortal *portal);

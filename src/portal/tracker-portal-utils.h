@@ -19,13 +19,14 @@
  *
  * Code borrowed from xdg-desktop-portal/src/xdp-utils.[ch]
  */
-#ifndef __TRACKER_PORTAL_UTILS_H__
-#define __TRACKER_PORTAL_UTILS_H__
+
+#pragma once
 
 #include <gio/gio.h>
 
+#include "tracker-portal.h"
+
 GKeyFile * tracker_invocation_lookup_app_info_sync (GDBusMethodInvocation *invocation,
+                                                    TrackerPortal         *portal,
                                                     GCancellable          *cancellable,
                                                     GError               **error);
-
-#endif /* __TRACKER_PORTAL_UTILS_H__ */

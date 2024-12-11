@@ -22,11 +22,11 @@
 /**
  * TrackerEndpointHttp:
  *
- * `TrackerEndpointHttp` makes the RDF data in a [class@Tracker.SparqlConnection]
+ * `TrackerEndpointHttp` makes the RDF data in a [class@SparqlConnection]
  * accessible to other hosts via HTTP.
  *
- * This object is a [class@Tracker.Endpoint] subclass that exports
- * a [class@Tracker.SparqlConnection] so its RDF data is accessible via HTTP
+ * This object is a [class@Endpoint] subclass that exports
+ * a [class@SparqlConnection] so its RDF data is accessible via HTTP
  * requests on the given port. This endpoint implementation is compliant
  * with the [SPARQL protocol specifications](https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/)
  * and may interoperate with other implementations.
@@ -44,7 +44,7 @@
  * ```
  *
  * Access to HTTP endpoints may be managed via the
- * [signal@Tracker.EndpointHttp::block-remote-address] signal, the boolean
+ * [signal@EndpointHttp::block-remote-address] signal, the boolean
  * return value expressing whether the connection is blocked or not.
  * Inspection of the requester address is left up to the user. The
  * default value allows all requests independently of their provenance,
@@ -57,10 +57,10 @@
  * As a security measure, and in compliance specifications,
  * the HTTP endpoint does not handle database updates or modifications in any
  * way. The database content is considered to be entirely managed by the
- * process that creates the HTTP endpoint and owns the [class@Tracker.SparqlConnection].
+ * process that creates the HTTP endpoint and owns the [class@SparqlConnection].
  *
  * A `TrackerEndpointHttp` may be created on a different thread/main
- * context from the one that created [class@Tracker.SparqlConnection].
+ * context from the one that created [class@SparqlConnection].
  *
  * Since: 3.1
  */
@@ -73,7 +73,7 @@
 #include "tracker-serializer.h"
 #include "tracker-private.h"
 
-#include "remote/tracker-http.h"
+#include <libtracker-http/tracker-http.h>
 
 const gchar *supported_formats[] = {
 	"http://www.w3.org/ns/formats/SPARQL_Results_JSON",
@@ -82,6 +82,15 @@ const gchar *supported_formats[] = {
 	"http://www.w3.org/ns/formats/TriG",
 	"http://www.w3.org/ns/formats/JSON-LD",
 };
+
+static const gchar *mimetypes[] = {
+	"application/sparql-results+json",
+	"application/sparql-results+xml",
+	"text/turtle",
+	"application/trig",
+	"application/ld+json",
+};
+
 
 G_STATIC_ASSERT (G_N_ELEMENTS (supported_formats) == TRACKER_N_SERIALIZER_FORMATS);
 
@@ -160,9 +169,10 @@ query_async_cb (GObject      *object,
 	/* Consumes the input stream */
 	tracker_http_server_response (endpoint_http->server,
 	                              request->request,
-	                              request->format,
+	                              mimetypes[request->format],
 	                              stream);
 	request_free (request);
+	g_object_unref (cursor);
 }
 
 static gboolean
@@ -232,20 +242,21 @@ create_service_description (TrackerEndpointHttp      *endpoint,
 }
 
 static void
-http_server_request_cb (TrackerHttpServer  *server,
-                        GSocketAddress     *remote_address,
-                        const gchar        *path,
-                        GHashTable         *params,
-                        guint               formats,
-                        TrackerHttpRequest *request,
-                        gpointer            user_data)
+sparql_server_request_cb (TrackerHttpServer  *server,
+                          GSocketAddress     *remote_address,
+                          const gchar        *path,
+                          const gchar        *method,
+                          GHashTable         *params,
+                          guint               formats,
+                          TrackerHttpRequest *request,
+                          gpointer            user_data)
 {
 	TrackerEndpoint *endpoint = user_data;
 	TrackerSparqlConnection *conn;
 	TrackerSerializerFormat format;
-	gboolean block = FALSE;
 	const gchar *sparql = NULL;
 	Request *data;
+	gboolean block = FALSE;
 
 	if (remote_address) {
 		g_signal_emit (endpoint, signals[BLOCK_REMOTE_ADDRESS], 0,
@@ -311,7 +322,7 @@ http_server_request_cb (TrackerHttpServer  *server,
 		/* Consumes the serializer */
 		tracker_http_server_response (server,
 		                              request,
-		                              format,
+		                              mimetypes[format],
 		                              serializer);
 	}
 }
@@ -327,13 +338,14 @@ tracker_endpoint_http_initable_init (GInitable     *initable,
 	endpoint_http->server =
 		tracker_http_server_new (endpoint_http->port,
 		                         endpoint_http->certificate,
+		                         TRACKER_HTTP_SERVER_MODE_SPARQL_ENDPOINT,
 		                         cancellable,
 		                         error);
 	if (!endpoint_http->server)
 		return FALSE;
 
 	g_signal_connect (endpoint_http->server, "request",
-	                  G_CALLBACK (http_server_request_cb), initable);
+	                  G_CALLBACK (sparql_server_request_cb), initable);
 	return TRUE;
 }
 
@@ -461,7 +473,7 @@ tracker_endpoint_http_init (TrackerEndpointHttp *endpoint)
 
 /**
  * tracker_endpoint_http_new:
- * @sparql_connection: The [class@Tracker.SparqlConnection] being made public
+ * @sparql_connection: The [class@SparqlConnection] being made public
  * @port: HTTP port to handle incoming requests
  * @certificate: (nullable): Optional [type@Gio.TlsCertificate] to use for encription
  * @cancellable: (nullable): Optional [type@Gio.Cancellable]

@@ -25,7 +25,7 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <tinysparql.h>
 
 typedef struct _TestInfo TestInfo;
 
@@ -98,8 +98,14 @@ const TestInfo tests[] = {
 	{ "unbound/unbound-4", "unbound/data", FALSE },
 	{ "unbound/unbound-5", "unbound/data", FALSE },
 	{ "construct/construct-where", "construct/data", FALSE },
+	{ "construct/construct-where-2", "construct/data", FALSE },
+	{ "construct/construct-where-3", "construct/data", FALSE },
 	{ "construct/construct-pattern", "construct/data", FALSE },
+	{ "construct/construct-pattern-2", "construct/data", FALSE },
+	{ "construct/construct-pattern-3", "construct/data", FALSE },
 	{ "construct/construct-with-modifiers", "construct/data", FALSE },
+	{ "date/direct-1", "date/data-1", FALSE },
+	{ "date/insert-1", "date/data-1", FALSE },
 	{ "datetime/direct-1", "datetime/data-1", FALSE },
 	{ "datetime/delete-1", "datetime/data-3", FALSE },
 	{ "datetime/insert-1", "datetime/data-4", FALSE },
@@ -124,6 +130,8 @@ const TestInfo tests[] = {
 	{ "describe/describe-pattern", "describe/data", FALSE },
 	{ "describe/describe-limit", "describe/data", FALSE },
 	{ "describe/describe-multiple", "describe/data", FALSE },
+	{ "describe/describe-from", "describe/data-graph", FALSE },
+	{ "describe/describe-from-named", "describe/data-graph", FALSE },
 	{ "expr-ops/query-ge-1", "expr-ops/data", FALSE },
 	{ "expr-ops/query-le-1", "expr-ops/data", FALSE },
 	{ "expr-ops/query-minus-1", "expr-ops/data", FALSE },
@@ -198,6 +206,7 @@ const TestInfo tests[] = {
 	{ "functions/functions-builtin-strafter-1", "functions/data-1", FALSE },
 	{ "functions/functions-builtin-strafter-2", "functions/data-1", FALSE },
 	{ "functions/functions-builtin-strafter-3", "functions/data-1", FALSE },
+	{ "functions/functions-builtin-struuid-1", "functions/data-1", FALSE },
 	{ "functions/functions-builtin-substr-1", "functions/data-1", FALSE },
 	{ "functions/functions-builtin-replace-1", "functions/data-1", FALSE },
 	{ "functions/functions-builtin-replace-2", "functions/data-1", TRUE },
@@ -232,6 +241,30 @@ const TestInfo tests[] = {
 	{ "graph/graph-5", "graph/data-4", FALSE },
 	{ "graph/graph-6", "graph/data-5", FALSE },
 	{ "graph/graph-7", "graph/data-5", FALSE },
+	{ "graph/from-1", "graph/data-1", FALSE },
+	{ "graph/from-2", "graph/data-1", FALSE },
+	{ "graph/from-3", "graph/data-1", FALSE },
+	{ "graph/from-4", "graph/data-1", FALSE },
+	{ "graph/from-5", "graph/data-1", FALSE },
+	{ "graph/from-6", "graph/data-1", FALSE },
+	{ "graph/from-7", "graph/data-1", FALSE },
+	{ "graph/from-8", "graph/data-1", FALSE },
+	{ "graph/from-9", "graph/data-5", FALSE },
+	{ "graph/from-10", "graph/data-6", FALSE },
+	{ "graph/from-11", "graph/data-6", FALSE },
+	{ "graph/from-12", "graph/data-6", FALSE },
+	{ "graph/from-13", "graph/data-6", FALSE },
+	{ "graph/from-14", "graph/data-6", FALSE },
+	{ "graph/from-15", "graph/data-6", FALSE },
+	{ "graph/from-16", "graph/data-6", FALSE },
+	{ "graph/from-17", "graph/data-6", FALSE },
+	{ "graph/from-18", "graph/data-6", FALSE },
+	{ "graph/from-19", "graph/data-6", FALSE },
+	{ "graph/from-20", "graph/data-6", FALSE },
+	{ "graph/from-21", "graph/data-6", FALSE },
+	{ "graph/from-22", "graph/data-6", FALSE },
+	{ "graph/from-23", "graph/data-6", FALSE },
+	{ "graph/from-24", "graph/data-6", FALSE },
 	{ "graph/non-existent-1",  "graph/data-1", FALSE },
 	{ "graph/non-existent-2",  "graph/data-1", FALSE },
 	{ "graph/non-existent-3",  "graph/data-1", FALSE },
@@ -279,6 +312,7 @@ const TestInfo tests[] = {
 	{ "lists/list-in-subject", "lists/data-list-in-subject", FALSE },
 	{ "lists/list-in-select", "lists/data-list-in-select", FALSE },
 	{ "lists/list-nested", "lists/data-list-nested", FALSE },
+	{ "lists/insert-error-1", "lists/data-insert-error-1", FALSE, TRUE },
 	{ "optional/q-opt-complex-1", "optional/complex-data-1", FALSE },
 	{ "optional/simple-optional-triple", "optional/simple-optional-triple", FALSE },
 	{ "regex/regex-query-001", "regex/regex-data-01", FALSE },
@@ -315,11 +349,57 @@ const TestInfo tests[] = {
 	{ "error/update-error-query-1", "error/update-error-1", FALSE, TRUE },
 	/* Remapping variables in BIND */
 	{ "error/bind-reused-same-pattern", "error/query-error-1", TRUE, FALSE },
-
+	{ "error/glob-empty", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-3", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-4", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-5", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-6", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-7", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-8", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-snippet-9", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-rank-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-rank-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-rank-3", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-offsets-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/fts-offsets-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-additive-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-additive-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-additive-3", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-additive-4", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-multiplicative-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-multiplicative-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-multiplicative-3", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-multiplicative-4", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-logical-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-logical-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-logical-3", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-logical-4", "error/query-error-1", TRUE, FALSE },
+	{ "error/expression-unary-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/values-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/values-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/function-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/function-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/function-3", "error/query-error-1", TRUE, FALSE },
+	{ "error/function-4", "error/query-error-1", TRUE, FALSE },
+	{ "error/function-5", "error/query-error-1", TRUE, FALSE },
+	{ "error/function-6", "error/query-error-1", TRUE, FALSE },
+	{ "error/triples-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/triples-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/triples-3", "error/query-error-1", TRUE, FALSE },
+	{ "error/triples-4", "error/query-error-1", TRUE, FALSE },
+	{ "error/parameter-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/cast-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/cast-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/cast-3", "error/query-error-1", TRUE, FALSE },
+	{ "error/cast-4", "error/query-error-1", TRUE, FALSE },
+	{ "error/describe-1", "error/query-error-1", TRUE, FALSE },
+	{ "error/describe-2", "error/query-error-1", TRUE, FALSE },
+	{ "error/garbage-1", "error/query-error-1", TRUE, FALSE },
+	/* Turtle data */
 	{ "turtle/turtle-query-001", "turtle/turtle-data-001", FALSE },
-#if 0
 	{ "turtle/turtle-query-002", "turtle/turtle-data-002", FALSE },
-#endif
 	{ "turtle-comments/turtle-query-001", "turtle-comments/turtle-data-001", FALSE },
 	/* Mixed cardinality tests */
 	{ "mixed-cardinality/insert-mixed-cardinality-query-1", "mixed-cardinality/insert-mixed-cardinality-1", FALSE, FALSE },
@@ -391,6 +471,12 @@ const TestInfo tests[] = {
 	{ "update/delete-insert-where-query-5", "update/delete-insert-where-5", FALSE, FALSE },
 	{ "update/delete-insert-where-query-6", "update/delete-insert-where-6", FALSE, FALSE },
 	{ "update/select-date-with-offset-1", "update/insert-date-with-offset-1", FALSE, FALSE },
+	{ "update/using-query-1", "update/using-1", FALSE, FALSE },
+	{ "update/using-query-2", "update/using-2", FALSE, FALSE },
+	{ "update/using-named-query-1", "update/using-named-1", FALSE, FALSE },
+	{ "update/using-named-query-2", "update/using-named-2", FALSE, FALSE },
+	{ "update/with-query-1", "update/with-1", FALSE, FALSE },
+	{ "update/with-query-2", "update/with-2", FALSE, FALSE },
 	/* Constraint declarations */
 	{ "constraint/empty-graph-1", "constraint/data", FALSE, FALSE },
 	{ "constraint/empty-graph-2", "constraint/data", FALSE, FALSE },
@@ -406,6 +492,39 @@ const TestInfo tests[] = {
 	{ "constraint/coexisting-2", "constraint/data", FALSE, FALSE },
 	{ "constraint/coexisting-3", "constraint/data", FALSE, FALSE },
 	{ "constraint/coexisting-4", "constraint/data", FALSE, FALSE },
+	{ "constraint/property-path-sequence-1", "constraint/property-paths-1", FALSE, FALSE },
+	{ "constraint/property-path-sequence-2", "constraint/property-paths-1", FALSE, FALSE },
+	{ "constraint/property-path-sequence-3", "constraint/property-paths-1", FALSE, FALSE },
+	{ "constraint/property-path-optional-1", "constraint/property-paths-1", FALSE, FALSE },
+	{ "constraint/property-path-optional-2", "constraint/property-paths-1", FALSE, FALSE },
+	{ "constraint/property-path-optional-3", "constraint/property-paths-1", FALSE, FALSE },
+	{ "constraint/property-path-inverse-1", "constraint/property-paths-1", FALSE, FALSE },
+	{ "constraint/property-path-inverse-2", "constraint/property-paths-1", FALSE, FALSE },
+	{ "constraint/describe-1", "constraint/data", FALSE, FALSE },
+	{ "constraint/describe-2", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-1", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-2", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-3", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-4", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-5", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-allowed-1", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-allowed-2", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-allowed-3", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-allowed-4", "constraint/data", FALSE, FALSE },
+	{ "constraint/select-from-allowed-5", "constraint/data", FALSE, FALSE },
+	{ "constraint/insert-1", "constraint/insert-data-1", FALSE, TRUE },
+	{ "constraint/insert-2", "constraint/insert-data-2", FALSE, TRUE },
+	{ "constraint/insert-3", "constraint/insert-data-3", FALSE, TRUE },
+	{ "constraint/insert-4", "constraint/insert-data-4", FALSE, TRUE },
+	{ "constraint/insert-allowed-1", "constraint/insert-allowed-data-1", FALSE, FALSE },
+	{ "constraint/insert-allowed-2", "constraint/insert-allowed-data-2", FALSE, FALSE },
+	{ "constraint/delete-1", "constraint/delete-data-1", FALSE, TRUE },
+	{ "constraint/create-graph-1", "constraint/create-graph-update-1", FALSE, TRUE },
+	{ "constraint/create-graph-allowed-1", "constraint/create-graph-allowed-update-1", FALSE, FALSE },
+	{ "constraint/drop-graph-1", "constraint/drop-graph-update-1", FALSE, TRUE },
+	{ "constraint/drop-graph-allowed-1", "constraint/drop-graph-allowed-update-1", FALSE, FALSE },
+	{ "constraint/copy-graph-1", "constraint/copy-graph-update-1", FALSE, TRUE },
+	{ "constraint/copy-graph-allowed-1", "constraint/copy-graph-allowed-update-1", FALSE, FALSE },
 	/* Inline data */
 	{ "inline/inline-1", "inline/data", FALSE, FALSE },
 	{ "inline/inline-2", "inline/data", FALSE, FALSE },
@@ -489,6 +608,7 @@ check_result (TrackerSparqlCursor *cursor,
 	if (test_info->expect_query_error) {
 		g_assert_true (error != NULL);
 		g_string_free (test_results, TRUE);
+		g_clear_error (&error);
 		g_free (results);
 		return;
 	}
@@ -534,7 +654,7 @@ test_sparql_query (TestInfo      *test_info,
 	gchar *query, *query_filename;
 	gchar *results_filename;
 	gchar *prefix, *data_prefix, *test_prefix;
-	GFile *file, *test_schemas;
+	GFile *file, *test_schemas, *parent;
 	TrackerSparqlConnection *conn;
 	gboolean retval;
 
@@ -545,8 +665,10 @@ test_sparql_query (TestInfo      *test_info,
 	g_free (prefix);
 
 	file = g_file_new_for_path (data_prefix);
-	test_schemas = g_file_get_parent (file);
+	parent = g_file_get_parent (file);
+	test_schemas = g_file_get_child (parent, "ontology");
 	g_object_unref (file);
+	g_object_unref (parent);
 
 	conn = tracker_sparql_connection_new (TRACKER_SPARQL_CONNECTION_FLAGS_NONE,
 	                                      NULL, test_schemas, NULL, &error);
@@ -612,8 +734,10 @@ test_sparql_query (TestInfo      *test_info,
 		g_free (results_filename);
 		results_filename = g_strconcat (test_prefix, ".extra.out", NULL);
 		check_result (cursor, test_info, results_filename, error);
+		g_free (query);
 	}
 
+	g_free (query_filename);
 	g_free (data_prefix);
 	g_free (test_prefix);
 

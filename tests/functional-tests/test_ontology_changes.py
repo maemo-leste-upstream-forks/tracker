@@ -36,8 +36,7 @@ import tempfile
 import time
 import unittest as ut
 
-import trackertestutils.dconf
-import trackertestutils.helpers
+import storehelper
 
 import configuration as cfg
 import fixtures
@@ -87,7 +86,7 @@ class OntologyChangeTestTemplate(ut.TestCase):
             None,
         )
 
-        self.tracker = trackertestutils.helpers.StoreHelper(conn1)
+        self.tracker = storehelper.StoreHelper(conn1)
         self.insert_data()
 
         conn1.close()
@@ -99,7 +98,7 @@ class OntologyChangeTestTemplate(ut.TestCase):
             Gio.File.new_for_path(str(self.ontology_path(self.SECOND_ONTOLOGY_DIR))),
             None,
         )
-        self.tracker = trackertestutils.helpers.StoreHelper(conn2)
+        self.tracker = storehelper.StoreHelper(conn2)
 
         self.validate_status()
 
@@ -532,7 +531,7 @@ class PropertyIndexedUnset(OntologyChangeTestTemplate):
 
         # Check ontology and instance for the single valued property
         result = self.tracker.query(
-            "SELECT ?indexed WHERE { test:a_string nrl:indexed ?indexed}"
+            "ASK { test:a_string nrl:indexed true }"
         )
         self.assertEqual(str(result[0][0]), "false")
 
@@ -544,7 +543,7 @@ class PropertyIndexedUnset(OntologyChangeTestTemplate):
 
         # Check ontology and instance for the multiple valued property
         result = self.tracker.query(
-            "SELECT ?indexed WHERE { test:a_n_cardinality nrl:indexed ?indexed}"
+            "ASK { test:a_n_cardinality nrl:indexed true }"
         )
         self.assertEqual(str(result[0][0]), "false")
 
@@ -881,7 +880,6 @@ class SuperclassAdditionTest(OntologyChangeTestTemplate):
     """
 
     # Changes to rdfs:subClassOf are not allowed
-    @ut.expectedFailure
     def test_superclass_addition(self):
         self.template_test_ontology_change()
 
