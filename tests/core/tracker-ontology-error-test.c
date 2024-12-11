@@ -25,7 +25,7 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <tinysparql.h>
 
 typedef struct _TestInfo TestInfo;
 
@@ -97,7 +97,7 @@ load_error_msgs (gchar *errors_path, gchar *ontology_path)
 		}
 
 		g_strstrip (error_msg);
-		g_string_append_printf (prefixed_errors, "parsing-error: %s:%s\n",
+		g_string_append_printf (prefixed_errors, "%s:%s\n",
 		                        ontology_uri, error_msg);
 		error_msg = strtok (NULL, "~");
 	}
@@ -213,6 +213,7 @@ test_ontology_error (void)
 		gchar *errors_path = g_build_path (G_DIR_SEPARATOR_S, prefix, errors_filename, NULL);
 		gchar *from, *to;
 		gchar *expected_error_msgs = "", *printed_error_msgs;
+		gboolean copy_result;
 
 		source_ontology_file = g_file_new_for_path (source_ontology_path);
 
@@ -221,10 +222,10 @@ test_ontology_error (void)
 		g_debug ("copy %s to %s", from, to);
 		g_free (from);
 
-		// Copy the ontology to the temporary ontologies directory
-		g_file_copy (source_ontology_file, test_ontology_file, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &error);
-
+		/* Copy the ontology to the temporary ontologies directory */
+		copy_result = g_file_copy (source_ontology_file, test_ontology_file, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &error);
 		g_assert_no_error (error);
+		g_assert_true (copy_result);
 		g_assert_cmpint (g_chmod (test_ontology_path, 0666), ==, 0);
 
 		/* The error messages are prefixed with the ontology path which contain the error

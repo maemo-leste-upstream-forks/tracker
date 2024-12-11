@@ -16,12 +16,16 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
-#ifndef __TRACKER_UTILS_H__
-#define __TRACKER_UTILS_H__
+
+#pragma once
+
+#if !defined (__LIBTRACKER_SPARQL_INSIDE__) && !defined (TRACKER_COMPILATION)
+#error "only <tinysparql.h> must be included directly."
+#endif
 
 #include <glib.h>
 #include <gio/gio.h>
-#include <libtracker-sparql/tracker-version.h>
+#include <tracker-version.h>
 
 G_BEGIN_DECLS
 
@@ -44,5 +48,3 @@ GFile *
 tracker_sparql_get_ontology_nepomuk (void);
 
 G_END_DECLS
-
-#endif /* __TRACKER_UTILS_H__ */

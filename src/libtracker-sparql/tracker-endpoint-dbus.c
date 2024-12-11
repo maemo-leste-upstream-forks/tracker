@@ -22,11 +22,11 @@
 /**
  * TrackerEndpointDBus:
  *
- * `TrackerEndpointDBus` makes the RDF data in a [class@Tracker.SparqlConnection]
+ * `TrackerEndpointDBus` makes the RDF data in a [class@SparqlConnection]
  * accessible to other processes via DBus.
  *
- * This object is a [class@Tracker.Endpoint] subclass that exports
- * a [class@Tracker.SparqlConnection] so its RDF data is accessible to other
+ * This object is a [class@Endpoint] subclass that exports
+ * a [class@SparqlConnection] so its RDF data is accessible to other
  * processes through the given [class@Gio.DBusConnection].
  *
  * ```c
@@ -50,7 +50,7 @@
  * location.
  *
  * Access to D-Bus endpoints may be managed via the
- * [signal@Tracker.EndpointDBus::block-call] signal, the boolean
+ * [signal@EndpointDBus::block-call] signal, the boolean
  * return value expressing whether the request is blocked or not.
  * Inspection of the requester address is left up to the user. The
  * default value allows all requests independently of their provenance.
@@ -62,7 +62,7 @@
  * their data naturally filtered as defined in the application manifest.
  *
  * A `TrackerEndpointDBus` may be created on a different thread/main
- * context from the one that created [class@Tracker.SparqlConnection].
+ * context from the one that created [class@SparqlConnection].
  */
 
 #include "config.h"
@@ -828,12 +828,7 @@ endpoint_dbus_iface_method_call (GDBusConnection       *connection,
 		if (fd_list)
 			fd = g_unix_fd_list_get (fd_list, handle, &error);
 
-		if (fd < 0) {
-			g_dbus_method_invocation_return_error (invocation,
-			                                       G_DBUS_ERROR,
-			                                       G_DBUS_ERROR_INVALID_ARGS,
-			                                       "Did not get a file descriptor");
-		} else {
+		if (fd >= 0) {
 			TrackerSparqlStatement *stmt;
 			QueryRequest *request;
 
@@ -881,12 +876,7 @@ endpoint_dbus_iface_method_call (GDBusConnection       *connection,
 		if (fd_list)
 			fd = g_unix_fd_list_get (fd_list, handle, &error);
 
-		if (fd < 0) {
-			g_dbus_method_invocation_return_error (invocation,
-			                                       G_DBUS_ERROR,
-			                                       G_DBUS_ERROR_INVALID_ARGS,
-			                                       "Did not get a file descriptor");
-		} else {
+		if (fd >= 0) {
 			TrackerSparqlConnection *conn;
 			TrackerBatch *batch;
 			GInputStream *istream;
@@ -918,12 +908,7 @@ endpoint_dbus_iface_method_call (GDBusConnection       *connection,
 		if (fd_list)
 			fd = g_unix_fd_list_get (fd_list, handle, &error);
 
-		if (fd < 0) {
-			g_dbus_method_invocation_return_error (invocation,
-			                                       G_DBUS_ERROR,
-			                                       G_DBUS_ERROR_INVALID_ARGS,
-			                                       "Did not get a file descriptor");
-		} else {
+		if (fd >= 0) {
 			UpdateRequest *request;
 			GTask *task;
 
@@ -955,12 +940,7 @@ endpoint_dbus_iface_method_call (GDBusConnection       *connection,
 		if (fd_list)
 			fd = g_unix_fd_list_get (fd_list, handle, &error);
 
-		if (fd < 0) {
-			g_dbus_method_invocation_return_error (invocation,
-			                                       G_DBUS_ERROR,
-			                                       G_DBUS_ERROR_INVALID_ARGS,
-			                                       "Did not get a file descriptor");
-		} else {
+		if (fd >= 0) {
 			TrackerSparqlConnection *conn;
 			GInputStream *istream;
 
@@ -985,6 +965,13 @@ endpoint_dbus_iface_method_call (GDBusConnection       *connection,
 		                                       G_DBUS_ERROR,
 		                                       G_DBUS_ERROR_UNKNOWN_METHOD,
 		                                       "Unknown method '%s'", method_name);
+	}
+
+	if (fd < 0) {
+		g_dbus_method_invocation_return_error (invocation,
+		                                       G_DBUS_ERROR,
+		                                       G_DBUS_ERROR_INVALID_ARGS,
+		                                       "Did not get a file descriptor");
 	}
 }
 
@@ -1200,7 +1187,7 @@ tracker_endpoint_dbus_init (TrackerEndpointDBus *endpoint)
 
 /**
  * tracker_endpoint_dbus_new:
- * @sparql_connection: The [class@Tracker.SparqlConnection] being made public
+ * @sparql_connection: The [class@SparqlConnection] being made public
  * @dbus_connection: #GDBusConnection to expose the DBus object over
  * @object_path: (nullable): The object path to use, or %NULL to use the default
  * @cancellable: (nullable): Optional [type@Gio.Cancellable]

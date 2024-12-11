@@ -16,19 +16,20 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
-#ifndef __TRACKER_SPARQL_CONNECTION_H__
-#define __TRACKER_SPARQL_CONNECTION_H__
+
+#pragma once
 
 #if !defined (__LIBTRACKER_SPARQL_INSIDE__) && !defined (TRACKER_COMPILATION)
-#error "only <libtracker-sparql/tracker-sparql.h> must be included directly."
+#error "only <tinysparql.h> must be included directly."
 #endif
 
-#include <libtracker-sparql/tracker-enums.h>
-#include <libtracker-sparql/tracker-error.h>
-#include <libtracker-sparql/tracker-notifier.h>
-#include <libtracker-sparql/tracker-resource.h>
-#include <libtracker-sparql/tracker-version.h>
 #include <gio/gio.h>
+
+#include "tracker-enums.h"
+#include "tracker-error.h"
+#include "tracker-notifier.h"
+#include "tracker-resource.h"
+#include "tracker-version.h"
 
 G_BEGIN_DECLS
 
@@ -276,5 +277,3 @@ void tracker_sparql_connection_map_connection (TrackerSparqlConnection *connecti
 					       TrackerSparqlConnection *service_connection);
 
 G_END_DECLS
-
-#endif /* __TRACKER_SPARQL_CONNECTION_H__ */

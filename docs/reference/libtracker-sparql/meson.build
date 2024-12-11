@@ -27,7 +27,7 @@ base_ontology_docs = custom_target('ontology-docgen',
               '--output-dir', meson.current_build_dir(),
               '--introduction-dir', meson.current_source_dir(),
               '--ontology-description-dir', join_paths(source_root, 'src/ontologies/')],
-    depends: tracker_docgen,
+    depends: [tracker_docgen, libtracker_parser],
     depend_files: [base_ontology, ontology_introductions],
 )
 
@@ -38,7 +38,7 @@ nepomuk_ontology_docs = custom_target('nepomuk-docgen',
               '--ontology-dir', join_paths(source_root, 'src/ontologies/nepomuk'),
               '--output-dir', meson.current_build_dir(),
               '--introduction-dir', meson.current_source_dir()],
-    depends: tracker_docgen,
+    depends: [tracker_docgen, libtracker_parser],
     depend_files: [nepomuk, ontology_introductions],
 )
 
@@ -127,7 +127,7 @@ foreach c : generated_content + content + generated_ontology_content
   content_quoted += '"@0@"'.format(fs.name(c))
 endforeach
 
-if xmlto.found()
+if xmlto.found() and get_option('man')
   cli_reference = custom_target(
     'commandline.md',
     input: 'commandline.md.in',
@@ -155,7 +155,7 @@ gidocgen_toml = configure_file(
 
 reference = custom_target(
   'docgen',
-  input: [ gidocgen_toml, tracker_sparql_gir[0] ],
+  input: [ gidocgen_toml, tsparql_gir[0] ],
   output: 'doc',
   command: [
     gidocgen,
@@ -170,6 +170,6 @@ reference = custom_target(
   depends: [tracker_sparql_gir[0], generated_targets],
   depend_files: [content])
 
-docs_name = 'Tracker-3.0'
-meson.add_install_script('install-devhelp.sh', docs_name, reference)
-meson.add_dist_script('dist-docs.sh', docs_name, reference.full_path())
+docs_name = 'Tsparql-3.0'
+meson.add_install_script('install-devhelp.sh', docs_name, meson.current_source_dir(), reference)
+meson.add_dist_script('dist-docs.sh', docs_name, meson.current_source_dir(), reference.full_path())

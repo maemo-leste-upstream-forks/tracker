@@ -17,8 +17,7 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_DATA_NAMESPACE_H__
-#define __LIBTRACKER_DATA_NAMESPACE_H__
+#pragma once
 
 #include <glib-object.h>
 #include "tracker-class.h"
@@ -44,21 +43,15 @@ struct _TrackerNamespaceClass {
 };
 
 GType             tracker_namespace_get_type      (void) G_GNUC_CONST;
-TrackerNamespace *tracker_namespace_new           (gboolean          use_gvdb);
+TrackerNamespace *tracker_namespace_new           (void);
 const gchar *     tracker_namespace_get_uri       (TrackerNamespace *namespace_);
 const gchar *     tracker_namespace_get_prefix    (TrackerNamespace *namespace_);
-gboolean          tracker_namespace_get_is_new    (TrackerNamespace *namespace_);
 
 void              tracker_namespace_set_uri       (TrackerNamespace *namespace_,
                                                    const gchar      *value);
 void              tracker_namespace_set_prefix    (TrackerNamespace *namespace_,
                                                    const gchar      *value);
-void              tracker_namespace_set_is_new    (TrackerNamespace *namespace_,
-                                                   gboolean         value);
 void              tracker_namespace_set_ontologies (TrackerNamespace  *namespace,
                                                     TrackerOntologies *ontologies);
 
 G_END_DECLS
-
-#endif /* __LIBTRACKER_DATA_NAMESPACE_H__ */
-

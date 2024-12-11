@@ -17,15 +17,14 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __TRACKER_NOTIFIER_H__
-#define __TRACKER_NOTIFIER_H__
+#pragma once
 
 #if !defined (__LIBTRACKER_SPARQL_INSIDE__) && !defined (TRACKER_COMPILATION)
-#error "only <libtracker-sparql/tracker-sparql.h> must be included directly."
+#error "only <tinysparql.h> must be included directly."
 #endif
 
 #include <gio/gio.h>
-#include <libtracker-sparql/tracker-version.h>
+#include <tracker-version.h>
 
 G_BEGIN_DECLS
 
@@ -79,5 +78,3 @@ TRACKER_AVAILABLE_IN_ALL
 const gchar * tracker_notifier_event_get_urn        (TrackerNotifierEvent *event);
 
 G_END_DECLS
-
-#endif /* __TRACKER_NOTIFIER_H__ */

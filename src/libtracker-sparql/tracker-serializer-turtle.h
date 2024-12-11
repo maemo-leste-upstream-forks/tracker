@@ -19,10 +19,9 @@
  * Author: Carlos Garnacho <carlosg@gnome.org>
  */
 
-#ifndef TRACKER_SERIALIZER_TURTLE_H
-#define TRACKER_SERIALIZER_TURTLE_H
+#pragma once
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <tinysparql.h>
 #include <libtracker-sparql/tracker-private.h>
 #include <libtracker-sparql/tracker-serializer.h>
 
@@ -32,5 +31,3 @@ G_DECLARE_FINAL_TYPE (TrackerSerializerTurtle,
                       tracker_serializer_turtle,
                       TRACKER, SERIALIZER_TURTLE,
                       TrackerSerializer)
-
-#endif /* TRACKER_SERIALIZER_TURTLE_H */

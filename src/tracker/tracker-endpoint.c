@@ -37,7 +37,7 @@
 #include <avahi-glib/glib-watch.h>
 #endif
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <tinysparql.h>
 
 #include "tracker-endpoint.h"
 
@@ -192,11 +192,10 @@ run_http_endpoint (TrackerSparqlConnection  *connection,
 	loopback = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
 	loopback_str = g_inet_address_to_string (loopback);
 	address = g_strdup_printf ("http://%s:%d/sparql/",
-				   loopback_str,
-				   http_port);
+	                            loopback_str,
+	                            http_port);
 
-	g_print (_("Creating HTTP endpoint at %s…"), address);
-	g_print ("\n");
+	g_print (_("Creating HTTP endpoint at %s…\n"), address);
 	g_free (address);
 	g_free (loopback_str);
 	g_object_unref (loopback);
@@ -408,7 +407,7 @@ validate_service (AvahiStringList  *list,
                   gchar           **path_out)
 {
 	AvahiStringList *txtvers, *protovers, *binding, *path;
-	gchar *txtvers_value, *protovers_value, *binding_value, *path_value;
+	gchar *txtvers_value = NULL, *protovers_value = NULL, *binding_value = NULL, *path_value = NULL;
 	gboolean valid = FALSE;
 
 	txtvers = avahi_string_list_find (list, "txtvers");
@@ -425,7 +424,7 @@ validate_service (AvahiStringList  *list,
 		valid = (g_strcmp0 (txtvers_value, "1") == 0 &&
 		         g_strcmp0 (protovers_value, "1.1") == 0 &&
 		         g_strcmp0 (binding_value, "HTTP") == 0);
-		if (path_out)
+		if (valid && path_out)
 			*path_out = g_strdup (path_value);
 	}
 
@@ -591,7 +590,7 @@ run_list_http_endpoints (void)
 #endif /* HAVE_AVAHI */
 
 int
-main (int argc, const char **argv)
+tracker_endpoint (int argc, const char **argv)
 {
 	TrackerSparqlConnection *connection;
 	GOptionContext *context;
@@ -601,7 +600,7 @@ main (int argc, const char **argv)
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, entries, NULL);
 
-	argv[0] = "tracker endpoint";
+	argv[0] = "tinysparql endpoint";
 
 	if (!g_option_context_parse (context, &argc, (char***) &argv, &error)) {
 		g_printerr ("%s, %s\n", _("Unrecognized options"), error->message);

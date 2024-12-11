@@ -23,7 +23,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <libtracker-sparql/tracker-sparql.h>
+#include <tinysparql.h>
 
 typedef struct {
 	const gchar *test_name;
@@ -74,10 +74,11 @@ check_result (GInputStream *istream,
 	gchar output[8096] = { 0 };
 	gboolean retval;
 
-	g_input_stream_read_all (istream,
-	                         output, sizeof (output),
-	                         NULL, NULL, &error);
+	retval = g_input_stream_read_all (istream,
+	                                  output, sizeof (output),
+	                                  NULL, NULL, &error);
 	g_assert_no_error (error);
+	g_assert_true (retval);
 
 	retval = g_file_get_contents (results_filename, &results, NULL, &nerror);
 	g_assert_true (retval);

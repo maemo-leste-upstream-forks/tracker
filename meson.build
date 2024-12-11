@@ -1,5 +1,5 @@
-project('tracker', 'c',
-        version: '3.7.3',
+project('tinysparql', 'c',
+        version: '3.8.1',
         meson_version: '>=0.62',
         default_options: [
           'c_std=c99',
@@ -13,7 +13,7 @@ cc = meson.get_compiler('c')
 # This is the X.Y used in -llibtracker-FOO-X.Y
 tracker_api_version = '3.0'
 tracker_api_major = tracker_api_version.split('.')[0]
-tracker_versioned_name = 'tracker@0@'.format(tracker_api_major)
+tracker_versioned_name = 'tinysparql@0@'.format(tracker_api_major)
 
 tracker_version = meson.project_version().split('-')[0]
 tracker_major_version = tracker_version.split('.')[0].to_int()
@@ -60,40 +60,16 @@ sqlite = dependency('sqlite3', version: '>' + sqlite_required)
 dbus = dependency('dbus-1')
 avahi_glib = dependency('avahi-glib', required: get_option('avahi'))
 avahi_client = dependency('avahi-client', required: get_option('avahi'))
+libsoup3 = dependency('libsoup-3.0', version: '>= 2.99.2',
+                        required: true)
 
-gvdb_dep = dependency('gvdb')
+soup_backends = '3.x'
 
-soup = get_option('soup')
-if soup.contains('soup2') or soup.contains('auto')
-  libsoup2 = dependency('libsoup-2.4', version: '> 2.40',
-                        required: soup.contains('soup2'))
-else
-  libsoup2 = disabler()
-endif
-
-if soup.contains('soup3') or soup.contains('auto')
-  libsoup3 = dependency('libsoup-3.0', version: '>= 2.99.2',
-                        required: soup.contains('soup3'))
-else
-  libsoup3 = disabler()
-endif
-
-soup_backends = ''
-if libsoup2.found()
-  soup_backends = soup_backends + '2.x '
-endif
-if libsoup3.found()
-  soup_backends = soup_backends + '3.x '
-endif
-
-if not libsoup2.found() and not libsoup3.found()
-  error('At least one of libsoup2 or libsoup3 is required')
-endif
 
 have_avahi = avahi_glib.found() and avahi_client.found()
 
 libmath = cc.find_library('m', required: false)
-libdl = cc.find_library('dl')
+libdl = cc.find_library('dl', required: false)
 
 if get_option('man')
   a2x = find_program('a2x')
@@ -138,7 +114,7 @@ add_project_arguments('-DTRACKER_COMPILATION',
                       language: 'c')
 
 if get_option('buildtype') == 'plain'
-  # Default case is to allow TRACKER_DEBUG which is very useful for
+  # Default case is to allow TINYSPARQL_DEBUG which is very useful for
   # triaging user-reported issues.
   # Use --buildtype=release to disable debug completely.
   debug = true
@@ -384,7 +360,7 @@ source_root = meson.current_source_dir()
 build_root = meson.current_build_dir()
 po_subdir = join_paths(source_root, 'po')
 
-tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tracker-' + tracker_api_version)
+tracker_internal_libs_dir = join_paths(get_option('prefix'), get_option('libdir'), 'tinysparql-' + tracker_api_version)
 
 if gobject_introspection.found()
   typelib_dir = gobject_introspection.get_variable(pkgconfig: 'typelibdir',
@@ -434,28 +410,24 @@ if not get_option('override_sqlite_version_check')
     endif
 endif
 
-summary = [
-  '\nBuild Configuration:',
-  '    Prefix:                                 ' + get_option('prefix'),
-  '    Source code location:                   ' + meson.current_source_dir(),
-  '    Debug:                                  ' + get_option('debug').to_string(),
-  '    Optimization:                           ' + get_option('optimization'),
-  '    Compiler:                               ' + cc.get_id(),
-  '    4-digit strftime() year modifier:       ' + year_modifier,
-  '\nFeature Support:',
-  '    Unicode support library:                ' + unicode_library_name,
-  '    Build with Stemming support:            ' + have_libstemmer.to_string(),
-  '    API documentation:                      ' + get_option('docs').to_string(),
-  '    CLI documentation (manpages):           ' + get_option('man').to_string(),
-  '    Libsoup backends:                       ' + soup_backends,
-  '    Avahi DNS-SD on HTTP endpoints:         ' + have_avahi.to_string(),
-]
+summary({
+  'Prefix':                                 get_option('prefix'),
+  'Source code location':                   meson.current_source_dir(),
+  'Debug':                                  get_option('debug'),
+  'Optimization':                           get_option('optimization'),
+  'Compiler':                               cc.get_id(),
+  '4-digit strftime() year modifier':       year_modifier,
+}, section: 'Build Configuration')
+
+summary({
+  'Unicode support library':                unicode_library_name,
+  'Build with Stemming support':            have_libstemmer,
+  'API documentation':                      get_option('docs'),
+  'CLI documentation (manpages)':           get_option('man'),
+  'Libsoup backends':                       soup_backends,
+  'Avahi DNS-SD on HTTP endpoints':         have_avahi,
+}, section: 'Feature Support')
 
 if get_option('bash_completion')
-  summary += [
-    '    Bash completion support:                ' + bash_completion_dir,
-  ]
+  summary('Bash completion support', bash_completion_dir, section: 'Feature Support')
 endif
-
-
-message('\n'.join(summary))

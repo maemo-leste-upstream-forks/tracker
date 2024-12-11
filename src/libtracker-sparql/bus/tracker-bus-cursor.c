@@ -41,6 +41,12 @@ enum {
 	N_PROPS
 };
 
+/* Set a ridiculously high limit on the row size,
+ * but a limit nonetheless. We can store up to 1GB
+ * in a single column/row, so make room for 2GiB.
+ */
+#define MAX_ROW_SIZE (2 * 1000 * 1000 * 1000)
+
 static GParamSpec *props[N_PROPS] = { 0, };
 
 G_DEFINE_TYPE (TrackerBusCursor,
@@ -97,24 +103,6 @@ tracker_bus_cursor_set_property (GObject      *object,
 	}
 }
 
-static void
-tracker_bus_cursor_get_property (GObject    *object,
-				 guint       prop_id,
-				 GValue     *value,
-				 GParamSpec *pspec)
-{
-	TrackerBusCursor *cursor = TRACKER_BUS_CURSOR (object);
-
-	switch (prop_id) {
-	case PROP_VARIABLES:
-		g_value_set_variant (value, cursor->variables);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-		break;
-	}
-}
-
 static gint
 tracker_bus_cursor_get_n_columns (TrackerSparqlCursor *cursor)
 {
@@ -145,8 +133,6 @@ tracker_bus_cursor_get_variable_name (TrackerSparqlCursor *cursor,
 {
 	TrackerBusCursor *bus_cursor = TRACKER_BUS_CURSOR (cursor);
 
-	if (bus_cursor->finished)
-		return NULL;
 	if (column < 0 || column >= bus_cursor->n_columns)
 		return NULL;
 
@@ -194,36 +180,13 @@ tracker_bus_cursor_get_string (TrackerSparqlCursor  *cursor,
 }
 
 static gboolean
-validate_offsets (gint32  *offsets,
-		  gint     n_columns,
-		  GError **error)
-{
-	gint i;
-
-	for (i = 0; i < n_columns - 1; i++) {
-		gint32 cur = offsets[i];
-		gint32 next = offsets[i + 1];
-
-		if (cur < 0 || cur >= next)
-			goto error;
-	}
-
-	return TRUE;
- error:
-	g_set_error (error,
-		     G_IO_ERROR,
-		     G_IO_ERROR_INVALID_DATA,
-		     "Corrupted cursor data");
-	return FALSE;
-}
-
-static gboolean
 tracker_bus_cursor_next (TrackerSparqlCursor  *cursor,
                          GCancellable         *cancellable,
                          GError              **error)
 {
 	TrackerBusCursor *bus_cursor = TRACKER_BUS_CURSOR (cursor);
 	gint32 n_columns, i;
+	gssize data_size;
 
 	if (bus_cursor->finished)
 		return FALSE;
@@ -253,6 +216,7 @@ tracker_bus_cursor_next (TrackerSparqlCursor  *cursor,
 	                              NULL, cancellable, error))
 		return FALSE;
 
+	g_clear_pointer (&bus_cursor->offsets, g_free);
 	bus_cursor->offsets = g_new0 (gint32, n_columns);
 	if (!g_input_stream_read_all (G_INPUT_STREAM (bus_cursor->data_stream),
 	                              bus_cursor->offsets,
@@ -260,27 +224,27 @@ tracker_bus_cursor_next (TrackerSparqlCursor  *cursor,
 	                              NULL, cancellable, error))
 		return FALSE;
 
-	if (!validate_offsets (bus_cursor->offsets, n_columns, error))
-		return FALSE;
+	for (i = 0; i < n_columns - 1; i++) {
+		gint32 cur = bus_cursor->offsets[i];
 
-	/* Set a ridiculously high limit on the row size,
-	 * but a limit nonetheless. We can store up to 1GB
-	 * in a single column/row, so make room for 2GiB.
-	 */
-	if (bus_cursor->offsets[n_columns - 1] > 2 * 1000 * 1000 * 1000) {
-		g_set_error (error,
-		             G_IO_ERROR,
-		             G_IO_ERROR_INVALID_DATA,
-		             "Corrupted cursor data");
-		return FALSE;
+		if (cur < 0 ||
+		    cur > MAX_ROW_SIZE ||
+		    (i > 0 && cur <= bus_cursor->offsets[i - 1])) {
+			g_set_error (error,
+			             G_IO_ERROR,
+			             G_IO_ERROR_INVALID_DATA,
+			             "Corrupted cursor data");
+			return FALSE;
+		}
 	}
 
 	/* The last offset says how long we have to go to read
 	 * the whole row data.
 	 */
 	g_clear_pointer (&bus_cursor->row_data, g_free);
-	bus_cursor->row_data =
-		g_new0 (gchar, bus_cursor->offsets[n_columns - 1] + 1);
+	data_size = bus_cursor->offsets[n_columns - 1] + 1;
+	g_assert (data_size >= 0 && data_size <= MAX_ROW_SIZE);
+	bus_cursor->row_data = g_new0 (gchar, data_size);
 
 	if (!g_input_stream_read_all (G_INPUT_STREAM (bus_cursor->data_stream),
 	                              bus_cursor->row_data,
@@ -292,10 +256,11 @@ tracker_bus_cursor_next (TrackerSparqlCursor  *cursor,
 	bus_cursor->values = g_new0 (const gchar *, n_columns);
 
 	for (i = 0; i < n_columns; i++) {
-		if (i == 0)
-			bus_cursor->values[i] = bus_cursor->row_data;
-		else
-			bus_cursor->values[i] = &bus_cursor->row_data[bus_cursor->offsets[i - 1]] + 1;
+		gint32 offset;
+
+		offset = (i == 0) ? 0 : bus_cursor->offsets[i - 1] + 1;
+		g_assert (offset >= 0 && offset <= MAX_ROW_SIZE);
+		bus_cursor->values[i] = &bus_cursor->row_data[offset];
 	}
 
 	return TRUE;
@@ -340,22 +305,6 @@ tracker_bus_cursor_next_finish (TrackerSparqlCursor  *cursor,
 }
 
 static void
-tracker_bus_cursor_rewind (TrackerSparqlCursor *cursor)
-{
-	TrackerBusCursor *bus_cursor = TRACKER_BUS_CURSOR (cursor);
-
-	g_clear_pointer (&bus_cursor->types, g_free);
-	g_clear_pointer (&bus_cursor->row_data, g_free);
-
-	if (g_seekable_can_seek (G_SEEKABLE (bus_cursor->data_stream))) {
-		g_seekable_seek (G_SEEKABLE (bus_cursor->data_stream),
-				 0, G_SEEK_SET, NULL, NULL);
-	}
-
-	bus_cursor->finished = FALSE;
-}
-
-static void
 tracker_bus_cursor_close (TrackerSparqlCursor *cursor)
 {
 	TrackerBusCursor *bus_cursor = TRACKER_BUS_CURSOR (cursor);
@@ -376,7 +325,6 @@ tracker_bus_cursor_class_init (TrackerBusCursorClass *klass)
 	object_class->finalize = tracker_bus_cursor_finalize;
 	object_class->constructed = tracker_bus_cursor_constructed;
 	object_class->set_property = tracker_bus_cursor_set_property;
-	object_class->get_property = tracker_bus_cursor_get_property;
 
 	cursor_class->get_n_columns = tracker_bus_cursor_get_n_columns;
 	cursor_class->get_value_type = tracker_bus_cursor_get_value_type;
@@ -385,18 +333,17 @@ tracker_bus_cursor_class_init (TrackerBusCursorClass *klass)
 	cursor_class->next = tracker_bus_cursor_next;
 	cursor_class->next_async = tracker_bus_cursor_next_async;
 	cursor_class->next_finish = tracker_bus_cursor_next_finish;
-	cursor_class->rewind = tracker_bus_cursor_rewind;
 	cursor_class->close = tracker_bus_cursor_close;
 
 	props[PROP_VARIABLES] =
 		g_param_spec_variant ("variables",
-				      "Variables",
-				      "Variables",
-				      G_VARIANT_TYPE ("as"),
-				      NULL,
-				      G_PARAM_READWRITE |
-				      G_PARAM_STATIC_STRINGS |
-				      G_PARAM_CONSTRUCT_ONLY);
+		                      "Variables",
+		                      "Variables",
+		                      G_VARIANT_TYPE ("as"),
+		                      NULL,
+		                      G_PARAM_WRITABLE |
+		                      G_PARAM_STATIC_STRINGS |
+		                      G_PARAM_CONSTRUCT_ONLY);
 
 	g_object_class_install_properties (object_class, N_PROPS, props);
 

@@ -83,6 +83,8 @@ tracker_deserializer_turtle_finalize (GObject *object)
 {
 	TrackerDeserializerTurtle *deserializer = TRACKER_DESERIALIZER_TURTLE (object);
 
+	tracker_sparql_cursor_close (TRACKER_SPARQL_CURSOR (deserializer));
+
 	g_clear_object (&deserializer->buffered_stream);
 	g_clear_pointer (&deserializer->parser_state, g_array_unref);
 	g_clear_pointer (&deserializer->subject, g_free);
@@ -289,16 +291,15 @@ expand_prefix (TrackerDeserializerTurtle  *deserializer,
 
 static gchar *
 expand_base (TrackerDeserializerTurtle *deserializer,
-             gchar                     *suffix)
+             const gchar               *suffix)
 {
-	if (deserializer->base) {
+	if (deserializer->base && !strstr (suffix, ":/")) {
 		gchar *str;
 
 		str = g_strdup_printf ("%s%s", deserializer->base, suffix);
-		g_free (suffix);
 		return str;
 	} else {
-		return suffix;
+		return g_strdup (suffix);
 	}
 }
 
@@ -355,7 +356,7 @@ static gboolean
 handle_prefix (TrackerDeserializerTurtle  *deserializer,
                GError                    **error)
 {
-	gchar *prefix = NULL, *uri = NULL;
+	gchar *prefix = NULL, *uri = NULL, *expanded;
 	gboolean retval;
 
 	advance_whitespace_and_comments (deserializer);
@@ -373,9 +374,11 @@ handle_prefix (TrackerDeserializerTurtle  *deserializer,
 	/* Remove the trailing ':' in prefix */
 	prefix[strlen(prefix) - 1] = '\0';
 
-	retval = maybe_add_prefix (deserializer, prefix, uri, error);
+	expanded = expand_base (deserializer, uri);
+	retval = maybe_add_prefix (deserializer, prefix, expanded, error);
 	g_free (prefix);
 	g_free (uri);
+	g_free (expanded);
 
 	return retval;
 error:
@@ -392,18 +395,20 @@ static gboolean
 handle_base (TrackerDeserializerTurtle  *deserializer,
              GError                    **error)
 {
-	gchar *base = NULL;
+	gchar *base = NULL, *expanded;
 
 	advance_whitespace_and_comments (deserializer);
-	if (!parse_terminal (deserializer, terminal_IRIREF, 0, &base))
+	if (!parse_terminal (deserializer, terminal_IRIREF, 1, &base))
 		goto error;
 
 	advance_whitespace_and_comments (deserializer);
 	if (!parse_token (deserializer, "."))
 		goto error;
 
+	expanded = expand_base (deserializer, base);
 	g_clear_pointer (&deserializer->base, g_free);
-	deserializer->base = base;
+	deserializer->base = expanded;
+	g_free (base);
 	return TRUE;
 error:
 	g_free (base);
@@ -606,6 +611,7 @@ tracker_deserializer_turtle_iterate_next (TrackerDeserializerTurtle  *deserializ
 
 				if (parse_terminal (deserializer, terminal_IRIREF, 1, &str)) {
 					deserializer->graph = expand_base (deserializer, str);
+					g_free (str);
 				} else if (parse_terminal (deserializer, terminal_PNAME_LN, 0, &str) ||
 				           parse_terminal (deserializer, terminal_PNAME_NS, 0, &str)) {
 					deserializer->graph = expand_prefix (deserializer, str, error);
@@ -648,6 +654,7 @@ tracker_deserializer_turtle_iterate_next (TrackerDeserializerTurtle  *deserializ
 			if (parse_token (deserializer, "[")) {
 				/* Anonymous blank node */
 				push_stack (deserializer);
+				g_clear_pointer (&deserializer->subject, g_free);
 				deserializer->subject = tracker_generate_uuid ("_:bnode");
 				deserializer->state = STATE_PREDICATE;
 				continue;
@@ -655,6 +662,7 @@ tracker_deserializer_turtle_iterate_next (TrackerDeserializerTurtle  *deserializ
 
 			if (parse_terminal (deserializer, terminal_IRIREF, 1, &str)) {
 				deserializer->subject = expand_base (deserializer, str);
+				g_free (str);
 			} else if (parse_terminal (deserializer, terminal_PNAME_LN, 0, &str) ||
 			           parse_terminal (deserializer, terminal_PNAME_NS, 0, &str)) {
 				deserializer->subject = expand_prefix (deserializer, str, error);
@@ -708,6 +716,7 @@ tracker_deserializer_turtle_iterate_next (TrackerDeserializerTurtle  *deserializ
 			if (parse_token (deserializer, "[")) {
 				/* Anonymous blank node */
 				push_stack (deserializer);
+				g_clear_pointer (&deserializer->subject, g_free);
 				deserializer->subject = tracker_generate_uuid ("_:bnode");
 				deserializer->state = STATE_PREDICATE;
 				continue;
@@ -719,6 +728,7 @@ tracker_deserializer_turtle_iterate_next (TrackerDeserializerTurtle  *deserializ
 			if (parse_terminal (deserializer, terminal_IRIREF, 1, &str)) {
 				deserializer->object = expand_base (deserializer, str);
 				deserializer->object_is_uri = TRUE;
+				g_free (str);
 			} else if (parse_terminal (deserializer, terminal_PNAME_LN, 0, &str) ||
 			           parse_terminal (deserializer, terminal_PNAME_NS, 0, &str)) {
 				deserializer->object = expand_prefix (deserializer, str, error);
@@ -906,18 +916,6 @@ tracker_deserializer_turtle_next (TrackerSparqlCursor  *cursor,
 	return tracker_deserializer_turtle_iterate_next (deserializer, error);
 }
 
-static void
-tracker_deserializer_turtle_rewind (TrackerSparqlCursor* cursor)
-{
-	TrackerDeserializerTurtle *deserializer = TRACKER_DESERIALIZER_TURTLE (cursor);
-
-	g_seekable_seek (G_SEEKABLE (deserializer->buffered_stream),
-	                 0, G_SEEK_SET, NULL, NULL);
-	deserializer->state = STATE_INITIAL;
-	deserializer->line_no = 0;
-	deserializer->column_no = 0;
-}
-
 void
 tracker_deserializer_turtle_close (TrackerSparqlCursor* cursor)
 {
@@ -953,7 +951,6 @@ tracker_deserializer_turtle_class_init (TrackerDeserializerTurtleClass *klass)
 	cursor_class->get_value_type = tracker_deserializer_turtle_get_value_type;
 	cursor_class->get_string = tracker_deserializer_turtle_get_string;
 	cursor_class->next = tracker_deserializer_turtle_next;
-	cursor_class->rewind = tracker_deserializer_turtle_rewind;
 	cursor_class->close = tracker_deserializer_turtle_close;
 
 	deserializer_class->get_parser_location = tracker_deserializer_turtle_get_parser_location;

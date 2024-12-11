@@ -61,22 +61,15 @@ static int
 sql_by_file (void)
 {
 	GError *error = NULL;
-	gchar *path_in_utf8;
+	gchar *path_in_utf8 = NULL;
+	gboolean retval;
 	gsize size;
 
 	path_in_utf8 = g_filename_to_utf8 (file, -1, NULL, NULL, &error);
-	if (error) {
-		g_printerr ("%s:'%s', %s\n",
-		            _("Could not get UTF-8 path from path"),
-		            file,
-		            error->message);
-		g_error_free (error);
+	if (path_in_utf8)
+		retval = g_file_get_contents (path_in_utf8, &query, &size, &error);
 
-		return EXIT_FAILURE;
-	}
-
-	if (!g_file_get_contents (path_in_utf8, &query, &size, &error)) {
-		g_assert (error != NULL);
+	if (!path_in_utf8 || !retval) {
 		g_printerr ("%s:'%s', %s\n",
 		            _("Could not read file"),
 		            path_in_utf8,
@@ -230,10 +223,16 @@ main (int argc, const char **argv)
 	GError *error = NULL;
 	const gchar *failed;
 
+	setlocale (LC_ALL, "");
+
+	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, entries, NULL);
 
-	argv[0] = "tracker sql";
+	argv[0] = "tinysparql sql";
 
 	if (!g_option_context_parse (context, &argc, (char***) &argv, &error)) {
 		g_printerr ("%s, %s\n", _("Unrecognized options"), error->message);

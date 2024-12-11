@@ -28,14 +28,23 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
+#include "tracker-help.h"
+#include "tracker-endpoint.h"
+#include "tracker-export.h"
+#include "tracker-import.h"
+#include "tracker-introspect.h"
+#include "tracker-query.h"
+#include "tracker-common.h"
+#include "tracker-webide.h"
+
 #include <libtracker-common/tracker-common.h>
 
 const char usage_string[] =
-	"tracker3 [--version] [--help]\n"
+	"tinysparql [--version] [--help]\n"
 	"                <command> [<args>]";
 
 const char about[] =
-	"Tracker " PACKAGE_VERSION "\n"
+	"TinySPARQL " PACKAGE_VERSION "\n"
 	"\n"
 	"This program is free software and comes without any warranty.\n"
 	"It is licensed under version 2 or later of the General Public "
@@ -53,6 +62,22 @@ print_version (void)
 	return 0;
 }
 
+struct cmd_struct {
+       const char *cmd;
+       int (*fn)(int, const char **);
+       const char *help;
+};
+
+static struct cmd_struct commands[] = {
+       { "help", tracker_help, N_("Get help on how to use TinySPARQL and any of these commands") },
+       { "endpoint", tracker_endpoint, N_("Create a SPARQL endpoint") },
+       { "export", tracker_export, N_("Export data from a TinySPARQL database") },
+       { "import", tracker_import, N_("Import data into a TinySPARQL database") },
+       { "introspect", tracker_introspect, N_("Introspect a SPARQL endpoint") },
+       { "query", tracker_query, N_("Query and update the index using SPARQL") },
+       { "webide", tracker_webide, N_("Create a Web IDE to query local databases") },
+};
+
 static inline void
 mput_char (char c, unsigned int num)
 {
@@ -61,89 +86,23 @@ mput_char (char c, unsigned int num)
       }
 }
 
-static int
-compare_app_info (GAppInfo *a,
-                  GAppInfo *b)
-{
-	return g_strcmp0 (g_app_info_get_name (a), g_app_info_get_name (b));
-}
-
 static void
 print_usage_list_cmds (void)
 {
 	guint longest = 0;
-	GList *commands = NULL;
-	GList *c;
-	GFileEnumerator *enumerator;
-	GFileInfo *info;
-	GFile *dir;
-	GError *error = NULL;
-	const gchar *cli_metadata_dir;
+	guint i;
 
-	cli_metadata_dir = g_getenv ("TRACKER_CLI_DIR");
+	puts (_("Available tinysparql commands are:"));
 
-	if (!cli_metadata_dir) {
-		cli_metadata_dir = CLI_METADATA_DIR;
+	for (i = 0; i < G_N_ELEMENTS (commands); i++) {
+		if (longest < strlen (commands[i].cmd))
+			longest = strlen (commands[i].cmd);
 	}
 
-	dir = g_file_new_for_path (cli_metadata_dir);
-	enumerator = g_file_enumerate_children (dir,
-	                                        G_FILE_ATTRIBUTE_STANDARD_NAME,
-	                                        G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
-	                                        NULL, &error);
-	g_object_unref (dir);
-
-	if (enumerator) {
-		while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL) {
-			const gchar *filename;
-
-			filename = g_file_info_get_name (info);
-			if (g_str_has_suffix (filename, ".desktop")) {
-				gchar *path = NULL;
-				GDesktopAppInfo *desktop_info;
-
-				path = g_build_filename (cli_metadata_dir, filename, NULL);
-				desktop_info = g_desktop_app_info_new_from_filename (path);
-				if (desktop_info) {
-					commands = g_list_prepend (commands, desktop_info);
-				} else {
-					g_warning ("Unable to load command info: %s", path);
-				}
-
-				g_free (path);
-			}
-			g_object_unref (info);
-		}
-
-		g_object_unref (enumerator);
-	} else {
-		g_warning ("Failed to list commands: %s", error->message);
-	}
-
-	puts (_("Available tracker3 commands are:"));
-
-	if (commands) {
-		commands = g_list_sort (commands, (GCompareFunc) compare_app_info);
-
-		for (c = commands; c; c = c->next) {
-			GDesktopAppInfo *desktop_info = c->data;
-			const gchar *name = g_app_info_get_name (G_APP_INFO (desktop_info));
-
-			if (longest < strlen (name))
-				longest = strlen (name);
-		}
-
-		for (c = commands; c; c = c->next) {
-			GDesktopAppInfo *desktop_info = c->data;
-			const gchar *name = g_app_info_get_name (G_APP_INFO (desktop_info));
-			const gchar *help = g_app_info_get_description (G_APP_INFO (desktop_info));
-
-			g_print ("   %s   ", name);
-			mput_char (' ', longest - strlen (name));
-			puts (help);
-		}
-
-		g_list_free_full (commands, g_object_unref);
+	for (i = 0; i < G_N_ELEMENTS (commands); i++) {
+		g_print ("   %s   ", commands[i].cmd);
+		mput_char (' ', longest - strlen (commands[i].cmd));
+		puts (_(commands[i].help));
 	}
 }
 
@@ -152,13 +111,15 @@ print_usage (void)
 {
 	g_print ("usage: %s\n\n", usage_string);
 	print_usage_list_cmds ();
-	g_print ("\n%s\n", _("See “tracker3 help <command>” to read about a specific subcommand."));
+	g_print ("\n%s\n", _("See “tinysparql help <command>” to read about a specific subcommand."));
 }
 
 int
 main (int argc, char *argv[])
 {
-	const gchar *bin_dir;
+	int (* func) (int, const char *[]) = NULL;
+	const gchar *subcommand = argv[1];
+	guint i;
 
 	setlocale (LC_ALL, "");
 
@@ -166,22 +127,11 @@ main (int argc, char *argv[])
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
-	bin_dir = g_getenv ("TRACKER_CLI_DIR");
-
-	if (!bin_dir) {
-		bin_dir = BINDIR;
-	}
-
 	if (argc == 1) {
 		/* The user didn't specify a command; give them help */
 		print_usage ();
 		exit (EXIT_SUCCESS);
 	}
-
-	/* Look up and exec the subcommand. */
-	const gchar *subcommand = argv[1];
-	gchar *subcommand_binary = NULL;
-	gchar *path = NULL;
 
 	if (g_strcmp0 (subcommand, "--version") == 0) {
 		print_version ();
@@ -196,21 +146,16 @@ main (int argc, char *argv[])
 		exit (EXIT_SUCCESS);
 	}
 
-	/* Execute subcommand binary */
-	subcommand_binary = g_strdup_printf("tracker3-%s", subcommand);
-	path = g_build_filename (bin_dir, subcommand_binary, NULL);
-
-	if (g_file_test (path, G_FILE_TEST_EXISTS)) {
-		/* Manipulate argv in place, in order to launch subcommand */
-		argv[1] = path;
-		execv (path, &argv[1]);
-	} else {
-		g_printerr (_("“%s” is not a tracker3 command. See “tracker3 --help”"), subcommand);
-		g_printerr ("\n");
+	for (i = 0; i < G_N_ELEMENTS (commands); i++) {
+		if (g_strcmp0 (commands[i].cmd, subcommand) == 0)
+			func = commands[i].fn;
 	}
 
-	g_free (path);
-	g_free (subcommand_binary);
-
-	return EXIT_FAILURE;
+	if (func) {
+		return func (argc - 1, (const char **) &argv[1]);
+	} else {
+		g_printerr (_("“%s” is not a tinysparql command. See “tinysparql --help”"), subcommand);
+		g_printerr ("\n");
+		return EXIT_FAILURE;
+	}
 }

@@ -19,8 +19,7 @@
  * Author: Philip Van Hoof <philip@codeminded.be>
  */
 
-#ifndef __LIBTRACKER_DATA_ONTOLOGY_H__
-#define __LIBTRACKER_DATA_ONTOLOGY_H__
+#pragma once
 
 #include <glib-object.h>
 #include "tracker-class.h"
@@ -47,20 +46,12 @@ struct _TrackerOntologyClass {
 
 GType             tracker_ontology_get_type          (void) G_GNUC_CONST;
 TrackerOntology  *tracker_ontology_new               (void);
-gint64            tracker_ontology_get_last_modified (TrackerOntology *ontology);
-void              tracker_ontology_set_last_modified (TrackerOntology *ontology,
-                                                      gint64           value);
 const gchar *     tracker_ontology_get_uri           (TrackerOntology *ontology);
-gboolean          tracker_ontology_get_is_new        (TrackerOntology *ontology);
 
 void              tracker_ontology_set_uri           (TrackerOntology *ontology,
                                                       const gchar      *value);
-void              tracker_ontology_set_is_new        (TrackerOntology *ontology,
-                                                      gboolean         value);
 void              tracker_ontology_set_ontologies    (TrackerOntology   *ontology,
                                                       TrackerOntologies *ontologies);
 
 G_END_DECLS
-
-#endif /* __LIBTRACKER_DATA_ONTOLOGY_H__ */
 

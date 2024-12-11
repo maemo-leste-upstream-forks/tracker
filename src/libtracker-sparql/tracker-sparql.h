@@ -17,29 +17,6 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_SPARQL_H__
-#define __LIBTRACKER_SPARQL_H__
+#pragma once
 
-#define __LIBTRACKER_SPARQL_INSIDE__
-
-#include <libtracker-sparql/tracker-version-generated.h>
-#include <libtracker-sparql/tracker-version.h>
-#include <libtracker-sparql/tracker-enums.h>
-#include <libtracker-sparql/tracker-error.h>
-#include <libtracker-sparql/tracker-connection.h>
-#include <libtracker-sparql/tracker-batch.h>
-#include <libtracker-sparql/tracker-cursor.h>
-#include <libtracker-sparql/tracker-endpoint.h>
-#include <libtracker-sparql/tracker-endpoint-dbus.h>
-#include <libtracker-sparql/tracker-endpoint-http.h>
-#include <libtracker-sparql/tracker-version.h>
-#include <libtracker-sparql/tracker-ontologies.h>
-#include <libtracker-sparql/tracker-resource.h>
-#include <libtracker-sparql/tracker-statement.h>
-#include <libtracker-sparql/tracker-notifier.h>
-#include <libtracker-sparql/tracker-sparql-enum-types.h>
-#include <libtracker-sparql/tracker-utils.h>
-
-#undef __LIBTRACKER_SPARQL_INSIDE__
-
-#endif /* __LIBTRACKER_SPARQL_H__ */
+#include <tinysparql.h>

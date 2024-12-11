@@ -32,6 +32,7 @@ from urllib.error import HTTPError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
+COMMAND_NAME = "tinysparql"
 
 class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
     def setUp(self):
@@ -45,7 +46,7 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
         # Create the database
         self.run_background(
             [
-                "tracker3",
+                COMMAND_NAME,
                 "endpoint",
                 "--database",
                 self._dirpath,
@@ -66,11 +67,10 @@ class TestEndpointHttp(fixtures.TrackerCommandLineTestCase):
 
         stdout = self.run_cli(
             [
-                "tracker3",
-                "sparql",
+                COMMAND_NAME,
+                "query",
                 "--remote-service",
                 self.address,
-                "--query",
                 "ASK { ?u a rdfs:Resource }",
             ]
         )

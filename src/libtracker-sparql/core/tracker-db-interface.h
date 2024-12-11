@@ -17,8 +17,7 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_DB_INTERFACE_H__
-#define __LIBTRACKER_DB_INTERFACE_H__
+#pragma once
 
 #include <glib-object.h>
 #include <gio/gio.h>
@@ -106,14 +105,14 @@ TrackerDBStatement *    tracker_db_interface_create_vstatement       (TrackerDBI
                                                                       GError                     **error,
                                                                       const gchar                 *query,
                                                                       ...) G_GNUC_PRINTF (4, 5);
-void                    tracker_db_interface_execute_vquery          (TrackerDBInterface          *interface,
+gboolean                tracker_db_interface_execute_vquery          (TrackerDBInterface          *interface,
                                                                       GError                     **error,
                                                                       const gchar                 *query,
                                                                       va_list                      args);
-void                    tracker_db_interface_execute_query           (TrackerDBInterface          *interface,
+gboolean                tracker_db_interface_execute_query           (TrackerDBInterface          *interface,
                                                                       GError                     **error,
                                                                       const gchar                 *query,
-                                                                       ...) G_GNUC_PRINTF (3, 4);
+                                                                      ...) G_GNUC_PRINTF (3, 4);
 
 gboolean                tracker_db_interface_start_transaction       (TrackerDBInterface         *interface);
 gboolean                tracker_db_interface_end_db_transaction      (TrackerDBInterface         *interface,
@@ -172,5 +171,3 @@ void tracker_db_cursor_get_value (TrackerDBCursor            *cursor,
                                   GValue                     *value);
 
 G_END_DECLS
-
-#endif /* __LIBTRACKER_DB_INTERFACE_H__ */

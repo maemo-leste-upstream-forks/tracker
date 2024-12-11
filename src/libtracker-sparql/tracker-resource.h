@@ -17,13 +17,16 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_RESOURCE_H__
-#define __LIBTRACKER_RESOURCE_H__
+#pragma once
+
+#if !defined (__LIBTRACKER_SPARQL_INSIDE__) && !defined (TRACKER_COMPILATION)
+#error "only <tinysparql.h> must be included directly."
+#endif
 
 #include <glib-object.h>
-#include <libtracker-sparql/tracker-enums.h>
-#include <libtracker-sparql/tracker-version.h>
-#include <libtracker-sparql/tracker-namespace-manager.h>
+#include <tracker-enums.h>
+#include <tracker-version.h>
+#include <tracker-namespace-manager.h>
 
 G_BEGIN_DECLS
 
@@ -131,5 +134,3 @@ TRACKER_AVAILABLE_IN_3_1
 gboolean tracker_resource_get_property_overwrite (TrackerResource *resource, const gchar *property_uri);
 
 G_END_DECLS
-
-#endif /* __LIBTRACKER_RESOURCE_H__ */

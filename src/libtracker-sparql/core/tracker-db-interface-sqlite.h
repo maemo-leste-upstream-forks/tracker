@@ -17,10 +17,7 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_DB_INTERFACE_SQLITE_H__
-#define __LIBTRACKER_DB_INTERFACE_SQLITE_H__
-
-#include "config.h"
+#pragma once
 
 #include "tracker-db-interface.h"
 #include "tracker-db-manager.h"
@@ -47,41 +44,11 @@ gint64              tracker_db_interface_sqlite_get_last_insert_id     (TrackerD
 gboolean            tracker_db_interface_sqlite_fts_init               (TrackerDBInterface       *interface,
                                                                         TrackerDBManagerFlags     fts_flags,
                                                                         GError                  **error);
-gboolean            tracker_db_interface_sqlite_fts_create_table       (TrackerDBInterface       *interface,
-                                                                        const gchar              *database,
-                                                                        TrackerOntologies        *ontologies,
-                                                                        GError                  **error);
 void                tracker_db_interface_sqlite_reset_collator         (TrackerDBInterface       *interface);
 gboolean            tracker_db_interface_sqlite_wal_checkpoint         (TrackerDBInterface       *interface,
                                                                         gboolean                  blocking,
                                                                         GError                  **error);
 void                tracker_db_interface_init_vtabs                    (TrackerDBInterface       *interface);
-
-gboolean            tracker_db_interface_sqlite_fts_delete_table       (TrackerDBInterface       *interface,
-                                                                        const gchar              *database,
-                                                                        GError                  **error);
-
-gboolean            tracker_db_interface_sqlite_fts_alter_table        (TrackerDBInterface       *interface,
-                                                                        const gchar              *database,
-                                                                        TrackerOntologies        *ontologies,
-                                                                        GError                  **error);
-
-TrackerDBStatement * tracker_db_interface_sqlite_fts_insert_text_stmt (TrackerDBInterface  *db_interface,
-                                                                       const gchar         *database,
-                                                                       const gchar        **properties,
-                                                                       GError             **error);
-
-TrackerDBStatement * tracker_db_interface_sqlite_fts_delete_text_stmt (TrackerDBInterface  *db_interface,
-                                                                       const gchar         *database,
-                                                                       const gchar        **properties,
-                                                                       GError             **error);
-
-gboolean            tracker_db_interface_sqlite_fts_integrity_check (TrackerDBInterface  *interface,
-                                                                     const gchar         *database);
-
-gboolean            tracker_db_interface_sqlite_fts_rebuild_tokens     (TrackerDBInterface       *interface,
-                                                                        const gchar              *database,
-                                                                        GError                  **error);
 
 gboolean            tracker_db_interface_attach_database               (TrackerDBInterface       *db_interface,
                                                                         GFile                    *file,
@@ -102,5 +69,3 @@ GArray * tracker_db_statement_get_values (TrackerDBStatement   *stmt,
                                           GError              **error);
 
 G_END_DECLS
-
-#endif /* __LIBTRACKER_DB_INTERFACE_SQLITE_H__ */

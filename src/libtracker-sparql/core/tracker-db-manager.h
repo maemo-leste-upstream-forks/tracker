@@ -17,8 +17,7 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_DB_MANAGER_H__
-#define __LIBTRACKER_DB_MANAGER_H__
+#pragma once
 
 #include <glib-object.h>
 
@@ -54,10 +53,11 @@ typedef enum {
 	TRACKER_DB_VERSION_3_4,      /* Fixed FTS view */
 	TRACKER_DB_VERSION_3_6,      /* BM25 for FTS ranking */
 	TRACKER_DB_VERSION_3_7,      /* SQLite 3.45.3 being a moron for changing syntax in views */
+	TRACKER_DB_VERSION_3_8,      /* Default graph gets a name */
 } TrackerDBVersion;
 
 /* Set current database version we are working with */
-#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_3_7
+#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_3_8
 
 void                tracker_db_manager_rollback_db_creation   (TrackerDBManager *db_manager);
 
@@ -82,6 +82,12 @@ TrackerDBManagerFlags
 gboolean            tracker_db_manager_locale_changed         (TrackerDBManager      *db_manager,
                                                                GError               **error);
 void                tracker_db_manager_set_current_locale     (TrackerDBManager      *db_manager);
+
+gboolean tracker_db_manager_ontology_checksum_changed (TrackerDBManager *db_manager,
+                                                       const gchar      *checksum);
+
+void tracker_db_manager_set_ontology_checksum (TrackerDBManager *db_manager,
+                                               const gchar      *checksum);
 
 gboolean            tracker_db_manager_get_tokenizer_changed  (TrackerDBManager      *db_manager);
 void                tracker_db_manager_tokenizer_update       (TrackerDBManager      *db_manager);
@@ -110,5 +116,3 @@ gboolean tracker_db_manager_check_integrity (TrackerDBManager  *db_manager,
                                              GError           **error);
 
 G_END_DECLS
-
-#endif /* __LIBTRACKER_DB_MANAGER_H__ */

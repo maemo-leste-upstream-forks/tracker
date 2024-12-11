@@ -20,8 +20,7 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_DATA_QUERY_H__
-#define __LIBTRACKER_DATA_QUERY_H__
+#pragma once
 
 #include <glib.h>
 
@@ -37,9 +36,6 @@ TrackerRowid         tracker_data_query_resource_id   (TrackerDataManager  *mana
                                                        TrackerDBInterface  *iface,
                                                        const gchar         *uri,
                                                        GError             **error);
-TrackerDBCursor     *tracker_data_query_sparql_cursor (TrackerDataManager  *manager,
-                                                       const gchar         *query,
-                                                       GError             **error);
 
 gboolean             tracker_data_query_string_to_value (TrackerDataManager   *manager,
                                                          const gchar          *value,
@@ -49,5 +45,3 @@ gboolean             tracker_data_query_string_to_value (TrackerDataManager   *m
                                                          GError              **error);
 
 G_END_DECLS
-
-#endif /* __LIBTRACKER_DATA_QUERY_H__ */
