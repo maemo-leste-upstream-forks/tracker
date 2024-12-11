@@ -1,0 +1,70 @@
+From: =?utf-8?q?Jeremy_B=C3=ADcha?= <jeremy.bicha@canonical.com>
+Date: Thu, 15 Aug 2024 15:59:50 -0400
+Subject: exclude web-ide
+
+to match debian/copyright Files-Excluded
+---
+ src/meson.build            | 2 +-
+ src/tracker/meson.build    | 5 ++---
+ src/tracker/tracker-main.c | 2 --
+ 3 files changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/src/meson.build b/src/meson.build
+index 424cc36..08a5c60 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -8,7 +8,7 @@ subdir('libtracker-http')
+ subdir('ontologies')
+ 
+ # Web IDE 
+-subdir('web-ide')
++# subdir('web-ide')
+ 
+ # Intermediate library of RDF & SPARQL helper functions.
+ # This gets used internally and also becomes part of the
+diff --git a/src/tracker/meson.build b/src/tracker/meson.build
+index fdeaee1..48d411d 100644
+--- a/src/tracker/meson.build
++++ b/src/tracker/meson.build
+@@ -13,11 +13,10 @@ main_command_sources = [
+     'tracker-introspect.c',
+     'tracker-main.c',
+     'tracker-query.c',
+-    'tracker-webide.c',
+     sparql_gresource,
+ ]
+ 
+-executable(main_command_name, main_command_sources, web_ide_gresources,
++executable(main_command_name, main_command_sources,
+     c_args: tracker_c_args + [
+         '-DCLI_METADATA_DIR="@0@"'.format(command_metadata_dir),
+         '-DMANDIR="@0@"'.format(join_paths(get_option('prefix'), get_option('datadir'), 'man')),
+@@ -28,7 +27,7 @@ executable(main_command_name, main_command_sources, web_ide_gresources,
+     ],
+     install: true,
+     install_rpath: tracker_internal_libs_dir,
+-    dependencies: [tracker_common_dep, tracker_sparql_dep, web_ide_dep, gio_unix, avahi_glib, avahi_client],
++    dependencies: [tracker_common_dep, tracker_sparql_dep, gio_unix, avahi_glib, avahi_client],
+     include_directories: [commoninc, configinc, srcinc],
+ )
+ 
+diff --git a/src/tracker/tracker-main.c b/src/tracker/tracker-main.c
+index 235f5e4..27b5706 100644
+--- a/src/tracker/tracker-main.c
++++ b/src/tracker/tracker-main.c
+@@ -35,7 +35,6 @@
+ #include "tracker-introspect.h"
+ #include "tracker-query.h"
+ #include "tracker-common.h"
+-#include "tracker-webide.h"
+ 
+ #include <libtracker-common/tracker-common.h>
+ 
+@@ -75,7 +74,6 @@ static struct cmd_struct commands[] = {
+        { "import", tracker_import, N_("Import data into a TinySPARQL database") },
+        { "introspect", tracker_introspect, N_("Introspect a SPARQL endpoint") },
+        { "query", tracker_query, N_("Query and update the index using SPARQL") },
+-       { "webide", tracker_webide, N_("Create a Web IDE to query local databases") },
+ };
+ 
+ static inline void
