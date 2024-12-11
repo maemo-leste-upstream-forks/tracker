@@ -44,13 +44,21 @@ Depends: ${shlibs:Depends},
          libglib2.0-bin,
          default-dbus-session-bus | dbus-session-bus
 Recommends: tracker-miner-fs
-Breaks: tracker (<< 3.8~)
-Replaces: tracker (<< 3.8~)
-Provides: tracker
+Breaks: tracker (<< 3.8)
+Replaces: tracker (<< 3.8)
 Description: metadata database, indexer and search tool
  TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
+
+Package: tracker
+Architecture: all
+Section: oldlibs
+Depends:
+ ${misc:Depends},
+ tinysparql,
+Description: metadata database and indexer (transitional package)
+ This is a transitional package. It can safely be removed.
 
 Package: libtracker-sparql-3.0-0
 Architecture: any
@@ -139,15 +147,6 @@ Description: metadata database, indexer and search tool - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-doc
-Architecture: all
-Section: oldlibs
-Depends:
- ${misc:Depends},
- libtinysparql-doc,
-Description: metdata database API documentation (transitional package)
- This is a transitional package. It can safely be removed.
-
 Package: libtinysparql-doc
 Architecture: all
 Section: doc
@@ -160,6 +159,15 @@ Description: metadata database, indexer and search tool - API documentation
  TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
+
+Package: libtracker-doc
+Architecture: all
+Section: oldlibs
+Depends:
+ ${misc:Depends},
+ libtinysparql-doc,
+Description: metadata database API documentation (transitional package)
+ This is a transitional package. It can safely be removed.
 
 Package: gir1.2-tracker-3.0
 Section: introspection
