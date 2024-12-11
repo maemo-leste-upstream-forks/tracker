@@ -1,9 +1,18 @@
-tinysparql (3.8.1-1) UNRELEASED; urgency=medium
+tinysparql (3.8.1-1) experimental; urgency=medium
 
   * Rename to tinysparql (Closes: #1072712)
   * New upstream release
+  * Update debian/copyright
+  * Add new binary packages
+  * Convert tracker and tracker-doc into transitional packages
+  * The tracker-test-utils package is no longer provided
+  * Remove 2 patches applied in new release
+  * Add patch to not build web-ide feature
+  * Refresh and extend patch that skips some tests during autopkgtests
+  * Files-Excluded: add web-ide to avoid trying to document
+    it in debian/copyright
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 11 Dec 2024 17:39:33 -0500
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 11 Dec 2024 18:14:37 -0500
 
 tracker (3.7.3-2) unstable; urgency=medium
 
