@@ -48,24 +48,26 @@ Breaks: tracker (<< 3.8~)
 Replaces: tracker (<< 3.8~)
 Provides: tracker
 Description: metadata database, indexer and search tool
- Tracker is an advanced framework for first class objects with associated
+ TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
 Package: libtracker-sparql-3.0-0
 Architecture: any
 Multi-Arch: same
-Section: libs
+Section: oldlibs
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          libtinysparql-3.0-0 (= ${binary:Version}),
-Description: metadata database, indexer and search tool - library
+Description: metadata database, indexer and search tool - old library
  This package contains a library to perform SPARQL queries and updates in the
- Tracker store.
+ TinySPARQL store.
  .
- Tracker is an advanced framework for first class objects with associated
+ TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
+ .
+ This package is provided to ease the transition to libtinysparql-3.0-0.
 
 Package: libtinysparql-3.0-0
 Architecture: any
@@ -97,16 +99,18 @@ Depends: ${shlibs:Depends},
          gir1.2-tracker-3.0 (= ${binary:Version})
 Provides: ${gir:Provides}
 Suggests: libtracker-sparql-doc
-Description: metadata database, indexer and search tool - development files
+Description: metadata database, indexer and search tool - old dev files
  This package contains the static libraries and header files needed to link
  applications with libtracker-sparql.
  .
  libtracker-sparql provides a library to perform SPARQL queries and updates in
- the Tracker store.
+ the TinySPARQL store.
  .
- Tracker is an advanced framework for first class objects with associated
+ TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
+ .
+ This package is provided to ease the transition to libtinysparql-dev.
 
 Package: libtinysparql-dev
 Architecture: any
@@ -128,20 +132,27 @@ Description: metadata database, indexer and search tool - development files
  This package contains the static libraries and header files needed to link
  applications with libtracker-sparql.
  .
- libtracker-sparql provides a library to perform SPARQL queries and updates in
- the Tracker store.
+ libtiny-sparql provides a library to perform SPARQL queries and updates in
+ the TinySPARQL store.
  .
- Tracker is an advanced framework for first class objects with associated
+ TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
+
+Package: libtracker-doc
+Architecture: all
+Section: oldlibs
+Depends:
+ ${misc:Depends},
+ libtinysparql-doc,
+Description: metdata database API documentation (transitional package)
+ This is a transitional package. It can safely be removed.
 
 Package: libtinysparql-doc
 Architecture: all
 Section: doc
 Depends: ${misc:Depends}
 Suggests: devhelp
-Breaks: libtracker-doc
-Replaces: libtracker-doc
 Description: metadata database, indexer and search tool - API documentation
  This package contains the API documentation for libtinysparql
  as well as some example programs.
@@ -165,7 +176,7 @@ Description: GObject introspection data for Tracker
  It can be used by packages using the GIRepository format to generate
  dynamic bindings
  .
- Tracker is an advanced framework for first class objects with associated
+ TinySPARQL is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
