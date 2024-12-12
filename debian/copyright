@@ -10,7 +10,6 @@ Comment: Let's build the docs from source
  https://gitlab.gnome.org/GNOME/tinysparql/-/issues/477
 
 Files: *
-       src/libtracker-common/tracker-term-utils.*
 Copyright: 2008-2011 Nokia <ivan.frade@nokia.com>
            2006 Jamie McCracken <jamiemcc@gnome.org>
            2012-2013 Martyn Russell <martyn@lanedo.com>
@@ -38,6 +37,10 @@ Copyright: 2008-2011 Nokia <ivan.frade@nokia.com>
            2016-2020 Sam Thursfield <sam@afuera.me.uk>
            2016-2024 Red Hat Inc.
 License: LGPL-2.1+
+
+Files: src/libtracker-common/tracker-term-utils.*
+Copyright: 2020 Red Hat Inc.
+License: GPL-2+
 
 Files: gitlog-to-changelog
 Copyright: 2008 Free Software Foundation, Inc.
