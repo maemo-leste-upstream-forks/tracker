@@ -1,5 +1,6 @@
 ---
-Bug-Database: https://gitlab.gnome.org/GNOME/tracker/-/issues
-Bug-Submit: https://gitlab.gnome.org/GNOME/tracker/-/issues/new
-Repository: https://gitlab.gnome.org/GNOME/tracker.git
-Repository-Browse: https://gitlab.gnome.org/GNOME/tracker
+Bug-Database: https://gitlab.gnome.org/GNOME/tinysparql/-/issues
+Bug-Submit: https://gitlab.gnome.org/GNOME/tinysparql/-/issues/new
+Repository: https://gitlab.gnome.org/GNOME/tinysparql.git
+Repository-Browse: https://gitlab.gnome.org/GNOME/tinysparql
+Security-Contact: https://security.gnome.org/
