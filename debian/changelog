@@ -1,3 +1,9 @@
+tinysparql (3.8.2-1) UNRELEASED; urgency=medium
+
+  * New upstream release
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 13 Dec 2024 16:19:52 -0500
+
 tinysparql (3.8.1-1) experimental; urgency=medium
 
   * Rename to tinysparql (Closes: #1072712)
