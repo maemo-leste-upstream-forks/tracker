@@ -24,16 +24,6 @@ libtinysparql-3.0.so.0 libtinysparql-3.0-0 #MINVER#
  tracker_endpoint_set_allowed_graphs@Base 3.8.1
  tracker_endpoint_set_allowed_services@Base 3.8.1
  tracker_endpoint_set_readonly@Base 3.8.1
- tracker_http_client_get_type@Base 3.8.1
- tracker_http_client_new@Base 3.8.1
- tracker_http_client_send_message@Base 3.8.1
- tracker_http_client_send_message_async@Base 3.8.1
- tracker_http_client_send_message_finish@Base 3.8.1
- tracker_http_server_error@Base 3.8.1
- tracker_http_server_error_content@Base 3.8.1
- tracker_http_server_get_type@Base 3.8.1
- tracker_http_server_new@Base 3.8.1
- tracker_http_server_response@Base 3.8.1
  tracker_namespace_manager_add_prefix@Base 3.8.1
  tracker_namespace_manager_compress_uri@Base 3.8.1
  tracker_namespace_manager_expand_uri@Base 3.8.1
