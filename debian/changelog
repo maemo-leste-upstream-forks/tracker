@@ -1,8 +1,13 @@
 tinysparql (3.8.2-1) UNRELEASED; urgency=medium
 
   * New upstream release
+  * Revert docs workaround from 3.8.1-1: no longer needed
+  * Add missing Depends: libtracker-sparql-3.0-dev to libtinysparql-dev
+  * Update debian/upstream/metadata
+  * Update symbols file to drop symbols that had been accidentally exported
+    in earlier 3.8 versions which means they weren't used in Debian yet
 
- -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 13 Dec 2024 16:19:52 -0500
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Fri, 13 Dec 2024 16:55:17 -0500
 
 tinysparql (3.8.1-1) experimental; urgency=medium
 
