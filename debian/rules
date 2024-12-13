@@ -25,7 +25,3 @@ override_dh_auto_test:
 	dbus-run-session -- dh_auto_test --no-parallel -- --timeout-multiplier 5
 
 override_dh_gnome_clean:
-
-# https://gitlab.gnome.org/GNOME/tinysparql/-/issues/467
-override_dh_missing:
-	dh_missing -Xusr/share/doc
