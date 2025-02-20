@@ -44,7 +44,7 @@ Depends: ${shlibs:Depends},
          shared-mime-info,
          libglib2.0-bin,
          default-dbus-session-bus | dbus-session-bus
-Recommends: tracker-miner-fs
+Recommends: localsearch
 Breaks: tracker (<< 3.8)
 Replaces: tracker (<< 3.8)
 Description: metadata database, indexer and search tool
