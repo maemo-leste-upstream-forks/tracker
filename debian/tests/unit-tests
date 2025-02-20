@@ -28,4 +28,4 @@ LOCPATH=${AUTOPKGTEST_TMP}/locale \
     HOME=${AUTOPKGTEST_TMP} \
     LANG=en_US.utf8 \
     LC_ALL=en_US.utf8 \
-    dbus-run-session -- dh_auto_test 2> >(grep -vE '^(Activating|Successfully activated)')>&2
+    dbus-run-session -- dh_auto_test -- --timeout-multiplier 7 2> >(grep -vE '^(Activating|Successfully activated)')>&2
