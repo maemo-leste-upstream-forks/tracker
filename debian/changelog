@@ -1,3 +1,10 @@
+tinysparql (3.8.2-2) unstable; urgency=medium
+
+  * Increase test timeout multiplier to try to help riscv64 build
+  * Release to unstable
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Wed, 19 Feb 2025 20:36:09 -0500
+
 tinysparql (3.8.2-1) experimental; urgency=medium
 
   * New upstream release
