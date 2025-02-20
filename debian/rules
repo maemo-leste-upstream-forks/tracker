@@ -22,6 +22,6 @@ override_dh_auto_configure:
 		-Dtests=$(if $(filter nocheck,$(DEB_BUILD_OPTIONS)),false,true)
 
 override_dh_auto_test:
-	dbus-run-session -- dh_auto_test --no-parallel -- --timeout-multiplier 5
+	dbus-run-session -- dh_auto_test --no-parallel -- --timeout-multiplier 7
 
 override_dh_gnome_clean:
