@@ -98,6 +98,7 @@ Multi-Arch: same
 Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
+         libtinysparql-dev (= ${binary:Version}),
          libtracker-sparql-3.0-0 (= ${binary:Version}),
          libglib2.0-dev (>= 2.52.0),
          libicu-dev (>= 4.8.1.1),
