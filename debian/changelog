@@ -1,3 +1,10 @@
+tinysparql (3.8.2-5) UNRELEASED; urgency=medium
+
+  * Move libtracker-http-soup3.so & libtracker-parser-libicu.so
+    from libtracker-sparql-3.0-0 to libtinysparql-3.0-0 (Closes: #1099212)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 06 Mar 2025 17:00:44 -0500
+
 tinysparql (3.8.2-4) unstable; urgency=high
 
   [ Simon McVittie ]
