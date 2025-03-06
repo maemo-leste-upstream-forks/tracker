@@ -129,7 +129,6 @@ Section: libdevel
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          libtinysparql-3.0-0 (= ${binary:Version}),
-         libtracker-sparql-3.0-dev (= ${binary:Version}),
          libglib2.0-dev (>= 2.52.0),
          libicu-dev (>= 4.8.1.1),
          libjson-glib-dev (>= 1.4),
@@ -137,6 +136,8 @@ Depends: ${shlibs:Depends},
          libsoup-3.0-dev (>= 2.40),
          libsqlite3-dev (>= 3.15.0),
          gir1.2-tsparql-3.0 (= ${binary:Version})
+Breaks: libtracker-sparql-3.0-dev (<< 3.8.2-4~)
+Replaces: libtracker-sparql-3.0-dev (<< 3.8.2-4~)
 Provides: ${gir:Provides}
 Suggests: libtracker-sparql-doc
 Description: metadata database, indexer and search tool - development files
