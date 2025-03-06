@@ -84,6 +84,8 @@ Multi-Arch: same
 Section: libs
 Depends: ${shlibs:Depends},
          ${misc:Depends}
+Breaks: libtracker-sparql-3.0-0 (<< 3.8.2-5~)
+Replaces: libtracker-sparql-3.0-0 (<< 3.8.2-5~)
 Description: metadata database, indexer and search tool - library
  This package contains a library to perform SPARQL queries and updates in the
  TinySPARQL store.

@@ -1,3 +1,1 @@
 usr/lib/*/libtracker-sparql-3.0.so.*
-usr/lib/*/tinysparql-3.0/libtracker-http-soup3.so
-usr/lib/*/tinysparql-3.0/libtracker-parser-libicu.so
