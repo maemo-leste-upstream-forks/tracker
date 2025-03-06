@@ -1,5 +1,6 @@
-tinysparql (3.8.2-4) UNRELEASED; urgency=medium
+tinysparql (3.8.2-4) unstable; urgency=high
 
+  [ Simon McVittie ]
   * Move /usr/include/tinysparql-3.0/tracker-*.h to libtinysparql-dev.
     Despite what their names might seem to indicate, these headers are
     all included in <tinysparql.h>, so including these headers without
@@ -11,7 +12,7 @@ tinysparql (3.8.2-4) UNRELEASED; urgency=medium
   * libtracker-sparql-3.0-dev: Add missing Depends on libtinysparql-dev
     (Closes: #1098537)
 
- -- Simon McVittie <smcv@debian.org>  Thu, 06 Mar 2025 09:37:05 +0000
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 06 Mar 2025 09:27:20 -0500
 
 tinysparql (3.8.2-3) unstable; urgency=medium
 
