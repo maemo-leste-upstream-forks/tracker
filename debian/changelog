@@ -1,3 +1,18 @@
+tinysparql (3.8.2-4) UNRELEASED; urgency=medium
+
+  * Move /usr/include/tinysparql-3.0/tracker-*.h to libtinysparql-dev.
+    Despite what their names might seem to indicate, these headers are
+    all included in <tinysparql.h>, so including these headers without
+    a circular dependency requires moving them. This allows the
+    dependency on libtracker-sparql-3.0-dev by libtinysparql-dev to be
+    removed.
+  * d/tests: Verify basic functionality of -dev packages
+    (Reproduces: #1098537)
+  * libtracker-sparql-3.0-dev: Add missing Depends on libtinysparql-dev
+    (Closes: #1098537)
+
+ -- Simon McVittie <smcv@debian.org>  Thu, 06 Mar 2025 09:37:05 +0000
+
 tinysparql (3.8.2-3) unstable; urgency=medium
 
   * Recommends: localsearch (instead of tracker-miner-fs)
