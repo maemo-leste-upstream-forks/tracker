@@ -1,3 +1,9 @@
+tinysparql (3.8.2-6) unstable; urgency=medium
+
+  * Stop installing the "transitional" libtracker-sparql-3.0-0
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 15 Mar 2025 09:03:49 -0400
+
 tinysparql (3.8.2-5) unstable; urgency=high
 
   * Move libtracker-http-soup3.so & libtracker-parser-libicu.so
