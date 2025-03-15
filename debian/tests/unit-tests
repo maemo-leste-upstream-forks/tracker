@@ -22,7 +22,7 @@ dh_auto_build -- meson-test-prereq
 # install the system version of the libraries in the LD_LIBRARY_PATH of the tests
 DEB_TARGET_MULTIARCH=`dpkg-architecture -q DEB_TARGET_MULTIARCH`
 BUILD_OUTPUT_DIR="obj-$(dpkg-architecture -qDEB_HOST_GNU_TYPE)"
-cp --preserve=links /usr/lib/${DEB_TARGET_MULTIARCH}/libtracker-sparql-3.0.so.* ${BUILD_OUTPUT_DIR}/src/libtracker-sparql/
+cp --preserve=links /usr/lib/${DEB_TARGET_MULTIARCH}/libtinysparql-3.0.so.* ${BUILD_OUTPUT_DIR}/src/libtracker-sparql/
 
 LOCPATH=${AUTOPKGTEST_TMP}/locale \
     HOME=${AUTOPKGTEST_TMP} \
