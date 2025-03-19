@@ -1,11 +1,12 @@
 From: Paul Gevers <elbrus@debian.org>
 Date: Wed, 15 Feb 2023 10:05:23 -0500
-Subject: in the autopkgtest setup some tests fail that pass during
+Subject: Disable some failing tests
 
+in the autopkgtest setup some tests fail that pass during
 build. Ideally we figure out how to set it up correctly, but until
 then, let's skip these tests.
 
-Debian-Bug: https://bugs.debian.org/903374
+Bug-Debian: https://bugs.debian.org/903374
 ---
  tests/functional-tests/test_cli.py           | 31 ++++++++++++++++++++++++++++
  tests/functional-tests/test_endpoint_http.py | 12 +++++++++++
