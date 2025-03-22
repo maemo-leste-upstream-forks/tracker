@@ -1,13 +1,8 @@
 usr/bin
-
-usr/share/dbus-1/services/org.freedesktop.portal.Tracker.service
-
 usr/lib/systemd/user/tinysparql-xdg-portal-3.service
-
-usr/libexec/tinysparql-xdg-portal-3
 usr/libexec/tinysparql-sql
-
-usr/share/man/man1
-
+usr/libexec/tinysparql-xdg-portal-3
 usr/share/bash-completion/
+usr/share/dbus-1/services/org.freedesktop.portal.Tracker.service
 usr/share/locale/
+usr/share/man/man1

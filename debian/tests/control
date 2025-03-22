@@ -7,4 +7,4 @@ Depends: build-essential, libtracker-sparql-3.0-dev, pkgconf
 Restrictions: allow-stderr, superficial
 
 Tests: unit-tests
-Depends: @, @builddeps@, locales
+Depends: locales, @, @builddeps@

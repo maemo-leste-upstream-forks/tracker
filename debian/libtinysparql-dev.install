@@ -1,6 +1,6 @@
+usr/include/tinysparql-3.0/*.h
 usr/lib/*/libtinysparql-3.0.so
 usr/lib/*/pkgconfig/tinysparql-3.0.pc
-usr/include/tinysparql-3.0/*.h
-usr/share/vala/vapi/tinysparql-3.0.vapi
-usr/share/vala/vapi/tinysparql-3.0.deps
 usr/share/gir-1.0/Tsparql-3.0.gir
+usr/share/vala/vapi/tinysparql-3.0.deps
+usr/share/vala/vapi/tinysparql-3.0.vapi
