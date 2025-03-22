@@ -1,11 +1,15 @@
-tinysparql (3.8.2-7) UNRELEASED; urgency=medium
+tinysparql (3.8.2-7) unstable; urgency=medium
 
+  [ Simon McVittie ]
   * d/p/docs-Update-URL-to-libsoup.patch:
     Correct the documentation URL for libsoup
   * d/p/disable-some-failing-tests.patch:
     Improve metadata
 
- -- Simon McVittie <smcv@debian.org>  Wed, 19 Mar 2025 14:40:58 +0000
+  [ Jeremy Bícha ]
+  * Run wrap-and-sort
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sat, 22 Mar 2025 14:50:37 -0400
 
 tinysparql (3.8.2-6) unstable; urgency=medium
 
