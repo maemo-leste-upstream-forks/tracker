@@ -2,7 +2,7 @@ From: Paul Gevers <elbrus@debian.org>
 Date: Wed, 15 Feb 2023 10:05:23 -0500
 Subject: Disable some failing tests
 
-in the autopkgtest setup some tests fail that pass during
+In the autopkgtest setup some tests fail that pass during
 build. Ideally we figure out how to set it up correctly, but until
 then, let's skip these tests.
 
