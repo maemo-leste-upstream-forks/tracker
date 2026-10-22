@@ -1,0 +1,61 @@
+From: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Date: Wed, 21 Oct 2026 15:00:00 +0300
+Subject: Make the idle interface cleanup period configurable
+
+Freeing the interfaces after ten seconds of inactivity also drops the
+prepared statement cache, so the next query replans from scratch. On a
+slow ARM core a single metadata query could spend eight seconds in the
+SQLite query planner, which meant every track change in a music player
+paid for a fresh plan.
+
+Ten minutes covers the gaps between user actions on these devices while
+still releasing the memory when the process really has gone idle.
+TRACKER_IDLE_CLEANUP_SECONDS overrides it; 0 disables the cleanup.
+---
+--- a/src/libtracker-sparql/direct/tracker-direct.c
++++ b/src/libtracker-sparql/direct/tracker-direct.c
+@@ -183,6 +183,10 @@
+ 	g_free (task);
+ }
+ 
++#define IDLE_CLEANUP_DEFAULT_SECONDS 600
++
++static gulong idle_cleanup_seconds = G_MAXULONG;
++
+ static gboolean
+ cleanup_timeout_cb (gpointer user_data)
+ {
+@@ -191,14 +195,31 @@
+ 	gint64 timestamp;
+ 	GTask *task;
+ 
++	if (idle_cleanup_seconds == G_MAXULONG) {
++		const gchar *env = g_getenv ("TRACKER_IDLE_CLEANUP_SECONDS");
++
++		idle_cleanup_seconds = env ? g_ascii_strtoull (env, NULL, 10)
++		                           : IDLE_CLEANUP_DEFAULT_SECONDS;
++
++		g_debug ("Idle interface cleanup: %u seconds",
++		         (guint) idle_cleanup_seconds);
++	}
++
+ 	priv = tracker_direct_connection_get_instance_private (conn);
+ 	timestamp = g_get_monotonic_time ();
+ 
+ 	/* If we already cleaned up */
+ 	if (priv->timestamp < priv->cleanup_timestamp)
+ 		return G_SOURCE_CONTINUE;
+-	/* If the connection was used less than 10s ago */
+-	if (timestamp - priv->timestamp < 10 * G_USEC_PER_SEC)
++	/* If the connection was used less than the idle period ago. Freeing
++	 * the interfaces also drops the prepared statement cache, so on
++	 * memory-constrained systems a longer period trades memory against
++	 * query planning time; TRACKER_IDLE_CLEANUP_SECONDS=0 disables it.
++	 */
++	if (idle_cleanup_seconds == 0)
++		return G_SOURCE_CONTINUE;
++	if (timestamp - priv->timestamp <
++	    (gint64) idle_cleanup_seconds * G_USEC_PER_SEC)
+ 		return G_SOURCE_CONTINUE;
+ 
+ 	priv->cleanup_timestamp = timestamp;

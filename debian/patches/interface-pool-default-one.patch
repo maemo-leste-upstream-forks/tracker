@@ -1,0 +1,60 @@
+From: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Date: Wed, 21 Oct 2026 15:00:00 +0300
+Subject: Limit the read interface pool to one by default
+
+Each read interface attaches every ontology database and keeps its own
+page cache and prepared statement cache, which costs roughly 20 MB per
+interface. The previous ceiling of 16 per CPU is a server number: on a
+phone with a handful of concurrent clients it let the pool grow past
+600 MB against a database of a few tens of megabytes.
+
+One interface is the minimum the design allows (one read plus one
+writable) and is enough for the single-process clients these devices
+run. TRACKER_MAX_INTERFACES overrides it.
+---
+--- a/src/libtracker-sparql/core/tracker-db-manager.c
++++ b/src/libtracker-sparql/core/tracker-db-manager.c
+@@ -33,14 +33,32 @@
+ #include "tracker-data-manager.h"
+ #include "tracker-uuid.h"
+ 
+-#define MAX_INTERFACES_PER_CPU        16
+-#define MAX_INTERFACES                (MAX_INTERFACES_PER_CPU * g_get_num_processors ())
++#define MAX_INTERFACES_DEFAULT        1
+ 
+ /* Required minimum space needed to create databases (5Mb) */
+ #define TRACKER_DB_MIN_REQUIRED_SPACE 5242880
+ 
+ #define TRACKER_VACUUM_CHECK_SIZE     ((goffset) 4 * 1024 * 1024 * 1024) /* 4GB */
+ 
++static guint
++get_max_interfaces (void)
++{
++	static guint max_interfaces = 0;
++
++	if (max_interfaces == 0) {
++		const gchar *env = g_getenv ("TRACKER_MAX_INTERFACES");
++
++		if (env != NULL)
++			max_interfaces = (guint) g_ascii_strtoull (env, NULL, 10);
++		if (max_interfaces == 0)
++			max_interfaces = MAX_INTERFACES_DEFAULT;
++
++		g_debug ("Maximum read interfaces: %u", max_interfaces);
++	}
++
++	return max_interfaces;
++}
++
+ #define CORRUPTED_FILENAME            ".meta.corrupted"
+ 
+ #define TOSTRING1(x) #x
+@@ -761,7 +779,7 @@
+ 	}
+ 
+ 	/* 2nd. If no more interfaces can be created, pick one */
+-	if (!interface && len >= MAX_INTERFACES) {
++	if (!interface && len >= get_max_interfaces ()) {
+ 		interface = g_async_queue_try_pop_unlocked (db_manager->interfaces);
+ 	}
+ 

@@ -1,3 +1,5 @@
 docs-Update-URL-to-libsoup.patch
 disable-some-failing-tests.patch
 exclude-web-ide.patch
+interface-pool-default-one.patch
+idle-cleanup-seconds.patch

@@ -1,3 +1,10 @@
+tinysparql (3.8.2-7-leste1) unstable; urgency=medium
+
+  * limit the read interface pool to one interface by default
+  * make the idle interface cleanup period configurable, default 10 minutes
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Wed, 21 Oct 2026 15:30:00 +0300
+
 tinysparql (3.8.2-7) unstable; urgency=medium
 
   [ Simon McVittie ]
